@@ -52,6 +52,60 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Dynamic SEO metadata per route
+  useEffect(() => {
+    const seoMap: Record<AppPage, { title: string; desc: string; path: string }> = {
+      home: {
+        title: 'ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher',
+        desc: 'Free, open-access ATS resume checker and job description keyword matcher. 100% private in-browser analysis, Google X-Y-Z bullet polisher, and instant formatting audit.',
+        path: '/'
+      },
+      guide: {
+        title: 'ATS Resume Optimization Guide & Scoring Formula | ToolForge',
+        desc: 'Comprehensive step-by-step guide to beating ATS algorithms like Workday, Greenhouse, and Taleo using the Google X-Y-Z bullet formula and keyword optimization.',
+        path: '/guide'
+      },
+      about: {
+        title: 'About ToolForge – Client-Side Privacy First Resume Studio',
+        desc: 'Learn about ToolForge mission: high-speed, zero-data-collection ATS resume scoring and formatting tools built for candidates worldwide.',
+        path: '/about'
+      },
+      contact: {
+        title: 'Contact & Bug Report | ToolForge',
+        desc: 'Get in touch with the ToolForge team, report parser bugs, suggest features, or request ATS platform verification.',
+        path: '/contact'
+      },
+      privacy: {
+        title: 'Privacy Policy & Zero-Storage Guarantee | ToolForge',
+        desc: 'ToolForge processes 100% of resume data locally in your browser memory. We never transmit, store, or sell candidate resumes.',
+        path: '/privacy'
+      },
+      terms: {
+        title: 'Terms of Service | ToolForge',
+        desc: 'Terms and conditions for using ToolForge free resume inspection and optimization utilities.',
+        path: '/terms'
+      }
+    };
+
+    const currentSeo = seoMap[currentPage] || seoMap.home;
+    document.title = currentSeo.title;
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', currentSeo.desc);
+
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink) canonicalLink.setAttribute('href', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', currentSeo.title);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', currentSeo.desc);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+  }, [currentPage]);
+
   const navigateTo = (page: AppPage) => {
     setCurrentPage(page);
     const path = page === 'home' ? '/' : `/${page}`;

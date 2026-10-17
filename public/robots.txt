@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://toolforge.app/sitemap.xml
+Sitemap: https://toolforge-ats.vercel.app/sitemap.xml
