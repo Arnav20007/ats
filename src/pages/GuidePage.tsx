@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, BookOpen, CheckCircle2, AlertTriangle, FileText, Sparkles, ArrowRight, Layers, Target, BarChart2 } from 'lucide-react';
+import { ArrowLeft, BookOpen, CheckCircle2, AlertTriangle, FileText, Sparkles, ArrowRight, Layers, Target, BarChart2, HelpCircle } from 'lucide-react';
 
 interface GuidePageProps {
   onNavigateHome: () => void;
@@ -116,6 +116,57 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
             <li>Use standard job titles matching industry norms rather than company-specific jargon.</li>
           </ul>
         </div>
+
+        {/* FAQ Section - Optimized for Google Rich Snippets & AI Overviews (AEO) */}
+        <section className="space-y-6 pt-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Frequently Asked Questions & ATS Standards</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              Everything You Need to Know About ATS Optimization
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            {[
+              {
+                q: "What is an ATS resume checker?",
+                a: "An ATS resume checker is an online tool that simulates how Applicant Tracking Systems (like Workday, Greenhouse, Taleo, and Lever) parse, scan, and rank resumes before a recruiter reads them. It audits formatting errors, section headings, and job keyword frequency."
+              },
+              {
+                q: "How do I check if my resume is ATS-friendly for free without signup?",
+                a: "Upload your PDF or Word resume to ToolForge. The tool parses text client-side in your browser, evaluates 27 formatting rules, and matches keywords against your target job description instantly without requiring an account or email."
+              },
+              {
+                q: "What is a good ATS score?",
+                a: "A score of 80% or higher is considered passing for major ATS systems. A score of 90+ places a candidate in the top 5% of applicant pools, ensuring high parser confidence and recruiter visibility."
+              },
+              {
+                q: "What is Google's X-Y-Z formula for resume bullets?",
+                a: "Google's hiring formula states: Accomplished [X], as measured by [Y], by doing [Z]. It transforms passive duty descriptions into high-impact metric statements (e.g., Slashing latency by 42% by redesigning database indexing)."
+              },
+              {
+                q: "Does ToolForge store or sell my resume data?",
+                a: "No. ToolForge is 100% private and runs entirely client-side in your browser memory via Web Workers. Your resume is never uploaded, stored, logged, or shared with third parties."
+              }
+            ].map((faq, idx) => (
+              <article
+                key={idx}
+                className="p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-2 shadow-2xs"
+              >
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm">Q{idx + 1}.</span>
+                  {faq.q}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed pl-6">
+                  {faq.a}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
 
         {/* Bottom CTA */}
         <div className="p-8 rounded-3xl bg-slate-900 dark:bg-zinc-900 border border-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">

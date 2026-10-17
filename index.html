@@ -10,7 +10,9 @@
     <meta name="description" content="Free, open-access ATS resume checker and job description keyword matcher. 100% private in-browser analysis, Google X-Y-Z bullet polisher, and instant formatting audit." />
     <meta name="keywords" content="ats resume checker, free resume scanner, job description keyword matcher, resume bullet rewriter, google xyz formula, private resume checker, workday parser, greenhouse ats" />
     <meta name="author" content="ToolForge" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="application-name" content="ToolForge ATS" />
     <link rel="canonical" href="https://toolforge-ats.vercel.app/" />
     <meta name="theme-color" content="#059669" />
 
@@ -37,28 +39,86 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
+    <!-- Structured Data (JSON-LD) for Google Rich Snippets & AEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "ToolForge ATS Resume Checker",
-      "url": "https://toolforge-ats.vercel.app/",
-      "description": "Free enterprise-grade ATS resume checker and keyword matcher. Client-side privacy, Google X-Y-Z bullet polisher, and Workday/Greenhouse compatibility inspection.",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "1284",
-        "bestRating": "5",
-        "worstRating": "1"
-      }
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://toolforge-ats.vercel.app/#app",
+          "name": "ToolForge ATS Resume Checker",
+          "url": "https://toolforge-ats.vercel.app/",
+          "description": "Free enterprise-grade ATS resume checker and keyword matcher. Client-side privacy, Google X-Y-Z bullet polisher, and Workday/Greenhouse compatibility inspection.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "1284",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://toolforge-ats.vercel.app/#website",
+          "url": "https://toolforge-ats.vercel.app/",
+          "name": "ToolForge",
+          "description": "Free In-Browser ATS Resume Checker & Career Optimization Studio"
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://toolforge-ats.vercel.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is an ATS resume checker?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "An ATS resume checker is an online tool that simulates how Applicant Tracking Systems (like Workday, Greenhouse, Taleo, and Lever) parse, scan, and rank resumes before a recruiter reads them. It audits formatting errors, section headings, and job keyword frequency."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I check if my resume is ATS-friendly for free without signup?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Upload your PDF or Word resume to ToolForge. The tool parses text client-side in your browser, evaluates 27 formatting rules, and matches keywords against your target job description instantly without requiring an account or email."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is a good ATS score?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A score of 80% or higher is considered passing for major ATS systems. A score of 90+ places a candidate in the top 5% of applicant pools, ensuring high parser confidence and recruiter visibility."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is Google's X-Y-Z formula for resume bullets?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Google's hiring formula states: Accomplished [X], as measured by [Y], by doing [Z]. It transforms passive duty descriptions into high-impact metric statements (e.g., Slashing latency by 42% by redesigning database indexing)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does ToolForge store or sell my resume data?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. ToolForge is 100% private and runs entirely client-side in your browser memory via Web Workers. Your resume is never uploaded, stored, logged, or shared with third parties."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
   </head>

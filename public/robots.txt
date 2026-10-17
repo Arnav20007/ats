@@ -1,6 +1,29 @@
-# ToolForge Robots.txt
+# ToolForge Robots.txt - SEO & AEO Optimized
 User-agent: *
 Allow: /
 
-# Sitemap
+# Explicit AI Search & Answer Engine Bot Permissions
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemaps & Machine-Readable AI Standards
 Sitemap: https://toolforge-ats.vercel.app/sitemap.xml
+LLMs-Txt: https://toolforge-ats.vercel.app/llms.txt
