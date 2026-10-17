@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+*, *::before, *::after {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html, body, button, input, select, textarea {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #fafbfc;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+.dark body {
+  background-color: #080c14;
+  color: #f1f5f9;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  letter-spacing: -0.03em;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Soft, natural background gradient */
+.hero-gradient-aurora {
+  background: 
+    radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 82% 24%, rgba(6, 182, 212, 0.07) 0%, transparent 45%),
+    linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+}
+
+.dark .hero-gradient-aurora {
+  background: 
+    radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.14) 0%, transparent 48%),
+    radial-gradient(circle at 82% 22%, rgba(6, 182, 212, 0.08) 0%, transparent 48%),
+    linear-gradient(180deg, #080c14 0%, #0c111d 100%);
+}
+
+/* Subtle dot pattern */
+.bg-mesh-dots {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+}
+
+.dark .bg-mesh-dots {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

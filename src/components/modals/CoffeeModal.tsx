@@ -1,0 +1,150 @@
+import React, { useState } from 'react';
+import { X, Heart, Check, Copy, QrCode, Smartphone, Sparkles } from 'lucide-react';
+import { useToast } from '../Toast';
+
+interface CoffeeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onTip?: (amount: number) => void;
+}
+
+export const CoffeeModal: React.FC<CoffeeModalProps> = ({ isOpen, onClose, onTip }) => {
+  const { showToast } = useToast();
+  const [selectedAmount, setSelectedAmount] = useState<number>(100);
+  const [copiedUpi, setCopiedUpi] = useState(false);
+
+  // Default UPI ID (can be customized by developer)
+  const UPI_ID = 'toolforge@upi';
+  const PAYEE_NAME = 'ToolForge';
+
+  if (!isOpen) return null;
+
+  const upiIntentUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${selectedAmount}&cu=INR&tn=${encodeURIComponent('Support ToolForge')}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(upiIntentUrl)}`;
+
+  const handleCopyUpi = () => {
+    navigator.clipboard.writeText(UPI_ID);
+    setCopiedUpi(true);
+    showToast('Copied UPI ID: ' + UPI_ID, 'copy');
+    if (onTip) onTip(selectedAmount);
+    setTimeout(() => setCopiedUpi(false), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md rounded-3xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8 shadow-2xl space-y-6 text-slate-900 dark:text-zinc-100">
+        
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Modal Header */}
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 shadow-sm">
+            <QrCode className="w-7 h-7" />
+          </div>
+          <h3 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+            Support ToolForge via UPI
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-xs mx-auto leading-relaxed">
+            ToolForge is 100% free, private, and ad-free. Scan with any UPI app to support development.
+          </p>
+        </div>
+
+        {/* Preset Contribution Amounts */}
+        <div className="grid grid-cols-4 gap-2">
+          {[
+            { amount: 50, label: 'Chai' },
+            { amount: 100, label: 'Coffee' },
+            { amount: 250, label: 'Lunch' },
+            { amount: 500, label: 'Supporter' },
+          ].map(({ amount, label }) => (
+            <button
+              key={amount}
+              onClick={() => setSelectedAmount(amount)}
+              className={`py-2.5 px-1.5 rounded-2xl border text-center transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                selectedAmount === amount
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 dark:border-emerald-600 text-emerald-900 dark:text-emerald-200 shadow-xs ring-2 ring-emerald-500/20'
+                  : 'bg-slate-50 dark:bg-zinc-800/60 border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800'
+              }`}
+            >
+              <span className="text-sm font-black">₹{amount}</span>
+              <span className="text-[10px] text-slate-400 font-medium">{label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Dynamic UPI QR Code Display */}
+        <div className="flex flex-col items-center justify-center p-4 rounded-2xl border border-slate-100 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950/80 space-y-3">
+          <div className="p-3 rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <img
+              src={qrCodeUrl}
+              alt="UPI QR Code"
+              className="w-44 h-44 rounded-lg object-contain"
+            />
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 dark:text-zinc-400">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Scan with GPay, PhonePe, Paytm, or BHIM</span>
+          </div>
+        </div>
+
+        {/* UPI ID Copy Field */}
+        <div className="p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-between gap-2">
+          <div className="text-left pl-1">
+            <span className="text-[10px] text-slate-400 uppercase font-bold block">UPI ID</span>
+            <span className="text-xs sm:text-sm font-mono font-bold text-slate-900 dark:text-white">{UPI_ID}</span>
+          </div>
+
+          <button
+            onClick={handleCopyUpi}
+            className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0 cursor-pointer"
+          >
+            {copiedUpi ? (
+              <>
+                <Check className="w-3.5 h-3.5" />
+                <span>Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copy UPI</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Direct Pay Action */}
+        <a
+          href={upiIntentUrl}
+          className="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] sm:hidden"
+        >
+          <Smartphone className="w-4 h-4" />
+          <span>Pay ₹{selectedAmount} via Any UPI App</span>
+        </a>
+
+        {/* Bottom Supported Apps Strip */}
+        <div className="pt-2 border-t border-slate-100 dark:border-zinc-800/80 flex flex-col items-center gap-1.5 text-[11px] text-slate-400">
+          <div className="flex items-center gap-2 font-medium">
+            <span>Google Pay</span>
+            <span>·</span>
+            <span>PhonePe</span>
+            <span>·</span>
+            <span>Paytm</span>
+            <span>·</span>
+            <span>BHIM UPI</span>
+          </div>
+          <div className="flex items-center gap-1 text-[10px] text-slate-400">
+            <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
+            <span>100% voluntary · Thank you for supporting free open tools!</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};

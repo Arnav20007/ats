@@ -1,0 +1,65 @@
+import React from 'react';
+import {
+  FileText,
+  Moon,
+  Sun,
+  Coffee,
+  ShieldCheck
+} from 'lucide-react';
+
+interface HeaderProps {
+  isDark: boolean;
+  onToggleTheme: () => void;
+  onNavigateHome?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({
+  isDark,
+  onToggleTheme,
+  onNavigateHome,
+}) => {
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md transition-colors">
+      <div className="max-w-[1440px] mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 py-3.5">
+        
+        {/* Left: Handcrafted Human Brand Mark */}
+        <div
+          onClick={onNavigateHome}
+          className="flex items-center gap-3 shrink-0 cursor-pointer"
+        >
+          <img
+            src="/favicon.svg"
+            alt="ToolForge"
+            className="w-8 h-8 rounded-xl shadow-xs"
+          />
+          <div className="flex items-center gap-2">
+            <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">
+              ToolForge
+            </span>
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/80">
+              Resume Checker
+            </span>
+          </div>
+        </div>
+
+        {/* Center: Simple Human Trust Message */}
+        <div className="hidden md:flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400 font-medium">
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Free to use · No sign up · Your resume stays on your computer</span>
+        </div>
+
+        {/* Right: Theme Toggle */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <button
+            onClick={onToggleTheme}
+            className="p-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 transition-colors shadow-2xs"
+            title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label="Toggle theme"
+          >
+            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+};

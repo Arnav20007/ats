@@ -1,0 +1,6 @@
+# ToolForge Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://toolforge.app/sitemap.xml

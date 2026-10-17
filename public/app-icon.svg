@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Background Gradient: Deep rich emerald into obsidian teal -->
+    <linearGradient id="bgGrad" x1="64" y1="32" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="45%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#044e3a" />
+    </linearGradient>
+
+    <!-- Subtle Inner Bevel / Highlight -->
+    <linearGradient id="highlight" x1="256" y1="0" x2="256" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25" />
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25" />
+    </linearGradient>
+
+    <!-- Paper Gradient -->
+    <linearGradient id="paperGrad" x1="160" y1="120" x2="350" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+
+    <!-- Fold Corner Shadow -->
+    <linearGradient id="foldShadow" x1="304" y1="116" x2="360" y2="172" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#cbd5e1" />
+      <stop offset="100%" stop-color="#94a3b8" />
+    </linearGradient>
+
+    <!-- Soft Drop Shadow for Document -->
+    <filter id="docShadow" x="100" y="80" width="312" height="352" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#022c22" flood-opacity="0.45" />
+    </filter>
+
+    <!-- Checkmark Badge Glow -->
+    <filter id="checkGlow" x="250" y="270" width="180" height="180" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#047857" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- iOS/macOS Style Squircle Canvas -->
+  <rect width="512" height="512" rx="116" fill="url(#bgGrad)" />
+  <rect width="512" height="512" rx="116" fill="url(#highlight)" />
+  <rect x="2" y="2" width="508" height="508" rx="114" stroke="#ffffff" stroke-opacity="0.18" stroke-width="4" />
+
+  <!-- Document Paper Silhouette -->
+  <g filter="url(#docShadow)">
+    <!-- Document Body with Folded Top-Right Corner -->
+    <path d="M168 116 C150.3 116 136 130.3 136 148 V364 C136 381.7 150.3 396 168 396 H344 C361.7 396 376 381.7 376 364 V188 L304 116 H168 Z" fill="url(#paperGrad)" />
+    
+    <!-- Top-Right Fold Flap -->
+    <path d="M304 116 V172 C304 180.8 311.2 188 320 188 H376 L304 116 Z" fill="url(#foldShadow)" />
+    <path d="M304 116 V172 C304 180.8 311.2 188 320 188 H376 Z" fill="#ffffff" fill-opacity="0.7" />
+
+    <!-- Document Executive Lines (Clean, Human, Geometric) -->
+    <rect x="180" y="170" width="100" height="14" rx="7" fill="#059669" />
+    <rect x="180" y="210" width="152" height="10" rx="5" fill="#64748b" />
+    <rect x="180" y="234" width="130" height="10" rx="5" fill="#94a3b8" />
+    <rect x="180" y="258" width="144" height="10" rx="5" fill="#cbd5e1" />
+    
+    <rect x="180" y="296" width="70" height="9" rx="4.5" fill="#10b981" />
+    <rect x="180" y="318" width="112" height="9" rx="4.5" fill="#cbd5e1" />
+  </g>
+
+  <!-- Human Handcrafted Signature: ATS Verified Checkmark Badge -->
+  <g filter="url(#checkGlow)">
+    <circle cx="340" cy="340" r="52" fill="#10b981" />
+    <circle cx="340" cy="340" r="49" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" />
+    <path d="M320 340 L334 354 L362 324" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
