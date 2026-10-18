@@ -11,9 +11,29 @@ import { ShieldCheck } from 'lucide-react';
 
 export type AppPage = 'home' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide';
 
+// Safe Storage Guard for private browsing / restricted contexts (F-08)
+const safeStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      return typeof window !== 'undefined' && window.localStorage ? window.localStorage.getItem(key) : null;
+    } catch {
+      return null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+      }
+    } catch {
+      // Ignored safely
+    }
+  }
+};
+
 export default function App() {
   const [isDark, setIsDark] = useState<boolean>(() => {
-    return localStorage.getItem('toolforge_theme') === 'dark';
+    return safeStorage.getItem('toolforge_theme') === 'dark';
   });
 
   // Client-side dedicated page routing
@@ -30,10 +50,10 @@ export default function App() {
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('toolforge_theme', 'dark');
+      safeStorage.setItem('toolforge_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('toolforge_theme', 'light');
+      safeStorage.setItem('toolforge_theme', 'light');
     }
   }, [isDark]);
 

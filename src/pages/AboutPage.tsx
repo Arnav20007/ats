@@ -57,7 +57,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               Looking for a job is stressful enough without having to pay $39/month just to see why an Applicant Tracking System (ATS) rejected your resume.
             </p>
             <p>
-              Most commercial resume scanners trap users with teaser scores, blurry reports, forced signups, and recurring credit card subscriptions. Even worse, many of them harvest your sensitive personal information — your full name, work history, phone number, and references — and sell candidate leads to recruiters or use them to train machine learning models without explicit consent.
+              Many commercial resume scanners require account creation, recurring credit card subscriptions, or cloud uploads of personal documents just to view basic feedback. With sensitive details like work history, contact numbers, and personal references on every resume, privacy and transparency often become secondary considerations.
             </p>
             <p className="font-semibold text-slate-800 dark:text-zinc-200">
               ToolForge was built to change that: a completely free, 100% private ATS resume auditor that runs entirely in your browser.

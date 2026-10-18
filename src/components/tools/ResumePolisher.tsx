@@ -39,46 +39,97 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
     }
   ];
 
-  const getEnhancedBullets = () => {
+  const generateEnhancedBullets = (rawInput: string, level: 'entry' | 'mid' | 'senior') => {
+    const clean = (rawInput || '').trim().replace(/^[-•*]\s*/, '').replace(/\.+$/, '');
+    if (!clean) {
+      return [
+        {
+          type: 'Metric-Driven & High Impact (Google X-Y-Z)',
+          score: 95,
+          text: 'Accomplished [Core Goal], as measured by [Quantifiable Metric], by executing [Strategic Technical Action].',
+          powerVerbs: ['Accomplished', 'Executed'],
+          whyItWins: "Standard Google hiring formula demonstrating measurable impact."
+        },
+        {
+          type: 'Executive & Strategic Leadership',
+          score: 92,
+          text: 'Orchestrated end-to-end execution of [Key Project], aligning stakeholders and accelerating delivery cycle by [X]%.',
+          powerVerbs: ['Orchestrated', 'Aligning', 'Accelerating'],
+          whyItWins: 'Emphasizes cross-functional ownership and strategic alignment.'
+        },
+        {
+          type: 'Punchy ATS-Optimized (Concise)',
+          score: 90,
+          text: 'Delivered [Core Output] and improved [Process] throughput by [X]%, maintaining 100% compliance with quality benchmarks.',
+          powerVerbs: ['Delivered', 'Improved'],
+          whyItWins: 'Clean scanning for recruiter screeners and automated parsers.'
+        }
+      ];
+    }
+
+    // Strip common passive openings
+    const stripped = clean
+      .replace(/^(?:helped\s+(?:to\s+)?|assisted\s+(?:with\s+|in\s+)?|worked\s+(?:on\s+|with\s+)?|responsible\s+for\s+|tasked\s+with\s+|involved\s+in\s+)/i, '')
+      .trim();
+
+    const body = stripped.charAt(0).toLowerCase() + stripped.slice(1);
+
+    const levelVerbs = {
+      entry: {
+        primary: ['Executed', 'Implemented', 'Engineered', 'Optimized'],
+        descriptor: 'operational efficiency'
+      },
+      mid: {
+        primary: ['Spearheaded', 'Architected', 'Orchestrated', 'Delivered'],
+        descriptor: 'system performance and turnaround'
+      },
+      senior: {
+        primary: ['Pioneered', 'Directed', 'Mobilized', 'Architected'],
+        descriptor: 'organizational scalability and ROI'
+      }
+    }[level];
+
+    const verb1 = levelVerbs.primary[0];
+    const verb2 = levelVerbs.primary[1] || 'Orchestrated';
+    const verb3 = levelVerbs.primary[2] || 'Delivered';
+
     return [
       {
         type: 'Metric-Driven & High Impact (Google X-Y-Z)',
-        score: 96,
-        text: 'Spearheaded organic social growth across 3 core channels, orchestrating an 84% surge in engagement and decreasing support ticket turnaround by 35% through standardized SLA playbooks.',
-        powerVerbs: ['Spearheaded', 'Orchestrating', 'Standardized'],
-        whyItWins: 'Replaces passive "helped" with executive active verbs and concrete percentage benchmarks.'
+        score: level === 'senior' ? 97 : level === 'mid' ? 95 : 92,
+        text: `${verb1} ${body}, achieving a [X]% improvement in ${levelVerbs.descriptor} and reducing turnaround time by [Y] hours weekly.`,
+        powerVerbs: [verb1, 'Achieving', 'Reducing'],
+        whyItWins: `Replaces passive phrasing with "${verb1}" and incorporates Google's metric-driven X-Y-Z structure with clear placeholders for your real numbers.`
       },
       {
         type: 'Executive & Strategic Leadership',
-        score: 93,
-        text: 'Directed omnichannel community operations; formulated automated customer response pipelines that boosted retention by 22% while scaling audience reach to 120k+ impressions monthly.',
-        powerVerbs: ['Directed', 'Formulated', 'Scaling'],
-        whyItWins: 'Highlights pipeline thinking, operational systems, and quantifiable monthly volume.'
+        score: level === 'senior' ? 95 : level === 'mid' ? 93 : 90,
+        text: `${verb2} cross-functional execution of ${body}; standardized core workflows that supported [X]+ users/records while elevating team velocity by [Y]%.`,
+        powerVerbs: [verb2, 'Standardized', 'Elevating'],
+        whyItWins: `Frames your specific task around systems thinking, scalability, and measurable team impact appropriate for ${level}-level seniority.`
       },
       {
         type: 'Punchy ATS-Optimized (Concise)',
-        score: 91,
-        text: 'Accelerated cross-platform brand presence (+68% YoY) and streamlined customer communications, resolving 450+ inquiries weekly with a 98.4% satisfaction score.',
-        powerVerbs: ['Accelerated', 'Streamlined', 'Resolving'],
-        whyItWins: 'Clean scanning for recruiter screeners and automated Applicant Tracking Systems.'
+        score: level === 'senior' ? 92 : level === 'mid' ? 91 : 89,
+        text: `${verb3} ${body}, cutting latency/errors by [X]% and ensuring 100% compliance with production standards.`,
+        powerVerbs: [verb3, 'Cutting', 'Ensuring'],
+        whyItWins: 'Optimized for high-speed keyword scanning across Workday, Greenhouse, and Taleo algorithms.'
       }
     ];
   };
 
-  const [results, setResults] = useState(getEnhancedBullets());
+  const [results, setResults] = useState(() => generateEnhancedBullets(inputBullet, roleLevel));
 
-  const handlePolish = () => {
+  const handlePolish = (bulletText: string = inputBullet, level: 'entry' | 'mid' | 'senior' = roleLevel) => {
     onActionLogged();
-    setResults(getEnhancedBullets());
+    setResults(generateEnhancedBullets(bulletText, level));
   };
 
   const handleApplyPreset = (preset: typeof rolePresets[0]) => {
     setInputBullet(preset.bullet);
     setRoleLevel(preset.level);
     onActionLogged();
-    setTimeout(() => {
-      setResults(getEnhancedBullets());
-    }, 50);
+    handlePolish(preset.bullet, preset.level);
   };
 
   const handleCopy = (idx: number, text: string) => {
@@ -159,7 +210,7 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
               {(['entry', 'mid', 'senior'] as const).map((lvl) => (
                 <button
                   key={lvl}
-                  onClick={() => { setRoleLevel(lvl); handlePolish(); }}
+                  onClick={() => { setRoleLevel(lvl); handlePolish(inputBullet, lvl); }}
                   className={`px-3 py-1.5 rounded-lg capitalize transition-colors ${
                     roleLevel === lvl
                       ? 'bg-slate-900 text-white font-semibold shadow-xs'
@@ -172,7 +223,7 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
             </div>
 
             <button
-              onClick={handlePolish}
+              onClick={() => handlePolish()}
               className="px-4 py-2.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-xs"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />

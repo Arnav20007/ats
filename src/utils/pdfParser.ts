@@ -20,24 +20,109 @@ export interface ExtractedPdfResult {
 }
 
 /**
- * Extracts plain text from DOCX binary by parsing <w:t> XML nodes.
+ * Extracts plain text from DOCX binary by decompressing the ZIP archive and parsing 'word/document.xml'.
+ * Supports both uncompressed and DEFLATE-compressed streams via native DecompressionStream.
  */
-function extractTextFromDocx(buffer: ArrayBuffer): string {
+async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
   try {
-    const bytes = new Uint8Array(buffer);
-    const decoder = new TextDecoder('utf-8', { fatal: false });
-    const raw = decoder.decode(bytes);
-    const matches: string[] = [];
-    const wtRegex = /<w:t[^>]*>([^<]+)<\/w:t>/g;
-    let match;
-    while ((match = wtRegex.exec(raw)) !== null) {
-      matches.push(match[1]);
+    const view = new DataView(buffer);
+    const decoder = new TextDecoder('utf-8');
+
+    // 1. Locate End of Central Directory (EOCD) to reliably find all zip entries
+    let eocdOffset = -1;
+    for (let i = buffer.byteLength - 22; i >= Math.max(0, buffer.byteLength - 65557); i--) {
+      if (view.getUint32(i, true) === 0x06054b50) {
+        eocdOffset = i;
+        break;
+      }
     }
-    if (matches.length > 0) {
-      return matches.join(' ');
+
+    let docXmlEntry: { offset: number; compSize: number; method: number } | null = null;
+
+    if (eocdOffset !== -1) {
+      const cdOffset = view.getUint32(eocdOffset + 16, true);
+      const totalEntries = view.getUint16(eocdOffset + 10, true);
+      let curr = cdOffset;
+
+      for (let i = 0; i < totalEntries && curr < buffer.byteLength - 46; i++) {
+        if (view.getUint32(curr, true) !== 0x02014b50) break;
+        const method = view.getUint16(curr + 10, true);
+        const compSize = view.getUint32(curr + 20, true);
+        const fnLen = view.getUint16(curr + 28, true);
+        const extraLen = view.getUint16(curr + 30, true);
+        const commentLen = view.getUint16(curr + 32, true);
+        const localHeaderOffset = view.getUint32(curr + 42, true);
+
+        const fileNameBytes = new Uint8Array(buffer, curr + 46, fnLen);
+        const fileName = decoder.decode(fileNameBytes);
+
+        if (fileName === 'word/document.xml') {
+          const localFnLen = view.getUint16(localHeaderOffset + 26, true);
+          const localExtraLen = view.getUint16(localHeaderOffset + 28, true);
+          const dataOffset = localHeaderOffset + 30 + localFnLen + localExtraLen;
+          docXmlEntry = { offset: dataOffset, compSize, method };
+          break;
+        }
+
+        curr += 46 + fnLen + extraLen + commentLen;
+      }
+    }
+
+    // 2. Fallback: Sequential scan of local file headers
+    if (!docXmlEntry) {
+      let offset = 0;
+      while (offset < buffer.byteLength - 30) {
+        if (view.getUint32(offset, true) === 0x04034b50) {
+          const method = view.getUint16(offset + 8, true);
+          const compSize = view.getUint32(offset + 18, true);
+          const fnLen = view.getUint16(offset + 26, true);
+          const extraLen = view.getUint16(offset + 28, true);
+          const fn = decoder.decode(new Uint8Array(buffer, offset + 30, fnLen));
+          const dataOffset = offset + 30 + fnLen + extraLen;
+          if (fn === 'word/document.xml') {
+            docXmlEntry = { offset: dataOffset, compSize, method };
+            break;
+          }
+          offset = dataOffset + compSize;
+        } else {
+          offset++;
+        }
+      }
+    }
+
+    if (docXmlEntry) {
+      const slice = new Uint8Array(buffer, docXmlEntry.offset, docXmlEntry.compSize);
+      let xmlContent = '';
+
+      if (docXmlEntry.method === 0) {
+        xmlContent = decoder.decode(slice);
+      } else if (docXmlEntry.method === 8) {
+        if (typeof DecompressionStream !== 'undefined') {
+          const ds = new DecompressionStream('deflate-raw');
+          const writer = ds.writable.getWriter();
+          writer.write(slice);
+          writer.close();
+          const response = new Response(ds.readable);
+          xmlContent = await response.text();
+        }
+      }
+
+      if (xmlContent) {
+        // Extract paragraph-by-paragraph text nodes to preserve spacing
+        const paragraphs = xmlContent.match(/<w:p[\s>].*?<\/w:p>/gs) || [xmlContent];
+        const lines: string[] = [];
+        for (const p of paragraphs) {
+          const textMatches = [...p.matchAll(/<w:t[^>]*>([^<]+)<\/w:t>/g)].map((m) => m[1]);
+          const line = textMatches.join('').trim();
+          if (line) lines.push(line);
+        }
+        if (lines.length > 0) {
+          return lines.join('\n');
+        }
+      }
     }
   } catch (e) {
-    console.warn('DOCX text extraction error:', e);
+    console.warn('DOCX ZIP extraction error:', e);
   }
   return '';
 }
@@ -113,7 +198,7 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
 
   // 2. DOCX Word Documents
   if (file.name.endsWith('.docx') || file.type.includes('wordprocessingml')) {
-    const docxText = extractTextFromDocx(arrayBuffer);
+    const docxText = await extractTextFromDocx(arrayBuffer);
     if (docxText.length > 20) {
       return {
         text: docxText,

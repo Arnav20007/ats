@@ -329,8 +329,36 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     }
   };
 
+  // Strict file type and size validator (Max 10MB, PDF/DOCX/TXT/MD only)
+  const validateResumeFile = (file: File): string | null => {
+    const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+    if (file.size > MAX_SIZE_BYTES) {
+      return `File exceeds the 10MB limit (${(file.size / (1024 * 1024)).toFixed(1)}MB). Please upload a smaller document.`;
+    }
+    const ext = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+    const validExts = ['.pdf', '.docx', '.txt', '.md', '.doc'];
+    const validMimes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain',
+      'text/markdown',
+      'application/msword'
+    ];
+    const isValid = validExts.includes(ext) || validMimes.some((m) => file.type.includes(m));
+    if (!isValid) {
+      return `Unsupported file format (${ext || file.type || 'unknown'}). Please upload a PDF, DOCX, TXT, or MD resume.`;
+    }
+    return null;
+  };
+
   // Process File Object using client text extractor
   const processResumeFile = async (file: File) => {
+    const validationError = validateResumeFile(file);
+    if (validationError) {
+      showToast(validationError, 'warning');
+      return;
+    }
+
     setUploadedFileName(file.name);
     // Start scan modal immediately so candidate gets instant feedback
     setIsScanning(true);
@@ -344,6 +372,18 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
     try {
       const extracted = await extractTextFromPdfFile(file);
+
+      // If document yielded zero text (e.g. encrypted or unreadable scan)
+      if (!extracted.text || extracted.text.trim().length === 0) {
+        clearInterval(stepTimer);
+        setIsScanning(false);
+        showToast(
+          `Could not extract text from "${file.name}". The document may be password-protected, encrypted, or a flat image scan.`,
+          'warning'
+        );
+        return;
+      }
+
       const parsedData = parseResumeText(extracted.text);
 
       setTimeout(() => {
@@ -433,7 +473,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
           setStudioTab('document'); // Always land directly on Document Canvas!
 
           if (extracted.isScanned) {
-            showToast('Scanned image detected. For ATS scanners, please use a text PDF.', 'warning');
+            showToast('Scanned image detected. For ATS scanners, please use a text-selectable PDF.', 'warning');
           } else {
             showToast(`Parsed ${file.name} successfully!`, 'success');
           }
@@ -445,40 +485,8 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     } catch (err) {
       console.error('File parsing error:', err);
       clearInterval(stepTimer);
-      setScanProgress(100);
-      setTimeout(() => {
-        setIsScanning(false);
-        setViewMode('studio');
-        const fallbackResume: ResumeData = {
-          id: `uploaded-${Date.now()}`,
-          fullName: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
-          jobTitle: 'Candidate',
-          email: '',
-          phone: '',
-          location: '',
-          linkedin: '',
-          portfolio: '',
-          summary: 'Professional background and career experience.',
-          skills: [],
-          experience: [
-            {
-              id: 'exp-fallback-1',
-              role: 'Candidate',
-              company: 'Company Experience',
-              location: '',
-              startDate: 'Recent',
-              endDate: 'Present',
-              bullets: ['Contributed to team goals and delivered project milestones.']
-            }
-          ],
-          education: []
-        };
-        setResume(fallbackResume);
-        setHasUploaded(true);
-        setHasEdited(true);
-        showToast(`Loaded ${file.name}`, 'info');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 200);
+      setIsScanning(false);
+      showToast(`Unable to parse ${file.name}. Please ensure the file is not corrupted or password-protected.`, 'warning');
     }
   };
 
@@ -1166,14 +1174,33 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     if (onActionLogged) onActionLogged();
   };
 
+  // Safe HTML Escaper to prevent XSS injection in generated print windows
+  const esc = (val: unknown): string => {
+    if (val === null || val === undefined) return '';
+    return String(val)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
   // Export PDF with standard @page margins and page-break guards
   const handleExportPdf = () => {
     const r = resume;
+    const contactParts = [
+      esc(r.email),
+      esc(r.phone),
+      esc(r.location),
+      esc(r.linkedin),
+      r.portfolio ? esc(r.portfolio) : ''
+    ].filter(Boolean).join(' · ');
+
     const html = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
-<title>${r.fullName} — Resume</title>
+<title>${esc(r.fullName)} — Resume</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -1216,18 +1243,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 </style>
 </head>
 <body>
-  <h1>${r.fullName}</h1>
-  <div class="title">${r.jobTitle}</div>
-  <div class="contact">${r.email} · ${r.phone} · ${r.location} · ${r.linkedin}${r.portfolio ? ' · ' + r.portfolio : ''}</div>
+  <h1>${esc(r.fullName)}</h1>
+  <div class="title">${esc(r.jobTitle)}</div>
+  <div class="contact">${contactParts}</div>
 
   <div class="section">
     <div class="section-heading">Professional Summary</div>
-    <div class="summary">${r.summary}</div>
+    <div class="summary">${esc(r.summary)}</div>
   </div>
 
   <div class="section">
     <div class="section-heading">Technical Skills & Competencies</div>
-    <div class="skills">${r.skills.join(' · ')}</div>
+    <div class="skills">${r.skills.map(s => esc(s)).join(' · ')}</div>
   </div>
 
   ${r.projects && r.projects.length > 0 ? `
@@ -1236,12 +1263,12 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     ${r.projects.map(proj => `
     <div class="exp-block">
       <div class="exp-header">
-        <span class="exp-role">${proj.name}${proj.role ? ' — ' + proj.role : ''}</span>
-        <span class="exp-dates">${proj.startDate ? `${proj.startDate} – ${proj.endDate || 'Present'}` : ''}</span>
+        <span class="exp-role">${esc(proj.name)}${proj.role ? ' — ' + esc(proj.role) : ''}</span>
+        <span class="exp-dates">${proj.startDate ? `${esc(proj.startDate)} – ${esc(proj.endDate || 'Present')}` : ''}</span>
       </div>
-      ${proj.technologies ? `<div class="exp-tech">Stack: ${proj.technologies}</div>` : ''}
-      ${proj.link ? `<div class="exp-company">${proj.link}</div>` : ''}
-      <ul>${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      ${proj.technologies ? `<div class="exp-tech">Stack: ${esc(proj.technologies)}</div>` : ''}
+      ${proj.link ? `<div class="exp-company">${esc(proj.link)}</div>` : ''}
+      <ul>${proj.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
     </div>`).join('')}
   </div>` : ''}
 
@@ -1251,11 +1278,11 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     ${r.experience.map(exp => `
     <div class="exp-block">
       <div class="exp-header">
-        <span class="exp-role">${exp.role}</span>
-        <span class="exp-dates">${exp.startDate} – ${exp.endDate}</span>
+        <span class="exp-role">${esc(exp.role)}</span>
+        <span class="exp-dates">${esc(exp.startDate)} – ${esc(exp.endDate)}</span>
       </div>
-      <div class="exp-company">${exp.company} · ${exp.location}</div>
-      <ul>${exp.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <div class="exp-company">${esc(exp.company)} · ${esc(exp.location)}</div>
+      <ul>${exp.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
     </div>`).join('')}
   </div>` : ''}
 
@@ -1264,10 +1291,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     ${r.education.map(edu => `
     <div class="edu-block">
       <div>
-        <div class="edu-degree">${edu.degree}</div>
-        <div class="edu-school">${edu.school}${edu.location ? ' · ' + edu.location : ''}</div>
+        <div class="edu-degree">${esc(edu.degree)}</div>
+        <div class="edu-school">${esc(edu.school)}${edu.location ? ' · ' + esc(edu.location) : ''}</div>
       </div>
-      <div class="edu-year">${edu.year}</div>
+      <div class="edu-year">${esc(edu.year)}</div>
     </div>`).join('')}
   </div>
 </body>
@@ -1293,7 +1320,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 <html>
 <head>
 <meta charset="utf-8" />
-<title>ToolForge ATS Audit Report — ${r.fullName}</title>
+<title>ToolForge ATS Audit Report — ${esc(r.fullName)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -1341,7 +1368,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       <div class="badge">PARSER COMPLIANCE CERTIFICATE</div>
     </div>
     <div class="report-meta">
-      <div><strong>Audit Date:</strong> ${dateStr}</div>
+      <div><strong>Audit Date:</strong> ${esc(dateStr)}</div>
       <div><strong>Inspection Engine:</strong> ToolForge V3 (27-Point Matrix)</div>
       <div><strong>Privacy:</strong> 100% Client-Side Verified</div>
     </div>
@@ -1349,15 +1376,15 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
   <div class="hero-card">
     <div>
-      <div class="candidate-name">${r.fullName}</div>
-      <div class="candidate-role">${r.jobTitle} · ${r.location}</div>
+      <div class="candidate-name">${esc(r.fullName)}</div>
+      <div class="candidate-role">${esc(r.jobTitle)}${r.location ? ' · ' + esc(r.location) : ''}</div>
       <div style="font-size: 8.5pt; color: #64748b; margin-top: 4pt;">
         Workday, Greenhouse, Lever, Taleo, iCIMS, Ashby Compatible
       </div>
     </div>
     <div class="score-badge">
       <div class="score-val">${compositeScore}%</div>
-      <div class="score-label">${compositeScore >= 80 ? 'Top 5% Candidate' : 'Needs Optimization'}</div>
+      <div class="score-label">${compositeScore >= 80 ? 'Top Tier Candidate' : 'Needs Optimization'}</div>
     </div>
   </div>
 
@@ -1414,13 +1441,13 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         </tr>
         <tr>
           <td><strong>Bullets Consistency</strong></td>
-          <td style="color: #475569;">${deepAudit.categories.content.bulletsConsistency.periodConsistency}; ${deepAudit.categories.content.bulletsConsistency.tenseConsistency}.</td>
+          <td style="color: #475569;">${esc(deepAudit.categories.content.bulletsConsistency.periodConsistency)}; ${esc(deepAudit.categories.content.bulletsConsistency.tenseConsistency)}.</td>
           <td style="text-align: right;"><span class="${!deepAudit.categories.content.bulletsConsistency.hasIssue ? 'status-pass' : 'status-flag'}">${!deepAudit.categories.content.bulletsConsistency.hasIssue ? 'PASS' : 'FLAG'}</span></td>
         </tr>
         <tr>
           <td><strong>Scope & Ownership</strong></td>
-          <td style="color: #475569;">Candidate evaluated at ${deepAudit.categories.seniority.scopeOwnership.ownershipLevel} level (${deepAudit.categories.seniority.scopeOwnership.leadVerbCount} lead ownership verbs vs ${deepAudit.categories.seniority.scopeOwnership.passiveVerbCount} passive execution verbs).</td>
-          <td style="text-align: right;"><span class="status-pass">${deepAudit.categories.seniority.scopeOwnership.ownershipLevel.split(' ')[0]}</span></td>
+          <td style="color: #475569;">Candidate evaluated at ${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel)} level (${deepAudit.categories.seniority.scopeOwnership.leadVerbCount} lead ownership verbs vs ${deepAudit.categories.seniority.scopeOwnership.passiveVerbCount} passive execution verbs).</td>
+          <td style="text-align: right;"><span class="status-pass">${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel.split(' ')[0])}</span></td>
         </tr>
       </tbody>
     </table>
@@ -1430,12 +1457,12 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     <div class="box-title">Target Job Keyword Match (${keywordAnalysis.matched.length} Matched · ${keywordAnalysis.missing.length} Missing)</div>
     <div style="font-size: 8pt; color: #475569; margin-bottom: 4pt;">Matched in Candidate Profile:</div>
     <div class="tag-cloud">
-      ${keywordAnalysis.matched.map(kw => `<span class="tag-pass">✓ ${kw}</span>`).join('')}
+      ${keywordAnalysis.matched.map(kw => `<span class="tag-pass">✓ ${esc(kw)}</span>`).join('')}
     </div>
     ${keywordAnalysis.missing.length > 0 ? `
     <div style="font-size: 8pt; color: #475569; margin-top: 6pt; margin-bottom: 4pt;">Missing Target Job Skills:</div>
     <div class="tag-cloud">
-      ${keywordAnalysis.missing.map(kw => `<span class="tag-miss">+ ${kw}</span>`).join('')}
+      ${keywordAnalysis.missing.map(kw => `<span class="tag-miss">+ ${esc(kw)}</span>`).join('')}
     </div>` : ''}
   </div>
 

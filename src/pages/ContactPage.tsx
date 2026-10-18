@@ -18,8 +18,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.message.trim()) return;
+
+    const subject = `[ToolForge ${formData.subject}] ${formData.name ? `from ${formData.name}` : ''}`;
+    const body = `Name: ${formData.name || 'Not provided'}\nEmail: ${formData.email}\nTopic: ${formData.subject}\n\nMessage:\n${formData.message}`;
+    const mailtoUrl = `mailto:hello@toolforge.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Trigger local email client
+    window.location.href = mailtoUrl;
+
     setSubmitted(true);
-    showToast('Your message has been sent. Thank you!', 'success');
+    showToast('Email draft opened. Send via your mail app or hello@toolforge.app', 'success');
+  };
+
+  const handleCopyMessage = () => {
+    const fullText = `To: hello@toolforge.app\nSubject: [ToolForge ${formData.subject}]\n\n${formData.message}`;
+    navigator.clipboard.writeText(fullText);
+    showToast('Message details copied to clipboard!', 'copy');
   };
 
   return (
@@ -94,7 +108,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">Privacy Guarantee</h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400">
-              Messages submitted here are used solely to assist you. Never shared with marketers.
+              Messages submitted directly via email are used solely to assist you. Never shared with marketers.
             </p>
             <button
               onClick={onNavigatePrivacy}
@@ -121,27 +135,38 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               <div className="p-6 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-center space-y-3">
                 <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto" />
                 <h3 className="text-base font-bold text-emerald-900 dark:text-emerald-200">
-                  Message Sent Successfully
+                  Email Prepared
                 </h3>
-                <p className="text-xs text-emerald-700 dark:text-emerald-400 max-w-sm mx-auto">
-                  Thank you for reaching out. We will review your note and get back to you at <strong>{formData.email || 'your email'}</strong> if a reply is needed.
+                <p className="text-xs text-emerald-700 dark:text-emerald-400 max-w-sm mx-auto leading-relaxed">
+                  Your message has been drafted to <strong>hello@toolforge.app</strong>. If your email app did not open automatically, you can send directly or copy your message below:
                 </p>
-                <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setFormData({ name: '', email: '', subject: 'Feedback', message: '' });
-                  }}
-                  className="text-xs font-bold text-emerald-800 dark:text-emerald-300 underline pt-2 cursor-pointer"
-                >
-                  Send another message
-                </button>
+                <div className="flex items-center justify-center gap-3 pt-2">
+                  <button
+                    onClick={handleCopyMessage}
+                    className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-2xs cursor-pointer"
+                  >
+                    Copy Message Text
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({ name: '', email: '', subject: 'Feedback', message: '' });
+                    }}
+                    className="text-xs font-bold text-emerald-800 dark:text-emerald-300 underline cursor-pointer"
+                  >
+                    Send another note
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 dark:text-zinc-300">Your Name</label>
+                    <label htmlFor="contact-name" className="text-xs font-bold text-slate-700 dark:text-zinc-300">
+                      Your Name
+                    </label>
                     <input
+                      id="contact-name"
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -150,8 +175,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 dark:text-zinc-300">Email Address</label>
+                    <label htmlFor="contact-email" className="text-xs font-bold text-slate-700 dark:text-zinc-300">
+                      Email Address
+                    </label>
                     <input
+                      id="contact-email"
                       type="email"
                       required
                       value={formData.email}
@@ -163,8 +191,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 dark:text-zinc-300">Topic</label>
+                  <label htmlFor="contact-subject" className="text-xs font-bold text-slate-700 dark:text-zinc-300">
+                    Topic
+                  </label>
                   <select
+                    id="contact-subject"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
@@ -178,8 +209,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 dark:text-zinc-300">Message</label>
+                  <label htmlFor="contact-message" className="text-xs font-bold text-slate-700 dark:text-zinc-300">
+                    Message
+                  </label>
                   <textarea
+                    id="contact-message"
                     required
                     rows={4}
                     value={formData.message}

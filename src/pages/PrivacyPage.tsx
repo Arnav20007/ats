@@ -9,7 +9,7 @@ const guarantees = [
   {
     icon: HardDrive,
     title: 'Runs 100% on your device',
-    body: 'Your browser parses the resume locally in memory. Nothing is sent over the internet — exactly like an offline calculator.',
+    body: 'Your browser parses the resume locally in memory. Your resume text is never transmitted across the network, remaining entirely local to your session.',
     color: 'emerald',
   },
   {
@@ -21,7 +21,7 @@ const guarantees = [
   {
     icon: Lock,
     title: 'Never used to train AI',
-    body: 'Many commercial tools secretly harvest uploaded resumes to train LLMs or sell candidate leads to recruiters. We never do.',
+    body: 'Your resume text is processed strictly in your local session. We never harvest, store, train AI models on, or monetize candidate documents.',
     color: 'purple',
   },
   {
@@ -46,7 +46,7 @@ const detailedSections = [
   },
   {
     title: '2. Cookies and Local Storage',
-    content: "ToolForge uses a single localStorage item: 'toolforge_theme' (storing 'light' or 'dark' mode preference). We do not set tracking cookies, session identifier cookies, advertising pixels, or third-party behavioral trackers.",
+    content: "ToolForge uses a single localStorage item: 'toolforge_theme' (storing 'light' or 'dark' mode preference). We do not set tracking cookies, advertising pixels, or behavioral trackers. Static typography assets loaded from Google Fonts convey standard connection metadata, but Google Fonts has zero access to your document text or parsing sessions.",
   },
   {
     title: '3. Third-Party Data Sharing',

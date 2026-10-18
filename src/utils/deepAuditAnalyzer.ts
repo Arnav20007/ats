@@ -209,7 +209,7 @@ export function generateDeepAuditReport(
     ...resume.education.map((edu) => `${edu.degree} ${edu.school}`)
   ].join(' ');
 
-  // 1. Content: Quantifying Impact
+  // 1. Content: Quantifying Impact (Uses structured Google X-Y-Z placeholders without fabricating false candidate metrics)
   const failingBullets: { original: string; suggestedGoogleXyz: string }[] = [];
   allBullets.forEach((bullet) => {
     if (!hasQuantifiableMetric(bullet)) {
@@ -217,15 +217,15 @@ export function generateDeepAuditReport(
       let suggested = '';
       const lower = trimmed.toLowerCase();
       if (lower.includes('api') || lower.includes('flask') || lower.includes('backend') || lower.includes('route')) {
-        suggested = `${trimmed}, reducing endpoint response latency by 38% across 10,000+ API calls.`;
+        suggested = `${trimmed}, reducing latency by [X]% across [Y] daily requests.`;
       } else if (lower.includes('data') || lower.includes('pipeline') || lower.includes('python')) {
-        suggested = `${trimmed}, processing 45,000+ records with 99.4% deduplication accuracy.`;
+        suggested = `${trimmed}, processing [X] records with [Y]% accuracy or [Z]% faster execution.`;
       } else if (lower.includes('react') || lower.includes('web') || lower.includes('app')) {
-        suggested = `${trimmed}, boosting user session engagement by 31% and supporting 5,000+ active sessions.`;
+        suggested = `${trimmed}, improving load speed by [X]% and supporting [Y] active users.`;
       } else if (lower.includes('champion') || lower.includes('dsa') || lower.includes('streak')) {
-        suggested = `${trimmed}, mastering 100+ algorithmic patterns across dynamic programming and graph structures.`;
+        suggested = `${trimmed}, solving [X]+ algorithmic problems across [specific topic areas].`;
       } else {
-        suggested = `${trimmed}, improving processing throughput by 34% and cutting runtime by 42%.`;
+        suggested = `${trimmed}, improving [key outcome] by [X]% and saving [Y] hours weekly.`;
       }
       failingBullets.push({ original: bullet, suggestedGoogleXyz: suggested });
     }
