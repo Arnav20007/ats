@@ -12,11 +12,27 @@
 - **Web App**: https://toolforge-ats.vercel.app/
 - **Role Keywords Checklist**: https://toolforge-ats.vercel.app/keywords
 - **Software Engineer Keywords**: https://toolforge-ats.vercel.app/keywords/software-engineer
-- **Product Manager Keywords**: https://toolforge-ats.vercel.app/keywords/product-manager
-- **Data Scientist Keywords**: https://toolforge-ats.vercel.app/keywords/data-scientist
-- **DevOps Engineer Keywords**: https://toolforge-ats.vercel.app/keywords/devops-engineer
+- **Frontend Developer Keywords**: https://toolforge-ats.vercel.app/keywords/frontend-developer
 - **Full Stack Developer Keywords**: https://toolforge-ats.vercel.app/keywords/full-stack-developer
+- **DevOps Engineer Keywords**: https://toolforge-ats.vercel.app/keywords/devops-engineer
+- **Cloud Solutions Architect Keywords**: https://toolforge-ats.vercel.app/keywords/cloud-architect
+- **Cybersecurity Analyst Keywords**: https://toolforge-ats.vercel.app/keywords/cybersecurity-analyst
+- **Data Scientist & ML Keywords**: https://toolforge-ats.vercel.app/keywords/data-scientist
+- **AI & LLM Engineer Keywords**: https://toolforge-ats.vercel.app/keywords/ai-engineer
+- **Data Analyst & BI Keywords**: https://toolforge-ats.vercel.app/keywords/data-analyst
+- **QA Automation & SDET Keywords**: https://toolforge-ats.vercel.app/keywords/qa-automation-engineer
+- **Mobile Developer Keywords**: https://toolforge-ats.vercel.app/keywords/mobile-developer
+- **Product Manager Keywords**: https://toolforge-ats.vercel.app/keywords/product-manager
+- **UI/UX & Product Designer Keywords**: https://toolforge-ats.vercel.app/keywords/ui-ux-designer
+- **Engineering Manager Keywords**: https://toolforge-ats.vercel.app/keywords/engineering-manager
+- **Scrum Master Keywords**: https://toolforge-ats.vercel.app/keywords/scrum-master
+- **Systems Administrator Keywords**: https://toolforge-ats.vercel.app/keywords/systems-administrator
+- **Business Analyst Keywords**: https://toolforge-ats.vercel.app/keywords/business-analyst
+- **Financial Analyst & FP&A Keywords**: https://toolforge-ats.vercel.app/keywords/financial-analyst
+- **Web3 & Blockchain Keywords**: https://toolforge-ats.vercel.app/keywords/blockchain-developer
+- **Growth Marketing Manager Keywords**: https://toolforge-ats.vercel.app/keywords/marketing-manager
 - **Resume Review Guide**: https://toolforge-ats.vercel.app/guide
 - **About & Engineering**: https://toolforge-ats.vercel.app/about
 - **Privacy Policy**: https://toolforge-ats.vercel.app/privacy
 - **Sitemap**: https://toolforge-ats.vercel.app/sitemap.xml
+

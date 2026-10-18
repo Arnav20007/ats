@@ -15,7 +15,7 @@ export interface AuditIssue {
 export interface DeepAuditReport {
   categories: {
     content: {
-      score: number;
+      score: number | null;
       atsParseRate: {
         sectionCoveragePercentage: number;
         missingSectionPercentage: number;
@@ -339,9 +339,11 @@ export function generateDeepAuditReport(
           : 'Similar term counts';
 
   // Component Scores
-  const contentScore = Math.max(35, Math.min(100, Math.round(
-    100 - failingBullets.length * 9 - repeatedWordsList.length * 6 - grammarIssues.length * 5
-  )));
+  const contentScore = allBullets.length === 0
+    ? null
+    : Math.max(35, Math.min(100, Math.round(
+      100 - failingBullets.length * 9 - repeatedWordsList.length * 6 - grammarIssues.length * 5
+    )));
 
   const hasPracticalExperience = resume.experience.length > 0 || (resume.projects && resume.projects.length > 0);
   const coreSectionsCount = (hasPracticalExperience ? 1 : 0) + (resume.education.length > 0 ? 1 : 0) + (resume.skills.length > 0 ? 1 : 0) + (hasCandidateSummary ? 1 : 0);
@@ -395,9 +397,9 @@ export function generateDeepAuditReport(
         },
         bulletsConsistency: {
           isProUnlocked: true,
-          hasIssue: !isPunctuationUniform || avgLength <= 8 || avgLength >= 35,
+          hasIssue: allBullets.length === 0 || !isPunctuationUniform || avgLength <= 8 || avgLength >= 35,
           periodConsistency: isPunctuationUniform
-            ? '✓ Bullet punctuation is consistent where bullets were provided.'
+            ? allBullets.length > 0 ? '✓ Bullet punctuation is consistent where bullets were provided.' : 'Not assessed; no résumé bullets were detected.'
             : `⚠️ Inconsistent punctuation: ${endsWithPeriod} bullets end with a period, while ${noPeriod} bullets do not.`,
           tenseConsistency: 'Verb tense is not evaluated by this check.',
           lengthVariance: avgLength > 8 && avgLength < 35

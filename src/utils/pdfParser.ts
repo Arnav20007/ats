@@ -141,8 +141,9 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
 }
 
 /**
- * Fallback binary text extractor for PDF stream objects.
- * Guarantees instant text extraction even if PDF.js or worker fails.
+ * Conservative fallback for plain, uncompressed PDF page streams only.
+ * Scanning the whole binary for printable strings can turn metadata, font data,
+ * or image bytes into false résumé text and produce misleading scores.
  */
 function extractTextFromBinaryPdf(buffer: ArrayBuffer): string {
   try {
@@ -150,42 +151,30 @@ function extractTextFromBinaryPdf(buffer: ArrayBuffer): string {
     const decoder = new TextDecoder('utf-8', { fatal: false });
     const raw = decoder.decode(bytes);
 
+    // A fallback regex cannot safely interpret compressed object or page streams.
+    // Let PDF.js handle those in the browser; if it cannot, report no text instead.
+    if (/\/(?:FlateDecode|DCTDecode|JPXDecode|JBIG2Decode|CCITTFaxDecode|ObjStm)\b/.test(raw)) return '';
+
     const textPieces: string[] = [];
-    // Extract strings from Tj operators: (text) Tj
-    const tjRegex = /\(([^()]{1,300})\)\s*Tj/g;
-    let match;
-    while ((match = tjRegex.exec(raw)) !== null) {
-      const clean = match[1].replace(/\\[nrtbf\\()]/g, ' ').trim();
-      if (clean.length > 1) {
-        textPieces.push(clean);
+    const streamRegex = /<<([\s\S]*?)>>\s*stream\r?\n([\s\S]*?)\r?\nendstream/g;
+    let streamMatch: RegExpExecArray | null;
+    while ((streamMatch = streamRegex.exec(raw)) !== null) {
+      const dictionary = streamMatch[1];
+      // Compressed streams require a real PDF parser. Never regex-scan their bytes.
+      if (/\/Filter\b/.test(dictionary)) continue;
+      const stream = streamMatch[2];
+      const textOperator = /\(([^()]{1,1000})\)\s*Tj|\[([^\[\]]{1,4000})\]\s*TJ/g;
+      let operatorMatch: RegExpExecArray | null;
+      while ((operatorMatch = textOperator.exec(stream)) !== null) {
+        const value = operatorMatch[1] ?? (operatorMatch[2]?.match(/\(([^()]*)\)/g) || [])
+          .map((part) => part.slice(1, -1)).join(' ');
+        const clean = value.replace(/\\([nrtbf\\()])/g, ' ').replace(/\s+/g, ' ').trim();
+        if (clean.length > 1) textPieces.push(clean);
       }
     }
 
-    // Extract strings from TJ array operators: [ (text) 10 (more) ] TJ
-    const tjArrayRegex = /\[([^\[\]]{1,600})\]\s*TJ/g;
-    while ((match = tjArrayRegex.exec(raw)) !== null) {
-      const inner = match[1];
-      const strMatches = inner.match(/\(([^()]+)\)/g);
-      if (strMatches) {
-        const line = strMatches
-          .map((s) => s.slice(1, -1).replace(/\\[nrtbf\\()]/g, ' ').trim())
-          .filter(Boolean)
-          .join(' ');
-        if (line.length > 1) {
-          textPieces.push(line);
-        }
-      }
-    }
-
-    if (textPieces.length > 3) {
-      return textPieces.join('\n');
-    }
-
-    // Filter printable text segments
-    const cleanSegments = raw.match(/[A-Za-z0-9@.,:;\-_/#+]{3,}(?:\s+[A-Za-z0-9@.,:;\-_/#+]{2,})+/g);
-    if (cleanSegments && cleanSegments.length > 5) {
-      return cleanSegments.slice(0, 300).join('\n');
-    }
+    const extracted = textPieces.join('\n').trim();
+    return textPieces.length >= 2 && extracted.length > 20 ? extracted : '';
   } catch (e) {
     console.warn('Binary PDF extraction error:', e);
   }
@@ -238,9 +227,27 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
       for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
         const page = await pdf.getPage(pageNum);
         const textContent = await page.getTextContent();
-        const pageText = textContent.items
-          .map((item: any) => ('str' in item ? item.str : ''))
-          .join(' ');
+        const pageLines: string[] = [];
+        let currentLine = '';
+        let previousY: number | null = null;
+        const flushLine = () => {
+          if (currentLine.trim()) pageLines.push(currentLine.trim());
+          currentLine = '';
+        };
+
+        for (const item of textContent.items as any[]) {
+          if (!('str' in item) || !item.str) continue;
+          const y = Array.isArray(item.transform) && Number.isFinite(item.transform[5])
+            ? item.transform[5] as number
+            : null;
+          if (y !== null && previousY !== null && Math.abs(y - previousY) > 2) flushLine();
+          if (currentLine) currentLine += ' ';
+          currentLine += item.str;
+          if (y !== null) previousY = y;
+          if (item.hasEOL) flushLine();
+        }
+        flushLine();
+        const pageText = pageLines.join('\n');
         fullText += pageText + '\n\n';
       }
 
@@ -294,22 +301,9 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
     };
   }
 
-  // 5. Raw Text Decoder Fallback
-  try {
-    const rawFallback = await file.text();
-    const clean = rawFallback.replace(/[^\x20-\x7E\n]/g, ' ').replace(/\s+/g, ' ').trim();
-    if (clean.length > 30) {
-      return {
-        text: clean,
-        isScanned: false,
-        pageCount: 1
-      };
-    }
-  } catch {
-    // Ignore fallback failure
-  }
-
-  // If literally zero text can be extracted from the file
+  // Never decode an entire PDF byte stream as text: compressed page data commonly
+  // contains printable fragments that look like résumé content but are not text.
+  // Report it as unreadable/scanned instead of assigning a misleading score.
   return {
     text: '',
     isScanned: true,

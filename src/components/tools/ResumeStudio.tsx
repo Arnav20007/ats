@@ -1201,7 +1201,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   <div class="grid-2">
     <div class="box">
       <div class="box-title">7 Heuristic Review Categories</div>
-      <div class="stat-row"><span>1. Content Quality & Metrics</span><span class="${deepAudit.categories.content.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.content.score}%</span></div>
+      <div class="stat-row"><span>1. Content Quality & Metrics</span><span class="${deepAudit.categories.content.score === null ? '' : deepAudit.categories.content.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.content.score === null ? 'Not assessed' : `${deepAudit.categories.content.score}%`}</span></div>
       <div class="stat-row"><span>2. Essential Sections & Contact</span><span class="${deepAudit.categories.sections.score >= 80 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.sections.score}%</span></div>
       <div class="stat-row"><span>3. File and Formatting Signals</span><span class="${deepAudit.categories.atsEssentials.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.score}%</span></div>
       <div class="stat-row"><span>4. HR Red Flags & Credibility</span><span class="${deepAudit.categories.hrRedFlags.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.score}%</span></div>
@@ -2190,7 +2190,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">01. CONTENT</span>
-                            <span className="font-mono text-xs text-zinc-500">({deepAudit.categories.content.score}%)</span>
+                            <span className="font-mono text-xs text-zinc-500">{deepAudit.categories.content.score === null ? '(Not assessed)' : `(${deepAudit.categories.content.score}%)`}</span>
                           </div>
                           <span className="text-[11px] font-mono text-zinc-500">
                             {deepAudit.categories.sections.essentialFound.length} section labels found · employer parsing not tested

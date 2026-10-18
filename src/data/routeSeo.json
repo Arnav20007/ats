@@ -71,6 +71,96 @@
     "path": "/keywords/full-stack-developer",
     "heading": "Full Stack Developer ATS Resume Keywords"
   },
+  "keywords_frontend_developer": {
+    "title": "Top ATS Keywords for Frontend Developers (2026 Checklist) | ToolForge",
+    "description": "Target ATS keywords, modern JavaScript/TypeScript frameworks, web performance metrics, and Google X-Y-Z resume formulas for Frontend Engineers.",
+    "path": "/keywords/frontend-developer",
+    "heading": "Frontend Developer ATS Resume Keywords"
+  },
+  "keywords_data_analyst": {
+    "title": "Essential ATS Keywords for Data Analysts (2026 Checklist) | ToolForge",
+    "description": "Must-have ATS keywords, SQL querying techniques, BI dashboarding tools, and Google X-Y-Z formulas for Data Analysts and BI Engineers.",
+    "path": "/keywords/data-analyst",
+    "heading": "Data Analyst ATS Resume Keywords"
+  },
+  "keywords_cybersecurity_analyst": {
+    "title": "Top ATS Keywords for Cybersecurity Analysts (2026 Checklist) | ToolForge",
+    "description": "Essential ATS keywords, SIEM tools, vulnerability assessment, compliance frameworks, and Google X-Y-Z formulas for Cybersecurity Analysts.",
+    "path": "/keywords/cybersecurity-analyst",
+    "heading": "Cybersecurity Analyst ATS Resume Keywords"
+  },
+  "keywords_cloud_architect": {
+    "title": "Essential ATS Keywords for Cloud Solutions Architects (2026) | ToolForge",
+    "description": "Target ATS keywords, cloud infrastructure design, multi-region high availability, cost FinOps, and Google X-Y-Z formulas for Cloud Architects.",
+    "path": "/keywords/cloud-architect",
+    "heading": "Cloud Architect ATS Resume Keywords"
+  },
+  "keywords_qa_automation_engineer": {
+    "title": "Top ATS Keywords for QA Automation Engineers & SDETs (2026) | ToolForge",
+    "description": "Target ATS keywords, automated test frameworks, CI/CD pipeline integration, API testing, and Google X-Y-Z formulas for QA Engineers and SDETs.",
+    "path": "/keywords/qa-automation-engineer",
+    "heading": "QA Automation Engineer ATS Resume Keywords"
+  },
+  "keywords_mobile_developer": {
+    "title": "Essential ATS Keywords for Mobile Developers (iOS & Android 2026) | ToolForge",
+    "description": "Target ATS keywords, Swift, Kotlin, React Native, App Store guidelines, and Google X-Y-Z resume bullet examples for iOS and Android Developers.",
+    "path": "/keywords/mobile-developer",
+    "heading": "Mobile Developer ATS Resume Keywords"
+  },
+  "keywords_ui_ux_designer": {
+    "title": "Top ATS Keywords for UI/UX & Product Designers (2026 Checklist) | ToolForge",
+    "description": "Target ATS keywords, design systems, user research, wireframing, Figma components, and Google X-Y-Z formulas for UI/UX and Product Designers.",
+    "path": "/keywords/ui-ux-designer",
+    "heading": "UI/UX Designer ATS Resume Keywords"
+  },
+  "keywords_engineering_manager": {
+    "title": "Essential ATS Keywords for Engineering Managers (2026 Guide) | ToolForge",
+    "description": "Target ATS keywords, sprint delivery metrics, engineering headcount growth, system architecture, and Google X-Y-Z formulas for Engineering Managers.",
+    "path": "/keywords/engineering-manager",
+    "heading": "Engineering Manager ATS Resume Keywords"
+  },
+  "keywords_scrum_master": {
+    "title": "Top ATS Keywords for Scrum Masters & Agile Coaches (2026 Checklist) | ToolForge",
+    "description": "Must-have ATS keywords, Agile ceremonies, Jira administration, sprint velocity metrics, and Google X-Y-Z formulas for Scrum Masters.",
+    "path": "/keywords/scrum-master",
+    "heading": "Scrum Master ATS Resume Keywords"
+  },
+  "keywords_systems_administrator": {
+    "title": "Essential ATS Keywords for Systems Administrators & Linux Admins (2026) | ToolForge",
+    "description": "Target ATS keywords, Linux server administration, Bash scripting, virtualization, backup strategies, and Google X-Y-Z formulas for SysAdmins.",
+    "path": "/keywords/systems-administrator",
+    "heading": "Systems Administrator ATS Resume Keywords"
+  },
+  "keywords_business_analyst": {
+    "title": "Top ATS Keywords for Technical Business Analysts (2026 Checklist) | ToolForge",
+    "description": "Target ATS keywords, requirements gathering, BRD/FRD documentation, SQL querying, user stories, and Google X-Y-Z formulas for Business Analysts.",
+    "path": "/keywords/business-analyst",
+    "heading": "Business Analyst ATS Resume Keywords"
+  },
+  "keywords_financial_analyst": {
+    "title": "Essential ATS Keywords for Financial Analysts & FP&A (2026 Checklist) | ToolForge",
+    "description": "Target ATS keywords, financial modeling, DCF valuations, budget forecasting, variance analysis, and Google X-Y-Z formulas for Financial Analysts.",
+    "path": "/keywords/financial-analyst",
+    "heading": "Financial Analyst ATS Resume Keywords"
+  },
+  "keywords_blockchain_developer": {
+    "title": "Top ATS Keywords for Web3 & Blockchain Developers (2026 Checklist) | ToolForge",
+    "description": "Target ATS keywords, Solidity smart contracts, DeFi protocols, security auditing, Hardhat, and Google X-Y-Z formulas for Web3 Developers.",
+    "path": "/keywords/blockchain-developer",
+    "heading": "Blockchain Developer ATS Resume Keywords"
+  },
+  "keywords_marketing_manager": {
+    "title": "Essential ATS Keywords for Growth & Marketing Managers (2026 Guide) | ToolForge",
+    "description": "Target ATS keywords, SEO optimization, paid acquisition (PPC), conversion funnels (CRO), email marketing, and Google X-Y-Z formulas for Marketing Managers.",
+    "path": "/keywords/marketing-manager",
+    "heading": "Marketing Manager ATS Resume Keywords"
+  },
+  "keywords_ai_engineer": {
+    "title": "Top ATS Keywords for AI & LLM Systems Engineers (2026 Checklist) | ToolForge",
+    "description": "Target ATS keywords, LLM fine-tuning, RAG pipelines, vLLM serving, vector databases, and Google X-Y-Z resume formulas for AI Engineers.",
+    "path": "/keywords/ai-engineer",
+    "heading": "AI Systems Engineer ATS Resume Keywords"
+  },
   "notFound": {
     "title": "Page Not Found | ToolForge",
     "description": "The page you requested could not be found.",

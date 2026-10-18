@@ -160,18 +160,11 @@ for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords'])
 const keywordsDir = path.join(outputDir, 'keywords');
 await mkdir(keywordsDir, { recursive: true });
 
-const roleKeyMap = [
-  ['keywords_software_engineer', 'software-engineer.html'],
-  ['keywords_product_manager', 'product-manager.html'],
-  ['keywords_data_scientist', 'data-scientist.html'],
-  ['keywords_devops_engineer', 'devops-engineer.html'],
-  ['keywords_full_stack_developer', 'full-stack-developer.html']
-];
-
-for (const [seoKey, fileName] of roleKeyMap) {
-  if (seo[seoKey]) {
-    await writeFile(path.join(keywordsDir, fileName), makePage(seo[seoKey], renderPage(seo[seoKey].path)));
-  }
+const roleKeys = Object.keys(seo).filter((k) => k.startsWith('keywords_'));
+for (const seoKey of roleKeys) {
+  const subPath = seo[seoKey].path.replace('/keywords/', '');
+  const fileName = `${subPath}.html`;
+  await writeFile(path.join(keywordsDir, fileName), makePage(seo[seoKey], renderPage(seo[seoKey].path)));
 }
 
 await writeFile(path.join(outputDir, 'index.html'), makePage(seo.home, renderPage('/')));

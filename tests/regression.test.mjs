@@ -10,12 +10,13 @@ const vite = await createServer({
   logLevel: 'error'
 });
 const load = (id) => vite.ssrLoadModule(id);
-const [{ prepareResumeImport }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
+const [{ prepareResumeImport }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { extractTextFromPdfFile }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
   load('/src/utils/resumeImport.ts'),
   load('/src/utils/atsKeywordMatcher.ts'),
   load('/src/utils/deepAuditAnalyzer.ts'),
   load('/src/utils/contactDraft.ts'),
   load('/src/data/resumeSamples.ts'),
+  load('/src/utils/pdfParser.ts'),
   load('/src/App.tsx'),
   import('react-dom/server'),
   import('react')
@@ -43,6 +44,26 @@ function makeMinimalPdf(lines) {
   pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
   for (const offset of offsets.slice(1)) pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
   pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+  return pdf;
+}
+
+function makePdfWithoutPageText() {
+  const objects = [
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] >>',
+    '<< /Title (Alex Rivera Software Engineer alex@example.com React Python Experience Education Skills) >>'
+  ];
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+  for (const [index, body] of objects.entries()) {
+    offsets.push(Buffer.byteLength(pdf));
+    pdf += `${index + 1} 0 obj\n${body}\nendobj\n`;
+  }
+  const xrefOffset = Buffer.byteLength(pdf);
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  for (const offset of offsets.slice(1)) pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R /Info 4 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
   return pdf;
 }
 
@@ -136,12 +157,34 @@ test('PDF and DOCX imports extract text and preserve supported resume fields', a
   assert.equal(pdfResult.resume.fullName, 'Jordan Rivera');
   assert.equal(pdfResult.resume.email, 'jordan@example.com');
 
+  const structuredPdf = makeMinimalPdf([
+    'Jordan Rivera', 'Software Engineer', 'jordan@example.com', 'Skills', 'React and Python',
+    'Experience', '• Built a data service used by 40 customers', 'Education',
+    'Bachelor of Science in Computer Science', 'Example University', '2023'
+  ]);
+  const structuredResult = await prepareResumeImport(new File([structuredPdf], 'structured-resume.pdf', { type: 'application/pdf' }));
+  assert.equal(structuredResult.resume?.jobTitle, 'Software Engineer');
+  assert.ok(structuredResult.resume?.skills.includes('React'));
+  assert.ok(structuredResult.resume?.skills.includes('Python'));
+  assert.equal(structuredResult.resume?.experience[0]?.bullets[0], 'Built a data service used by 40 customers');
+  assert.equal(structuredResult.resume?.education[0]?.degree, 'Bachelor of Science in Computer Science');
+
   const xml = '<w:document xmlns:w="urn:word"><w:body><w:p><w:r><w:t>Jordan Rivera</w:t></w:r></w:p><w:p><w:r><w:t>Software Engineer</w:t></w:r></w:p><w:p><w:r><w:t>jordan@example.com</w:t></w:r></w:p><w:p><w:r><w:t>Built dependable data services for product teams</w:t></w:r></w:p></w:body></w:document>';
   const docx = makeMinimalDocx(xml);
   const docxResult = await prepareResumeImport(new File([docx], 'resume.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
   assert.match(docxResult.extracted.text, /Jordan Rivera/);
   assert.equal(docxResult.resume.fullName, 'Jordan Rivera');
   assert.equal(docxResult.resume.email, 'jordan@example.com');
+});
+
+test('PDFs with no page text are detected as unreadable instead of parsing binary metadata', async () => {
+  const file = new File([makePdfWithoutPageText()], 'image-only-resume.pdf', { type: 'application/pdf' });
+  const extracted = await extractTextFromPdfFile(file);
+  const prepared = await prepareResumeImport(file);
+
+  assert.equal(extracted.text, '');
+  assert.equal(extracted.isScanned, true);
+  assert.equal(prepared.resume, null);
 });
 
 test('keyword matching returns an empty scope when a job description has no recognized terms', () => {
@@ -155,6 +198,8 @@ test('keyword matching returns an empty scope when a job description has no reco
 
 test('audit report preserves unavailable checks as null or explicitly not assessed', () => {
   const report = generateDeepAuditReport({ ...BLANK_STARTER_RESUME, experience: [], education: [], skills: [] }, '');
+  assert.equal(report.categories.content.score, null, 'no detected bullets must not receive a perfect content score');
+  assert.match(report.categories.content.bulletsConsistency.periodConsistency, /Not assessed/);
   assert.equal(report.categories.discrimination.score, null);
   assert.equal(report.categories.seniority.score, null);
   assert.equal(report.categories.seniority.scopeOwnership.ownershipLevel, 'Not assessed');
