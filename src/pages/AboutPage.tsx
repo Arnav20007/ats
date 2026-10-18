@@ -118,6 +118,57 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
         </div>
 
+        {/* Author & E-E-A-T Engineering Profile */}
+        <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-5 shadow-2xs">
+          <div className="flex items-center gap-2">
+            <Globe className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+              Creator & Open-Source Engineering
+            </h3>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 p-4 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white text-xl font-black shadow-md shrink-0">
+              AS
+            </div>
+            <div className="space-y-1.5 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-bold text-base text-slate-900 dark:text-white">Arnav Singh</span>
+                <span className="text-xs px-2 py-0.5 rounded-md font-mono bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  Lead Developer & Creator
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
+                Full-stack software engineer focused on high-performance browser architectures and accessible career technology. ToolForge was created to provide candidates with a zero-signup, 100% private, and mathematically transparent alternative to predatory career tech paywalls.
+              </p>
+              <div className="flex flex-wrap items-center gap-4 pt-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                <a
+                  href="https://github.com/Arnav20007"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline flex items-center gap-1"
+                >
+                  <span>GitHub Profile (@Arnav20007)</span>
+                  <ArrowRight className="w-3 h-3" />
+                </a>
+                <a
+                  href="https://github.com/Arnav20007/ats"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline flex items-center gap-1"
+                >
+                  <span>Open Source Repository</span>
+                  <ArrowRight className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+            <strong>Editorial & Heuristic Integrity:</strong> All 27 formatting heuristics and keyword rules are based on published ATS guidelines from Workday, Greenhouse, Taleo, and Google X-Y-Z recruiting principles. The client-side code is entirely public and open-source on GitHub.
+          </p>
+        </div>
+
         {/* CTA Bar */}
         <div className="p-8 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="space-y-1 text-center sm:text-left">

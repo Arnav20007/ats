@@ -19,6 +19,34 @@
     {
       "source": "/terms",
       "destination": "/terms.html"
+    },
+    {
+      "source": "/keywords",
+      "destination": "/keywords.html"
+    },
+    {
+      "source": "/keywords/software-engineer",
+      "destination": "/keywords/software-engineer.html"
+    },
+    {
+      "source": "/keywords/product-manager",
+      "destination": "/keywords/product-manager.html"
+    },
+    {
+      "source": "/keywords/data-scientist",
+      "destination": "/keywords/data-scientist.html"
+    },
+    {
+      "source": "/keywords/devops-engineer",
+      "destination": "/keywords/devops-engineer.html"
+    },
+    {
+      "source": "/keywords/full-stack-developer",
+      "destination": "/keywords/full-stack-developer.html"
+    },
+    {
+      "source": "/keywords/(.*)",
+      "destination": "/keywords.html"
     }
   ],
   "headers": [

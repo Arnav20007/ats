@@ -11,12 +11,16 @@ interface HeaderProps {
   isDark: boolean;
   onToggleTheme: () => void;
   onNavigateHome?: () => void;
+  onNavigateGuide?: () => void;
+  onNavigateKeywords?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   isDark,
   onToggleTheme,
   onNavigateHome,
+  onNavigateGuide,
+  onNavigateKeywords,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md transition-colors">
@@ -34,20 +38,39 @@ export const Header: React.FC<HeaderProps> = ({
             alt="ToolForge"
             className="w-8 h-8 rounded-xl shadow-xs"
           />
-          <div className="flex items-center gap-2">
+          <span className="flex items-center gap-2">
             <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">
               ToolForge
             </span>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/80">
               Resume Checker
             </span>
-          </div>
+          </span>
         </button>
 
-        {/* Center: Simple Human Trust Message */}
-        <div className="hidden md:flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400 font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Free to use · No sign up · Your resume stays on your computer</span>
+        {/* Center: Top Nav Links & Trust Message */}
+        <div className="hidden md:flex items-center gap-4 text-xs">
+          <nav className="flex items-center gap-1 font-semibold">
+            <button
+              type="button"
+              onClick={onNavigateKeywords}
+              className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            >
+              Role Keywords
+            </button>
+            <button
+              type="button"
+              onClick={onNavigateGuide}
+              className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            >
+              ATS Guide
+            </button>
+          </nav>
+
+          <div className="flex items-center gap-2 text-slate-500 dark:text-zinc-400 font-medium pl-3 border-l border-slate-200 dark:border-zinc-800">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>Free · In-Browser Memory</span>
+          </div>
         </div>
 
         {/* Right: Theme Toggle */}

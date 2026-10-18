@@ -36,22 +36,92 @@ const setMeta = (html, attribute, key, value) => {
   return html.replace(expression, `$1${escapeHtml(value)}$2`);
 };
 
-const pageSchema = (page) => ({
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${siteUrl}${page.path}#webpage`,
-  name: page.title,
-  description: page.description,
-  url: `${siteUrl}${page.path}`,
-  isPartOf: { '@id': `${siteUrl}/#website` },
-  breadcrumb: {
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-      { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}${page.path}` }
-    ]
+const pageSchema = (page) => {
+  if (page.path === '/about') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'AboutPage',
+      '@id': `${siteUrl}/about#webpage`,
+      name: page.title,
+      description: page.description,
+      url: `${siteUrl}/about`,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+      mainEntity: {
+        '@type': 'Person',
+        name: 'Arnav Singh',
+        jobTitle: 'Founder & Full Stack Software Engineer',
+        url: `${siteUrl}/about`,
+        sameAs: [
+          'https://github.com/Arnav20007',
+          'https://github.com/Arnav20007/ats'
+        ]
+      },
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+          { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}/about` }
+        ]
+      }
+    };
   }
-});
+
+  if (page.path.startsWith('/keywords/')) {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemPage',
+      '@id': `${siteUrl}${page.path}#webpage`,
+      name: page.title,
+      description: page.description,
+      url: `${siteUrl}${page.path}`,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+          { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: `${siteUrl}/keywords` },
+          { '@type': 'ListItem', position: 3, name: page.heading, item: `${siteUrl}${page.path}` }
+        ]
+      }
+    };
+  }
+
+  if (page.path === '/keywords') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      '@id': `${siteUrl}/keywords#webpage`,
+      name: page.title,
+      description: page.description,
+      url: `${siteUrl}/keywords`,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+          { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}/keywords` }
+        ]
+      }
+    };
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${siteUrl}${page.path}#webpage`,
+    name: page.title,
+    description: page.description,
+    url: `${siteUrl}${page.path}`,
+    isPartOf: { '@id': `${siteUrl}/#website` },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+        { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}${page.path}` }
+      ]
+    }
+  };
+};
 
 const makePage = (page, bodyMarkup, isNotFound = false) => {
   const canonicalUrl = `${siteUrl}${page.path}`;
@@ -81,12 +151,32 @@ const makePage = (page, bodyMarkup, isNotFound = false) => {
   return html;
 };
 
-for (const key of ['guide', 'about', 'contact', 'privacy', 'terms']) {
+// Top-level informational pages
+for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords']) {
   await writeFile(path.join(outputDir, `${key}.html`), makePage(seo[key], renderPage(seo[key].path)));
 }
+
+// Role-specific programmatic keywords pages
+const keywordsDir = path.join(outputDir, 'keywords');
+await mkdir(keywordsDir, { recursive: true });
+
+const roleKeyMap = [
+  ['keywords_software_engineer', 'software-engineer.html'],
+  ['keywords_product_manager', 'product-manager.html'],
+  ['keywords_data_scientist', 'data-scientist.html'],
+  ['keywords_devops_engineer', 'devops-engineer.html'],
+  ['keywords_full_stack_developer', 'full-stack-developer.html']
+];
+
+for (const [seoKey, fileName] of roleKeyMap) {
+  if (seo[seoKey]) {
+    await writeFile(path.join(keywordsDir, fileName), makePage(seo[seoKey], renderPage(seo[seoKey].path)));
+  }
+}
+
 await writeFile(path.join(outputDir, 'index.html'), makePage(seo.home, renderPage('/')));
 await writeFile(path.join(outputDir, '404.html'), makePage(seo.notFound, renderPage('/not-found'), true));
-console.log('Generated route-specific HTML content, metadata, and 404 page.');
+console.log('Generated route-specific HTML content, metadata, and 404 page for all standard & keyword routes.');
 } finally {
   await vite.close();
 }

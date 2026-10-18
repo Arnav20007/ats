@@ -1,6 +1,7 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
+import { deflateRawSync } from 'node:zlib';
 
 const vite = await createServer({
   configFile: './vite.config.ts',
@@ -9,8 +10,8 @@ const vite = await createServer({
   logLevel: 'error'
 });
 const load = (id) => vite.ssrLoadModule(id);
-const [{ extractTextFromPdfFile, parseResumeText }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
-  load('/src/utils/pdfParser.ts'),
+const [{ prepareResumeImport }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
+  load('/src/utils/resumeImport.ts'),
   load('/src/utils/atsKeywordMatcher.ts'),
   load('/src/utils/deepAuditAnalyzer.ts'),
   load('/src/utils/contactDraft.ts'),
@@ -22,37 +23,125 @@ const [{ extractTextFromPdfFile, parseResumeText }, { analyzeAtsKeywords }, { ge
 
 after(async () => vite.close());
 
+function makeMinimalPdf(lines) {
+  const escaped = lines.map((line) => `(${line.replaceAll('\\', '\\\\').replaceAll('(', '\\(').replaceAll(')', '\\)')}) Tj`).join(' 0 -18 Td ');
+  const stream = `BT /F1 12 Tf 72 720 Td ${escaped} ET`;
+  const objects = [
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+    `<< /Length ${Buffer.byteLength(stream)} >>\nstream\n${stream}\nendstream`
+  ];
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+  for (const [index, body] of objects.entries()) {
+    offsets.push(Buffer.byteLength(pdf));
+    pdf += `${index + 1} 0 obj\n${body}\nendobj\n`;
+  }
+  const xrefOffset = Buffer.byteLength(pdf);
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  for (const offset of offsets.slice(1)) pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+  return pdf;
+}
+
+function makeMinimalDocx(xml) {
+  const name = Buffer.from('word/document.xml');
+  const data = deflateRawSync(Buffer.from(xml));
+  const local = Buffer.alloc(30);
+  local.writeUInt32LE(0x04034b50, 0);
+  local.writeUInt16LE(20, 4);
+  local.writeUInt16LE(8, 8);
+  local.writeUInt32LE(data.length, 18);
+  local.writeUInt32LE(Buffer.byteLength(xml), 22);
+  local.writeUInt16LE(name.length, 26);
+  const localEntry = Buffer.concat([local, name, data]);
+
+  const central = Buffer.alloc(46);
+  central.writeUInt32LE(0x02014b50, 0);
+  central.writeUInt16LE(20, 4);
+  central.writeUInt16LE(20, 6);
+  central.writeUInt16LE(8, 10);
+  central.writeUInt32LE(data.length, 20);
+  central.writeUInt32LE(Buffer.byteLength(xml), 24);
+  central.writeUInt16LE(name.length, 28);
+  const centralEntry = Buffer.concat([central, name]);
+
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50, 0);
+  end.writeUInt16LE(1, 8);
+  end.writeUInt16LE(1, 10);
+  end.writeUInt32LE(centralEntry.length, 12);
+  end.writeUInt32LE(localEntry.length, 16);
+  return Buffer.concat([localEntry, centralEntry, end]);
+}
+
 test('static route render includes real page content for each indexable route', () => {
   const routes = [
     ['/', 'Resume Checker'], ['/guide', 'Prepare a Clear Résumé for Applicant Tracking Systems'],
     ['/about', 'About ToolForge'], ['/contact', 'Contact &amp; Support'],
     ['/privacy', 'Privacy Policy'], ['/terms', 'Terms of Use'],
+    ['/keywords', 'Top ATS Keywords for Software Engineers'],
+    ['/keywords/product-manager', 'Essential ATS Keywords for Product Managers'],
     ['/unknown-route', 'Page not found']
   ];
   for (const [path, heading] of routes) {
     const html = renderToString(createElement(App, { initialPath: path }));
     assert.match(html, new RegExp(heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${path} should render ${heading}`);
+    assert.match(html, /<h1\b/, `${path} should have a primary heading`);
+    assert.match(html, /<button type="button" aria-label="ToolForge home"/, 'brand navigation should be keyboard-operable');
+    if (path === '/contact') {
+      assert.match(html, /<label for="contact-email"/, 'contact email field should have a visible label');
+      assert.match(html, /<input id="contact-email" type="email" required=""/, 'contact email should use native required email validation');
+      assert.match(html, /<label for="contact-message"/, 'contact message field should have a visible label');
+      assert.match(html, /<textarea id="contact-message" required=""/, 'contact message should be required');
+    }
   }
 });
 
-test('plain-text file import keeps provided text and reports an empty file as scanned', async () => {
-  const content = 'Alex Rivera\nSoftware Engineer\nReact and TypeScript';
-  const result = await extractTextFromPdfFile(new File([content], 'resume.txt', { type: 'text/plain' }));
-  assert.equal(result.text, content);
-  assert.equal(result.isScanned, false);
-  assert.equal(result.pageCount, 1);
+test('plain-text import runs extraction and maps only explicitly supported resume details', async () => {
+  const content = 'Alex Rivera\nSoftware Engineer\nalex@example.com\nSkills\nReact and TypeScript\nExperience\n• Built a dashboard used by 40 teams';
+  const result = await prepareResumeImport(new File([content], 'resume.txt', { type: 'text/plain' }));
+  assert.equal(result.extracted.text, content);
+  assert.equal(result.extracted.isScanned, false);
+  assert.equal(result.extracted.pageCount, 1);
+  assert.equal(result.resume.fullName, 'Alex Rivera');
+  assert.equal(result.resume.jobTitle, 'Software Engineer');
+  assert.equal(result.resume.email, 'alex@example.com');
+  assert.equal(result.resume.experience.length, 1);
+  assert.equal(result.resume.experience[0].bullets[0], 'Built a dashboard used by 40 teams');
+  assert.equal(result.resume.experience[0].role, '');
+  assert.equal(result.resume.experience[0].startDate, '');
+  assert.equal(result.resume.education.length, 0);
 
-  const empty = await extractTextFromPdfFile(new File(['  '], 'empty.txt', { type: 'text/plain' }));
-  assert.equal(empty.isScanned, true);
+  const degree = await prepareResumeImport(new File([
+    'Alex Rivera\nSoftware Engineer\nBachelor of Science in Computer Science\nExample University\n2022'
+  ], 'degree.txt', { type: 'text/plain' }));
+  assert.equal(degree.resume.education.length, 1);
+  assert.equal(degree.resume.education[0].degree, 'Bachelor of Science in Computer Science');
+
+  const empty = await prepareResumeImport(new File(['  '], 'empty.txt', { type: 'text/plain' }));
+  assert.equal(empty.extracted.isScanned, true);
+  assert.equal(empty.resume, null);
 });
 
-test('resume parsing does not invent work history, education, or dates', () => {
-  const parsed = parseResumeText('Alex Rivera\nSoftware Engineer\nReact, TypeScript, Node.js');
-  assert.equal(parsed.fullName, 'Alex Rivera');
-  assert.equal(parsed.jobTitle, 'Software Engineer');
-  assert.equal('experience' in parsed, false);
-  assert.equal('education' in parsed, false);
-  assert.equal('dates' in parsed, false);
+test('PDF and DOCX imports extract text and preserve supported resume fields', async () => {
+  const pdf = makeMinimalPdf([
+    'Jordan Rivera', 'Software Engineer', 'jordan@example.com',
+    'Built dependable data services for product teams'
+  ]);
+  const pdfResult = await prepareResumeImport(new File([pdf], 'resume.pdf', { type: 'application/pdf' }));
+  assert.match(pdfResult.extracted.text, /Jordan Rivera/);
+  assert.equal(pdfResult.resume.fullName, 'Jordan Rivera');
+  assert.equal(pdfResult.resume.email, 'jordan@example.com');
+
+  const xml = '<w:document xmlns:w="urn:word"><w:body><w:p><w:r><w:t>Jordan Rivera</w:t></w:r></w:p><w:p><w:r><w:t>Software Engineer</w:t></w:r></w:p><w:p><w:r><w:t>jordan@example.com</w:t></w:r></w:p><w:p><w:r><w:t>Built dependable data services for product teams</w:t></w:r></w:p></w:body></w:document>';
+  const docx = makeMinimalDocx(xml);
+  const docxResult = await prepareResumeImport(new File([docx], 'resume.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+  assert.match(docxResult.extracted.text, /Jordan Rivera/);
+  assert.equal(docxResult.resume.fullName, 'Jordan Rivera');
+  assert.equal(docxResult.resume.email, 'jordan@example.com');
 });
 
 test('keyword matching returns an empty scope when a job description has no recognized terms', () => {

@@ -10,6 +10,13 @@
 
 ## Key URLs
 - **Web App**: https://toolforge-ats.vercel.app/
+- **Role Keywords Checklist**: https://toolforge-ats.vercel.app/keywords
+- **Software Engineer Keywords**: https://toolforge-ats.vercel.app/keywords/software-engineer
+- **Product Manager Keywords**: https://toolforge-ats.vercel.app/keywords/product-manager
+- **Data Scientist Keywords**: https://toolforge-ats.vercel.app/keywords/data-scientist
+- **DevOps Engineer Keywords**: https://toolforge-ats.vercel.app/keywords/devops-engineer
+- **Full Stack Developer Keywords**: https://toolforge-ats.vercel.app/keywords/full-stack-developer
 - **Resume Review Guide**: https://toolforge-ats.vercel.app/guide
+- **About & Engineering**: https://toolforge-ats.vercel.app/about
 - **Privacy Policy**: https://toolforge-ats.vercel.app/privacy
 - **Sitemap**: https://toolforge-ats.vercel.app/sitemap.xml

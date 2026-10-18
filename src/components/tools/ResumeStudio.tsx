@@ -54,7 +54,7 @@ import {
 import { useToast } from '../Toast';
 import { CompetitorBenchmark } from '../CompetitorBenchmark';
 import { ResumeFaq } from '../ResumeFaq';
-import { extractTextFromPdfFile, parseResumeText } from '../../utils/pdfParser';
+import { prepareResumeImport } from '../../utils/resumeImport';
 import { analyzeAtsKeywords, hasQuantifiableMetric } from '../../utils/atsKeywordMatcher';
 import { generateDeepAuditReport, DeepAuditReport } from '../../utils/deepAuditAnalyzer';
 import { useResumeSession } from '../../context/ResumeSessionContext';
@@ -394,7 +394,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     }, 220);
 
     try {
-      const extracted = await extractTextFromPdfFile(file);
+      const { extracted, resume: cleanUploadedResume } = await prepareResumeImport(file);
 
       // If document yielded zero text (e.g. encrypted or unreadable scan)
       if (!extracted.text || extracted.text.trim().length === 0) {
@@ -407,8 +407,6 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
         return;
       }
 
-      const parsedData = parseResumeText(extracted.text);
-
       setTimeout(() => {
         clearInterval(stepTimer);
         setScanProgress(100);
@@ -417,56 +415,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
           setIsScanning(false);
           setViewMode('studio');
 
-          // Parse projects from uploaded document
-          const parsedProjects: ResumeProject[] = (parsedData.projects || []).map((proj, pIdx) => ({
-            id: `proj-uploaded-${pIdx + 1}`,
-            name: proj.name,
-            role: proj.role || '',
-            technologies: proj.technologies,
-            startDate: proj.startDate,
-            endDate: proj.endDate,
-              bullets: proj.bullets || []
-          }));
-
-          // Only assign extracted bullets to work history when they appeared under an explicit experience heading.
-          const experienceBullets = parsedData.experienceBullets || [];
-          const parsedExperience: ResumeExperience[] = experienceBullets.length > 0
-            ? [
-                {
-                  id: 'exp-uploaded-1',
-                  role: '',
-                  company: '',
-                  location: parsedData.location || '',
-                  startDate: '',
-                  endDate: '',
-                  bullets: experienceBullets
-                }
-              ]
-            : [];
-          const classifiedBullets = new Set([
-            ...experienceBullets,
-            ...parsedProjects.flatMap((project) => project.bullets)
-          ]);
-          const unclassifiedBullets = (parsedData.bullets || []).filter((bullet) => !classifiedBullets.has(bullet));
-
-          const cleanUploadedResume: ResumeData = {
-            id: `uploaded-${Date.now()}`,
-            fullName: parsedData.fullName || '',
-            jobTitle: parsedData.jobTitle || '',
-            email: parsedData.email || '',
-            phone: parsedData.phone || '',
-            location: parsedData.location || '',
-            linkedin: parsedData.linkedin || '',
-            portfolio: parsedData.portfolio || '',
-            summary: parsedData.summary || (unclassifiedBullets.length > 0
-              ? `Extracted bullets to review and move to the correct section:\n${unclassifiedBullets.map((bullet) => `• ${bullet}`).join('\n')}`
-              : ''),
-            skills: parsedData.skills && parsedData.skills.length > 0 ? parsedData.skills : [],
-            experience: parsedExperience,
-            projects: parsedProjects,
-            education: parsedData.education || []
-          };
-
+          if (!cleanUploadedResume) return;
           setResume(cleanUploadedResume);
           const firstBullet = cleanUploadedResume.experience[0]?.bullets[0] ||
             cleanUploadedResume.projects?.[0]?.bullets[0] ||

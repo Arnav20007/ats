@@ -1,4 +1,5 @@
 import { SKILL_DEFINITIONS, isSkillInText } from './atsKeywordMatcher';
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 export interface ExtractedPdfResult {
   text: string;
@@ -225,10 +226,7 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
   // 3. Primary PDF.js with a bounded 10-second timeout
   try {
     const pdfjsLib = await import('pdfjs-dist');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-      'pdfjs-dist/build/pdf.worker.min.mjs',
-      import.meta.url
-    ).toString();
+    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -487,7 +485,7 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
 
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
-    if (/(?:b\.?s\.?|b\.?tech|b\.?e\.?|m\.?s\.?|m\.?tech|bachelor|master|ph\.?d|undergraduate)\b/i.test(l) && l.length < 120) {
+    if (/(?:^|[^a-z])(?:b\.?s\.?|b\.?tech|b\.?e\.?|m\.?s\.?|m\.?tech|bachelor|master|ph\.?d|undergraduate)(?:$|[^a-z])/i.test(l) && l.length < 120) {
       eduDegree = l;
       eduIdx = i;
       break;
