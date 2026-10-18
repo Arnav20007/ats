@@ -4,7 +4,7 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 const faqs = [
   {
     q: 'How does the ATS readiness score get calculated?',
-    a: "When recognized job-description terms are available, the heuristic combines keyword match (40%), formatting checks (25%), measurable bullet points (20%), and profile completeness (15%). When no supported terms are available, keyword match is marked not assessed and the other three weights are renormalized. It is not a score from an employer's ATS."
+    a: "The general readiness score adds seven checklist categories: contact details (20 points), standard section headings (20), résumé length (10), achievement bullets (10), quantified results (15), action verbs (15), and filler phrases (10). Target-job keyword match is shown separately and does not change this score. This is a rule-based estimate, not a score from an employer's ATS."
   },
   {
     q: 'Does my resume data get saved, stored, or sent to AI?',

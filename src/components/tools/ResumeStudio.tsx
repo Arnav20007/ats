@@ -58,6 +58,7 @@ import { prepareResumeImport } from '../../utils/resumeImport';
 import { analyzeAtsKeywords, hasQuantifiableMetric } from '../../utils/atsKeywordMatcher';
 import { generateDeepAuditReport, DeepAuditReport } from '../../utils/deepAuditAnalyzer';
 import { safelyOptimizeResume } from '../../utils/resumeOptimizer';
+import { calculateResumeReadiness } from '../../utils/resumeReadiness';
 import { useResumeSession } from '../../context/ResumeSessionContext';
 
 interface ResumeStudioProps {
@@ -219,6 +220,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
   // 2. Resume formatting & content checks
   const atsAudit = useMemo(() => {
+    const readiness = calculateResumeReadiness(resume);
     const checks = [];
 
     // Check 1: Contact Details
@@ -235,20 +237,15 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     });
 
     // Check 2: Action Verbs & Metrics (Comprehensive Enterprise Regex)
-    const allBullets = [
-      ...resume.experience.flatMap((e) => e.bullets),
-      ...(resume.projects || []).flatMap((p) => p.bullets)
-    ];
-    const bulletsWithMetrics = allBullets.filter((b) => hasQuantifiableMetric(b)).length;
-    const metricRate = allBullets.length > 0
-      ? Math.round((bulletsWithMetrics / allBullets.length) * 100)
+    const metricRate = readiness.bulletCount > 0
+      ? Math.round((readiness.bulletsWithMetricsCount / readiness.bulletCount) * 100)
       : 0;
 
     checks.push({
       id: 'metrics',
       title: 'Measurable achievements (Google X-Y-Z)',
       passed: metricRate >= 60,
-      explanation: allBullets.length > 0
+      explanation: readiness.bulletCount > 0
         ? `${metricRate}% of your bullet points contain numbers or measurable terms. Verify that each figure is accurate.`
         : 'Add experience or project bullets to review numeric details.',
       action: 'Add a result and metric you can verify, if one is available.'
@@ -294,12 +291,6 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     const formattingScore = Math.round((formatChecks.filter((c) => c.passed).length / formatChecks.length) * 100);
 
     // Check 6: Role & Section Completeness (Summary > 50 chars, Job Title, Contact present)
-    const hasSummary = (resume.summary || '').length >= 60 && !resume.summary.startsWith('Extracted bullets to review and move to the correct section:');
-    const hasTitle = (resume.jobTitle || '').length >= 5;
-    const roleCompletenessScore = Math.round(
-      (hasEmail ? 25 : 0) + (hasPhone ? 25 : 0) + (hasSummary ? 25 : 0) + (hasTitle ? 25 : 0)
-    );
-
     return {
       checks,
       passedCount,
@@ -307,27 +298,16 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       formattingScore,
       overallScore: formattingScore,
       metricRate,
-      roleCompletenessScore,
-      allBulletsCount: allBullets.length,
-      bulletsWithMetricsCount: bulletsWithMetrics
+      readinessScore: readiness.score,
+      readinessChecks: readiness.checks,
+      allBulletsCount: readiness.bulletCount,
+      bulletsWithMetricsCount: readiness.bulletsWithMetricsCount
     };
   }, [resume]);
 
-  // ToolForge heuristic; normalize the remaining weights when no recognized target-job terms are available.
-  const K = keywordAnalysis.matchRate;
-  const F = atsAudit.formattingScore;
-  const M = atsAudit.metricRate;
-  const R = atsAudit.roleCompletenessScore;
+  // General readiness score uses a stable content checklist; job match stays separate.
   const hasRecognizedTargetTerms = keywordAnalysis.totalJdKeywords > 0;
-  const scoreWeightTotal = hasRecognizedTargetTerms ? 1 : 0.6;
-  const keywordWeight = hasRecognizedTargetTerms ? 0.4 : 0;
-  const formattingWeight = 0.25 / scoreWeightTotal;
-  const metricsWeight = 0.2 / scoreWeightTotal;
-  const completenessWeight = 0.15 / scoreWeightTotal;
-
-  const compositeScore = Math.min(100, Math.max(0, Math.round(
-    keywordWeight * K + formattingWeight * F + metricsWeight * M + completenessWeight * R
-  )));
+  const compositeScore = atsAudit.readinessScore;
 
   // Scanning animation steps
   const SCAN_STEPS = [
@@ -3414,104 +3394,45 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
             {/* Formula Mathematical Display */}
             <div className="p-3.5 rounded-lg bg-zinc-950 text-white font-mono text-center space-y-1.5 border border-zinc-800 shadow-none">
-              <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Exact Mathematical Model:</span>
-              <div className="text-base font-bold text-white tracking-wide">
-                {hasRecognizedTargetTerms
-                  ? 'S = 0.40K + 0.25F + 0.20M + 0.15R'
-                  : `S = ${(formattingWeight).toFixed(2)}F + ${(metricsWeight).toFixed(2)}M + ${(completenessWeight).toFixed(2)}R (K not assessed)`}
-              </div>
+              <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Readiness score out of 100:</span>
+              <div className="text-sm sm:text-base font-bold text-white tracking-wide">S = Contact (20) + Headings (20) + Length (10) + Bullets (10) + Metrics (15) + Verbs (15) + Filler (10)</div>
               <p className="text-[11px] text-zinc-400 font-sans">
-                This is a ToolForge heuristic. It is not calibrated against employer ATS engines.
+                A general rule-based résumé check. It is not an employer ATS score; target-job keyword match is separate.
               </p>
             </div>
 
-            {/* 4 Component Live Weights Breakdown */}
+            {/* Readiness checklist */}
             <div className="space-y-2 text-xs">
-              
-              {/* K: Keyword Match */}
+              {atsAudit.readinessChecks.map((check) => (
+                <div key={check.id} className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
+                  <div className="space-y-0.5">
+                    <div className="font-bold text-zinc-800 dark:text-zinc-200">{check.title} ({check.maxPoints} pts)</div>
+                    <div className="text-[11px] text-zinc-500">{check.detail}</div>
+                  </div>
+                  <div className="text-right shrink-0 ml-3">
+                    <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">{check.points}/{check.maxPoints}</span>
+                    <span className="text-[10px] text-zinc-500 block font-mono">points</span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Separate job match diagnostic */}
               <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
                 <div className="space-y-0.5">
-                  <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    K · Target Job Keyword Match ({hasRecognizedTargetTerms ? '40% Weight' : 'Not assessed'})
-                  </div>
+                  <div className="font-bold text-zinc-800 dark:text-zinc-200">Target job keyword match · separate</div>
                   <div className="text-[11px] text-zinc-500">
                     {hasRecognizedTargetTerms
-                      ? `${keywordAnalysis.matched.length} of ${keywordAnalysis.totalJdKeywords} recognized skill terms found across résumé sections`
+                      ? `${keywordAnalysis.matched.length} of ${keywordAnalysis.totalJdKeywords} recognized skill terms found; this does not change readiness score.`
                       : targetJd.trim()
-                        ? 'No supported skill terms were found in this job description.'
-                        : 'Add a target job description to assess keyword overlap.'}
+                        ? 'No supported skill terms were found; this does not change readiness score.'
+                        : 'Add a target job description to assess keyword overlap; it does not change readiness score.'}
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">
-                    {hasRecognizedTargetTerms ? `${keywordAnalysis.matchRate}%` : 'N/A'}
-                  </span>
-                  <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(keywordWeight * K).toFixed(1)} pts
-                  </span>
+                <div className="text-right shrink-0 ml-3">
+                  <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">{hasRecognizedTargetTerms ? `${keywordAnalysis.matchRate}%` : 'N/A'}</span>
+                  <span className="text-[10px] text-zinc-500 block font-mono">informational</span>
                 </div>
               </div>
-
-              {/* F: Formatting */}
-              <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
-                <div className="space-y-0.5">
-                  <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    F · Section and Date Fields ({(formattingWeight * 100).toFixed(0)}% Weight)
-                  </div>
-                  <div className="text-[11px] text-zinc-500">
-                    Common section labels and date fields are checked; uploaded page layout is not assessed
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">
-                    {atsAudit.formattingScore}%
-                  </span>
-                  <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(formattingWeight * F).toFixed(1)} pts
-                  </span>
-                </div>
-              </div>
-
-              {/* M: Measurable Metrics */}
-              <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
-                <div className="space-y-0.5">
-                  <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    M · Measurable Bullet Details ({(metricsWeight * 100).toFixed(0)}% Weight)
-                  </div>
-                  <div className="text-[11px] text-zinc-500">
-                    {atsAudit.bulletsWithMetricsCount} of {atsAudit.allBulletsCount} bullets include numbers, % or scale
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">
-                    {atsAudit.metricRate}%
-                  </span>
-                  <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(metricsWeight * M).toFixed(1)} pts
-                  </span>
-                </div>
-              </div>
-
-              {/* R: Role Completeness */}
-              <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
-                <div className="space-y-0.5">
-                  <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    R · Role & Contact Fields ({(completenessWeight * 100).toFixed(0)}% Weight)
-                  </div>
-                  <div className="text-[11px] text-zinc-500">
-                    Email, phone, target job title, and summary completeness
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">
-                    {atsAudit.roleCompletenessScore}%
-                  </span>
-                  <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(completenessWeight * R).toFixed(1)} pts
-                  </span>
-                </div>
-              </div>
-
             </div>
 
             {/* Composite Calculation Result */}
@@ -3533,10 +3454,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
             {/* Explanation Note */}
             <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-              <strong>Note on Target Job Match:</strong>{' '}
-              {hasRecognizedTargetTerms
-                ? `Recognized skill terms found: ${keywordAnalysis.matched.length} of ${keywordAnalysis.totalJdKeywords} (${keywordAnalysis.matchRate}%). Keyword match contributes 40%; formatting, measurable bullets, and profile completeness contribute 25%, 20%, and 15%.`
-                : 'Keyword match is not assessed because no supported job-description terms were found. The remaining formatting, measurable-bullet, and profile-completeness weights are renormalized to total 100%.'}
+              Score points use fixed checks for contact details, standard section headings, résumé length, achievement bullets, measurable details, recognized action verbs, and filler phrases. Keyword match is reported separately and never changes the readiness score.
             </p>
 
             <button

@@ -11,6 +11,7 @@ const vite = await createServer({
 });
 const load = (id) => vite.ssrLoadModule(id);
 const { safelyOptimizeResume } = await load('/src/utils/resumeOptimizer.ts');
+const { calculateResumeReadiness } = await load('/src/utils/resumeReadiness.ts');
 const [{ prepareResumeImport }, { analyzeAtsKeywords, hasQuantifiableMetric }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { extractTextFromPdfFile, parseResumeText }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
   load('/src/utils/resumeImport.ts'),
   load('/src/utils/atsKeywordMatcher.ts'),
@@ -274,6 +275,50 @@ test('one-click cleanup removes only explicit metric templates and preserves rea
   assert.equal(result.resume.experience[0].bullets[0], 'Developed a web app for appointment workflows.');
   assert.equal(result.resume.experience[0].bullets[1], 'Reduced API latency by 32% across 4 services.');
   assert.equal(result.resume.experience[0].bullets[1].includes('32%'), true);
+});
+
+test('general readiness uses a stable checklist and keeps job keywords out of its score', () => {
+  const resume = {
+    ...BLANK_STARTER_RESUME,
+    fullName: 'Jordan Rivera',
+    jobTitle: 'Computer Science Student',
+    email: 'jordan@example.com',
+    phone: '+1 555 555 1212',
+    location: 'Austin, Texas',
+    summary: [
+      'Extracted bullets to review and move to the correct section:',
+      '• Reached the cloud champion tier and received recognition for completing the learning program.',
+      '• Solved 100 DSA problems on GeeksforGeeks over a 100-day streak and documented progress publicly.'
+    ].join('\n'),
+    skills: ['C++', 'Python', 'Java', 'JavaScript', 'SQL', 'React', 'Flask', 'REST APIs', 'SQLite', 'Git'],
+    experience: [],
+    education: [{ id: 'edu', degree: 'B.Tech in Computer Science and Engineering', school: 'Example University', location: 'Austin', year: '2028' }],
+    projects: [
+      { id: 'p1', name: 'MoodMate', technologies: 'React, JavaScript, Flask, SQLite, Framer Motion, Render', startDate: '2025', endDate: 'Present', bullets: [
+        'Developed a React and Flask web application implementing mood tracking, chat, appointment booking, and user/provider workflows with separate scheduling and secure account access.',
+        'Implemented password-hashed authentication and role-based access control for user/provider routes, with SQLite audit logs for selected actions.',
+        'Tested backend API endpoints and core application workflows, and configured deployment through Render.'
+      ] },
+      { id: 'p2', name: 'Material Code Standardization System', technologies: 'Python, Regular Expressions, Rule-Based Processing', startDate: '2026', endDate: '', bullets: [
+        'Designed an automated Python data pipeline using regular expressions and rule-based normalization to clean and deduplicate vendor records.',
+        'Constructed a synthetic dataset of 200 controlled variants to evaluate matching behavior and identify false positives and false negatives.',
+        'Applied attribute extraction and deterministic matching logic to identify equivalent materials across inconsistent vendor data and demonstrate consistent results during controlled evaluation.'
+      ] },
+      { id: 'p3', name: 'PDFlex — PDF Utility Platform', technologies: 'Python, PDF Processing', startDate: '2026', endDate: '', bullets: [
+        'Developed a Python web application for merging, splitting, compressing, and converting PDF files.',
+        'Implemented multipart file upload, PDF-type validation, configurable size limits, processing-error handling, and download responses for common document conversion workflows with secure access controls.',
+        'Handled file uploads with format and size validation across common document-processing workflows.'
+      ] }
+    ]
+  };
+  const result = calculateResumeReadiness(resume);
+
+  assert.ok(result.wordCount >= 250 && result.wordCount <= 1000, `expected a 250–1000 word résumé, found ${result.wordCount}`);
+  assert.equal(result.bulletCount, 11);
+  assert.equal(result.bulletsWithMetricsCount, 2);
+  assert.equal(result.actionVerbCount, 4);
+  assert.equal(result.score, 85);
+  assert.deepEqual(result.checks.map(({ points }) => points), [20, 13, 10, 10, 10, 12, 10]);
 });
 
 test('keyword matching returns an empty scope when a job description has no recognized terms', () => {
