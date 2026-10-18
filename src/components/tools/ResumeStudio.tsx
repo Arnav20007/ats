@@ -57,6 +57,7 @@ import { ResumeFaq } from '../ResumeFaq';
 import { prepareResumeImport } from '../../utils/resumeImport';
 import { analyzeAtsKeywords, hasQuantifiableMetric } from '../../utils/atsKeywordMatcher';
 import { generateDeepAuditReport, DeepAuditReport } from '../../utils/deepAuditAnalyzer';
+import { safelyOptimizeResume } from '../../utils/resumeOptimizer';
 import { useResumeSession } from '../../context/ResumeSessionContext';
 
 interface ResumeStudioProps {
@@ -703,12 +704,22 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     if (onActionLogged) onActionLogged();
   };
 
-  // Keep optimization non-destructive: never insert generic prompts into résumé bullets.
+  // Apply only factual-neutral cleanup; never invent metrics or achievements.
   const handleOneClickOptimize = () => {
-    // Adding instructional placeholder text to real bullets makes the résumé worse
-    // and can trigger length/quality warnings without adding evidence. Preserve the
-    // candidate's content and direct them to the existing review findings instead.
-    showToast('Your résumé was left unchanged. Review flagged bullets and add only results you can verify.', 'sparkle');
+    const result = safelyOptimizeResume(resume);
+    if (result.changedBullets === 0) {
+      showToast('No safe automatic edits found. Add only results you can verify.', 'info');
+      return;
+    }
+
+    setResume(result.resume);
+    setHasEdited(true);
+    showToast(
+      result.removedPlaceholderBullets > 0
+        ? `Removed unverified metric placeholders from ${result.removedPlaceholderBullets} bullet${result.removedPlaceholderBullets === 1 ? '' : 's'} and standardized punctuation. No résumé facts were added.`
+        : 'Standardized bullet capitalization and punctuation. No résumé facts were added.',
+      'sparkle'
+    );
     if (onActionLogged) onActionLogged();
   };
 

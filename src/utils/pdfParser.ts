@@ -460,6 +460,24 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
     }
     lines = merged;
     normalizedText = lines.join('\n');
+  } else {
+    // PDF.js often splits a single visual bullet across multiple text lines.
+    // Join lowercase continuation lines so the parser does not turn the tail
+    // of a bullet into a project title or lose it from the imported bullet.
+    const wrapped: string[] = [];
+    const isBullet = (line: string) => /^(?:[•\-*▪▫‣–—]\s*|(?:improved|led|built|developed|created|managed|engineered|designed|architected|spearheaded|orchestrated|automated|scaled|delivered|implemented|reduced|increased|tested|constructed|applied|handled)\b)/i.test(line);
+    const isSection = (line: string) => /^(?:(?:professional|work|technical|key|academic|personal)\s+)*(?:summary|profile|objective|experience|employment|skills|education|projects|certifications|achievements|awards|languages|interests|publications|references)\b/i.test(line);
+    for (const line of lines) {
+      const previous = wrapped.at(-1);
+      const isWrappedContinuation = /^[a-z(\[]/.test(line) || !/[.!?]$/.test(previous || '');
+      if (previous && isBullet(previous) && !isBullet(line) && !isSection(line) && isWrappedContinuation) {
+        wrapped[wrapped.length - 1] = `${previous} ${line}`;
+      } else {
+        wrapped.push(line);
+      }
+    }
+    lines = wrapped;
+    normalizedText = lines.join('\n');
   }
 
   if (lines.length > 0) {
@@ -479,15 +497,19 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
 
     // 2. Candidate Job Title
     const titleRegex = /(?:software engineer|full stack|frontend|backend|devops|cloud|data scientist|machine learning|ai engineer|product manager|tech lead|engineering manager|system architect|security engineer|developer|consultant|analyst|qa engineer)/i;
-    const candidateTitle = lines.slice(0, 10).find((l) =>
-      l !== candidateName &&
-      ((options.ocr && /^([\w &.-]{3,40}):\s*(?:REST APIs|SQLite|JavaScript|Python|SQL)\b/i.test(l) && titleRegex.test(l.split(':', 1)[0])) ||
-        (!l.includes(':') && !l.includes('&amp;') && l.split(/\s+/).length <= 7 && titleRegex.test(l))) &&
-      l.length < 60 &&
-      !l.includes('@')
-    );
+    const candidateTitle = lines.slice(0, 10).find((l) => {
+      const headline = l.split('|', 1)[0].trim();
+      const hasRecognizedRole = titleRegex.test(headline) || /\b(?:student|graduate|undergraduate|intern)\b/i.test(headline);
+      return l !== candidateName &&
+        ((options.ocr && /^([\w &.-]{3,40}):\s*(?:REST APIs|SQLite|JavaScript|Python|SQL)\b/i.test(l) && titleRegex.test(l.split(':', 1)[0])) ||
+          (!l.includes(':') && !l.includes('&amp;') && l.split(/\s+/).length <= 12 && hasRecognizedRole)) &&
+        l.length < 100 &&
+        !l.includes('@');
+    });
     if (candidateTitle) {
-      result.jobTitle = options.ocr ? candidateTitle.split(':', 1)[0].trim() : candidateTitle;
+      result.jobTitle = options.ocr
+        ? candidateTitle.split(':', 1)[0].trim()
+        : candidateTitle.split('|', 1)[0].trim();
     }
   }
 
@@ -575,7 +597,7 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
   }
 
   const experienceHeading = /^(?:professional\s+)?(?:work\s+)?experience$|^employment(?:\s+history)?$/i;
-  const sectionHeading = /^(?:summary|profile|objective|skills|technical\s+skills|projects|technical\s+projects|education|certifications|awards|languages|interests|activities|publications|references|volunteer(?:\s+experience)?)$/i;
+  const sectionHeading = /^(?:(?:professional|work|technical|key|academic|personal)\s+)*(?:summary|profile|objective|skills|technical\s+skills|projects|technical\s+projects|education|certifications|achievements|awards|languages|interests|activities|publications|references|volunteer(?:\s+experience)?)$/i;
   const experienceStart = lines.findIndex((line) => experienceHeading.test(line));
   if (experienceStart >= 0) {
     const experienceSectionLines: string[] = [];
@@ -640,7 +662,7 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
 
     if (inProjectsSection) {
       // Check for exit into another major section
-      if (/^(?:experience|work\s+experience|employment|education|skills|certifications|awards|languages|interests)\b/i.test(l) && l.length < 40) {
+      if (/^(?:(?:professional|work)\s+)?(?:experience|employment|education|skills|certifications|achievements|awards|languages|interests)\b/i.test(l) && l.length < 60) {
         if (currentProject && currentProject.bullets.length > 0) {
           projectsList.push(currentProject);
           currentProject = null;
@@ -664,6 +686,13 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
           }
           currentProject.bullets.push(cleanBullet);
         }
+      } else if (currentProject && currentProject.bullets.length === 0 && /\||\b(?:19|20)\d{2}\b/.test(l)) {
+        const date = l.match(/\b((?:19|20)\d{2})(?:\s*[-–—]\s*((?:19|20)\d{2}|present))?\b/i);
+        if (date) {
+          currentProject.startDate = date[1];
+          if (date[2]) currentProject.endDate = /^present$/i.test(date[2]) ? 'Present' : date[2];
+        }
+        currentProject.technologies = l.split('|').filter((part) => !/\b(?:19|20)\d{2}\b/.test(part)).join(',').trim();
       } else if (l.length > 3 && l.length < 80 && !l.includes('@') && !l.includes('http')) {
         // Potential Project Title line (e.g. "MoodMate", "PDFlex - PDF Utility Platform", "Material Code Standardization System")
         if (currentProject && currentProject.bullets.length > 0) {

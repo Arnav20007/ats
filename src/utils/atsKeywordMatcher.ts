@@ -226,7 +226,7 @@ export function analyzeAtsKeywords(
  * scale numbers (65M+, 18,000, 3.5M DAU, 45,000 concurrent), multipliers (3x),
  * timeframes (72-hour, 2 weeks), and team sizes (team of 8, 18+ engineers).
  */
-export const QUANTIFIABLE_METRIC_REGEX = /(?:\b\d+(\.\d+)?%|\b\d+\s*percent|[\$€£₹]\s*\d+([.,]\d+)?[kKmMbB]?|\b\d+([.,]\d+)?\s*(?:[kKmMbB]|[tTgGmMkK][bB])\+?|\b\d+x\b|\b\d+(\.\d+)?[\s-]*(?:ms|milliseconds|seconds|mins|hours|days|weeks|months|years)\b|\b\d+([.,]\d+)?\+?\s*(?:qps|rps|tps|dau|mau|records|requests|users|events|streams|cases|tests)\b|\b(?:team of \d+|\d+\+?\s*(?:engineers|developers|reports|members))\b|\b\d{1,3}(?:,\d{3})+\b)/i;
+export const QUANTIFIABLE_METRIC_REGEX = /(?:\b\d+(\.\d+)?%|\b\d+\s*percent|[\$€£₹]\s*\d+([.,]\d+)?[kKmMbB]?|\b\d+([.,]\d+)?\s*(?:[kKmMbB]|[tTgGmMkK][bB])\+?|\b\d+x\b|\b\d+(\.\d+)?[\s-]*(?:ms|milliseconds|seconds|mins|hours|days|weeks|months|years)\b|\b\d+([.,]\d+)?\+?\s*(?:qps|rps|tps|dau|mau|records|requests|users|events|streams|cases|tests|variants|problems)\b|\b\d+([.,]\d+)?\+?\s+(?:(?:controlled|synthetic|unique|total|test|daily|monthly|active|concurrent|customer|vendor|business|production)\s+){0,3}(?:variants|problems|records|requests|users|events|streams|cases|tests|customers|transactions)\b|\b(?:team of \d+|\d+\+?\s*(?:engineers|developers|reports|members))\b|\b\d{1,3}(?:,\d{3})+\b)/i;
 
 export function hasQuantifiableMetric(text: string): boolean {
   if (!text) return false;

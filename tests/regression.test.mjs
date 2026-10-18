@@ -10,7 +10,8 @@ const vite = await createServer({
   logLevel: 'error'
 });
 const load = (id) => vite.ssrLoadModule(id);
-const [{ prepareResumeImport }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { extractTextFromPdfFile, parseResumeText }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
+const { safelyOptimizeResume } = await load('/src/utils/resumeOptimizer.ts');
+const [{ prepareResumeImport }, { analyzeAtsKeywords, hasQuantifiableMetric }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { extractTextFromPdfFile, parseResumeText }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
   load('/src/utils/resumeImport.ts'),
   load('/src/utils/atsKeywordMatcher.ts'),
   load('/src/utils/deepAuditAnalyzer.ts'),
@@ -215,6 +216,64 @@ test('OCR text maps wrapped project bullets without inventing a summary or title
   assert.equal(parsed.projects?.[0].bullets.length, 1, 'wrapped OCR lines should stay in one bullet');
   assert.match(parsed.projects?.[0].bullets[0] || '', /user\/provider workflows/);
   assert.equal(parsed.projects?.[1].startDate, '2026');
+});
+
+test('text PDF parsing preserves wrapped project bullets, dates, and student headlines', () => {
+  const text = [
+    'Jordan Rivera',
+    'Computer Science Student | C++ / Python | Full-Stack Projects',
+    'jordan@example.com | +1 555 555 1212',
+    'EDUCATION',
+    'Example University — B.Tech in Computer Science | 2024–2028',
+    'TECHNICAL SKILLS',
+    'Python, React, SQL',
+    'PROJECTS',
+    'MoodMate',
+    'React, JavaScript | 2025–Present',
+    '• Developed a web application for appointment booking and',
+    'user/provider workflows with authentication.',
+    'Material Code Standardization System',
+    'Hackathon | Python | 2026',
+    '• Constructed a synthetic dataset of 200 controlled variants to evaluate matching behavior.',
+    'ACHIEVEMENTS',
+    '• Solved 100 DSA problems during a 100-day streak and documented progress on',
+    'LinkedIn.'
+  ].join('\n');
+  const parsed = parseResumeText(text);
+
+  assert.equal(parsed.jobTitle, 'Computer Science Student');
+  assert.equal(parsed.summary, undefined, 'do not synthesize a summary when none exists');
+  assert.equal(parsed.projects?.length, 2, 'metadata and wrapped lines must not become project cards');
+  assert.equal(parsed.projects?.[0].name, 'MoodMate');
+  assert.equal(parsed.projects?.[0].startDate, '2025');
+  assert.equal(parsed.projects?.[0].endDate, 'Present');
+  assert.equal(parsed.projects?.[0].bullets.length, 1);
+  assert.match(parsed.projects?.[0].bullets[0] || '', /appointment booking and user\/provider workflows/);
+  assert.equal(parsed.projects?.[1].startDate, '2026');
+  assert.equal(parsed.projects?.[1].bullets.length, 1);
+  assert.equal(hasQuantifiableMetric(parsed.projects?.[1].bullets[0] || ''), true);
+  assert.equal(parsed.experienceBullets?.length || 0, 0, 'projects must not be invented as work experience');
+  assert.match(parsed.bullets?.at(-1) || '', /documented progress on LinkedIn/);
+});
+
+test('one-click cleanup removes only explicit metric templates and preserves real figures', () => {
+  const source = {
+    ...BLANK_STARTER_RESUME,
+    experience: [{
+      id: 'exp-test', role: '', company: '', location: '', startDate: '', endDate: '',
+      bullets: [
+        'Developed a web app for appointment workflows [Add a verified result and metric, if available.], reducing latency by [X]% across [Y] daily requests.',
+        'reduced API latency by 32% across 4 services.'
+      ]
+    }],
+    projects: []
+  };
+  const result = safelyOptimizeResume(source);
+
+  assert.equal(result.removedPlaceholderBullets, 1);
+  assert.equal(result.resume.experience[0].bullets[0], 'Developed a web app for appointment workflows.');
+  assert.equal(result.resume.experience[0].bullets[1], 'Reduced API latency by 32% across 4 services.');
+  assert.equal(result.resume.experience[0].bullets[1].includes('32%'), true);
 });
 
 test('keyword matching returns an empty scope when a job description has no recognized terms', () => {
