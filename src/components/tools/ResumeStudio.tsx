@@ -701,34 +701,12 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     if (onActionLogged) onActionLogged();
   };
 
-  // Apply safe formatting and add prompts where verified results are missing.
+  // Keep optimization non-destructive: never insert generic prompts into résumé bullets.
   const handleOneClickOptimize = () => {
-    // Never add skills or personal details that the user has not supplied.
-    const optimizeBulletList = (bullets: string[]) => {
-      return bullets.map((bullet) => {
-        const clean = bullet.trim();
-        if (!clean || hasQuantifiableMetric(clean) || clean.includes('[Add a verified result')) return clean;
-        return `${clean.replace(/[.!?]+$/, '')} [Add a verified result and metric, if available.]`;
-      });
-    };
-
-    const optimizedExperience = resume.experience.map((exp) => ({
-      ...exp,
-      bullets: optimizeBulletList(exp.bullets)
-    }));
-    const optimizedProjects = (resume.projects || []).map((proj) => ({
-      ...proj,
-      bullets: optimizeBulletList(proj.bullets)
-    }));
-
-    setResume({
-      ...resume,
-      experience: optimizedExperience,
-      projects: optimizedProjects
-    });
-
-    setHasEdited(true);
-    showToast('Draft prompts added where verified results are missing. Review each one before using it.', 'sparkle');
+    // Adding instructional placeholder text to real bullets makes the résumé worse
+    // and can trigger length/quality warnings without adding evidence. Preserve the
+    // candidate's content and direct them to the existing review findings instead.
+    showToast('Your résumé was left unchanged. Review flagged bullets and add only results you can verify.', 'sparkle');
     if (onActionLogged) onActionLogged();
   };
 
@@ -2063,7 +2041,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 type="button"
                 onClick={handleOneClickOptimize}
                 className="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
-                title="1-Click ATS Optimization: Ingest missing keywords & Google X-Y-Z metrics"
+                title="Review résumé findings and add only accurate details you can verify"
               >
                 <Zap className="w-3.5 h-3.5 fill-current" />
                 <span>1-Click Optimize</span>
