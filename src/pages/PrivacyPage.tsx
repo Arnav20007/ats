@@ -8,20 +8,20 @@ interface PrivacyPageProps {
 const guarantees = [
   {
     icon: HardDrive,
-    title: 'Runs 100% on your device',
-    body: 'Your browser parses the resume locally in memory. Your resume text is never transmitted across the network, remaining entirely local to your session.',
+    title: 'Résumé text stays in your browser',
+    body: 'Your browser parses résumé text locally in memory. The text is not sent to ToolForge servers; the site may request external fonts.',
     color: 'emerald',
   },
   {
     icon: EyeOff,
-    title: 'Zero server database',
-    body: 'We do not have a database, user accounts, or server logs. When you close the tab, everything in memory is erased.',
+    title: 'No app database or account',
+    body: 'The inspected application has no résumé database or user account system. Hosting providers may create service logs under their own policies.',
     color: 'blue',
   },
   {
     icon: Lock,
     title: 'Never used to train AI',
-    body: 'Your resume text is processed strictly in your local session. We never harvest, store, train AI models on, or monetize candidate documents.',
+    body: 'Résumé suggestions are produced by client-side JavaScript. Résumé text is not sent to an AI service or used to train a model.',
     color: 'purple',
   },
   {
@@ -50,7 +50,7 @@ const detailedSections = [
   },
   {
     title: '3. Third-Party Data Sharing',
-    content: "Because your resume data never leaves your browser, there is no data to share, sell, or rent. We have zero partnerships with data brokers, recruiters, staffing agencies, or advertising networks.",
+    content: "Résumé text is not sent to ToolForge servers. The site loads fonts from Google Fonts, which receives standard connection metadata; résumé content is not included in that font request.",
   },
   {
     title: '4. AI Architecture and Processing',
@@ -90,7 +90,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigateHome }) => {
         <div className="space-y-4 border-b border-slate-200 dark:border-zinc-800 pb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>100% Client-Side Privacy Guarantee</span>
+            <span>Browser-Side Résumé Processing</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -98,7 +98,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigateHome }) => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
-            We collect absolutely nothing. Your resume stays on your computer, never touches a server, and is erased when you close your browser tab.
+            Your résumé text is analyzed in your browser and is not sent to ToolForge servers. Theme preference is stored locally, and fonts load from Google Fonts.
           </p>
 
           <div className="pt-1 text-xs text-slate-400 font-mono">
@@ -147,10 +147,10 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigateHome }) => {
         <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-emerald-900 via-teal-950 to-slate-950 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="space-y-2 text-center sm:text-left">
             <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
-              Ready to check your resume with complete privacy?
+              Ready to review your résumé in your browser?
             </h3>
             <p className="text-xs sm:text-sm text-emerald-200/80 font-normal">
-              No account required. Runs 100% in your browser.
+              No account required. Résumé text is not sent to ToolForge servers.
             </p>
           </div>
 

@@ -386,63 +386,18 @@ export const SAMPLE_RESUMES: Record<string, ResumeData> = {
 
 export const BLANK_STARTER_RESUME: ResumeData = {
   id: 'new_builder_draft',
-  fullName: 'Alex Morgan',
-  jobTitle: 'Software Engineer',
-  email: 'alex.morgan@email.com',
-  phone: '+1 (555) 234-5678',
-  location: 'San Francisco, CA',
-  linkedin: 'linkedin.com/in/alexmorgan-dev',
-  portfolio: 'alexmorgan.dev',
-  summary:
-    'Dedicated Software Engineer with proven expertise building scalable cloud applications, high-performance APIs, and intuitive user interfaces. Passionate about system reliability and measurable business impact.',
-  skills: [
-    'TypeScript',
-    'React',
-    'Node.js',
-    'PostgreSQL',
-    'Docker',
-    'REST APIs',
-    'Git',
-    'CI/CD Pipelines'
-  ],
-  experience: [
-    {
-      id: 'exp-starter-1',
-      role: 'Software Engineer',
-      company: 'Tech Solutions Inc.',
-      location: 'San Francisco, CA',
-      startDate: 'Jan 2023',
-      endDate: 'Present',
-      bullets: [
-        'Architected and deployed responsive full-stack features using React and Node.js, boosting customer engagement by 32%.',
-        'Optimized PostgreSQL database queries and indexing strategies, slashing average API response latency by 45%.',
-        'Implemented automated CI/CD deployment pipelines with Docker, cutting deployment cycle times from 45 minutes to 8 minutes.'
-      ]
-    }
-  ],
-  projects: [
-    {
-      id: 'proj-starter-1',
-      name: 'CloudSync — Real-Time Collaboration Engine',
-      role: 'Creator & Maintainer',
-      technologies: 'TypeScript, WebSocket, Redis, Docker',
-      startDate: '2024',
-      endDate: '2024',
-      bullets: [
-        'Built a real-time collaborative document editor with Operational Transformation algorithms, supporting 50+ concurrent users with sub-25ms sync latency.',
-        'Containerized multi-service deployment with Docker Compose, achieving 100% test pass rate across 65 integration test suites.'
-      ]
-    }
-  ],
-  education: [
-    {
-      id: 'edu-starter-1',
-      degree: 'B.S. in Computer Science',
-      school: 'University of California',
-      location: 'Berkeley, CA',
-      year: '2017 – 2021'
-    }
-  ]
+  fullName: '',
+  jobTitle: '',
+  email: '',
+  phone: '',
+  location: '',
+  linkedin: '',
+  portfolio: '',
+  summary: '',
+  skills: [],
+  experience: [],
+  projects: [],
+  education: []
 };
 
 export const STARTER_ROLE_TEMPLATES: {
@@ -483,28 +438,9 @@ export const STARTER_ROLE_TEMPLATES: {
   {
     id: 'starter_clean',
     name: 'Clean Starter Canvas',
-    description: 'Fresh ATS-verified starter with clean placeholders ready to fill out.',
-    role: 'Software Engineer',
+    description: 'Blank resume canvas ready for your own details.',
+    role: 'Blank resume',
     resume: BLANK_STARTER_RESUME
   }
 ];
 
-export const DEFAULT_SAMPLE_JD = `Senior Software Engineer / Tech Lead (TypeScript, Go, React, Distributed Systems)
-
-About the Position:
-We are looking for a Senior Software Engineer to build and scale our high-throughput distributed cloud services. You will design resilient backend microservices in Go and Node.js/TypeScript, craft interactive React web applications, and optimize PostgreSQL and Redis data architectures.
-
-What You Will Do:
-• Architect, deploy, and operate high-concurrency distributed systems with 99.99% availability SLAs.
-• Build real-time streaming architectures utilizing Apache Kafka, WebSockets, or event queues.
-• Optimize database schemas and caching layers across PostgreSQL, Redis, and multi-region AWS environments.
-• Implement continuous delivery (CI/CD Pipelines) utilizing Docker, Kubernetes, and automated test suites.
-• Champion web performance optimization, reducing API latency and improving frontend response times.
-• Mentor junior and mid-level engineering team members through rigorous code reviews and architecture design docs.
-
-Requirements & Qualifications:
-• 5+ years of software engineering experience with TypeScript, React, Go, and Node.js.
-• Strong foundation in Distributed Systems, System Architecture, and REST / GraphQL APIs.
-• Production experience with PostgreSQL, Redis, and message queues (Kafka).
-• Hands-on proficiency with Docker, Kubernetes, and AWS cloud infrastructure.
-• Proven track record delivering measurable performance and latency improvements.`;

@@ -222,7 +222,7 @@ export const SEO_DATA: Record<ToolId, EnhancedSeoData> = {
   resume: {
     title: 'Free ATS Resume Bullet Polisher & Executive Action-Verb Optimizer | ToolForge',
     pageTitle: 'Free ATS Resume Bullet Polisher | ToolForge',
-    metaDescription: 'Transform weak, passive job resume bullets into metric-backed executive achievements that pass ATS screening filters. Instant, private, and 100% free.',
+    metaDescription: 'Review résumé bullet clarity and add your own verified outcomes. Free browser-based guidance with no account required.',
     canonicalPath: '/tools/ats-resume-bullet-polisher',
     h1: 'ATS-Optimized Resume Bullet & LinkedIn Impact Polisher',
     category: 'Career & Employment Utilities',

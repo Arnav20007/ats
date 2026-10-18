@@ -22,7 +22,7 @@ const dontList = [
 const termsSections = [
   {
     title: '1. What ToolForge Is',
-    content: "ToolForge is a free, browser-based technical utility designed to help job seekers evaluate applicant tracking system compatibility, discover missing job keywords, and apply Google X-Y-Z quantifiable metric formatting. All execution occurs client-side in the user's browser.",
+    content: "ToolForge is a free, browser-based utility that checks résumé text and compares it with job-description keywords. Its results are heuristics and do not measure compatibility with a specific employer's applicant tracking system.",
   },
   {
     title: '2. What ToolForge Is Not',
@@ -30,15 +30,15 @@ const termsSections = [
   },
   {
     title: '3. Intellectual Property and Content Ownership',
-    content: "You retain 100% full legal ownership of your resume, work history, and uploaded text. Because ToolForge operates entirely in browser memory and transmits no data to servers, we assert zero ownership or licensing rights over your personal career documents.",
+    content: "Your résumé text is processed in your browser and is not sent to ToolForge application servers. Theme preference may be saved in local browser storage, and fonts are loaded from Google Fonts. This page does not claim rights to your résumé content.",
   },
   {
     title: '4. Scoring and Algorithmic Disclaimers',
-    content: "ATS readiness scores and keyword percentages are heuristic simulations based on public applicant tracking system standards (e.g. Workday, Greenhouse, Lever). Different enterprise employers configure custom screening criteria; you should always exercise independent personal judgment.",
+    content: "Résumé readiness scores and keyword percentages are ToolForge heuristics. ToolForge does not test documents in employer applicant tracking systems, whose configurations and screening criteria vary. Use your own judgment when reviewing the suggestions.",
   },
   {
     title: '5. "As-Is" Warranty Disclaimer',
-    content: "ToolForge is provided on an 'as-is' and 'as-available' basis without warranties of any kind, whether express or implied. While we strive for 100% technical accuracy, we do not warrant that operation will be uninterrupted, error-free, or compatible with every proprietary corporate parser.",
+    content: "ToolForge is provided on an 'as-is' and 'as-available' basis without warranties of any kind, whether express or implied. We do not warrant that operation will be uninterrupted, error-free, or compatible with every document or employer system.",
   },
   {
     title: '6. Limitation of Liability',

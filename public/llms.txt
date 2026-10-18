@@ -3,11 +3,10 @@
 > ToolForge is a free, 100% private in-browser ATS (Applicant Tracking System) resume scanner, keyword matcher, and bullet point optimizer. All document parsing and text analysis run client-side in browser memory with zero server uploads.
 
 ## Core Capabilities
-- **27-Point ATS Diagnostic Audit**: Checks formatting, font safety, table avoidance, section heading standardization, contact info placement, and file parsing integrity.
+- **Document Structure & Keyword Analysis**: Checks document formatting, font safety, table avoidance, section heading clarity, and contact info placement.
 - **Job Description Keyword Matcher**: Compares candidate resumes against target job descriptions, identifying matching skills, missing keywords, and frequency gaps.
-- **Google X-Y-Z Bullet Polisher**: Rewrites weak responsibilities into high-impact metric bullets following Google's hiring formula: "Accomplished [X], as measured by [Y], by doing [Z]".
-- **Workday & Greenhouse Parser Verification**: Simulates how enterprise parsers extract candidate work experience, skills, and education.
-- **100% Client-Side Privacy**: Resumes are parsed locally using Web Workers. Zero bytes of candidate data are sent to servers or third-party APIs.
+- **Google X-Y-Z Bullet Polisher**: Guides users in structuring achievements using Google's hiring formula: "Accomplished [X], as measured by [Y], by doing [Z]" with user-provided metrics.
+- **100% Client-Side Privacy**: Resumes are parsed locally in browser memory. Zero bytes of candidate resume text are sent to servers or third-party APIs.
 
 ## Key URLs
 - **Web App**: https://toolforge-ats.vercel.app/

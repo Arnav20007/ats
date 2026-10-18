@@ -43,15 +43,15 @@ const colorMap: Record<string, { bg: string; border: string; icon: string }> = {
 const sections = [
   {
     title: 'What information do we collect?',
-    body: "None. Your resume content — name, contact details, job history, skills, education — stays in your browser's memory and is cleared when you close or refresh the page."
+    body: "Résumé content — name, contact details, job history, skills, and education — is processed in your browser and is not sent to ToolForge servers. It remains in the current page session."
   },
   {
     title: 'Do we use cookies or tracking?',
-    body: "One cookie only: a theme preference (light or dark mode) stored in localStorage. No advertising cookies, no analytics trackers, no third-party tracking scripts."
+    body: "The site stores a light or dark theme preference in localStorage; this is not a cookie. The site also loads fonts from Google Fonts, which receives standard connection metadata."
   },
   {
     title: 'Do we share data with third parties?',
-    body: "There's no data to share. We don't sell, rent, or share any user data with advertisers, data brokers, HR companies, or anyone else."
+    body: "Résumé content is not sent to ToolForge servers. Google Fonts receives standard connection metadata when font assets load; résumé content is not included in those requests."
   },
   {
     title: 'What about AI features?',
@@ -78,7 +78,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">Privacy Policy</h2>
-              <p className="text-xs text-slate-500 dark:text-zinc-400">We collect absolutely nothing · Updated Oct 2026</p>
+              <p className="text-xs text-slate-500 dark:text-zinc-400">Résumé text stays in your browser · Updated Oct 2026</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">

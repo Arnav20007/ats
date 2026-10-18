@@ -34,11 +34,11 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            How to Beat Applicant Tracking Systems (ATS)
+            Prepare a Clear Résumé for Applicant Tracking Systems
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
-            Over 97% of Fortune 500 companies use ATS parsers like Workday, Greenhouse, Taleo, and Lever. Here is how they actually parse your resume and how to score 90+ every time.
+            Applicant tracking systems vary by employer and configuration. This guide covers common résumé structure and keyword practices; ToolForge provides heuristic feedback rather than access to an employer's ranking rules.
           </p>
         </div>
 
@@ -52,7 +52,7 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
             Use a Strict Single-Column Format
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            Multi-column layouts, sidebars, floating text boxes, and tables cause major parsing failures in Workday and older Taleo engines. The parser reads horizontally across columns, merging unrelated text into an unreadable garble.
+            Single-column layouts and standard headings are generally easier for document parsers to interpret. Results vary by file, parser, and employer configuration, so no format can guarantee a particular screening outcome.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
             <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 space-y-1">
@@ -84,16 +84,16 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
             Write Bullet Points Using Google’s X-Y-Z Formula
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            Google’s famous recruiting guideline is: <em>"Accomplished [X], as measured by [Y], by doing [Z]."</em> ATS semantic models and human recruiters look for measurable evidence of your impact, not a dry list of responsibilities.
+            A useful bullet can describe what you did, the outcome, and how you measured it. Add metrics only when you can support them, and keep your description accurate to your role.
           </p>
           <div className="space-y-3 pt-2 text-xs sm:text-sm">
             <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900">
-              <span className="font-bold text-rose-700 dark:text-rose-400 block text-xs uppercase tracking-wider pb-1">Weak (0% Metrics):</span>
+              <span className="font-bold text-rose-700 dark:text-rose-400 block text-xs uppercase tracking-wider pb-1">Example without a measure:</span>
               <p className="text-slate-700 dark:text-zinc-300 font-serif italic">"Responsible for improving backend database queries and speeding up application load times."</p>
             </div>
             <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
-              <span className="font-bold text-emerald-700 dark:text-emerald-400 block text-xs uppercase tracking-wider pb-1">Optimized with Google X-Y-Z (100% Impact):</span>
-              <p className="text-slate-900 dark:text-white font-medium">"Architected PostgreSQL indexing and Redis caching pipeline, slashing p99 query latency by 42% and supporting 150k daily active users."</p>
+              <span className="font-bold text-emerald-700 dark:text-emerald-400 block text-xs uppercase tracking-wider pb-1">Illustrative X-Y-Z structure:</span>
+              <p className="text-slate-900 dark:text-white font-medium">"[Action] [what you changed], improving [verified measure] from [before] to [after] by [specific action]."</p>
             </div>
           </div>
         </div>
@@ -108,10 +108,10 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
             Match Hard Skills & Exact Phrase Formats
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            Modern ATS algorithms rank candidates based on keyword frequency and semantic co-occurrence. If a job posting asks for "Amazon Web Services (AWS)", include both the spelled-out form and the acronym.
+            Applicant tracking systems and employer configurations vary. Compare your résumé with the job description, and use relevant terms naturally when they accurately describe your experience.
           </p>
           <ul className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 list-disc pl-5">
-            <li>Never keyword-stuff white text in the background (modern ATS flags hidden text immediately and marks the candidate as fraudulent).</li>
+            <li>Do not hide keywords in the document; hidden text is not useful to readers and can make a résumé harder to review.</li>
             <li>Place your core tools and technologies in both your dedicated Skills section and naturally inside your experience bullets.</li>
             <li>Use standard job titles matching industry norms rather than company-specific jargon.</li>
           </ul>
@@ -133,23 +133,23 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
             {[
               {
                 q: "What is an ATS resume checker?",
-                a: "An ATS resume checker is an online tool that simulates how Applicant Tracking Systems (like Workday, Greenhouse, Taleo, and Lever) parse, scan, and rank resumes before a recruiter reads them. It audits formatting errors, section headings, and job keyword frequency."
+                a: "An ATS résumé checker estimates how résumé text, sections, and keywords may be reviewed. ToolForge compares extracted résumé text and common formatting signals; it does not simulate or rank candidates in a specific employer system."
               },
               {
                 q: "How do I check if my resume is ATS-friendly for free without signup?",
-                a: "Upload your PDF or Word resume to ToolForge. The tool parses text client-side in your browser, evaluates 27 formatting rules, and matches keywords against your target job description instantly without requiring an account or email."
+                a: "Upload a supported résumé file to analyze its extracted text in your browser. ToolForge checks common formatting patterns and compares résumé terms with a target job description without requiring an account."
               },
               {
                 q: "What is a good ATS score?",
-                a: "A score of 80% or higher is considered passing for major ATS systems. A score of 90+ places a candidate in the top 5% of applicant pools, ensuring high parser confidence and recruiter visibility."
+                a: "There is no universal passing score. ToolForge provides a heuristic based on keyword overlap, formatting checks, measurable bullets, and profile completeness; employers use different systems and criteria."
               },
               {
                 q: "What is Google's X-Y-Z formula for resume bullets?",
-                a: "Google's hiring formula states: Accomplished [X], as measured by [Y], by doing [Z]. It transforms passive duty descriptions into high-impact metric statements (e.g., Slashing latency by 42% by redesigning database indexing)."
+                a: "The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. Use results and measures that accurately reflect your own work."
               },
               {
                 q: "Does ToolForge store or sell my resume data?",
-                a: "No. ToolForge is 100% private and runs entirely client-side in your browser memory via Web Workers. Your resume is never uploaded, stored, logged, or shared with third parties."
+                a: "Résumé text is processed in your browser and is not sent to ToolForge servers. Your theme preference may be stored in local browser storage, and the site loads fonts from Google Fonts."
               }
             ].map((faq, idx) => (
               <article
@@ -173,7 +173,7 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="text-xl font-bold">Ready to test your resume against these rules?</h3>
             <p className="text-xs sm:text-sm text-slate-400">
-              Run our 27-point live ATS audit right now in your browser.
+              Review your résumé with browser-based formatting and keyword heuristics.
             </p>
           </div>
           <button

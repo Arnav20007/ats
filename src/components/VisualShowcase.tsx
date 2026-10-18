@@ -16,7 +16,7 @@ export const VisualShowcase: React.FC = () => {
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
-            75% of resumes are filtered out.{' '}
+            Clear formatting and relevant details help people review your experience.{' '}
             <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
               Here is how yours stands out.
             </span>
@@ -47,7 +47,7 @@ export const VisualShowcase: React.FC = () => {
               <ArrowRight className="w-4 h-4 text-slate-400" />
               <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                After: 98% Interview Ready
+                Example draft
               </span>
             </div>
           </div>
@@ -63,7 +63,7 @@ export const VisualShowcase: React.FC = () => {
             
             <div className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-white text-xs font-medium flex items-center gap-2">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Simulated against Workday & Greenhouse criteria</span>
+              <span>Illustrative example · no employer ATS test</span>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ export const VisualShowcase: React.FC = () => {
                 <span className="text-xs font-bold uppercase tracking-wider">Google X-Y-Z Formula</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
-                Transforms generic job duties ("Responsible for marketing") into verified impact statements ("Grew MRR by 43%").
+                Use the draft as a starting point, then add only outcomes and figures you can verify.
               </p>
             </div>
 

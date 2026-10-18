@@ -1,5 +1,5 @@
 /**
- * Enterprise ATS Keyword & Skill Matcher
+ * Résumé and target-job skill term comparison
  * 
  * Features:
  * - Word boundary safe matching (e.g. 'Go' never matches 'Google' or 'good')
@@ -155,9 +155,9 @@ export interface MatchAnalysisResult {
 }
 
 /**
- * Full ATS Keyword Analysis
+ * Heuristic keyword comparison
  * 
- * 1. Extracts required skills from Job Description
+ * 1. Finds recognized skills from the supplied Job Description
  * 2. Scans across Skills, Experience bullets, Summary, and Title separately
  * 3. Deduplicates so repeating a keyword never inflates the score
  * 4. Returns transparent match counts and locations
@@ -177,26 +177,7 @@ export function analyzeAtsKeywords(
   // 1. Identify which skills are requested in Job Description
   const requiredSkills = SKILL_DEFINITIONS.filter((skill) => isSkillInText(skill, jdText));
 
-  // Fallback to core technical baseline if JD is empty or non-standard
-  const activeSkillsList = requiredSkills.length >= 5 ? requiredSkills : [
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'TypeScript')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'React')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Go')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Node.js')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'PostgreSQL')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Redis')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Kafka')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Docker')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Kubernetes')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'AWS')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'GraphQL')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'REST APIs')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'CI/CD Pipelines')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Microservices')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Distributed Systems')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'System Architecture')!,
-    SKILL_DEFINITIONS.find((s) => s.canonical === 'Performance Optimization')!,
-  ].filter(Boolean);
+  const activeSkillsList = requiredSkills;
 
   const skillsText = resume.skills.join(' ');
   const expText = resume.experienceBullets.join(' ');
@@ -235,7 +216,7 @@ export function analyzeAtsKeywords(
     missingKeywords,
     totalJdKeywords,
     matchRate,
-    scopeDescription: 'Scanned across: Skills array, Work Experience bullet points, Summary & Job Title'
+    scopeDescription: 'Recognized skill terms compared across résumé skills, experience and project bullets, summary, and title. Other job-description phrases are not scored.'
   };
 }
 

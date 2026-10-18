@@ -4,60 +4,60 @@ import { Check, Sparkles, ShieldCheck, Zap, Lock } from 'lucide-react';
 const comparisonData = [
   {
     feature: 'Price',
-    toolforge: 'Free forever',
-    jobscan: '$89.95 / 3 mo',
-    resumeworded: '$49 / mo',
-    teal: '$29 / mo',
+    toolforge: 'Free to use',
+    jobscan: 'Check current plan details',
+    resumeworded: 'Check current plan details',
+    teal: 'Check current plan details',
   },
   {
     feature: 'Account required?',
-    toolforge: 'No sign-up needed',
-    jobscan: 'Forced registration',
-    resumeworded: 'Forced registration',
-    teal: 'Forced registration',
+    toolforge: 'No account required',
+    jobscan: 'Varies by provider and workflow',
+    resumeworded: 'Varies by provider and workflow',
+    teal: 'Varies by provider and workflow',
   },
   {
     feature: 'Data privacy',
-    toolforge: 'Stays 100% on device',
-    jobscan: 'Stored on server',
-    resumeworded: 'Stored on server',
-    teal: 'Stored on server',
+    toolforge: 'Résumé text processed in browser; fonts load externally',
+    jobscan: 'Review provider privacy notice',
+    resumeworded: 'Review provider privacy notice',
+    teal: 'Review provider privacy notice',
   },
   {
     feature: 'Interactive inline editor',
-    toolforge: 'Edit directly on canvas',
-    jobscan: 'Re-upload Word file',
-    resumeworded: 'No editor',
-    teal: 'Basic form fields',
+    toolforge: 'Edit fields in the browser',
+    jobscan: 'Features vary by product and plan',
+    resumeworded: 'Features vary by product and plan',
+    teal: 'Features vary by product and plan',
   },
   {
     feature: '1-click keyword insert',
-    toolforge: 'Yes — instant add',
-    jobscan: 'Manual copy-paste',
-    resumeworded: 'Not available',
-    teal: 'Limited',
+    toolforge: 'Add recognized terms to your skills',
+    jobscan: 'Check current product features',
+    resumeworded: 'Check current product features',
+    teal: 'Check current product features',
   },
   {
     feature: 'Google X-Y-Z rewriter',
-    toolforge: 'Free & unlimited',
-    jobscan: 'Basic tips only',
-    resumeworded: 'Behind $49 paywall',
-    teal: 'Limited credits',
+    toolforge: 'Draft suggestions with factual placeholders',
+    jobscan: 'Check current product features',
+    resumeworded: 'Check current product features',
+    teal: 'Check current product features',
   },
   {
     feature: 'Clean PDF export',
-    toolforge: 'Direct print PDF',
-    jobscan: 'Score report only',
-    resumeworded: 'Score report only',
-    teal: 'Watermarked free',
+    toolforge: 'Browser print-to-PDF',
+    jobscan: 'Export options vary',
+    resumeworded: 'Export options vary',
+    teal: 'Export options vary',
   },
 ];
 
 const stats = [
-  { value: '100%', label: 'Free Forever', icon: Sparkles, color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60' },
-  { value: '0 KB', label: 'Data Uploaded', icon: Lock, color: 'text-teal-600 bg-teal-50 dark:bg-teal-950/60' },
-  { value: '< 1 sec', label: 'Analysis Speed', icon: Zap, color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/60' },
-  { value: 'Zero', label: 'Sign-Up Walls', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60' },
+  { value: '$0', label: 'ToolForge price', icon: Sparkles, color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60' },
+  { value: 'Browser', label: 'Résumé text processing', icon: Lock, color: 'text-teal-600 bg-teal-50 dark:bg-teal-950/60' },
+  { value: 'Rule-based', label: 'Review approach', icon: Zap, color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/60' },
+  { value: 'No account', label: 'Required to use ToolForge', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60' },
 ];
 
 export const CompetitorBenchmark: React.FC = () => {
@@ -69,15 +69,15 @@ export const CompetitorBenchmark: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Honest Benchmark</span>
+            <span>ToolForge Overview</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-            Why pay $90 every 3 months for something that should be free?
+            What ToolForge includes
           </h2>
 
           <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
-            ToolForge gives you full keyword matching, live scoring, and bullet point rewrites — at zero cost, with your data never leaving your browser.
+            ToolForge offers browser-based résumé checks, recognized skill-term comparisons, and draft wording suggestions. Results are heuristics, not employer ATS tests.
           </p>
         </div>
 
@@ -147,7 +147,7 @@ export const CompetitorBenchmark: React.FC = () => {
 
         {/* Clean Centered Subtext */}
         <p className="text-xs text-slate-400 dark:text-zinc-600 text-center">
-          Independent comparison based on public pricing and features as of October 2026.
+          Third-party prices and features change; check each provider's current product and privacy information.
         </p>
 
       </div>

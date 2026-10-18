@@ -6,8 +6,7 @@ import {
   ResumeProject,
   SAMPLE_RESUMES,
   BLANK_STARTER_RESUME,
-  STARTER_ROLE_TEMPLATES,
-  DEFAULT_SAMPLE_JD
+  STARTER_ROLE_TEMPLATES
 } from '../../data/resumeSamples';
 import {
   Mail,
@@ -96,13 +95,12 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
 
   // Active Resume State
-  const [resume, setResume] = useState<ResumeData>(SAMPLE_RESUMES.software_engineer);
-  const [targetJd, setTargetJd] = useState<string>(DEFAULT_SAMPLE_JD);
+  const [resume, setResume] = useState<ResumeData>({ ...BLANK_STARTER_RESUME });
+  const [targetJd, setTargetJd] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'deep_report' | 'keywords' | 'audit' | 'rewriter'>('deep_report');
   const [quickLinkedinInput, setQuickLinkedinInput] = useState('');
   const [newSkillInput, setNewSkillInput] = useState('');
   const [hasEdited, setHasEdited] = useState(false);
-  const [hasUploaded, setHasUploaded] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string>('');
   const [selectedBulletIndex, setSelectedBulletIndex] = useState<{
     section: 'experience' | 'project';
@@ -145,10 +143,11 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
   // 1. Enterprise ATS Keyword Analysis (Word boundary & alias safe)
   const keywordAnalysis = useMemo(() => {
+    const isUnclassifiedBulletNote = resume.summary.startsWith('Extracted bullets to review and move to the correct section:');
     const analysis = analyzeAtsKeywords(targetJd, {
       fullName: resume.fullName,
       jobTitle: resume.jobTitle,
-      summary: resume.summary,
+      summary: isUnclassifiedBulletNote ? '' : resume.summary,
       skills: resume.skills,
       experienceBullets: [
         ...resume.experience.flatMap((e) => e.bullets),
@@ -167,11 +166,11 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     };
   }, [resume, targetJd]);
 
-  // Comprehensive Deep Audit (Content, Sections, ATS Essentials, HR Red Flags, Bias Shield, Seniority)
+  // Rule-based résumé review (content, sections, file signals, and keyword overlap)
   const deepAudit = useMemo(() => {
     return generateDeepAuditReport(
       resume,
-      uploadedFileName || `${resume.fullName || 'Candidate'}_Resume.pdf`,
+      uploadedFileName,
       keywordAnalysis.matched,
       keywordAnalysis.missing
     );
@@ -200,14 +199,18 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       ...(resume.projects || []).flatMap((p) => p.bullets)
     ];
     const bulletsWithMetrics = allBullets.filter((b) => hasQuantifiableMetric(b)).length;
-    const metricRate = Math.round((bulletsWithMetrics / Math.max(1, allBullets.length)) * 100);
+    const metricRate = allBullets.length > 0
+      ? Math.round((bulletsWithMetrics / allBullets.length) * 100)
+      : 0;
 
     checks.push({
       id: 'metrics',
       title: 'Measurable achievements (Google X-Y-Z)',
       passed: metricRate >= 60,
-      explanation: `${metricRate}% of your bullet points include real numbers, percentages, scale, or dollar amounts.`,
-      action: 'Add concrete numbers (e.g. latency cut by 48%, 65M+ records, $18k savings) to make your experience stand out.'
+      explanation: allBullets.length > 0
+        ? `${metricRate}% of your bullet points contain numbers or measurable terms. Verify that each figure is accurate.`
+        : 'Add experience or project bullets to review numeric details.',
+      action: 'Add a result and metric you can verify, if one is available.'
     });
 
     // Check 3: Standard Section Headings
@@ -215,21 +218,23 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       id: 'headings',
       title: 'Standard section titles',
       passed: true,
-      explanation: 'Your resume uses standard headings (Summary, Skills, Experience, Projects, Education) that hiring systems expect.',
+      explanation: 'The editor organizes information under common résumé section labels. This does not test heading recognition in an employer ATS.',
       action: 'Avoid unusual labels like "My Story" or "What I Do".'
     });
 
-    // Check 4: Experience / Project Timeline & Dates
+    // Check 4: Presence of dates for listed work and project entries
     const hasDates = resume.experience.length > 0
       ? resume.experience.every((e) => e.startDate && e.endDate)
       : (resume.projects && resume.projects.length > 0
-          ? resume.projects.some((p) => p.startDate || p.endDate)
-          : true);
+          ? resume.projects.every((p) => p.startDate || p.endDate)
+          : false);
     checks.push({
       id: 'dates',
       title: 'Clear role / project dates',
       passed: hasDates,
-      explanation: 'Your employment and project dates are clearly written and easy to follow.',
+      explanation: hasDates
+        ? 'Date fields are present for the listed roles or projects; their chronology and accuracy are not verified.'
+        : 'Some role or project date fields are missing.',
       action: 'Format dates consistently (for example, "Jan 2022 – Present").'
     });
 
@@ -239,15 +244,16 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       id: 'skills',
       title: 'Balanced skills list',
       passed: skillCount >= 6 && skillCount <= 25,
-      explanation: `You have ${skillCount} skills listed. A focused list of 8 to 20 relevant skills works best.`,
+      explanation: `You have ${skillCount} skills listed. This check flags lists outside the app's suggested range of 6 to 25; relevance is not evaluated.`,
       action: 'Keep skills focused on the job you want instead of listing every tool you have ever tried.'
     });
 
     const passedCount = checks.filter((c) => c.passed).length;
-    const formattingScore = Math.round((passedCount / checks.length) * 100);
+    const formatChecks = checks.filter((c) => c.id === 'headings' || c.id === 'dates');
+    const formattingScore = Math.round((formatChecks.filter((c) => c.passed).length / formatChecks.length) * 100);
 
     // Check 6: Role & Section Completeness (Summary > 50 chars, Job Title, Contact present)
-    const hasSummary = (resume.summary || '').length >= 60;
+    const hasSummary = (resume.summary || '').length >= 60 && !resume.summary.startsWith('Extracted bullets to review and move to the correct section:');
     const hasTitle = (resume.jobTitle || '').length >= 5;
     const roleCompletenessScore = Math.round(
       (hasEmail ? 25 : 0) + (hasPhone ? 25 : 0) + (hasSummary ? 25 : 0) + (hasTitle ? 25 : 0)
@@ -266,66 +272,43 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     };
   }, [resume]);
 
-  // Overall Transparent ATS Readiness Formula: S = 0.40K + 0.25F + 0.20M + 0.15R
+  // ToolForge heuristic; normalize the remaining weights when no recognized target-job terms are available.
   const K = keywordAnalysis.matchRate;
   const F = atsAudit.formattingScore;
   const M = atsAudit.metricRate;
   const R = atsAudit.roleCompletenessScore;
+  const hasRecognizedTargetTerms = keywordAnalysis.totalJdKeywords > 0;
+  const scoreWeightTotal = hasRecognizedTargetTerms ? 1 : 0.6;
+  const keywordWeight = hasRecognizedTargetTerms ? 0.4 : 0;
+  const formattingWeight = 0.25 / scoreWeightTotal;
+  const metricsWeight = 0.2 / scoreWeightTotal;
+  const completenessWeight = 0.15 / scoreWeightTotal;
 
   const compositeScore = Math.min(100, Math.max(0, Math.round(
-    0.40 * K + 0.25 * F + 0.20 * M + 0.15 * R
+    keywordWeight * K + formattingWeight * F + metricsWeight * M + completenessWeight * R
   )));
 
   // Scanning animation steps
   const SCAN_STEPS = [
-    'Parsing document hierarchy and section headings with PDF.js...',
-    'Testing compatibility against Workday & Greenhouse parsers...',
-    'Matching keyword density against target job description...',
-    'Analyzing Google X-Y-Z quantifiable achievements...',
-    'Finalizing ATS Readiness Score...'
+    'Extracting text and section headings...',
+    'Checking resume structure...',
+    'Comparing keywords with your target job description...',
+    'Reviewing bullet points and profile details...',
+    'Preparing your heuristic readiness summary...'
   ];
 
-  // Trigger high-tech scan simulation and open studio
-  const launchScanAndOpenStudio = (onComplete?: () => void) => {
-    setIsScanning(true);
-    setScanProgress(15);
-    setCurrentStepIndex(0);
-
-    const stepInterval = setInterval(() => {
-      setCurrentStepIndex((prev) => {
-        if (prev < SCAN_STEPS.length - 1) {
-          return prev + 1;
-        }
-        return prev;
-      });
-      setScanProgress((prev) => Math.min(prev + 22, 100));
-    }, 240);
-
-    setTimeout(() => {
-      clearInterval(stepInterval);
-      setScanProgress(100);
-      setTimeout(() => {
-        setIsScanning(false);
-        setViewMode('studio');
-        if (onComplete) onComplete();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 250);
-    }, 1250);
-  };
-
-  // Load Sample Resume with Scan Simulation
+  // Load an illustrative sample profile; sample details are fictional.
   const handleSelectSample = (sampleKey: keyof typeof SAMPLE_RESUMES) => {
     const s = SAMPLE_RESUMES[sampleKey];
     if (s) {
-      launchScanAndOpenStudio(() => {
-        setResume(s);
-        setRewriterInput(s.experience[0]?.bullets[0] || '');
-        setHasUploaded(true);
-        setHasEdited(true);
-        setUploadedFileName(`${s.jobTitle} Example`);
-        showToast(`Loaded ${s.jobTitle} ATS Profile`, 'sparkle');
-        if (onActionLogged) onActionLogged();
-      });
+      setResume(s);
+      setRewriterInput(s.experience[0]?.bullets[0] || '');
+      setUploadedFileName('');
+      setHasEdited(true);
+      setViewMode('studio');
+      showToast('Loaded a fictional sample profile. Replace its details before using it.', 'sparkle');
+      if (onActionLogged) onActionLogged();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -336,15 +319,15 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       return `File exceeds the 10MB limit (${(file.size / (1024 * 1024)).toFixed(1)}MB). Please upload a smaller document.`;
     }
     const ext = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
-    const validExts = ['.pdf', '.docx', '.txt', '.md', '.doc'];
+    const validExts = ['.pdf', '.docx', '.txt', '.md'];
+    const fileType = file.type.toLowerCase();
     const validMimes = [
       'application/pdf',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'text/plain',
-      'text/markdown',
-      'application/msword'
+      'text/markdown'
     ];
-    const isValid = validExts.includes(ext) || validMimes.some((m) => file.type.includes(m));
+    const isValid = validExts.includes(ext) || validMimes.includes(fileType);
     if (!isValid) {
       return `Unsupported file format (${ext || file.type || 'unknown'}). Please upload a PDF, DOCX, TXT, or MD resume.`;
     }
@@ -398,69 +381,50 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
           const parsedProjects: ResumeProject[] = (parsedData.projects || []).map((proj, pIdx) => ({
             id: `proj-uploaded-${pIdx + 1}`,
             name: proj.name,
-            role: proj.role || 'Project Lead & Developer',
+            role: proj.role || '',
             technologies: proj.technologies,
             startDate: proj.startDate,
             endDate: proj.endDate,
-            bullets: proj.bullets && proj.bullets.length > 0
-              ? proj.bullets
-              : ['Designed and engineered core system architecture and delivered functional prototype.']
+              bullets: proj.bullets || []
           }));
 
-          // Fresher / Student check: if candidate has projects and no explicit corporate experience, don't invent fake company
-          const hasCorporateExp = parsedData.bullets && parsedData.bullets.length > 0 && !parsedData.isFresherOrStudent;
-          const parsedExperience: ResumeExperience[] = hasCorporateExp
+          // Only assign extracted bullets to work history when they appeared under an explicit experience heading.
+          const experienceBullets = parsedData.experienceBullets || [];
+          const parsedExperience: ResumeExperience[] = experienceBullets.length > 0
             ? [
                 {
                   id: 'exp-uploaded-1',
-                  role: parsedData.jobTitle || 'Software Professional',
-                  company: 'Engineering & Experience',
+                  role: '',
+                  company: '',
                   location: parsedData.location || '',
-                  startDate: 'Recent',
-                  endDate: 'Present',
-                  bullets: parsedData.bullets || ['Engineered key features and collaborated across teams to deliver scalable software solutions.']
+                  startDate: '',
+                  endDate: '',
+                  bullets: experienceBullets
                 }
               ]
-            : (parsedProjects.length === 0
-                ? [
-                    {
-                      id: 'exp-uploaded-1',
-                      role: parsedData.jobTitle || 'Software Professional',
-                      company: 'Engineering & Experience',
-                      location: parsedData.location || '',
-                      startDate: 'Recent',
-                      endDate: 'Present',
-                      bullets: parsedData.bullets && parsedData.bullets.length > 0
-                        ? parsedData.bullets
-                        : ['Engineered key features and collaborated across teams to deliver scalable software solutions.']
-                    }
-                  ]
-                : []);
+            : [];
+          const classifiedBullets = new Set([
+            ...experienceBullets,
+            ...parsedProjects.flatMap((project) => project.bullets)
+          ]);
+          const unclassifiedBullets = (parsedData.bullets || []).filter((bullet) => !classifiedBullets.has(bullet));
 
           const cleanUploadedResume: ResumeData = {
             id: `uploaded-${Date.now()}`,
-            fullName: parsedData.fullName || file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
-            jobTitle: parsedData.jobTitle || 'Software Professional',
+            fullName: parsedData.fullName || '',
+            jobTitle: parsedData.jobTitle || '',
             email: parsedData.email || '',
             phone: parsedData.phone || '',
             location: parsedData.location || '',
             linkedin: parsedData.linkedin || '',
             portfolio: parsedData.portfolio || '',
-            summary: parsedData.summary || 'Dedicated engineering professional with proven expertise in software development and delivering impactful technical solutions.',
+            summary: parsedData.summary || (unclassifiedBullets.length > 0
+              ? `Extracted bullets to review and move to the correct section:\n${unclassifiedBullets.map((bullet) => `• ${bullet}`).join('\n')}`
+              : ''),
             skills: parsedData.skills && parsedData.skills.length > 0 ? parsedData.skills : [],
             experience: parsedExperience,
             projects: parsedProjects,
-            education: parsedData.education && parsedData.education.length > 0
-              ? parsedData.education
-              : [
-                  {
-                    id: 'edu-uploaded-1',
-                    degree: 'B.S. in Computer Science or Equivalent',
-                    school: 'University',
-                    location: '',
-                    year: 'Graduated'
-                  }
-                ]
+            education: parsedData.education || []
           };
 
           setResume(cleanUploadedResume);
@@ -468,14 +432,13 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
             cleanUploadedResume.projects?.[0]?.bullets[0] ||
             '';
           setRewriterInput(firstBullet);
-          setHasUploaded(true);
           setHasEdited(true);
           setStudioTab('document'); // Always land directly on Document Canvas!
 
           if (extracted.isScanned) {
             showToast('Scanned image detected. For ATS scanners, please use a text-selectable PDF.', 'warning');
           } else {
-            showToast(`Parsed ${file.name} successfully!`, 'success');
+            showToast(`Extracted text from ${file.name}. Review the fields; some details may need correction.`, 'success');
           }
 
           if (onActionLogged) onActionLogged();
@@ -569,30 +532,27 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     ribbonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // Generate 3 rewrites based on selected bullet
+  // Generate editable drafts that preserve the user's facts and leave unknown results as prompts.
   const rewrittenOptions = useMemo(() => {
-    const text = rewriterInput.trim();
+    const text = rewriterInput.trim().replace(/^[-•*]\s*/, '').replace(/[.!?]+$/, '');
     return [
       {
         type: 'Focus on results (Google X-Y-Z formula)',
-        score: 96,
-        text: `Improved ${text.replace(/^([a-z]+ed|[a-z]+ing)\s+/i, '')}, boosting efficiency by 34% and cutting response times by 42%.`,
-        powerVerbs: ['Improved', 'Boosting', 'Cutting'],
-        rationale: 'Shows what you did, how it was measured, and the impact.'
+        text: `${text} — Add your verified result [X], measure [Y], and action [Z].`,
+        powerVerbs: [],
+        rationale: 'Replace the prompts with outcomes and measurements you can verify.'
       },
       {
         type: 'Focus on leadership and initiative',
-        score: 93,
-        text: `Led the delivery of ${text.replace(/^([a-z]+ed|[a-z]+ing)\s+/i, '')}, establishing best practices used by the entire 18-person team.`,
-        powerVerbs: ['Led', 'Delivering', 'Establishing'],
-        rationale: 'Demonstrates initiative and impact on the broader team.'
+        text: `${text} — Add the scope you personally owned [team, users, or process] and its verified outcome [result].`,
+        powerVerbs: [],
+        rationale: 'Add only the scope and outcomes that accurately describe your contribution.'
       },
       {
         type: 'Short, clean, and direct',
-        score: 91,
-        text: `Built and launched ${text.replace(/^([a-z]+ed|[a-z]+ing)\s+/i, '')}, delivering 99.9% uptime while speeding up release cycles.`,
-        powerVerbs: ['Built', 'Launched', 'Delivering'],
-        rationale: 'Punchy and clear for recruiters skimming your resume.'
+        text: `${text} — Add one concise, verified outcome and metric, if available.`,
+        powerVerbs: [],
+        rationale: 'A concise draft; keep the outcome factual and omit a metric if you cannot verify one.'
       }
     ];
   }, [rewriterInput]);
@@ -752,111 +712,34 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     if (onActionLogged) onActionLogged();
   };
 
-  // 1-Click ATS Optimization: Injects missing keywords, rewrites unquantified bullets to Google X-Y-Z, polishes summary
+  // Apply safe formatting and add prompts where verified results are missing.
   const handleOneClickOptimize = () => {
-    // 1. Ingest missing keywords from target job
-    const missing = keywordAnalysis.missing;
-    const currentSkills = new Set(resume.skills);
-    missing.forEach((k) => currentSkills.add(k));
-
-    // Ensure core high-impact skills if list is short
-    if (currentSkills.size < 8) {
-      ['System Architecture', 'CI/CD Pipelines', 'Distributed Systems', 'Cloud Infrastructure', 'REST APIs'].forEach((s) => currentSkills.add(s));
-    }
-    const optimizedSkills = Array.from(currentSkills);
-
-    // Bullet optimizer function using Google X-Y-Z formula
+    // Never add skills or personal details that the user has not supplied.
     const optimizeBulletList = (bullets: string[]) => {
       return bullets.map((bullet) => {
-        let clean = bullet.trim();
-        clean = clean.charAt(0).toUpperCase() + clean.slice(1);
-
-        if (hasQuantifiableMetric(clean)) {
-          return clean.replace(/[.,;:]*$/, '.');
-        }
-
-        const trimmed = clean.replace(/\.+$/, '');
-        const lower = trimmed.toLowerCase();
-
-        if (lower.includes('pipeline') || lower.includes('kafka') || lower.includes('stream') || lower.includes('data')) {
-          return `${trimmed}, processing 65M+ daily transaction events at 99.99% availability and cutting pipeline latency by 42%.`;
-        }
-        if (lower.includes('api') || lower.includes('backend') || lower.includes('microservice') || lower.includes('service') || lower.includes('node') || lower.includes('go')) {
-          return `${trimmed}, slashing P99 API response times by 48% across 120,000+ monthly active users.`;
-        }
-        if (lower.includes('database') || lower.includes('sql') || lower.includes('postgres') || lower.includes('redis') || lower.includes('cache')) {
-          return `${trimmed}, cutting database query latency from 840ms to 42ms and reducing cloud infrastructure spend by $18,000/yr.`;
-        }
-        if (lower.includes('docker') || lower.includes('kubernetes') || lower.includes('ci/cd') || lower.includes('deploy') || lower.includes('test')) {
-          return `${trimmed}, accelerating deployment cycles by 75% with zero production regressions across 40+ continuous releases.`;
-        }
-        if (lower.includes('react') || lower.includes('frontend') || lower.includes('ui') || lower.includes('client') || lower.includes('web')) {
-          return `${trimmed}, reducing JavaScript bundle size by 54% and lifting client session engagement by 31%.`;
-        }
-        if (lower.includes('lead') || lower.includes('manage') || lower.includes('team') || lower.includes('cross-functional') || lower.includes('sprint')) {
-          return `${trimmed}, leading an 8-person engineering squad to deliver roadmap initiatives 2 weeks ahead of quarterly OKRs.`;
-        }
-
-        // Universal high-impact quantifiable enhancement
-        return `${trimmed}, boosting operational efficiency by 34% and cutting response times by 42% for 100k+ active users.`;
+        const clean = bullet.trim();
+        if (!clean || hasQuantifiableMetric(clean) || clean.includes('[Add a verified result')) return clean;
+        return `${clean.replace(/[.!?]+$/, '')} [Add a verified result and metric, if available.]`;
       });
     };
 
-    // 2. Upgrade all unquantified bullets to Google X-Y-Z formula in experience
-    const optimizedExperience = resume.experience.map((exp) => {
-      const startDate = exp.startDate && exp.startDate.trim() ? exp.startDate : 'Jan 2022';
-      const endDate = exp.endDate && exp.endDate.trim() ? exp.endDate : 'Present';
-
-      return {
-        ...exp,
-        startDate,
-        endDate,
-        bullets: optimizeBulletList(exp.bullets)
-      };
-    });
-
-    // 2b. Upgrade all unquantified bullets in projects
+    const optimizedExperience = resume.experience.map((exp) => ({
+      ...exp,
+      bullets: optimizeBulletList(exp.bullets)
+    }));
     const optimizedProjects = (resume.projects || []).map((proj) => ({
       ...proj,
       bullets: optimizeBulletList(proj.bullets)
     }));
 
-    // 3. Elevate summary if short or generic (fresher aware)
-    let optimizedSummary = resume.summary.trim();
-    const isFresher = (resume.projects && resume.projects.length > 0) && (resume.experience.length === 0);
-    if (optimizedSummary.length < 75 || !optimizedSummary.includes('%')) {
-      if (isFresher) {
-        optimizedSummary = `Dynamic and results-driven ${resume.jobTitle || 'Software Engineer'} with strong hands-on experience developing full-stack web applications, scalable data pipelines, and distributed services. Demonstrates rigorous problem-solving skills, proficiency across modern tech stacks, and a track record of delivering end-to-end projects with high performance and clean code standards.`;
-      } else {
-        optimizedSummary = `Accomplished ${resume.jobTitle || 'Senior Software Engineer'} with proven expertise designing distributed systems, high-concurrency microservices, and modern cloud platforms. Track record of cutting P99 latency by 48%, scaling platform throughput across multi-region clusters, and driving engineering excellence.`;
-      }
-    }
-
-    // 4. Ensure contact details pass validation (including LinkedIn)
-    const email = resume.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(resume.email.trim())
-      ? resume.email
-      : (resume.fullName ? `${resume.fullName.toLowerCase().replace(/\s+/g, '.')}@email.com` : 'alex.morgan@email.com');
-    const phone = resume.phone && resume.phone.length > 7 ? resume.phone : '+1 (555) 234-5678';
-    const jobTitle = resume.jobTitle && resume.jobTitle.length >= 5 ? resume.jobTitle : (isFresher ? 'Software Engineer' : 'Senior Software Engineer');
-    const linkedin = resume.linkedin && resume.linkedin.length > 5
-      ? resume.linkedin
-      : `linkedin.com/in/${(resume.fullName || 'candidate').toLowerCase().replace(/[^a-z0-9]/g, '')}`;
-
     setResume({
       ...resume,
-      fullName: resume.fullName || 'Alex Morgan',
-      jobTitle,
-      email,
-      phone,
-      linkedin,
-      summary: optimizedSummary,
-      skills: optimizedSkills,
       experience: optimizedExperience,
       projects: optimizedProjects
     });
 
     setHasEdited(true);
-    showToast('⚡ 1-Click ATS Optimization Applied! Score boosted to 98% with Google X-Y-Z metrics, missing skills & LinkedIn.', 'sparkle');
+    showToast('Draft prompts added where verified results are missing. Review each one before using it.', 'sparkle');
     if (onActionLogged) onActionLogged();
   };
 
@@ -875,15 +758,12 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const handleAddProject = () => {
     const newProj: ResumeProject = {
       id: `proj-${Date.now()}`,
-      name: 'High-Scale Cloud Platform',
-      role: 'Full-Stack Developer',
-      technologies: 'React, Node.js, TypeScript, PostgreSQL, Docker',
-      startDate: '2025',
-      endDate: 'Present',
-      bullets: [
-        'Designed and deployed an automated cloud pipeline, slashing manual provisioning time by 65%.',
-        'Built full-stack dashboard supporting 15,000+ monthly active users at 99.9% uptime.'
-      ]
+      name: '',
+      role: '',
+      technologies: '',
+      startDate: '',
+      endDate: '',
+      bullets: []
     };
     setResume((prev) => ({
       ...prev,
@@ -916,7 +796,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   };
 
   const handleAddProjectBullet = (projIdx: number) => {
-    const newBullet = 'Engineered automated data synchronization service, boosting throughput by 40% and reducing latency.';
+    const newBullet = '';
     setResume((prev) => {
       const nextProjects = [...(prev.projects || [])];
       if (nextProjects[projIdx]) {
@@ -957,53 +837,18 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       chosen = JSON.parse(JSON.stringify(SAMPLE_RESUMES.product_manager));
     } else if (templateKey === 'finance_ops') {
       chosen = JSON.parse(JSON.stringify(SAMPLE_RESUMES.finance_ops));
-    } else if (templateKey === 'blank_slate') {
-      chosen = {
-        id: `draft-${Date.now()}`,
-        fullName: 'Alex Morgan',
-        jobTitle: 'Software Engineer',
-        email: 'alex.morgan@email.com',
-        phone: '+1 (555) 234-5678',
-        location: 'San Francisco, CA',
-        linkedin: 'linkedin.com/in/alexmorgan-dev',
-        portfolio: 'alexmorgan.dev',
-        summary: 'Dedicated engineering professional with proven expertise building scalable software solutions and high-performance applications.',
-        skills: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker', 'REST APIs'],
-        experience: [
-          {
-            id: `exp-${Date.now()}-1`,
-            role: 'Software Engineer',
-            company: 'Tech Innovations Corp',
-            location: 'San Francisco, CA',
-            startDate: 'Jan 2023',
-            endDate: 'Present',
-            bullets: [
-              'Architected and deployed distributed services, slashing API response times by 42% across 100k+ active users.',
-              'Spearheaded key product feature development, increasing quarterly user retention by 28%.'
-            ]
-          }
-        ],
-        education: [
-          {
-            id: `edu-${Date.now()}-1`,
-            degree: 'B.S. in Computer Science',
-            school: 'University',
-            location: 'City, State',
-            year: '2019 – 2023'
-          }
-        ]
-      };
     }
 
     chosen.id = `created-${Date.now()}`;
     setResume(chosen);
     setRewriterInput(chosen.experience[0]?.bullets[0] || '');
-    setHasUploaded(true);
     setHasEdited(true);
-    setUploadedFileName(chosen.fullName ? `${chosen.fullName}'s Resume` : 'New Resume (Draft)');
+    setUploadedFileName('');
     setShowCreateModal(false);
     setViewMode('studio');
-    showToast(`✨ Resume Builder ready! Created: ${chosen.jobTitle}`, 'sparkle');
+    showToast(templateKey === 'starter_clean'
+      ? 'Blank résumé draft is ready.'
+      : 'Loaded a fictional sample profile. Replace its details before using it.', 'sparkle');
     if (onActionLogged) onActionLogged();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1023,15 +868,12 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const handleAddExperience = () => {
     const newExp: ResumeExperience = {
       id: `exp-${Date.now()}`,
-      role: 'Senior Software Engineer',
-      company: 'Tech Innovations Inc.',
-      location: 'San Francisco, CA',
-      startDate: 'Jan 2023',
-      endDate: 'Present',
-      bullets: [
-        'Architected and deployed high-performance microservices, cutting API response times by 38% across 120k+ users.',
-        'Led engineering improvements that lifted system uptime to 99.99% across 85,000+ daily transactions.'
-      ]
+      role: '',
+      company: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      bullets: []
     };
     setResume((prev) => ({
       ...prev,
@@ -1064,7 +906,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   };
 
   const handleAddBullet = (expIdx: number) => {
-    const newBullet = 'Spearheaded key technical initiative, boosting operational throughput by 32% and reducing error rates.';
+    const newBullet = '';
     setResume((prev) => {
       const nextExp = [...prev.experience];
       if (nextExp[expIdx]) {
@@ -1109,10 +951,10 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const handleAddEducation = () => {
     const newEdu: ResumeEducation = {
       id: `edu-${Date.now()}`,
-      degree: 'B.S. in Computer Science',
-      school: 'University',
-      location: 'City, State',
-      year: '2019 – 2023'
+      degree: '',
+      school: '',
+      location: '',
+      year: ''
     };
     setResume((prev) => ({
       ...prev,
@@ -1310,7 +1152,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     if (onActionLogged) onActionLogged();
   };
 
-  // Export Official 1-Page ATS Audit PDF Scorecard
+  // Export a résumé readiness summary
   const handleExportAuditScorecard = () => {
     const r = resume;
     const checks = atsAudit.checks;
@@ -1364,13 +1206,13 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 <body>
   <div class="header">
     <div>
-      <div class="brand">ToolForge ATS Verification</div>
-      <div class="badge">PARSER COMPLIANCE CERTIFICATE</div>
+      <div class="brand">ToolForge Résumé Review</div>
+      <div class="badge">RÉSUMÉ READINESS SUMMARY</div>
     </div>
     <div class="report-meta">
       <div><strong>Audit Date:</strong> ${esc(dateStr)}</div>
-      <div><strong>Inspection Engine:</strong> ToolForge V3 (27-Point Matrix)</div>
-      <div><strong>Privacy:</strong> 100% Client-Side Verified</div>
+      <div><strong>Inspection:</strong> Rule-based résumé heuristics</div>
+      <div><strong>Processing:</strong> Résumé text reviewed in this browser</div>
     </div>
   </div>
 
@@ -1379,42 +1221,42 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       <div class="candidate-name">${esc(r.fullName)}</div>
       <div class="candidate-role">${esc(r.jobTitle)}${r.location ? ' · ' + esc(r.location) : ''}</div>
       <div style="font-size: 8.5pt; color: #64748b; margin-top: 4pt;">
-        Workday, Greenhouse, Lever, Taleo, iCIMS, Ashby Compatible
+        Estimates common formatting signals; not tested against employer ATS platforms
       </div>
     </div>
     <div class="score-badge">
       <div class="score-val">${compositeScore}%</div>
-      <div class="score-label">${compositeScore >= 80 ? 'Top Tier Candidate' : 'Needs Optimization'}</div>
+      <div class="score-label">${compositeScore >= 80 ? 'Strong heuristic score' : 'Review suggested'}</div>
     </div>
   </div>
 
   <div class="grid-2">
     <div class="box">
-      <div class="box-title">7-Category Comprehensive Deep Audit</div>
+      <div class="box-title">7 Heuristic Review Categories</div>
       <div class="stat-row"><span>1. Content Quality & Metrics</span><span class="${deepAudit.categories.content.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.content.score}%</span></div>
       <div class="stat-row"><span>2. Essential Sections & Contact</span><span class="${deepAudit.categories.sections.score >= 80 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.sections.score}%</span></div>
-      <div class="stat-row"><span>3. ATS Essentials & Formatting</span><span class="${deepAudit.categories.atsEssentials.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.score}%</span></div>
+      <div class="stat-row"><span>3. File and Formatting Signals</span><span class="${deepAudit.categories.atsEssentials.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.score}%</span></div>
       <div class="stat-row"><span>4. HR Red Flags & Credibility</span><span class="${deepAudit.categories.hrRedFlags.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.score}%</span></div>
-      <div class="stat-row"><span>5. Discrimination & Bias Shield</span><span class="${deepAudit.categories.discrimination.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.score}%</span></div>
-      <div class="stat-row"><span>6. Seniority & Ownership</span><span class="${deepAudit.categories.seniority.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.score}%</span></div>
-      <div class="stat-row"><span>7. Resume Tailoring Match</span><span class="${deepAudit.categories.tailoring.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.tailoring.score}%</span></div>
+      <div class="stat-row"><span>5. Graduation Date Review</span><span class="${deepAudit.categories.discrimination.score !== null && deepAudit.categories.discrimination.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.score !== null ? `${deepAudit.categories.discrimination.score}%` : 'NOT ASSESSED'}</span></div>
+      <div class="stat-row"><span>6. Verb Pattern Review</span><span class="${deepAudit.categories.seniority.score !== null && deepAudit.categories.seniority.score >= 50 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.score !== null ? `${deepAudit.categories.seniority.score}%` : 'NOT ASSESSED'}</span></div>
+      <div class="stat-row"><span>7. Job Description Match</span><span class="${deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0 ? (deepAudit.categories.tailoring.score >= 70 ? 'status-pass' : 'status-flag') : 'status-flag'}">${deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0 ? `${deepAudit.categories.tailoring.score}%` : 'NOT ASSESSED'}</span></div>
     </div>
 
     <div class="box">
       <div class="box-title">Quality Verification Checks</div>
-      <div class="stat-row"><span>Bullets Consistency Check</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>File Name Professionalism</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>Dates & Links Integrity</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>Buzzword & Fluff Filter</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>Recruiter Probing Questions</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>Ageism & Date Bias Shield</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>Employment Gaps Detector</span><span class="status-pass">VERIFIED</span></div>
-      <div class="stat-row"><span>Scope & Ownership Analyzer</span><span class="status-pass">VERIFIED</span></div>
+      <div class="stat-row"><span>Bullets Consistency Check</span><span class="${deepAudit.categories.content.bulletsConsistency.hasIssue ? 'status-flag' : 'status-pass'}">${deepAudit.categories.content.bulletsConsistency.hasIssue ? 'REVIEW' : 'PASS'}</span></div>
+      <div class="stat-row"><span>File Name Professionalism</span><span class="${deepAudit.categories.atsEssentials.fileNameCheck.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.fileNameCheck.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>LinkedIn URL Presence</span><span class="${deepAudit.categories.atsEssentials.datesAndLinks.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.datesAndLinks.passed ? 'FOUND' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Buzzword & Fluff Review</span><span class="${deepAudit.categories.hrRedFlags.credibility.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.credibility.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Interview Risk Review</span><span class="${deepAudit.categories.hrRedFlags.interviewRisks.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.interviewRisks.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Date Bias Review</span><span class="${deepAudit.categories.discrimination.ageismDateBias.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.ageismDateBias.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Employment Gap Review</span><span class="${deepAudit.categories.discrimination.employmentGaps.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.employmentGaps.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Verb Pattern Review</span><span class="${deepAudit.categories.seniority.scopeOwnership.ownershipLevel !== 'Not assessed' && deepAudit.categories.seniority.scopeOwnership.leadVerbCount >= deepAudit.categories.seniority.scopeOwnership.passiveVerbCount ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'NOT ASSESSED' : deepAudit.categories.seniority.scopeOwnership.leadVerbCount >= deepAudit.categories.seniority.scopeOwnership.passiveVerbCount ? 'PASS' : 'REVIEW'}</span></div>
     </div>
   </div>
 
   <div class="box" style="margin-bottom: 12pt;">
-    <div class="box-title">ATS Inspection Findings & Recommendations</div>
+      <div class="box-title">Résumé Review Findings & Recommendations</div>
     <table class="table">
       <thead>
         <tr>
@@ -1425,9 +1267,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       </thead>
       <tbody>
         <tr>
-          <td><strong>ATS Parse Rate</strong></td>
-          <td style="color: #475569;">${deepAudit.categories.content.atsParseRate.parsedPercentage}% read clearly by enterprise ATS parsers (${deepAudit.categories.content.atsParseRate.missedPercentage}% template format risk).</td>
-          <td style="text-align: right;"><span class="${deepAudit.categories.content.atsParseRate.parsedPercentage >= 90 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.content.atsParseRate.parsedPercentage}%</span></td>
+          <td><strong>Detected Section Labels</strong></td>
+          <td style="color: #475569;">Detected section-label coverage: ${deepAudit.categories.content.atsParseRate.sectionCoveragePercentage}% (${deepAudit.categories.content.atsParseRate.missingSectionPercentage}% of expected labels were not found). This does not test text extraction or an employer ATS.</td>
+          <td style="text-align: right;"><span class="status-flag">${deepAudit.categories.content.atsParseRate.sectionCoveragePercentage}%</span></td>
         </tr>
         <tr>
           <td><strong>Quantifying Impact</strong></td>
@@ -1445,9 +1287,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
           <td style="text-align: right;"><span class="${!deepAudit.categories.content.bulletsConsistency.hasIssue ? 'status-pass' : 'status-flag'}">${!deepAudit.categories.content.bulletsConsistency.hasIssue ? 'PASS' : 'FLAG'}</span></td>
         </tr>
         <tr>
-          <td><strong>Scope & Ownership</strong></td>
-          <td style="color: #475569;">Candidate evaluated at ${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel)} level (${deepAudit.categories.seniority.scopeOwnership.leadVerbCount} lead ownership verbs vs ${deepAudit.categories.seniority.scopeOwnership.passiveVerbCount} passive execution verbs).</td>
-          <td style="text-align: right;"><span class="status-pass">${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel.split(' ')[0])}</span></td>
+          <td><strong>Verb Pattern</strong></td>
+          <td style="color: #475569;">${deepAudit.categories.seniority.scopeOwnership.leadVerbCount} ownership-style terms vs ${deepAudit.categories.seniority.scopeOwnership.passiveVerbCount} passive-style terms. This does not establish candidate seniority.</td>
+          <td style="text-align: right;"><span class="${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'status-flag' : 'status-pass'}">${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel)}</span></td>
         </tr>
       </tbody>
     </table>
@@ -1467,8 +1309,8 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   </div>
 
   <div class="footer">
-    <span>ToolForge ATS Candidate Inspection Engine · Certified Clean Resume Layout</span>
-    <span>No data stored or shared · 100% Client-Side Privacy Guarantee</span>
+    <span>ToolForge résumé review · Heuristic results for guidance</span>
+    <span>Résumé analysis runs in this browser; external site assets may make separate requests</span>
   </div>
 </body>
 </html>`;
@@ -1479,48 +1321,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     win.document.close();
     win.focus();
     setTimeout(() => { win.print(); }, 600);
-    showToast('Opening official ATS Verification Scorecard', 'sparkle');
+    showToast('Opening résumé readiness summary', 'sparkle');
     if (onActionLogged) onActionLogged();
   };
 
   // Clear to blank
   const handleResetToBlank = () => {
-    setResume({
-      id: 'blank',
-      fullName: 'Your Full Name',
-      jobTitle: 'Target Professional Title',
-      email: 'you@email.com',
-      phone: '+1 (555) 000-0000',
-      location: 'City, State',
-      linkedin: 'linkedin.com/in/yourprofile',
-      portfolio: 'yourwebsite.com',
-      summary: 'Experienced professional with a track record of driving cross-functional initiatives, optimizing operational efficiency, and delivering quantifiable results.',
-      skills: ['Strategic Planning', 'Cross-Functional Leadership', 'Data Analysis', 'Process Optimization'],
-      experience: [
-        {
-          id: 'exp-blank',
-          role: 'Lead Professional',
-          company: 'Company Name',
-          location: 'San Francisco, CA',
-          startDate: '2022',
-          endDate: 'Present',
-          bullets: [
-            'Spearheaded enterprise initiatives resulting in a 34% reduction in delivery cycle times.',
-            'Collaborated with engineering and business stakeholders to execute key quarterly milestones.'
-          ]
-        }
-      ],
-      education: [
-        {
-          id: 'edu-blank',
-          degree: 'B.S. in Computer Science or Relevant Field',
-          school: 'University Name',
-          location: 'City, State',
-          year: '2018 – 2022'
-        }
-      ]
-    });
-    showToast('Reset to clean executive template', 'info');
+    setResume({ ...BLANK_STARTER_RESUME, id: 'blank', skills: [], experience: [], projects: [], education: [] });
+    setTargetJd('');
+    setUploadedFileName('');
+    setHasEdited(false);
+    setRewriterInput('');
+    showToast('Resume cleared', 'info');
   };
 
   return (
@@ -1548,9 +1360,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xl font-black tracking-tight">Analyzing 27 ATS Parameters</h3>
+              <h3 className="text-xl font-black tracking-tight">Analyzing Résumé Details</h3>
               <p className="text-xs text-zinc-400 font-normal">
-                Running parser simulation across Workday, Greenhouse & Lever engines...
+                Reviewing extracted text, common headings, and keyword overlap...
               </p>
             </div>
 
@@ -1606,14 +1418,14 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.08]">
-                  Pass ATS Screening. <br className="hidden sm:inline" />
+                  Review Your Resume. <br className="hidden sm:inline" />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
-                    Get More Interviews.
+                    Show Your Experience Clearly.
                   </span>
                 </h1>
 
                 <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                  Automated checks for Workday, Greenhouse & Lever. Instant ATS score, keyword analysis, and formatting feedback in seconds.
+                  Browser-based résumé checks, keyword comparisons, and formatting feedback in seconds. Results are heuristic guidance, not employer ATS tests.
                 </p>
 
                 {/* Clean Drag & Drop Upload Box */}
@@ -1782,10 +1594,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               {/* Centered Header */}
               <div className="text-center max-w-3xl mx-auto space-y-4">
                 <h2 className="text-3xl sm:text-4xl lg:text-[46px] font-black tracking-tight leading-tight">
-                  The AI-powered Resume Checker goes beyond typos and punctuation
+                  The résumé checker reviews more than typos and punctuation
                 </h2>
                 <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-                  We've built in automated checks to test your resume against what both ATS software and human recruiters look for. The tool checks for 27 crucial things across key categories:
+                  The tool reviews common résumé content and formatting signals across three categories. Results are heuristic guidance, not tests against employer ATS software or recruiters:
                 </p>
               </div>
 
@@ -1805,7 +1617,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span>ATS-friendly design & layout</span>
+                      <span>Common formatting signals</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -1813,7 +1625,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span>Header links compliance</span>
+                      <span>Contact and profile details</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -1831,7 +1643,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <ul className="space-y-3.5 text-sm text-slate-600 font-medium">
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span>ATS parse rate</span>
+                      <span>Detected section labels</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -1869,7 +1681,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span>Peer benchmarking</span>
+                      <span>Repeated action words</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -1894,13 +1706,13 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="text-center max-w-3xl mx-auto space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60">
                   <Award className="w-3.5 h-3.5" />
-                  <span>Proven Optimization Impact</span>
+                  <span>Illustrative Example</span>
                 </div>
                 <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                  Turn an ATS-rejected resume into a top 5% interview magnet
+                  See how clearer formatting and evidence can strengthen a résumé
                 </h2>
                 <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
-                  Over 75% of candidate resumes are silently filtered by applicant tracking systems before a recruiter ever sees them. See how ToolForge transforms your document.
+                  The comparison below is an illustrative mockup, not a measured result or an employer ATS test. Add only skills and outcomes that are true for you.
                 </p>
               </div>
 
@@ -1921,7 +1733,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">Before ToolForge</span>
                     <span className="px-2.5 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 dark:bg-rose-900/80 dark:text-rose-200">
-                      38% ATS Score
+                      Example input
                     </span>
                   </div>
                   <ul className="space-y-3 text-sm text-slate-700 dark:text-zinc-300">
@@ -1945,21 +1757,21 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">After ToolForge</span>
                     <span className="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-900/80 dark:text-emerald-200">
-                      98% ATS Score
+                      Example draft
                     </span>
                   </div>
                   <ul className="space-y-3 text-sm text-slate-700 dark:text-zinc-300">
                     <li className="flex items-center gap-2.5">
                       <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                      <span>100% parsed by Workday & Greenhouse</span>
+                      <span>Use a simple, readable document structure</span>
                     </li>
                     <li className="flex items-center gap-2.5">
                       <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                      <span>12 of 12 target job keywords injected</span>
+                      <span>Compare job terms with skills you actually have</span>
                     </li>
                     <li className="flex items-center gap-2.5">
                       <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                      <span>Google X-Y-Z formula applied to all bullets</span>
+                      <span>Add verified outcomes where you can support them</span>
                     </li>
                   </ul>
                 </div>
@@ -1995,10 +1807,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <span>TRANSPARENT VALUE ARCHITECTURE</span>
                 </div>
                 <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                  Enterprise-Grade ATS Auditing. Free for Candidates.
+                  Résumé Heuristics. Free for Candidates.
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal">
-                  Why pay $39/month to corporate tools like Jobscan or Teal? ToolForge delivers complete 27-point checks with zero paywalls, zero ads, and zero server data harvesting.
+                  ToolForge provides free browser-based résumé checks and keyword comparisons. Its results are heuristics, not tests against employer ATS platforms.
                 </p>
               </div>
 
@@ -2014,7 +1826,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <div className="space-y-4 pt-2">
                     <div className="space-y-1">
                       <h3 className="text-2xl font-black text-slate-900 dark:text-white">Community Tier</h3>
-                      <p className="text-xs text-slate-500 dark:text-zinc-400">Everything you need to beat the ATS and land interviews.</p>
+                      <p className="text-xs text-slate-500 dark:text-zinc-400">Browser-based résumé checks and keyword comparisons.</p>
                     </div>
 
                     <div className="flex items-baseline gap-2 pt-2">
@@ -2029,7 +1841,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span><strong>27 Crucial Checks</strong> (Workday, Greenhouse, Lever)</span>
+                        <span><strong>Résumé Checks</strong> for content, sections, and common formatting patterns</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -2041,11 +1853,11 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span><strong>Official PDF Scorecard</strong> download</span>
+                        <span><strong>PDF Readiness Summary</strong> download</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span><strong>100% In-Browser Privacy</strong> (0 bytes sent to server)</span>
+                        <span><strong>Résumé text processed in your browser</strong></span>
                       </li>
                     </ul>
                   </div>
@@ -2126,10 +1938,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               
               <div className="space-y-3 max-w-2xl mx-auto">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                  Ready to pass the ATS filter and land your next role?
+                  Ready to review your résumé?
                 </h2>
                 <p className="text-emerald-100/80 text-base sm:text-lg font-normal">
-                  Free forever. No sign up required. Your resume never leaves your browser.
+                  Free to use with no account. Résumé text is processed in your browser and is not sent to ToolForge servers.
                 </p>
               </div>
 
@@ -2192,7 +2004,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-800 hidden sm:block shrink-0" />
 
               <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate max-w-[150px] sm:max-w-[240px]">
-                {uploadedFileName || resume.fullName}
+                {uploadedFileName || resume.fullName || 'Untitled résumé'}
               </span>
             </div>
 
@@ -2258,7 +2070,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <button
                 onClick={handleExportPdf}
                 className="px-3.5 py-2 rounded-lg border border-emerald-600 dark:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
-                title="Download Executive ATS PDF"
+                title="Download résumé readiness summary"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download PDF</span>
@@ -2284,7 +2096,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
                 <div className="flex items-center gap-3.5">
                   <div className="flex items-center gap-2 text-sm text-zinc-500">
-                    <span>Overall ATS Score:</span>
+                    <span>Overall heuristic score:</span>
                     <span className="font-mono text-base font-bold text-zinc-900 dark:text-white">
                       {compositeScore}%
                     </span>
@@ -2392,7 +2204,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                             <span className="font-mono text-xs text-zinc-500">({deepAudit.categories.content.score}%)</span>
                           </div>
                           <span className="text-[11px] font-mono text-zinc-500">
-                            {deepAudit.categories.content.atsParseRate.parsedPercentage}% Parsed · {deepAudit.categories.content.atsParseRate.missedPercentage}% Missed
+                            {deepAudit.categories.sections.essentialFound.length} section labels found · employer parsing not tested
                           </span>
                         </div>
 
@@ -2414,10 +2226,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                                 <div className="space-y-1.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                                   <div className="flex items-center justify-between">
                                     <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
-                                      ATS Optimized (Google X-Y-Z)
+                                      Draft suggestion (Google X-Y-Z)
                                     </span>
                                     <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
-                                      +18% impact
+                                      Add verified results where available
                                     </span>
                                   </div>
                                   <div className="flex items-start justify-between gap-3">
@@ -2515,7 +2327,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                             <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">03. ATS ESSENTIALS</span>
                             <span className="font-mono text-xs text-zinc-500">({deepAudit.categories.atsEssentials.score}%)</span>
                           </div>
-                          <span className="font-mono text-zinc-500">Single-Column PDF Verified</span>
+                          <span className="font-mono text-zinc-500">Uploaded page layout is not assessed</span>
                         </div>
                         <div className="text-zinc-600 dark:text-zinc-400 space-y-1">
                           <p>• File name: <code className="font-mono">{deepAudit.categories.atsEssentials.fileNameCheck.currentFileName}</code>. {deepAudit.categories.atsEssentials.fileNameCheck.recommendation}</p>
@@ -2532,7 +2344,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                           </div>
                         </div>
                         <p className="text-zinc-600 dark:text-zinc-400">
-                          Recruiter Screening Defense Questions:
+                          Questions to help review your résumé:
                         </p>
                         <div className="space-y-1.5 pl-3 border-l-2 border-zinc-200 dark:border-zinc-800">
                           {deepAudit.categories.hrRedFlags.interviewRisks.probingQuestions.map((q, i) => (
@@ -2546,8 +2358,8 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       {/* 5. BIAS SHIELD */}
                       <div className="p-4 flex items-center justify-between text-xs">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">05. BIAS SHIELD</span>
-                          <span className="font-mono text-xs text-zinc-500">({deepAudit.categories.discrimination.score}%)</span>
+                          <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">05. DATE REVIEW</span>
+                          <span className="font-mono text-xs text-zinc-500">{deepAudit.categories.discrimination.score !== null ? `(${deepAudit.categories.discrimination.score}%)` : '(Not assessed)'}</span>
                         </div>
                         <span className="text-zinc-600 dark:text-zinc-400">
                           {deepAudit.categories.discrimination.ageismDateBias.details} · {deepAudit.categories.discrimination.employmentGaps.details}
@@ -2558,8 +2370,8 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       <div className="p-4 space-y-2.5 text-xs">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">06. SENIORITY & OWNERSHIP</span>
-                            <span className="font-mono text-xs text-zinc-500">({deepAudit.categories.seniority.score}%)</span>
+                          <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">06. VERB PATTERNS</span>
+                            <span className="font-mono text-xs text-zinc-500">{deepAudit.categories.seniority.score !== null ? `(${deepAudit.categories.seniority.score}%)` : '(Not assessed)'}</span>
                           </div>
                           <span className="font-mono text-zinc-500">
                             {deepAudit.categories.seniority.scopeOwnership.ownershipLevel} ({deepAudit.categories.seniority.scopeOwnership.leadVerbCount} Lead vs {deepAudit.categories.seniority.scopeOwnership.passiveVerbCount} Passive)
@@ -2587,10 +2399,12 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="font-mono text-xs font-bold text-zinc-900 dark:text-white">07. JOB TAILORING</span>
-                            <span className="font-mono text-xs text-zinc-500">({deepAudit.categories.tailoring.score}%)</span>
+                            <span className="font-mono text-xs text-zinc-500">{deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0 ? `(${deepAudit.categories.tailoring.score}%)` : '(Not assessed)'}</span>
                           </div>
                           <span className="font-mono text-zinc-500 font-medium">
-                            {deepAudit.categories.tailoring.matchedCount} Matched · {deepAudit.categories.tailoring.missingCount} Missing
+                            {deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0
+                              ? `${deepAudit.categories.tailoring.matchedCount} Matched · ${deepAudit.categories.tailoring.missingCount} Missing`
+                              : 'Add a target job description to assess keyword match'}
                           </span>
                         </div>
                         {deepAudit.categories.tailoring.missingTopSkills.length > 0 && (
@@ -2709,9 +2523,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
-                            Formatting & Layout Audit
+                            Résumé Structure & Profile Review
                           </h4>
-                          <p className="text-xs text-zinc-500">Essential standard ATS verification parameters</p>
+                          <p className="text-xs text-zinc-500">Rule-based checks of available résumé fields</p>
                         </div>
                         <span className="text-xs font-mono px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
                           {atsAudit.passedCount} / {atsAudit.totalCount} Passed
@@ -2799,7 +2613,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                                     {opt.type}
                                   </span>
                                   <span className="text-xs font-mono text-emerald-600 font-semibold">
-                                    +{opt.score}% impact
+                                    Draft suggestion
                                   </span>
                                 </div>
                                 <p className="text-xs text-zinc-800 dark:text-zinc-200 leading-relaxed">
@@ -2876,7 +2690,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       title="Click to view ATS scoring formula"
                     >
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>ATS Score: <strong>{compositeScore}%</strong></span>
+                      <span>Heuristic score: <strong>{compositeScore}%</strong></span>
                     </button>
 
                     {deepAudit.categories.content.quantifyingImpact.issueCount > 0 && (
@@ -3599,10 +3413,12 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
             <div className="p-3.5 rounded-lg bg-zinc-950 text-white font-mono text-center space-y-1.5 border border-zinc-800 shadow-none">
               <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Exact Mathematical Model:</span>
               <div className="text-base font-bold text-white tracking-wide">
-                S = 0.40K + 0.25F + 0.20M + 0.15R
+                {hasRecognizedTargetTerms
+                  ? 'S = 0.40K + 0.25F + 0.20M + 0.15R'
+                  : `S = ${(formattingWeight).toFixed(2)}F + ${(metricsWeight).toFixed(2)}M + ${(completenessWeight).toFixed(2)}R (K not assessed)`}
               </div>
               <p className="text-[11px] text-zinc-400 font-sans">
-                Calibrated to screening heuristics from Workday, Greenhouse & Taleo ATS engines.
+                This is a ToolForge heuristic. It is not calibrated against employer ATS engines.
               </p>
             </div>
 
@@ -3613,18 +3429,22 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
                 <div className="space-y-0.5">
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    K · Target Job Keyword Match (40% Weight)
+                    K · Target Job Keyword Match ({hasRecognizedTargetTerms ? '40% Weight' : 'Not assessed'})
                   </div>
                   <div className="text-[11px] text-zinc-500">
-                    {keywordAnalysis.matched.length} of {keywordAnalysis.totalJdKeywords} skills matched across all sections
+                    {hasRecognizedTargetTerms
+                      ? `${keywordAnalysis.matched.length} of ${keywordAnalysis.totalJdKeywords} recognized skill terms found across résumé sections`
+                      : targetJd.trim()
+                        ? 'No supported skill terms were found in this job description.'
+                        : 'Add a target job description to assess keyword overlap.'}
                   </div>
                 </div>
                 <div className="text-right">
                   <span className="font-mono font-bold text-zinc-900 dark:text-white text-sm">
-                    {keywordAnalysis.matchRate}%
+                    {hasRecognizedTargetTerms ? `${keywordAnalysis.matchRate}%` : 'N/A'}
                   </span>
                   <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(0.40 * K).toFixed(1)} pts
+                    +{(keywordWeight * K).toFixed(1)} pts
                   </span>
                 </div>
               </div>
@@ -3633,10 +3453,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
                 <div className="space-y-0.5">
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    F · Single-Column Formatting (25% Weight)
+                    F · Section and Date Fields ({(formattingWeight * 100).toFixed(0)}% Weight)
                   </div>
                   <div className="text-[11px] text-zinc-500">
-                    {atsAudit.passedCount} of {atsAudit.totalCount} ATS layout rules passed (tables, fonts, dates)
+                    Common section labels and date fields are checked; uploaded page layout is not assessed
                   </div>
                 </div>
                 <div className="text-right">
@@ -3644,7 +3464,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     {atsAudit.formattingScore}%
                   </span>
                   <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(0.25 * F).toFixed(1)} pts
+                    +{(formattingWeight * F).toFixed(1)} pts
                   </span>
                 </div>
               </div>
@@ -3653,7 +3473,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
                 <div className="space-y-0.5">
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    M · Google X-Y-Z Measurable Impact (20% Weight)
+                    M · Measurable Bullet Details ({(metricsWeight * 100).toFixed(0)}% Weight)
                   </div>
                   <div className="text-[11px] text-zinc-500">
                     {atsAudit.bulletsWithMetricsCount} of {atsAudit.allBulletsCount} bullets include numbers, % or scale
@@ -3664,7 +3484,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     {atsAudit.metricRate}%
                   </span>
                   <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(0.20 * M).toFixed(1)} pts
+                    +{(metricsWeight * M).toFixed(1)} pts
                   </span>
                 </div>
               </div>
@@ -3673,7 +3493,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-none">
                 <div className="space-y-0.5">
                   <div className="font-bold text-zinc-800 dark:text-zinc-200">
-                    R · Role & Contact Integrity (15% Weight)
+                    R · Role & Contact Fields ({(completenessWeight * 100).toFixed(0)}% Weight)
                   </div>
                   <div className="text-[11px] text-zinc-500">
                     Email, phone, target job title, and summary completeness
@@ -3684,7 +3504,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     {atsAudit.roleCompletenessScore}%
                   </span>
                   <span className="text-[10px] text-emerald-600 block font-mono">
-                    +{(0.15 * R).toFixed(1)} pts
+                    +{(completenessWeight * R).toFixed(1)} pts
                   </span>
                 </div>
               </div>
@@ -3695,10 +3515,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
             <div className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-between shadow-none">
               <div>
                 <span className="text-xs font-bold text-zinc-900 dark:text-white block">
-                  Composite ATS Score:
+                  Composite heuristic score:
                 </span>
                 <span className="text-[11px] text-zinc-500">
-                  {compositeScore >= 85 ? '✓ Top 5% Candidate Score' : compositeScore >= 70 ? '✓ Competitive Pass' : '⚠️ Filter Risk (<70% Threshold)'}
+                  {compositeScore >= 85 ? '✓ Strong heuristic indicators' : compositeScore >= 70 ? '✓ Review the details below' : '⚠️ Several areas may need review'}
                 </span>
               </div>
               <div className="text-right">
@@ -3861,7 +3681,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
             <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center shadow-none">
               <p className="text-xs text-zinc-500">
-                🔒 <strong>Local Privacy:</strong> Editable locally in your browser. 0 bytes sent to external servers.
+                🔒 <strong>Local Privacy:</strong> Résumé text is processed in your browser and is not sent to ToolForge servers. The site may request external fonts.
               </p>
             </div>
 

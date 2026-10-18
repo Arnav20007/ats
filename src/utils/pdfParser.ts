@@ -1,17 +1,4 @@
-import * as pdfjsLib from 'pdfjs-dist';
 import { SKILL_DEFINITIONS, isSkillInText } from './atsKeywordMatcher';
-
-// Configure local worker safely in browser/Vite without breaking Node
-try {
-  if (typeof window !== 'undefined') {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-      'pdfjs-dist/build/pdf.worker.min.mjs',
-      import.meta.url
-    ).toString();
-  }
-} catch (e) {
-  console.warn('PDF.js worker setup warning:', e);
-}
 
 export interface ExtractedPdfResult {
   text: string;
@@ -184,8 +171,10 @@ function extractTextFromBinaryPdf(buffer: ArrayBuffer): string {
  * Never hangs; uses a strict 3s timeout on PDF.js and falls back to binary parsing.
  */
 export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfResult> {
+  const lowerName = file.name.toLowerCase();
+  const fileType = file.type.toLowerCase();
   // 1. Plain text or Markdown
-  if (file.type.includes('text') || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+  if (fileType.includes('text') || lowerName.endsWith('.txt') || lowerName.endsWith('.md')) {
     const raw = await file.text();
     return {
       text: raw,
@@ -197,7 +186,7 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
   const arrayBuffer = await file.arrayBuffer();
 
   // 2. DOCX Word Documents
-  if (file.name.endsWith('.docx') || file.type.includes('wordprocessingml')) {
+  if (lowerName.endsWith('.docx') || fileType.includes('wordprocessingml')) {
     const docxText = await extractTextFromDocx(arrayBuffer);
     if (docxText.length > 20) {
       return {
@@ -210,6 +199,12 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
 
   // 3. Primary PDF.js with strict 3-second timeout
   try {
+    const pdfjsLib = await import('pdfjs-dist');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+      'pdfjs-dist/build/pdf.worker.min.mjs',
+      import.meta.url
+    ).toString();
+
     const parsePromise = (async () => {
       const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
       const pdf = await loadingTask.promise;
@@ -309,6 +304,7 @@ export interface ParsedResumeFields {
   summary?: string;
   skills?: string[];
   bullets?: string[];
+  experienceBullets?: string[];
   projects?: ParsedProjectItem[];
   education?: Array<{
     id: string;
@@ -317,7 +313,6 @@ export interface ParsedResumeFields {
     location: string;
     year: string;
   }>;
-  isFresherOrStudent?: boolean;
 }
 
 /**
@@ -434,10 +429,23 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
     result.bullets = bulletLines.map((b) => b.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim());
   }
 
+  const experienceHeading = /^(?:professional\s+)?(?:work\s+)?experience$|^employment(?:\s+history)?$/i;
+  const sectionHeading = /^(?:summary|profile|objective|skills|technical\s+skills|projects|technical\s+projects|education|certifications|awards|languages|interests|activities|publications|references|volunteer(?:\s+experience)?)$/i;
+  const experienceStart = lines.findIndex((line) => experienceHeading.test(line));
+  if (experienceStart >= 0) {
+    const experienceSectionLines: string[] = [];
+    for (let i = experienceStart + 1; i < lines.length && !sectionHeading.test(lines[i]); i++) {
+      experienceSectionLines.push(lines[i]);
+    }
+    result.experienceBullets = experienceSectionLines
+      .filter((line) => /^(?:[•\-\*▪▫‣–—]\s*|(?:improved|led|built|developed|created|managed|engineered|designed|architected|spearheaded|orchestrated|automated|scaled|delivered|implemented|reduced|increased)\b)/i.test(line) && line.length > 20 && line.length < 500)
+      .map((line) => line.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim());
+  }
+
   // 10. Education & Fresher / Student Detection
   let eduDegree = '';
-  let eduSchool = 'University / College';
-  let eduYear = 'Graduated';
+  let eduSchool = '';
+  let eduYear = '';
   let eduIdx = -1;
 
   for (let i = 0; i < lines.length; i++) {
@@ -473,16 +481,6 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
     ];
   }
 
-  // Fresher / Student identification
-  const currentYear = new Date().getFullYear();
-  const futureYearMatch = rawText.match(/\b(202[4-9]|203\d)\b/);
-  const isFresherOrStudent = Boolean(
-    futureYearMatch ||
-    /(?:student|undergraduate|fresher|pursuing|b\.?tech|intern\b)/i.test(rawText) ||
-    (eduDegree && /(?:202[4-9]|present)/i.test(eduYear))
-  );
-  result.isFresherOrStudent = isFresherOrStudent;
-
   // 11. Projects Extraction
   const projectsList: ParsedProjectItem[] = [];
   let inProjectsSection = false;
@@ -515,7 +513,7 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
           if (!currentProject) {
             currentProject = {
               id: `proj-${Date.now()}-${projectsList.length + 1}`,
-              name: 'Technical Project',
+              name: '',
               bullets: []
             };
           }
@@ -537,31 +535,6 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
 
   if (currentProject && currentProject.bullets.length > 0) {
     projectsList.push(currentProject);
-  }
-
-  // Fallback: If no explicit Projects heading was found, check if text has distinct project blocks
-  if (projectsList.length === 0) {
-    const knownProjectMatches = lines.filter((l) =>
-      /(?:MoodMate|PDFlex|Hackathon|Platform|Pipeline|Standardization System|Application|Engine|Portal)\b/i.test(l) &&
-      l.length < 65 &&
-      !l.includes('@') &&
-      !l.includes('University')
-    );
-
-    if (knownProjectMatches.length > 0 && result.bullets && result.bullets.length > 0) {
-      const bulletsPerProject = Math.ceil(result.bullets.length / knownProjectMatches.length);
-      knownProjectMatches.slice(0, 3).forEach((name, pIdx) => {
-        const start = pIdx * bulletsPerProject;
-        const bChunk = result.bullets!.slice(start, start + bulletsPerProject);
-        if (bChunk.length > 0) {
-          projectsList.push({
-            id: `proj-auto-${pIdx + 1}`,
-            name,
-            bullets: bChunk
-          });
-        }
-      });
-    }
   }
 
   if (projectsList.length > 0) {

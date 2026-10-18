@@ -4,7 +4,7 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 const faqs = [
   {
     q: 'How does the ATS readiness score get calculated?',
-    a: "Your score is calculated across three technical factors: keyword match percentage against the target job description (40%), quantifiable metrics and action verbs in bullet points (40%), and layout readability with standard headings (20%)."
+    a: "This heuristic combines target job keyword match (40%), formatting checks (25%), measurable bullet points (20%), and profile completeness (15%). It is not a score from an employer's ATS."
   },
   {
     q: 'Does my resume data get saved, stored, or sent to AI?',
@@ -12,15 +12,15 @@ const faqs = [
   },
   {
     q: 'Can ATS software read PDF resumes?',
-    a: "Yes, as long as the PDF has selectable text. Our PDF exporter generates clean, single-column documents without nested tables, text boxes, or hidden graphics that break parsers like Workday, Greenhouse, or Taleo."
+    a: 'Many systems can read PDFs with selectable text, but support varies by employer and document structure. ToolForge checks extracted text and does not test your resume in an employer ATS.'
   },
   {
-    q: 'What is considered a passing ATS score?',
-    a: "A score of 80% or above indicates that your resume matches the core required skills and meets recruiter formatting standards, placing you in the top 5% of candidate pools."
+    q: 'What is considered a good ATS score?',
+    a: 'There is no universal passing score. ToolForge provides a heuristic to help review keyword overlap, formatting, bullet points, and profile completeness; employers use different systems and criteria.'
   },
   {
     q: 'What is the Google X-Y-Z formula for bullet points?',
-    a: 'Google’s hiring formula states: "Accomplished [X], as measured by [Y], by doing [Z]". Our built-in improver automatically turns passive duties into high-impact, measurable achievements.'
+    a: 'The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. The improver offers draft wording; use only outcomes and measures that accurately reflect your work.'
   },
   {
     q: 'Is ToolForge completely free with no hidden charges?',

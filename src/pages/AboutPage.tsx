@@ -54,13 +54,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </h2>
           <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-zinc-300 leading-relaxed space-y-4 text-sm sm:text-base">
             <p>
-              Looking for a job is stressful enough without having to pay $39/month just to see why an Applicant Tracking System (ATS) rejected your resume.
+              Reviewing a résumé for a specific role can take time. ToolForge offers browser-based checks to help you examine wording, sections, and keyword overlap.
             </p>
             <p>
               Many commercial resume scanners require account creation, recurring credit card subscriptions, or cloud uploads of personal documents just to view basic feedback. With sensitive details like work history, contact numbers, and personal references on every resume, privacy and transparency often become secondary considerations.
             </p>
             <p className="font-semibold text-slate-800 dark:text-zinc-200">
-              ToolForge was built to change that: a completely free, 100% private ATS resume auditor that runs entirely in your browser.
+              ToolForge is a free résumé review tool. Résumé text is processed in your browser and is not sent to ToolForge servers; site fonts are loaded from Google Fonts.
             </p>
           </div>
         </div>
@@ -71,9 +71,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">100% Client-Side</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">In-Browser Processing</h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Your resume text is extracted and analyzed locally in your browser memory using PDF.js and Web APIs. Zero bytes are ever transmitted to an external server.
+              Résumé text is extracted and analyzed in your browser using PDF.js and Web APIs. The site loads fonts from Google Fonts, but résumé text is not sent to ToolForge servers.
             </p>
           </div>
 
@@ -83,7 +83,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">No Paywalls, Ever</h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Full 27-point ATS breakdown, keyword matching, formatting checks, and PDF audit exports are 100% free with no credit card required.
+              Résumé checks, keyword comparisons, formatting feedback, and PDF exports are free with no credit card required.
             </p>
           </div>
 
@@ -91,9 +91,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/50 flex items-center justify-center text-purple-600 dark:text-purple-400">
               <FileCheck className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">Real ATS Standards</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">How the checks work</h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Built on verified parsing heuristics from Workday, Greenhouse, Taleo, Lever, and iCIMS, paired with Google X-Y-Z bullet point analysis.
+              ToolForge checks résumé text, section labels, keyword overlap, and common formatting patterns in your browser. It does not test or certify results against Workday, Greenhouse, Taleo, Lever, or iCIMS.
             </p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             ToolForge is engineered as a static, single-page progressive web application built with React, TypeScript, and Tailwind CSS. Document parsing is handled via Mozilla's <code className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 font-mono text-xs">pdfjs-dist</code> client-side engine. Because our business model does not rely on collecting user data or ad tracking, there are zero tracking scripts, analytics cookies, or backend databases.
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
-            {['React 19', 'TypeScript', 'Tailwind CSS', 'PDF.js Client Engine', 'Zero Server Storage', '100% Client-Side'].map((tag) => (
+            {['React 19', 'TypeScript', 'Tailwind CSS', 'PDF.js Client Engine', 'No app résumé database', 'In-browser text processing'].map((tag) => (
               <span key={tag} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300">
                 {tag}
               </span>

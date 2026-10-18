@@ -77,17 +77,17 @@ export default function App() {
     const seoMap: Record<AppPage, { title: string; desc: string; path: string }> = {
       home: {
         title: 'ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher',
-        desc: 'Free, open-access ATS resume checker and job description keyword matcher. 100% private in-browser analysis, Google X-Y-Z bullet polisher, and instant formatting audit.',
+        desc: 'Free in-browser résumé checks, job-description keyword comparisons, and formatting feedback. Results are heuristic guidance, not employer ATS tests.',
         path: '/'
       },
       guide: {
         title: 'ATS Resume Optimization Guide & Scoring Formula | ToolForge',
-        desc: 'Comprehensive step-by-step guide to beating ATS algorithms like Workday, Greenhouse, and Taleo using the Google X-Y-Z bullet formula and keyword optimization.',
+        desc: 'A practical guide to résumé formatting, job-description keyword comparisons, and writing clear achievement bullets.',
         path: '/guide'
       },
       about: {
         title: 'About ToolForge – Client-Side Privacy First Resume Studio',
-        desc: 'Learn about ToolForge mission: high-speed, zero-data-collection ATS resume scoring and formatting tools built for candidates worldwide.',
+        desc: 'Learn how ToolForge checks résumé text, compares job-description keywords, and processes content in your browser.',
         path: '/about'
       },
       contact: {
@@ -97,7 +97,7 @@ export default function App() {
       },
       privacy: {
         title: 'Privacy Policy & Zero-Storage Guarantee | ToolForge',
-        desc: 'ToolForge processes 100% of resume data locally in your browser memory. We never transmit, store, or sell candidate resumes.',
+        desc: 'Résumé text is processed in your browser and is not sent to ToolForge servers. Theme preferences may be stored locally; fonts load from Google Fonts.',
         path: '/privacy'
       },
       terms: {
@@ -206,12 +206,12 @@ export default function App() {
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">FREE</span>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed max-w-[220px]">
-                    Free ATS resume checker. No account. No upload. Your resume never leaves your browser.
+                    Free browser-based résumé checks. No account required. Your résumé text is not sent to ToolForge servers.
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-zinc-400">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>100% private · runs in your browser</span>
+                  <span>Résumé text processed in your browser</span>
                 </div>
               </div>
 
@@ -226,7 +226,7 @@ export default function App() {
                     { label: 'Job Keyword Matcher', action: () => navigateTo('home') },
                     { label: 'Google X-Y-Z Rewriter', action: () => navigateTo('home') },
                     { label: 'PDF Audit Scorecard', action: () => navigateTo('home') },
-                    { label: 'Workday & Greenhouse Test', action: () => navigateTo('guide') },
+                    { label: 'Résumé Formatting Guide', action: () => navigateTo('guide') },
                   ].map((item) => (
                     <li key={item.label}>
                       <button

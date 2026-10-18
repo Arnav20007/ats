@@ -18,9 +18,8 @@ export interface DeepAuditReport {
     content: {
       score: number;
       atsParseRate: {
-        score: number;
-        parsedPercentage: number;
-        missedPercentage: number;
+        sectionCoveragePercentage: number;
+        missingSectionPercentage: number;
         notes: string;
       };
       quantifyingImpact: {
@@ -102,7 +101,7 @@ export interface DeepAuditReport {
       };
     };
     discrimination: {
-      score: number;
+      score: number | null;
       ageismDateBias: {
         isProUnlocked: boolean;
         passed: boolean;
@@ -115,10 +114,10 @@ export interface DeepAuditReport {
       };
     };
     seniority: {
-      score: number;
+      score: number | null;
       scopeOwnership: {
         isProUnlocked: boolean;
-        ownershipLevel: 'Junior / Executional' | 'Mid-Level' | 'Senior / Owner';
+        ownershipLevel: 'Not assessed' | 'More ownership-style terms' | 'More passive-style terms' | 'Similar term counts';
         passiveVerbCount: number;
         leadVerbCount: number;
         details: string;
@@ -189,7 +188,7 @@ const SENIOR_OWNER_VERBS = [
  */
 export function generateDeepAuditReport(
   resume: ResumeData,
-  fileName: string = 'Resume.pdf',
+  fileName: string = '',
   targetJdMatchedSkills: string[] = [],
   targetJdMissingSkills: string[] = []
 ): DeepAuditReport {
@@ -287,7 +286,8 @@ export function generateDeepAuditReport(
 
   if (resume.education.length > 0) essentialFound.push('Education'); else essentialMissing.push('Education');
   if (resume.skills.length > 0) essentialFound.push('Skills'); else essentialMissing.push('Skills');
-  if (resume.summary && resume.summary.length >= 25) essentialFound.push('Summary'); else essentialMissing.push('Summary');
+  const hasCandidateSummary = resume.summary.length >= 25 && !resume.summary.startsWith('Extracted bullets to review and move to the correct section:');
+  if (hasCandidateSummary) essentialFound.push('Summary'); else essentialMissing.push('Summary');
 
   const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(resume.email.trim());
   const hasPhone = resume.phone.length >= 8;
@@ -296,7 +296,7 @@ export function generateDeepAuditReport(
   const hasPortfolio = resume.portfolio.length >= 3;
 
   // 6. ATS Essentials: File Name, Dates, Layout
-  const cleanFileName = fileName || 'Resume.pdf';
+  const cleanFileName = fileName.trim();
   const hasCandidateNameInFile = resume.fullName
     ? cleanFileName.toLowerCase().includes(resume.fullName.split(' ')[0].toLowerCase())
     : false;
@@ -312,10 +312,6 @@ export function generateDeepAuditReport(
     interviewRisks.push('Multiple bullets describe general tasks without verifiable quantitative scope.');
     probingQuestions.push('"What measurable metric or outcome proved this project was successful in production?"');
   }
-  if (!hasLinkedin) {
-    interviewRisks.push('Missing LinkedIn profile creates recruiter friction during initial screening.');
-    probingQuestions.push('"Do you have a public portfolio, code repository, or verified LinkedIn profile?"');
-  }
   if (resume.experience.length === 0 && (!resume.projects || resume.projects.length === 0)) {
     interviewRisks.push('Resume lacks practical work experience or technical project demonstrations.');
     probingQuestions.push('"Can you provide portfolio code, GitHub repositories, or practical project implementations?"');
@@ -330,9 +326,9 @@ export function generateDeepAuditReport(
     const match = e.year.match(/\b(19\d\d|20\d\d)\b/g);
     return match ? match.map(Number) : [];
   });
-  const oldestGradYear = gradYears.length > 0 ? Math.min(...gradYears) : 2024;
+  const oldestGradYear = gradYears.length > 0 ? Math.min(...gradYears) : null;
   const currentYear = new Date().getFullYear();
-  const isOver15Years = currentYear - oldestGradYear > 15;
+  const isOver15Years = oldestGradYear !== null && currentYear - oldestGradYear > 15;
 
   // 9. Seniority: Scope & Ownership
   let passiveVerbCount = 0;
@@ -343,12 +339,14 @@ export function generateDeepAuditReport(
     SENIOR_OWNER_VERBS.forEach((v) => { if (lower.includes(v)) leadVerbCount++; });
   });
 
-  const ownershipLevel: 'Junior / Executional' | 'Mid-Level' | 'Senior / Owner' =
-    leadVerbCount > passiveVerbCount + 2
-      ? 'Senior / Owner'
-      : leadVerbCount >= 2
-      ? 'Mid-Level'
-      : 'Junior / Executional';
+  const ownershipLevel: 'Not assessed' | 'More ownership-style terms' | 'More passive-style terms' | 'Similar term counts' =
+    leadVerbCount + passiveVerbCount === 0
+      ? 'Not assessed'
+      : leadVerbCount > passiveVerbCount
+        ? 'More ownership-style terms'
+        : passiveVerbCount > leadVerbCount
+          ? 'More passive-style terms'
+          : 'Similar term counts';
 
   // Component Scores
   const contentScore = Math.max(35, Math.min(100, Math.round(
@@ -356,39 +354,46 @@ export function generateDeepAuditReport(
   )));
 
   const hasPracticalExperience = resume.experience.length > 0 || (resume.projects && resume.projects.length > 0);
-  const coreSectionsCount = (hasPracticalExperience ? 1 : 0) + (resume.education.length > 0 ? 1 : 0) + (resume.skills.length > 0 ? 1 : 0) + (resume.summary && resume.summary.length >= 25 ? 1 : 0);
+  const coreSectionsCount = (hasPracticalExperience ? 1 : 0) + (resume.education.length > 0 ? 1 : 0) + (resume.skills.length > 0 ? 1 : 0) + (hasCandidateSummary ? 1 : 0);
 
   const sectionsScore = Math.max(40, Math.min(100, Math.round(
     (coreSectionsCount / 4) * 50 + (hasEmail ? 15 : 0) + (hasPhone ? 15 : 0) + (hasLinkedin ? 20 : 0)
   )));
 
-  const atsEssentialsScore = Math.max(45, Math.min(100, Math.round(
-    40 + (fileNamePassed ? 20 : 5) + (isPunctuationUniform ? 20 : 10) + 20
-  )));
+  const formatSignals = [
+    Boolean(cleanFileName) && /\.(pdf|docx|txt|md)$/i.test(cleanFileName),
+    fileNamePassed,
+    isPunctuationUniform,
+    hasLinkedin
+  ];
+  const atsEssentialsScore = Math.round((formatSignals.filter(Boolean).length / formatSignals.length) * 100);
 
   const hrRedFlagsScore = Math.max(40, Math.min(100, Math.round(
     100 - buzzwordsFound.length * 15 - interviewRisks.length * 10
   )));
 
-  const discriminationScore = isOver15Years ? 70 : 100;
+  const discriminationScore = gradYears.length > 0 ? (isOver15Years ? 70 : 100) : null;
 
-  const seniorityScore = Math.max(40, Math.min(100, Math.round(
-    ownershipLevel === 'Senior / Owner' ? 95 : ownershipLevel === 'Mid-Level' ? 78 : 58
-  )));
+  const totalVerbSignals = leadVerbCount + passiveVerbCount;
+  const seniorityScore = totalVerbSignals > 0
+    ? Math.round((leadVerbCount / totalVerbSignals) * 100)
+    : null;
 
-  const tailoringScore = targetJdMatchedSkills.length + targetJdMissingSkills.length > 0
-    ? Math.round((targetJdMatchedSkills.length / Math.max(1, targetJdMatchedSkills.length + targetJdMissingSkills.length)) * 100)
-    : 65;
+  const hasTargetJobDescription = targetJdMatchedSkills.length + targetJdMissingSkills.length > 0;
+  const tailoringScore = hasTargetJobDescription
+    ? Math.round((targetJdMatchedSkills.length / (targetJdMatchedSkills.length + targetJdMissingSkills.length)) * 100)
+    : 0;
 
-  // Enhancv-Calibrated Composite Score
-  const overallScore = Math.min(100, Math.max(20, Math.round(
+  // ToolForge heuristic composite score; omit job tailoring when no target JD is supplied.
+  const applicableScoreWeight = 0.8 + (hasTargetJobDescription ? 0.1 : 0) + (seniorityScore !== null ? 0.1 : 0);
+  const overallScore = Math.min(100, Math.max(20, Math.round((
     0.30 * contentScore +
     0.20 * sectionsScore +
     0.15 * atsEssentialsScore +
     0.15 * hrRedFlagsScore +
-    0.10 * seniorityScore +
-    0.10 * tailoringScore
-  )));
+    (seniorityScore !== null ? 0.10 * seniorityScore : 0) +
+    (hasTargetJobDescription ? 0.10 * tailoringScore : 0)
+  ) / applicableScoreWeight)));
 
   return {
     overallScore,
@@ -396,10 +401,9 @@ export function generateDeepAuditReport(
       content: {
         score: contentScore,
         atsParseRate: {
-          score: 90,
-          parsedPercentage: 90,
-          missedPercentage: 10,
-          notes: 'Standard headings and linear text parse cleanly. Single-column layout avoids text-truncation bugs in Workday & Greenhouse.'
+          sectionCoveragePercentage: Math.round((essentialFound.length / Math.max(1, essentialFound.length + essentialMissing.length)) * 100),
+          missingSectionPercentage: Math.round((essentialMissing.length / Math.max(1, essentialFound.length + essentialMissing.length)) * 100),
+          notes: 'This estimate reflects detected section labels only. Employer ATS parsing and visual layout are not tested.'
         },
         quantifyingImpact: {
           issueCount: failingBullets.length,
@@ -415,14 +419,14 @@ export function generateDeepAuditReport(
         },
         bulletsConsistency: {
           isProUnlocked: true,
-          hasIssue: !isPunctuationUniform,
+          hasIssue: !isPunctuationUniform || avgLength <= 8 || avgLength >= 35,
           periodConsistency: isPunctuationUniform
-            ? '✓ Punctuation is 100% consistent across all bullet points.'
+            ? '✓ Bullet punctuation is consistent where bullets were provided.'
             : `⚠️ Inconsistent punctuation: ${endsWithPeriod} bullets end with a period, while ${noPeriod} bullets do not.`,
-          tenseConsistency: '✓ Strong active voice past-tense usage for completed milestones.',
+          tenseConsistency: 'Verb tense is not evaluated by this check.',
           lengthVariance: avgLength > 8 && avgLength < 35
-            ? '✓ Bullet length is balanced (averaging 12-24 words per achievement).'
-            : '⚠️ Bullet length varies widely between single words and paragraph blocks.',
+            ? `✓ Average bullet length is ${Math.round(avgLength)} words.`
+            : `⚠️ Average bullet length is ${Math.round(avgLength)} words; review for clarity.`,
           details: 'Punctuation, length variance, and verb tense heuristics.'
         }
       },
@@ -446,28 +450,32 @@ export function generateDeepAuditReport(
       atsEssentials: {
         score: atsEssentialsScore,
         fileFormatAndSize: {
-          passed: true,
-          format: 'PDF / Text UTF-8',
-          sizeLimit: '< 2MB Standard Compliance',
-          recommendation: 'PDF is optimal for preserving line breaks and character bounding boxes across enterprise ATS.'
+          passed: Boolean(cleanFileName) && /\.(pdf|docx|txt|md)$/i.test(cleanFileName),
+          format: cleanFileName.match(/\.(pdf|docx|txt|md)$/i)?.[1]?.toUpperCase() || 'Unknown',
+          sizeLimit: 'Upload limit: 10 MB (actual file size is not retained in this report)',
+          recommendation: cleanFileName
+            ? 'Supported file extension detected. File size and employer-specific parsing are not assessed here.'
+            : 'No source file was uploaded; format and size are not assessed.'
         },
         layoutAndDesign: {
-          passed: true,
-          layoutType: 'Single Column (ATS Standard)',
-          recommendation: 'Avoid dual-column graphics, textboxes, and canvas tables which drop below 50% parse rate.'
+          passed: false,
+          layoutType: 'Not assessed from extracted text',
+          recommendation: 'Review the original document layout manually; text extraction does not reveal columns, graphics, or text boxes.'
         },
         fileNameCheck: {
           isProUnlocked: true,
           passed: fileNamePassed,
-          currentFileName: cleanFileName,
+          currentFileName: cleanFileName || 'No uploaded file',
           recommendation: fileNamePassed
             ? '✓ File name follows professional hiring naming conventions.'
-            : `⚠️ Name format alert: We recommend renaming "${cleanFileName}" to "${(resume.fullName || 'Candidate').replace(/\s+/g, '_')}_Resume.pdf" before uploading.`
+            : cleanFileName
+              ? `⚠️ Name format alert: Consider a clear filename such as "${(resume.fullName || 'Candidate').replace(/\s+/g, '_')}_Resume.pdf".`
+              : 'No source file was uploaded; filename review is not assessed.'
         },
         datesAndLinks: {
           isProUnlocked: true,
           passed: hasLinkedin,
-          details: 'Dates use standard chronological ordering. Hyperlinks are verified.'
+          details: `${hasLinkedin ? 'LinkedIn URL is present' : 'LinkedIn URL is missing'}; date order and hyperlink destinations are not verified.`
         }
       },
       hrRedFlags: {
@@ -478,7 +486,7 @@ export function generateDeepAuditReport(
           buzzwordsDetected: buzzwordsFound,
           recommendation: buzzwordsFound.length > 0
             ? `Flagged unverified buzzwords: ${buzzwordsFound.join(', ')}. Replace subjective adjectives with verifiable metrics.`
-            : '✓ Zero empty buzzwords detected. Language is grounded in concrete technical tools.'
+            : 'No terms from the built-in buzzword list were detected; this is not a full credibility assessment.'
         },
         interviewRisks: {
           isProUnlocked: true,
@@ -491,15 +499,17 @@ export function generateDeepAuditReport(
         score: discriminationScore,
         ageismDateBias: {
           isProUnlocked: true,
-          passed: !isOver15Years,
+          passed: gradYears.length > 0 && !isOver15Years,
           details: isOver15Years
             ? '⚠️ Graduation date older than 15 years detected. Consider omitting early education dates to prevent unconscious age bias.'
-            : '✓ Zero age bias flags detected. Education timeline is fresh and relevant.'
+            : gradYears.length > 0
+              ? 'No graduation year more than 15 years old was found. This check does not evaluate other age-bias factors.'
+              : 'No graduation year was found, so date-based review is not assessed.'
         },
         employmentGaps: {
           isProUnlocked: true,
-          passed: true,
-          details: '✓ Continuous technical learning progression without unaddressed multi-year gaps.'
+          passed: false,
+          details: 'Employment gaps are not assessed by the current checks.'
         }
       },
       seniority: {
@@ -509,10 +519,10 @@ export function generateDeepAuditReport(
           ownershipLevel,
           passiveVerbCount,
           leadVerbCount,
-          details: `Found ${leadVerbCount} senior ownership verbs vs ${passiveVerbCount} junior/passive verbs. ${
-            ownershipLevel === 'Junior / Executional'
-              ? 'Upgrade verbs like "helped / worked on" to "architected / deployed / engineered" to position for higher pay tiers.'
-              : 'Strong executive technical leadership signals.'
+          details: `Found ${leadVerbCount} ownership-style terms vs ${passiveVerbCount} passive-style terms. ${
+            ownershipLevel === 'Not assessed'
+              ? 'No recognized verb pattern was found to assess.'
+              : 'These word counts do not establish seniority. Confirm that each verb accurately describes your contribution.'
           }`
         },
         skillGap: {

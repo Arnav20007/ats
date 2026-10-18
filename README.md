@@ -1,7 +1,7 @@
-# ToolForge — Enterprise ATS Resume Checker & 1-Click Optimizer
+# ToolForge — In-Browser ATS Resume Reviewer & Keyword Matcher
 
-> **100% Free & Client-Side Private Applicant Tracking System (ATS) Verification Platform.**  
-> Test your resume against the parsing algorithms of **Workday, Greenhouse, Lever, Taleo, iCIMS, and Ashby**.
+> **Free, in-browser résumé checks, job-description keyword comparisons, and formatting feedback.**  
+> Heuristic guidance helps you review your résumé before applying. Runs locally with client-side privacy.
 
 🌐 **Live Website**: [https://toolforge-ats.vercel.app](https://toolforge-ats.vercel.app)  
 📦 **Repository**: [https://github.com/Arnav20007/ats](https://github.com/Arnav20007/ats)
@@ -10,9 +10,9 @@
 
 ## ⚡ Key Capabilities
 
-* **27-Point Comprehensive Inspection**:
-  * ATS Parse Rate & Section Header Hierarchy.
-  * Measurable Achievements density using the **Google X-Y-Z Formula** (`Accomplished [X] as measured by [Y], by doing [Z]`).
+* **Document Structure & Formatting Review**:
+  * Heading clarity, single-column flow, and font safety checks.
+  * Measurable achievements density using the **Google X-Y-Z Formula** (`Accomplished [X] as measured by [Y], by doing [Z]`).
   * Repetition detector with 1-click contextual action verb diversification.
   * Punctuation, period consistency, and capitalization auto-formatter.
 * **100% In-Browser Privacy Shield**:

@@ -246,7 +246,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div>
                   <h4 className="font-bold text-slate-800 dark:text-zinc-200">Is my resume uploaded to your servers?</h4>
                   <p className="text-slate-500 dark:text-zinc-400 pt-0.5 leading-relaxed">
-                    No. Parsing runs 100% locally on your machine using PDF.js. Your resume never leaves your browser.
+                    Résumé parsing runs in your browser using PDF.js, and the résumé text is not sent to ToolForge servers. The site may still contact external services to load fonts.
                   </p>
                 </div>
                 <div className="border-t border-slate-100 dark:border-zinc-800 pt-3">

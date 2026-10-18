@@ -45,75 +45,45 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
       return [
         {
           type: 'Metric-Driven & High Impact (Google X-Y-Z)',
-          score: 95,
-          text: 'Accomplished [Core Goal], as measured by [Quantifiable Metric], by executing [Strategic Technical Action].',
-          powerVerbs: ['Accomplished', 'Executed'],
-          whyItWins: "Standard Google hiring formula demonstrating measurable impact."
+          text: '[Describe what you accomplished], measured by [a result or metric], by [describing how you did it].',
+          powerVerbs: [],
+          whyItWins: 'A fill-in template. Replace each bracketed prompt with accurate details from your own work.'
         },
         {
-          type: 'Executive & Strategic Leadership',
-          score: 92,
-          text: 'Orchestrated end-to-end execution of [Key Project], aligning stakeholders and accelerating delivery cycle by [X]%.',
-          powerVerbs: ['Orchestrated', 'Aligning', 'Accelerating'],
-          whyItWins: 'Emphasizes cross-functional ownership and strategic alignment.'
+          type: 'Describe your contribution',
+          text: '[Describe your role in a project], working with [people or teams, if applicable] to achieve [verified outcome].',
+          powerVerbs: [],
+          whyItWins: 'Use this structure only if it accurately describes your role and the project outcome.'
         },
         {
           type: 'Punchy ATS-Optimized (Concise)',
-          score: 90,
-          text: 'Delivered [Core Output] and improved [Process] throughput by [X]%, maintaining 100% compliance with quality benchmarks.',
-          powerVerbs: ['Delivered', 'Improved'],
-          whyItWins: 'Clean scanning for recruiter screeners and automated parsers.'
+          text: '[Describe the work you completed]; add a verified result or relevant context, if available.',
+          powerVerbs: [],
+          whyItWins: 'A concise fill-in template; it does not predict screening or hiring results.'
         }
       ];
     }
 
-    // Strip common passive openings
-    const stripped = clean
-      .replace(/^(?:helped\s+(?:to\s+)?|assisted\s+(?:with\s+|in\s+)?|worked\s+(?:on\s+|with\s+)?|responsible\s+for\s+|tasked\s+with\s+|involved\s+in\s+)/i, '')
-      .trim();
-
-    const body = stripped.charAt(0).toLowerCase() + stripped.slice(1);
-
-    const levelVerbs = {
-      entry: {
-        primary: ['Executed', 'Implemented', 'Engineered', 'Optimized'],
-        descriptor: 'operational efficiency'
-      },
-      mid: {
-        primary: ['Spearheaded', 'Architected', 'Orchestrated', 'Delivered'],
-        descriptor: 'system performance and turnaround'
-      },
-      senior: {
-        primary: ['Pioneered', 'Directed', 'Mobilized', 'Architected'],
-        descriptor: 'organizational scalability and ROI'
-      }
-    }[level];
-
-    const verb1 = levelVerbs.primary[0];
-    const verb2 = levelVerbs.primary[1] || 'Orchestrated';
-    const verb3 = levelVerbs.primary[2] || 'Delivered';
+    const body = clean;
 
     return [
       {
-        type: 'Metric-Driven & High Impact (Google X-Y-Z)',
-        score: level === 'senior' ? 97 : level === 'mid' ? 95 : 92,
-        text: `${verb1} ${body}, achieving a [X]% improvement in ${levelVerbs.descriptor} and reducing turnaround time by [Y] hours weekly.`,
-        powerVerbs: [verb1, 'Achieving', 'Reducing'],
-        whyItWins: `Replaces passive phrasing with "${verb1}" and incorporates Google's metric-driven X-Y-Z structure with clear placeholders for your real numbers.`
+        type: 'Add a verified result',
+        text: `${body}; add [a result you can verify] measured by [a relevant metric], if available.`,
+        powerVerbs: [],
+        whyItWins: 'Keeps the activity you entered and leaves the outcome and measurement for you to supply.'
       },
       {
-        type: 'Executive & Strategic Leadership',
-        score: level === 'senior' ? 95 : level === 'mid' ? 93 : 90,
-        text: `${verb2} cross-functional execution of ${body}; standardized core workflows that supported [X]+ users/records while elevating team velocity by [Y]%.`,
-        powerVerbs: [verb2, 'Standardized', 'Elevating'],
-        whyItWins: `Frames your specific task around systems thinking, scalability, and measurable team impact appropriate for ${level}-level seniority.`
+        type: 'Clarify your contribution',
+        text: `${body}; describe [your specific contribution] and [the outcome], if those details apply.`,
+        powerVerbs: [],
+        whyItWins: `Prompts you to describe your actual contribution without inferring leadership or team scope for the selected ${level}-level target.`
       },
       {
-        type: 'Punchy ATS-Optimized (Concise)',
-        score: level === 'senior' ? 92 : level === 'mid' ? 91 : 89,
-        text: `${verb3} ${body}, cutting latency/errors by [X]% and ensuring 100% compliance with production standards.`,
-        powerVerbs: [verb3, 'Cutting', 'Ensuring'],
-        whyItWins: 'Optimized for high-speed keyword scanning across Workday, Greenhouse, and Taleo algorithms.'
+        type: 'Concise draft',
+        text: `${body}; add [relevant context or verified impact], if available.`,
+        powerVerbs: [],
+        whyItWins: 'A concise draft based on your input, with prompts for details you can substantiate.'
       }
     ];
   };
@@ -164,7 +134,7 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
             {SEO_DATA.resume.h1}
           </h1>
           <p className="text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            Transform weak, passive job descriptions into metric-backed executive achievements that pass ATS filters and impress hiring managers.
+            Get draft wording suggestions for your résumé bullets. Review every edit and add only outcomes and metrics that accurately reflect your own work.
           </p>
         </div>
 
@@ -256,12 +226,12 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
                   <Award className="w-4 h-4 text-slate-800" />
                   <span className="text-xs font-bold text-slate-900">{item.type}</span>
                   <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
-                    ATS Score: {item.score}%
+                    Draft suggestion
                   </span>
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                  <span className="text-[11px] font-medium">Power Verbs:</span>
+            <span className="text-[11px] font-medium">Wording prompts:</span>
                   {item.powerVerbs.map((v, i) => (
                     <span key={i} className="text-[11px] font-mono font-bold text-slate-800 bg-slate-100 border border-slate-200 px-1.5 py-0.2 rounded">
                       {v}
