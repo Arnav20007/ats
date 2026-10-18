@@ -11,7 +11,7 @@ export async function prepareResumeImport(file: File): Promise<PreparedResumeImp
   const extracted = await extractTextFromPdfFile(file);
   if (!extracted.text.trim()) return { extracted, resume: null };
 
-  const parsed = parseResumeText(extracted.text);
+  const parsed = parseResumeText(extracted.text, { ocr: extracted.usedOcr === true });
   const projects: ResumeProject[] = (parsed.projects || []).map((project, index) => ({
     id: `proj-uploaded-${index + 1}`,
     name: project.name,
@@ -46,7 +46,7 @@ export async function prepareResumeImport(file: File): Promise<PreparedResumeImp
     location: parsed.location || '',
     linkedin: parsed.linkedin || '',
     portfolio: parsed.portfolio || '',
-    summary: parsed.summary || (unclassifiedBullets.length > 0
+    summary: parsed.summary || (!extracted.usedOcr && unclassifiedBullets.length > 0
       ? `Extracted bullets to review and move to the correct section:\n${unclassifiedBullets.map((bullet) => `• ${bullet}`).join('\n')}`
       : ''),
     skills: parsed.skills?.length ? parsed.skills : [],

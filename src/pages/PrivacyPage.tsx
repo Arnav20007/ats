@@ -58,7 +58,7 @@ const detailedSections = [
   },
   {
     title: '5. File Upload Handling (PDF & DOCX)',
-    content: "When you drag and drop or select a file, standard Web APIs (FileReader and PDF.js) extract readable text directly inside your browser sandbox. The original binary file is never transmitted across the network.",
+    content: "When you drag and drop or select a file, PDF.js extracts readable text in your browser. If a PDF has no text layer, a locally hosted English OCR engine reads its rendered pages in your browser. The original binary file and its text are not uploaded.",
   },
   {
     title: '6. Contact & Data Controller',

@@ -401,7 +401,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
         clearInterval(stepTimer);
         setIsScanning(false);
         showToast(
-          `Could not extract text from "${file.name}". The document may be password-protected, encrypted, or a flat image scan.`,
+          extracted.error || `Could not extract text from "${file.name}". The document may be password-protected, encrypted, or an unreadable scan.`,
           'warning'
         );
         return;
@@ -424,8 +424,10 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
           setHasEdited(true);
           setStudioTab('document'); // Always land directly on Document Canvas!
 
-          if (extracted.isScanned) {
-            showToast('Scanned image detected. For ATS scanners, please use a text-selectable PDF.', 'warning');
+          if (extracted.usedOcr) {
+            showToast('OCR extracted text from this scan. Review names, dates, contact details, and metrics carefully.', 'warning');
+          } else if (extracted.isScanned) {
+            showToast('Scanned image detected. Please review the imported fields carefully.', 'warning');
           } else {
             showToast(`Extracted text from ${file.name}. Review the fields; some details may need correction.`, 'success');
           }

@@ -5,6 +5,68 @@ export interface ExtractedPdfResult {
   text: string;
   isScanned: boolean;
   pageCount: number;
+  usedOcr?: boolean;
+  ocrConfidence?: number;
+  error?: string;
+}
+
+const MAX_OCR_PAGES = 10;
+
+async function runBrowserOcr(pdf: any): Promise<{ text: string; confidence: number }> {
+  if (typeof document === 'undefined') {
+    throw new Error('Browser canvas is required for OCR');
+  }
+  if (pdf.numPages > MAX_OCR_PAGES) {
+    throw new Error(`OCR is limited to ${MAX_OCR_PAGES} pages per file. Upload a text-selectable PDF or split the file.`);
+  }
+
+  const { createWorker } = await import('tesseract.js');
+  const assetRoot = new URL('/ocr/', document.baseURI).toString();
+  const worker = await createWorker('eng', 1, {
+    workerPath: new URL('worker.min.js', assetRoot).toString(),
+    corePath: new URL('core/', assetRoot).toString(),
+    langPath: new URL('tessdata', assetRoot).toString(),
+    gzip: false,
+    cachePath: 'toolforge-ocr-v1',
+    workerBlobURL: false
+  });
+
+  const pageText: string[] = [];
+  let confidenceTotal = 0;
+  let confidenceWeight = 0;
+  try {
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+      const page = await pdf.getPage(pageNumber);
+      const baseViewport = page.getViewport({ scale: 1 });
+      const scale = Math.min(3, 2400 / Math.max(baseViewport.width, baseViewport.height));
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) throw new Error('Could not prepare a canvas for OCR');
+
+      await page.render({ canvasContext: context, viewport }).promise;
+      const result = await worker.recognize(canvas);
+      const text = result.data.text.trim();
+      if (text) {
+        pageText.push(text);
+        confidenceTotal += result.data.confidence * text.length;
+        confidenceWeight += text.length;
+      }
+
+      page.cleanup();
+      canvas.width = 0;
+      canvas.height = 0;
+    }
+  } finally {
+    await worker.terminate();
+  }
+
+  return {
+    text: pageText.join('\n\n').trim(),
+    confidence: confidenceWeight ? Math.round(confidenceTotal / confidenceWeight) : 0
+  };
 }
 
 /**
@@ -252,16 +314,17 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
       }
 
       return {
+        pdf,
         text: fullText.trim(),
         numPages: pdf.numPages
       };
     })();
 
-    const timeoutPromise = new Promise<{ text: string; numPages: number }>((_, reject) => {
+    const timeoutPromise = new Promise<{ pdf: any; text: string; numPages: number }>((_, reject) => {
       timeoutId = setTimeout(() => reject(new Error('PDF.js parse timeout')), 10000);
     });
 
-    let parsed: { text: string; numPages: number };
+    let parsed: { pdf: any; text: string; numPages: number };
     try {
       parsed = await Promise.race([parsePromise, timeoutPromise]);
     } catch (error) {
@@ -270,22 +333,43 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
     } finally {
       if (timeoutId) clearTimeout(timeoutId);
     }
-    const { text, numPages } = parsed;
-    await loadingTask.destroy().catch(() => undefined);
+    const { pdf, text, numPages } = parsed;
 
     if (text.length > 20) {
+      await loadingTask.destroy().catch(() => undefined);
       return {
         text,
         isScanned: false,
         pageCount: numPages
       };
     } else {
-      // PDF has pages but no text items -> Scanned image PDF
-      return {
-        text: '',
-        isScanned: true,
-        pageCount: numPages
-      };
+      // A scan with no text layer still contains useful visual content. OCR it
+      // locally in the browser before deciding the import is unreadable.
+      try {
+        const ocr = await runBrowserOcr(pdf);
+        await loadingTask.destroy().catch(() => undefined);
+        if (ocr.text.length > 40 && ocr.confidence >= 30) {
+          return {
+            text: ocr.text,
+            isScanned: true,
+            pageCount: numPages,
+            usedOcr: true,
+            ocrConfidence: ocr.confidence
+          };
+        }
+        return {
+          text: '',
+          isScanned: true,
+          pageCount: numPages,
+          usedOcr: true,
+          ocrConfidence: ocr.confidence,
+          error: 'OCR could not read enough text clearly. Try a sharper scan or a text-selectable PDF.'
+        };
+      } catch (ocrError) {
+        await loadingTask.destroy().catch(() => undefined);
+        const error = ocrError instanceof Error ? ocrError.message : 'OCR could not read this PDF.';
+        return { text: '', isScanned: true, pageCount: numPages, usedOcr: true, error };
+      }
     }
   } catch (pdfErr) {
     console.warn('PDF.js worker or timeout fallback engaged:', pdfErr);
@@ -347,12 +431,36 @@ export interface ParsedResumeFields {
 /**
  * Heuristically parses structured fields from extracted text using safe word boundaries.
  */
-export function parseResumeText(rawText: string): ParsedResumeFields {
+export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}): ParsedResumeFields {
   const result: ParsedResumeFields = {};
-  const lines = rawText
+  let normalizedText = options.ocr
+    ? rawText.replace(/&amp;/gi, '&').replace(/^[¢©¤°·]\s+/gm, '• ').replace(/^e\s+(?=(?:implemented|developed|built|created|designed|automated)\b)/gim, '• ').replace(/\u00a0/g, ' ')
+    : rawText;
+  let lines = normalizedText
     .split('\n')
     .map((l) => l.trim())
     .filter(Boolean);
+
+  if (options.ocr) {
+    const merged: string[] = [];
+    const isBullet = (line: string) => /^(?:[•\-*▪▫‣–—]\s*|(?:improved|led|built|developed|created|managed|engineered|designed|architected|spearheaded|orchestrated|automated|scaled|delivered|implemented|reduced|increased)\b)/i.test(line);
+    const isSection = (line: string) => /^(?:professional\s+)?(?:summary|profile|objective|experience|work\s+experience|employment|skills|technical\s+skills|education|key\s+technical\s+projects|projects|certifications|awards|languages)\b/i.test(line);
+    const isLikelyProjectTitle = (line: string) => line.length < 80 && (
+      /\b(?:19|20)\d{2}\s*(?:[-–—]|to)\s*(?:(?:19|20)\d{2}|present)\b/i.test(line) ||
+      /\|\s*(?:19|20)\d{2}\b/.test(line) ||
+      (/^(?:[A-Z][\p{L}\d&+.#/-]*)(?:\s+[A-Z][\p{L}\d&+.#/-]*){1,7}$/u.test(line) && !/[.!?]$/.test(line))
+    );
+    for (const line of lines) {
+      const previous = merged.at(-1);
+      if (previous && isBullet(previous) && !isBullet(line) && !isSection(line) && !isLikelyProjectTitle(line)) {
+        merged[merged.length - 1] = `${previous} ${line}`;
+      } else {
+        merged.push(line);
+      }
+    }
+    lines = merged;
+    normalizedText = lines.join('\n');
+  }
 
   if (lines.length > 0) {
     // 1. Candidate Full Name: first line with realistic name structure
@@ -361,7 +469,9 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
       l.length < 35 &&
       !l.includes('@') &&
       !l.includes('http') &&
-      !/(?:resume|curriculum|vitae|page|github|linkedin|phone|email)/i.test(l)
+      !/(?:resume|curriculum|vitae|page|github|linkedin|phone|email)/i.test(l) &&
+      !/^\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b/.test(l) &&
+      !(options.ocr && (l.match(/\d/g)?.length || 0) > l.length / 2)
     );
     if (candidateName) {
       result.fullName = candidateName;
@@ -371,39 +481,40 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
     const titleRegex = /(?:software engineer|full stack|frontend|backend|devops|cloud|data scientist|machine learning|ai engineer|product manager|tech lead|engineering manager|system architect|security engineer|developer|consultant|analyst|qa engineer)/i;
     const candidateTitle = lines.slice(0, 10).find((l) =>
       l !== candidateName &&
-      titleRegex.test(l) &&
+      ((options.ocr && /^([\w &.-]{3,40}):\s*(?:REST APIs|SQLite|JavaScript|Python|SQL)\b/i.test(l) && titleRegex.test(l.split(':', 1)[0])) ||
+        (!l.includes(':') && !l.includes('&amp;') && l.split(/\s+/).length <= 7 && titleRegex.test(l))) &&
       l.length < 60 &&
       !l.includes('@')
     );
     if (candidateTitle) {
-      result.jobTitle = candidateTitle;
+      result.jobTitle = options.ocr ? candidateTitle.split(':', 1)[0].trim() : candidateTitle;
     }
   }
 
   // 3. Email extraction
-  const emailMatch = rawText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+  const emailMatch = normalizedText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   if (emailMatch) {
     result.email = emailMatch[0];
   }
 
   // 4. Phone extraction
-  const phoneMatch = rawText.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
+  const phoneMatch = normalizedText.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
   if (phoneMatch) {
     result.phone = phoneMatch[0];
   }
 
   // 5. Location extraction
-  const locMatch = rawText.match(/\b([A-Z][a-zA-Z\s]+,\s*(?:[A-Z]{2}|[A-Z][a-zA-Z\s]+))\b/);
+  const locMatch = normalizedText.match(/\b([A-Z][a-zA-Z\s]+,\s*(?:[A-Z]{2}|[A-Z][a-zA-Z\s]+))\b/);
   if (locMatch && !locMatch[1].toLowerCase().includes('university') && !locMatch[1].toLowerCase().includes('college')) {
     result.location = locMatch[1].trim();
   }
 
   // 6. LinkedIn & Portfolio
-  const linkedinMatch = rawText.match(/(?:linkedin\.com\/in\/[\w-]+|linkedin\.com\/[\w-]+)/i);
+  const linkedinMatch = normalizedText.match(/(?:linkedin\.com\/in\/[\w-]+|linkedin\.com\/[\w-]+)/i);
   if (linkedinMatch) {
     result.linkedin = linkedinMatch[0];
   }
-  const portfolioMatch = rawText.match(/(?:github\.com\/[\w-]+|[\w-]+\.(?:dev|io|me|tech))\b/i);
+  const portfolioMatch = normalizedText.match(/(?:github\.com\/[\w-]+|[\w-]+\.(?:dev|io|me|tech))\b/i);
   if (portfolioMatch) {
     result.portfolio = portfolioMatch[0];
   }
@@ -413,9 +524,11 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
     if (/^(?:summary|professional summary|profile|about me|executive summary|objective)\b/i.test(l)) {
-      const nextLines = lines.slice(i + 1, i + 4).filter(
-        (nl) => !/^(?:experience|skills|education|work|employment|projects)\b/i.test(nl) && nl.length > 20
-      );
+      const nextLines: string[] = [];
+      for (const nl of lines.slice(i + 1, i + 4)) {
+        if (/^(?:(?:technical|core|key|professional)\s+)*(?:experience|skills|education|work|employment|projects|competencies)\b/i.test(nl)) break;
+        if (!/(?:university|college|b\.?tech|bachelor|master|\bGPA\b|\b20\d{2}\b)/i.test(nl) && nl.length > 20) nextLines.push(nl);
+      }
       if (nextLines.length > 0) {
         foundSummary = nextLines.join(' ');
         break;
@@ -424,12 +537,15 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
   }
   if (!foundSummary) {
     // If no header, find the first substantive narrative paragraph (>70 chars) in the top 15 lines
-    const earlyParagraph = lines.slice(0, 15).find((l) =>
+    const firstSection = lines.findIndex((l) => /^(?:(?:technical|core|key|professional)\s+)*(?:summary|profile|objective|experience|skills|education|projects|competencies)\b/i.test(l));
+    const preSectionLines = lines.slice(0, firstSection >= 0 ? firstSection : 15);
+    const earlyParagraph = preSectionLines.find((l) =>
       l.length > 70 &&
       !l.startsWith('•') &&
       !l.startsWith('-') &&
       !l.includes('@') &&
-      !/^(?:experience|skills|education)\b/i.test(l)
+      !/^(?:(?:technical|core|key|professional)\s+)*(?:experience|skills|education|projects|competencies)\b/i.test(l) &&
+      !/(?:university|college|b\.?tech|bachelor|master|\bGPA\b|\b20\d{2}\b)/i.test(l)
     );
     if (earlyParagraph) {
       foundSummary = earlyParagraph;
@@ -441,7 +557,7 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
 
   // 8. Detected skills using rigorous word boundary dictionary
   const matchedSkills = SKILL_DEFINITIONS
-    .filter((skill) => isSkillInText(skill, rawText))
+    .filter((skill) => isSkillInText(skill, normalizedText))
     .map((skill) => skill.canonical);
 
   if (matchedSkills.length > 0) {
@@ -517,7 +633,7 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
 
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
-    if (/^(?:key\s+|technical\s+|academic\s+|personal\s+)?projects\b/i.test(l) && l.length < 40) {
+    if (/^(?:(?:key|technical|academic|personal)\s+){0,2}projects\b/i.test(l) && l.length < 60) {
       inProjectsSection = true;
       continue;
     }
@@ -534,7 +650,7 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
       }
 
       // Check if line is a bullet
-      const isBullet = /^[•\-\*▪▫‣–—]/.test(l) || /^(?:developed|built|designed|implemented|created|architected|automated)\b/i.test(l);
+      const isBullet = /^[•\-*▪▫‣–—]/.test(l) || /^(?:developed|built|designed|implemented|created|architected|automated)\b/i.test(l);
 
       if (isBullet) {
         const cleanBullet = l.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim();
@@ -558,6 +674,12 @@ export function parseResumeText(rawText: string): ParsedResumeFields {
           name: l,
           bullets: []
         };
+        const date = l.match(/\b((?:19|20)\d{2})(?:\s*[-–—]\s*((?:19|20)\d{2}|present))?\b/i);
+        if (date) {
+          currentProject.startDate = date[1];
+          if (date[2]) currentProject.endDate = /^present$/i.test(date[2]) ? 'Present' : date[2];
+          currentProject.name = l.replace(date[0], '').replace(/[|,–—-]+\s*$/, '').trim() || l;
+        }
       }
     }
   }

@@ -10,7 +10,7 @@ const vite = await createServer({
   logLevel: 'error'
 });
 const load = (id) => vite.ssrLoadModule(id);
-const [{ prepareResumeImport }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { extractTextFromPdfFile }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
+const [{ prepareResumeImport }, { analyzeAtsKeywords }, { generateDeepAuditReport }, { createContactMailto, createContactCopyText }, { BLANK_STARTER_RESUME }, { extractTextFromPdfFile, parseResumeText }, { default: App }, { renderToString }, { createElement }] = await Promise.all([
   load('/src/utils/resumeImport.ts'),
   load('/src/utils/atsKeywordMatcher.ts'),
   load('/src/utils/deepAuditAnalyzer.ts'),
@@ -185,6 +185,36 @@ test('PDFs with no page text are detected as unreadable instead of parsing binar
   assert.equal(extracted.text, '');
   assert.equal(extracted.isScanned, true);
   assert.equal(prepared.resume, null);
+});
+
+test('OCR text maps wrapped project bullets without inventing a summary or title', () => {
+  const ocrText = [
+    '10/18/26, 2:06 PM Alex Rivera — Resume',
+    'Alex Rivera',
+    'Backend & Data: REST APIs, SQLite',
+    'alex@example.com : +91 7080091179',
+    'PROFESSIONAL SUMMARY',
+    'Example University — B.Tech in Computer Science | 2024-2028 GPA: 8.0',
+    'TECHNICAL SKILLS & COMPETENCIES',
+    'JavaScript - Python - React - SQL',
+    'KEY TECHNICAL PROJECTS',
+    'React, JavaScript, Flask | 2025-Present',
+    '¢ Developed a web application for appointment booking and',
+    'user/provider workflows with authentication and access control.',
+    'Python, PDF Processing | 2026',
+    '¢ Built a PDF utility for merging and splitting files.'
+  ].join('\n');
+  const parsed = parseResumeText(ocrText, { ocr: true });
+
+  assert.equal(parsed.fullName, 'Alex Rivera');
+  assert.equal(parsed.jobTitle, 'Backend & Data');
+  assert.equal(parsed.email, 'alex@example.com');
+  assert.equal(parsed.summary, undefined, 'education and skills must not be mislabeled as a summary');
+  assert.equal(parsed.education?.length, 1);
+  assert.equal(parsed.projects?.length, 2);
+  assert.equal(parsed.projects?.[0].bullets.length, 1, 'wrapped OCR lines should stay in one bullet');
+  assert.match(parsed.projects?.[0].bullets[0] || '', /user\/provider workflows/);
+  assert.equal(parsed.projects?.[1].startDate, '2026');
 });
 
 test('keyword matching returns an empty scope when a job description has no recognized terms', () => {
