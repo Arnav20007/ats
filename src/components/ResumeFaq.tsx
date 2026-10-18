@@ -23,6 +23,10 @@ const faqs = [
     a: 'The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. The improver offers draft wording; use only outcomes and measures that accurately reflect your work.'
   },
   {
+    q: 'Can I check an Overleaf, LaTeX, or Word resume ATS score?',
+    a: 'Yes. If you exported your resume PDF from Overleaf, LaTeX, Microsoft Word, or Google Docs, ToolForge extracts the selectable text layer in your browser to evaluate standard section headings, quantifiable metrics, and role keywords without breaking formatting.'
+  },
+  {
     q: 'Is ToolForge completely free with no hidden charges?',
     a: "Yes. Every single feature — keyword matching, ATS audit checklist, bullet point rewriter, and direct PDF export — is 100% free with no watermarks or required subscriptions."
   }

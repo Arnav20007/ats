@@ -1,9 +1,9 @@
 {
   "home": {
-    "title": "ToolForge | Free In-Browser Resume Checker & Keyword Matcher",
-    "description": "Review your resume, compare recognized job-description skills, and get formatting guidance in your browser. Results are heuristics, not employer ATS tests.",
+    "title": "ToolForge | Free ATS Resume Score Checker & Keyword Matcher",
+    "description": "Free ATS resume score checker and keyword matcher. Check your ATS score, calculate readiness, test Overleaf/PDF formats, and match skills 100% privately in-browser.",
     "path": "/",
-    "heading": "Review Your Resume. Show Your Experience Clearly."
+    "heading": "Free ATS Resume Score Checker & Keyword Matcher"
   },
   "guide": {
     "title": "ATS Resume Optimization Guide | ToolForge",

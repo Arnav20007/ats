@@ -1375,18 +1375,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 
                 <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                  <span>FREE ATS RESUME CHECKER</span>
+                  <span>FREE ATS RESUME SCORE CHECKER</span>
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.08]">
-                  Review Your Resume. <br className="hidden sm:inline" />
+                  Free ATS Resume Score Checker. <br className="hidden sm:inline" />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
-                    Show Your Experience Clearly.
+                    Check Score, Overleaf &amp; Keywords.
                   </span>
                 </h1>
 
                 <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                  Browser-based résumé checks, keyword comparisons, and formatting feedback in seconds. Results are heuristic guidance, not employer ATS tests.
+                  Check your ATS resume score, calculate readiness, test Overleaf/LaTeX/Word PDFs, and compare job keywords in seconds. 100% private in-browser.
                 </p>
 
                 {/* Clean Drag & Drop Upload Box */}
@@ -1409,7 +1409,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       {isDragging ? 'Drop your resume file to analyze' : 'Drop your resume here or browse files'}
                     </p>
                     <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
-                      Supports PDF & DOCX
+                      Supports PDF, DOCX, Overleaf &amp; LaTeX Exports (100% In-Browser Private)
                     </p>
                   </div>
 
