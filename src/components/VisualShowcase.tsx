@@ -55,7 +55,7 @@ export const VisualShowcase: React.FC = () => {
           {/* High-Resolution Graphic Display */}
           <div className="relative group overflow-hidden bg-slate-950">
             <img
-              src="/images/before-after-ats.png"
+              src="/images/before-after-ats.jpg"
               alt="Comparison of a rejected resume before optimization versus an interview-ready resume after ToolForge optimization"
               className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.01]"
               loading="lazy"

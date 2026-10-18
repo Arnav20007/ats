@@ -11,6 +11,7 @@ export interface ExtractedPdfResult {
  * Supports both uncompressed and DEFLATE-compressed streams via native DecompressionStream.
  */
 async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
+  const MAX_DOCX_XML_BYTES = 5 * 1024 * 1024;
   try {
     const view = new DataView(buffer);
     const decoder = new TextDecoder('utf-8');
@@ -24,7 +25,7 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
       }
     }
 
-    let docXmlEntry: { offset: number; compSize: number; method: number } | null = null;
+    let docXmlEntry: { offset: number; compSize: number; uncompressedSize: number; method: number } | null = null;
 
     if (eocdOffset !== -1) {
       const cdOffset = view.getUint32(eocdOffset + 16, true);
@@ -35,6 +36,7 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
         if (view.getUint32(curr, true) !== 0x02014b50) break;
         const method = view.getUint16(curr + 10, true);
         const compSize = view.getUint32(curr + 20, true);
+        const uncompressedSize = view.getUint32(curr + 24, true);
         const fnLen = view.getUint16(curr + 28, true);
         const extraLen = view.getUint16(curr + 30, true);
         const commentLen = view.getUint16(curr + 32, true);
@@ -44,10 +46,11 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
         const fileName = decoder.decode(fileNameBytes);
 
         if (fileName === 'word/document.xml') {
+          if (localHeaderOffset + 30 > buffer.byteLength) return '';
           const localFnLen = view.getUint16(localHeaderOffset + 26, true);
           const localExtraLen = view.getUint16(localHeaderOffset + 28, true);
           const dataOffset = localHeaderOffset + 30 + localFnLen + localExtraLen;
-          docXmlEntry = { offset: dataOffset, compSize, method };
+          docXmlEntry = { offset: dataOffset, compSize, uncompressedSize, method };
           break;
         }
 
@@ -62,12 +65,13 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
         if (view.getUint32(offset, true) === 0x04034b50) {
           const method = view.getUint16(offset + 8, true);
           const compSize = view.getUint32(offset + 18, true);
+          const uncompressedSize = view.getUint32(offset + 22, true);
           const fnLen = view.getUint16(offset + 26, true);
           const extraLen = view.getUint16(offset + 28, true);
           const fn = decoder.decode(new Uint8Array(buffer, offset + 30, fnLen));
           const dataOffset = offset + 30 + fnLen + extraLen;
           if (fn === 'word/document.xml') {
-            docXmlEntry = { offset: dataOffset, compSize, method };
+            docXmlEntry = { offset: dataOffset, compSize, uncompressedSize, method };
             break;
           }
           offset = dataOffset + compSize;
@@ -78,6 +82,9 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
     }
 
     if (docXmlEntry) {
+      if (docXmlEntry.uncompressedSize > MAX_DOCX_XML_BYTES ||
+          docXmlEntry.offset < 0 || docXmlEntry.compSize < 0 ||
+          docXmlEntry.offset + docXmlEntry.compSize > buffer.byteLength) return '';
       const slice = new Uint8Array(buffer, docXmlEntry.offset, docXmlEntry.compSize);
       let xmlContent = '';
 
@@ -87,10 +94,28 @@ async function extractTextFromDocx(buffer: ArrayBuffer): Promise<string> {
         if (typeof DecompressionStream !== 'undefined') {
           const ds = new DecompressionStream('deflate-raw');
           const writer = ds.writable.getWriter();
-          writer.write(slice);
-          writer.close();
-          const response = new Response(ds.readable);
-          xmlContent = await response.text();
+          const writePromise = writer.write(slice).then(() => writer.close());
+          const reader = ds.readable.getReader();
+          const chunks: Uint8Array[] = [];
+          let totalBytes = 0;
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            totalBytes += value.byteLength;
+            if (totalBytes > MAX_DOCX_XML_BYTES) {
+              await reader.cancel();
+              throw new Error('DOCX document XML exceeds the extraction limit');
+            }
+            chunks.push(value);
+          }
+          await writePromise;
+          const output = new Uint8Array(totalBytes);
+          let outputOffset = 0;
+          for (const chunk of chunks) {
+            output.set(chunk, outputOffset);
+            outputOffset += chunk.byteLength;
+          }
+          xmlContent = decoder.decode(output);
         }
       }
 
@@ -168,7 +193,7 @@ function extractTextFromBinaryPdf(buffer: ArrayBuffer): string {
 
 /**
  * Extracts all readable text from a binary PDF, DOCX, or TXT file client-side.
- * Never hangs; uses a strict 3s timeout on PDF.js and falls back to binary parsing.
+ * Limits processing time and page count, then falls back to binary parsing.
  */
 export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfResult> {
   const lowerName = file.name.toLowerCase();
@@ -197,7 +222,7 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
     }
   }
 
-  // 3. Primary PDF.js with strict 3-second timeout
+  // 3. Primary PDF.js with a bounded 10-second timeout
   try {
     const pdfjsLib = await import('pdfjs-dist');
     pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -205,9 +230,11 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
       import.meta.url
     ).toString();
 
+    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     const parsePromise = (async () => {
-      const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
       const pdf = await loadingTask.promise;
+      if (pdf.numPages > 100) throw new Error('PDF exceeds the 100-page extraction limit');
       let fullText = '';
 
       for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
@@ -225,11 +252,21 @@ export async function extractTextFromPdfFile(file: File): Promise<ExtractedPdfRe
       };
     })();
 
-    const timeoutPromise = new Promise<{ text: string; numPages: number }>((_, reject) =>
-      setTimeout(() => reject(new Error('PDF.js parse timeout')), 3000)
-    );
+    const timeoutPromise = new Promise<{ text: string; numPages: number }>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error('PDF.js parse timeout')), 10000);
+    });
 
-    const { text, numPages } = await Promise.race([parsePromise, timeoutPromise]);
+    let parsed: { text: string; numPages: number };
+    try {
+      parsed = await Promise.race([parsePromise, timeoutPromise]);
+    } catch (error) {
+      await loadingTask.destroy().catch(() => undefined);
+      throw error;
+    } finally {
+      if (timeoutId) clearTimeout(timeoutId);
+    }
+    const { text, numPages } = parsed;
+    await loadingTask.destroy().catch(() => undefined);
 
     if (text.length > 20) {
       return {

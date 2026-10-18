@@ -123,7 +123,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="text-xl font-black">Audit your resume for free today</h3>
             <p className="text-xs sm:text-sm text-emerald-100">
-              No account required. Instant results in under 2 seconds.
+            No account required. Review results in your browser.
             </p>
           </div>
           <button

@@ -23,9 +23,11 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-[1440px] mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 py-3.5">
         
         {/* Left: Handcrafted Human Brand Mark */}
-        <div
+        <button
+          type="button"
           onClick={onNavigateHome}
-          className="flex items-center gap-3 shrink-0 cursor-pointer"
+          aria-label="ToolForge home"
+          className="flex items-center gap-3 shrink-0 cursor-pointer bg-transparent border-0 p-0 text-left"
         >
           <img
             src="/favicon.svg"
@@ -40,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
               Resume Checker
             </span>
           </div>
-        </div>
+        </button>
 
         {/* Center: Simple Human Trust Message */}
         <div className="hidden md:flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400 font-medium">

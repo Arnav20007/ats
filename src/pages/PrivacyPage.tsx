@@ -46,11 +46,11 @@ const detailedSections = [
   },
   {
     title: '2. Cookies and Local Storage',
-    content: "ToolForge uses a single localStorage item: 'toolforge_theme' (storing 'light' or 'dark' mode preference). We do not set tracking cookies, advertising pixels, or behavioral trackers. Static typography assets loaded from Google Fonts convey standard connection metadata, but Google Fonts has zero access to your document text or parsing sessions.",
+    content: "ToolForge uses one localStorage item, 'toolforge_theme', to store the light or dark mode preference. We do not set tracking cookies, advertising pixels, or behavioral trackers. Google Fonts receives standard connection metadata when fonts load. If you open the optional UPI support dialog, the QR image is requested from qrserver.com and contains the displayed payment intent; résumé content is not included.",
   },
   {
     title: '3. Third-Party Data Sharing',
-    content: "Résumé text is not sent to ToolForge servers. The site loads fonts from Google Fonts, which receives standard connection metadata; résumé content is not included in that font request.",
+    content: "Résumé text is not sent to ToolForge servers or third parties. The site loads fonts from Google Fonts. If you choose to open the optional UPI support dialog, qrserver.com receives a request to render the payment QR code; this request does not contain résumé text.",
   },
   {
     title: '4. AI Architecture and Processing',

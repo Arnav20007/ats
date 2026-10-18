@@ -13,7 +13,6 @@ export interface AuditIssue {
 }
 
 export interface DeepAuditReport {
-  overallScore: number;
   categories: {
     content: {
       score: number;
@@ -321,16 +320,7 @@ export function generateDeepAuditReport(
     probingQuestions.push('"Can you explain how and where you applied C++ in your practical work experience?"');
   }
 
-  // 8. Discrimination: Ageism & Gaps
-  const gradYears = resume.education.flatMap((e) => {
-    const match = e.year.match(/\b(19\d\d|20\d\d)\b/g);
-    return match ? match.map(Number) : [];
-  });
-  const oldestGradYear = gradYears.length > 0 ? Math.min(...gradYears) : null;
-  const currentYear = new Date().getFullYear();
-  const isOver15Years = oldestGradYear !== null && currentYear - oldestGradYear > 15;
-
-  // 9. Seniority: Scope & Ownership
+  // 8. Seniority: Scope & Ownership
   let passiveVerbCount = 0;
   let leadVerbCount = 0;
   allBullets.forEach((b) => {
@@ -372,8 +362,6 @@ export function generateDeepAuditReport(
     100 - buzzwordsFound.length * 15 - interviewRisks.length * 10
   )));
 
-  const discriminationScore = gradYears.length > 0 ? (isOver15Years ? 70 : 100) : null;
-
   const totalVerbSignals = leadVerbCount + passiveVerbCount;
   const seniorityScore = totalVerbSignals > 0
     ? Math.round((leadVerbCount / totalVerbSignals) * 100)
@@ -384,19 +372,7 @@ export function generateDeepAuditReport(
     ? Math.round((targetJdMatchedSkills.length / (targetJdMatchedSkills.length + targetJdMissingSkills.length)) * 100)
     : 0;
 
-  // ToolForge heuristic composite score; omit job tailoring when no target JD is supplied.
-  const applicableScoreWeight = 0.8 + (hasTargetJobDescription ? 0.1 : 0) + (seniorityScore !== null ? 0.1 : 0);
-  const overallScore = Math.min(100, Math.max(20, Math.round((
-    0.30 * contentScore +
-    0.20 * sectionsScore +
-    0.15 * atsEssentialsScore +
-    0.15 * hrRedFlagsScore +
-    (seniorityScore !== null ? 0.10 * seniorityScore : 0) +
-    (hasTargetJobDescription ? 0.10 * tailoringScore : 0)
-  ) / applicableScoreWeight)));
-
   return {
-    overallScore,
     categories: {
       content: {
         score: contentScore,
@@ -496,15 +472,11 @@ export function generateDeepAuditReport(
         }
       },
       discrimination: {
-        score: discriminationScore,
+        score: null,
         ageismDateBias: {
           isProUnlocked: true,
-          passed: gradYears.length > 0 && !isOver15Years,
-          details: isOver15Years
-            ? '⚠️ Graduation date older than 15 years detected. Consider omitting early education dates to prevent unconscious age bias.'
-            : gradYears.length > 0
-              ? 'No graduation year more than 15 years old was found. This check does not evaluate other age-bias factors.'
-              : 'No graduation year was found, so date-based review is not assessed.'
+          passed: false,
+          details: 'Not assessed. Graduation dates are not used to infer age or score résumé readiness.'
         },
         employmentGaps: {
           isProUnlocked: true,

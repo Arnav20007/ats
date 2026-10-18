@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher</title>
-    <meta name="title" content="ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher" />
-    <meta name="description" content="Free in-browser résumé checks, job-description keyword comparisons, and formatting feedback. Heuristic guidance helps you review your résumé before applying." />
+    <title>ToolForge – Free In-Browser Resume Checker &amp; Keyword Matcher</title>
+    <meta name="title" content="ToolForge – Free In-Browser Resume Checker &amp; Keyword Matcher" />
+    <meta name="description" content="Review your resume, compare recognized job-description skills, and get formatting guidance in your browser. Results are heuristics, not employer ATS tests." />
     <meta name="keywords" content="resume checker, job description keyword matcher, resume bullet rewriter, Google X-Y-Z formula, in-browser resume review, resume formatting feedback" />
     <meta name="author" content="ToolForge" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -25,24 +25,29 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://toolforge-ats.vercel.app/" />
     <meta property="og:site_name" content="ToolForge" />
-    <meta property="og:title" content="ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher" />
-    <meta property="og:description" content="Free in-browser résumé checks, job-description keyword comparisons, and formatting feedback. Heuristic guidance helps you review your résumé before applying." />
-    <meta property="og:image" content="https://toolforge-ats.vercel.app/images/hero-ats-preview.png" />
+    <meta property="og:title" content="ToolForge – Free In-Browser Resume Checker &amp; Keyword Matcher" />
+    <meta property="og:description" content="Review your resume, compare recognized job-description skills, and get formatting guidance in your browser. Results are heuristics, not employer ATS tests." />
+    <meta property="og:image" content="https://toolforge-ats.vercel.app/images/hero-ats-preview.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1376" />
+    <meta property="og:image:height" content="768" />
+    <meta property="og:image:alt" content="Illustrative preview of the ToolForge resume review interface" />
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://toolforge-ats.vercel.app/" />
-    <meta property="twitter:title" content="ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher" />
-    <meta property="twitter:description" content="Free in-browser résumé checks, job-description keyword comparisons, and formatting feedback. Heuristic guidance helps you review your résumé before applying." />
-    <meta property="twitter:image" content="https://toolforge-ats.vercel.app/images/hero-ats-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://toolforge-ats.vercel.app/" />
+    <meta name="twitter:title" content="ToolForge – Free In-Browser Resume Checker &amp; Keyword Matcher" />
+    <meta name="twitter:description" content="Review your resume, compare recognized job-description skills, and get formatting guidance in your browser. Results are heuristics, not employer ATS tests." />
+    <meta name="twitter:image" content="https://toolforge-ats.vercel.app/images/hero-ats-preview.jpg" />
     
     <!-- Typography -->
+    <link rel="preload" as="image" href="/images/hero-ats-preview.webp" type="image/webp" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <!-- Structured Data (JSON-LD) for Google Rich Snippets & AEO -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" id="toolforge-route-schema">
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -65,53 +70,7 @@
           "@id": "https://toolforge-ats.vercel.app/#website",
           "url": "https://toolforge-ats.vercel.app/",
           "name": "ToolForge",
-          "description": "Free In-Browser ATS Resume Checker & Career Optimization Studio"
-        },
-        {
-          "@type": "FAQPage",
-          "@id": "https://toolforge-ats.vercel.app/#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What is an ATS resume checker?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A resume checker can provide heuristic feedback on document structure, formatting, and keyword overlap. Employers use different applicant tracking systems and screening configurations."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How do I check if my resume is ATS-friendly for free without signup?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Upload a supported resume file to analyze its text in your browser. ToolForge checks common formatting patterns and compares terms with a target job description without requiring an account."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is a good ATS score?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "There is no universal passing score. ToolForge provides a heuristic based on keyword overlap, formatting checks, measurable bullets, and profile completeness; employers use different systems and criteria."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is Google's X-Y-Z formula for resume bullets?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. Use results and measures that accurately reflect your own work."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Does ToolForge store or sell my resume data?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Resume text is processed in your browser and is not sent to ToolForge servers. Theme preference is stored locally, and fonts load from Google Fonts."
-              }
-            }
-          ]
+          "description": "Free browser-based resume checks, recognized job-skill comparisons, and formatting guidance."
         },
         {
           "@type": "BreadcrumbList",
@@ -126,14 +85,8 @@
             {
               "@type": "ListItem",
               "position": 2,
-              "name": "ATS Resume Checker",
+              "name": "Resume Checker",
               "item": "https://toolforge-ats.vercel.app/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "ATS Guide",
-              "item": "https://toolforge-ats.vercel.app/guide"
             }
           ]
         }

@@ -4,11 +4,11 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 const faqs = [
   {
     q: 'How does the ATS readiness score get calculated?',
-    a: "This heuristic combines target job keyword match (40%), formatting checks (25%), measurable bullet points (20%), and profile completeness (15%). It is not a score from an employer's ATS."
+    a: "When recognized job-description terms are available, the heuristic combines keyword match (40%), formatting checks (25%), measurable bullet points (20%), and profile completeness (15%). When no supported terms are available, keyword match is marked not assessed and the other three weights are renormalized. It is not a score from an employer's ATS."
   },
   {
     q: 'Does my resume data get saved, stored, or sent to AI?',
-    a: "Never. ToolForge operates 100% locally in your browser tab. There is no backend database, no user account, and your resume content is never transmitted, saved, or used for model training."
+    a: "Résumé text is processed in your browser for the current session and is not sent to ToolForge application servers or an AI service. Theme preference is stored locally, and the site requests fonts from Google Fonts."
   },
   {
     q: 'Can ATS software read PDF resumes?',

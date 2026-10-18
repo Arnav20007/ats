@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, MessageSquare, Clock, ShieldCheck, CheckCircle2, Send, HelpCircle } from 'lucide-react';
 import { useToast } from '../components/Toast';
+import { createContactCopyText, createContactMailto } from '../utils/contactDraft';
 
 interface ContactPageProps {
   onNavigateHome: () => void;
@@ -19,9 +20,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     e.preventDefault();
     if (!formData.message.trim()) return;
 
-    const subject = `[ToolForge ${formData.subject}] ${formData.name ? `from ${formData.name}` : ''}`;
-    const body = `Name: ${formData.name || 'Not provided'}\nEmail: ${formData.email}\nTopic: ${formData.subject}\n\nMessage:\n${formData.message}`;
-    const mailtoUrl = `mailto:hello@toolforge.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoUrl = createContactMailto(formData);
 
     // Trigger local email client
     window.location.href = mailtoUrl;
@@ -30,10 +29,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     showToast('Email draft opened. Send via your mail app or hello@toolforge.app', 'success');
   };
 
-  const handleCopyMessage = () => {
-    const fullText = `To: hello@toolforge.app\nSubject: [ToolForge ${formData.subject}]\n\n${formData.message}`;
-    navigator.clipboard.writeText(fullText);
-    showToast('Message details copied to clipboard!', 'copy');
+  const handleCopyMessage = async () => {
+    const fullText = createContactCopyText(formData);
+    try {
+      await navigator.clipboard.writeText(fullText);
+      showToast('Message details copied to clipboard!', 'copy');
+    } catch {
+      showToast('Clipboard access was unavailable. Please copy the message from the email draft.', 'warning');
+    }
   };
 
   return (
@@ -228,7 +231,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Message</span>
+                  <span>Prepare Email Draft</span>
                 </button>
               </form>
             )}
@@ -252,13 +255,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div className="border-t border-slate-100 dark:border-zinc-800 pt-3">
                   <h4 className="font-bold text-slate-800 dark:text-zinc-200">Why was a bullet point flagged?</h4>
                   <p className="text-slate-500 dark:text-zinc-400 pt-0.5 leading-relaxed">
-                    ATS systems favor Google X-Y-Z statements with measurable metrics (e.g. percentages, dollars, or time saved).
+                    The Google X-Y-Z formula is one way to describe impact, evidence, and method. Employer screening systems and criteria vary, so this guidance cannot predict screening outcomes.
                   </p>
                 </div>
                 <div className="border-t border-slate-100 dark:border-zinc-800 pt-3">
                   <h4 className="font-bold text-slate-800 dark:text-zinc-200">Can I request a new role sample?</h4>
                   <p className="text-slate-500 dark:text-zinc-400 pt-0.5 leading-relaxed">
-                    Yes! Send us a note using this form and our engineering team will add it to the library.
+                    Prepare an email using this form. If you send it, the team can consider the request for a future sample.
                   </p>
                 </div>
               </div>

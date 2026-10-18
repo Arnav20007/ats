@@ -1,0 +1,44 @@
+{
+  "home": {
+    "title": "ToolForge – Free In-Browser Resume Checker & Keyword Matcher",
+    "description": "Review your resume, compare recognized job-description skills, and get formatting guidance in your browser. Results are heuristics, not employer ATS tests.",
+    "path": "/",
+    "heading": "Review Your Resume. Show Your Experience Clearly."
+  },
+  "guide": {
+    "title": "ATS Resume Optimization Guide | ToolForge",
+    "description": "Practical guidance on resume formatting, job-description terms, and clear achievement bullets. ToolForge provides heuristic feedback, not employer ATS results.",
+    "path": "/guide",
+    "heading": "Prepare a Clear Resume for Applicant Tracking Systems"
+  },
+  "about": {
+    "title": "About ToolForge | Browser-Based Resume Review",
+    "description": "Learn how ToolForge reviews resume text and compares job-description terms in your browser, without testing against employer ATS software.",
+    "path": "/about",
+    "heading": "About ToolForge"
+  },
+  "contact": {
+    "title": "Contact ToolForge | Support and Bug Reports",
+    "description": "Contact ToolForge support, prepare a bug report, suggest a feature, or ask a question about browser-based resume review.",
+    "path": "/contact",
+    "heading": "Contact & Support"
+  },
+  "privacy": {
+    "title": "Privacy Policy | ToolForge Resume Checker",
+    "description": "How ToolForge handles résumé text, local theme preferences, hosting logs, font requests, and the optional support QR image.",
+    "path": "/privacy",
+    "heading": "Privacy Policy"
+  },
+  "terms": {
+    "title": "Terms of Use | ToolForge",
+    "description": "Terms for using ToolForge's free browser-based resume review and keyword comparison tools.",
+    "path": "/terms",
+    "heading": "Terms of Use"
+  },
+  "notFound": {
+    "title": "Page Not Found | ToolForge",
+    "description": "The page you requested could not be found.",
+    "path": "",
+    "heading": "Page not found"
+  }
+}

@@ -57,6 +57,7 @@ import { ResumeFaq } from '../ResumeFaq';
 import { extractTextFromPdfFile, parseResumeText } from '../../utils/pdfParser';
 import { analyzeAtsKeywords, hasQuantifiableMetric } from '../../utils/atsKeywordMatcher';
 import { generateDeepAuditReport, DeepAuditReport } from '../../utils/deepAuditAnalyzer';
+import { useResumeSession } from '../../context/ResumeSessionContext';
 
 interface ResumeStudioProps {
   onActionLogged?: () => void;
@@ -78,7 +79,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const { showToast } = useToast();
 
   // Mode: 'landing' (Enhancv-style marketing flow) vs 'studio' (focused interactive ATS editor)
-  const [viewMode, setViewMode] = useState<'landing' | 'studio'>('landing');
+  const { viewMode, setViewMode, resume, setResume, targetJd, setTargetJd, uploadedFileName, setUploadedFileName } = useResumeSession();
 
   // Scanning animation states
   const [isScanning, setIsScanning] = useState(false);
@@ -95,13 +96,10 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
 
   // Active Resume State
-  const [resume, setResume] = useState<ResumeData>({ ...BLANK_STARTER_RESUME });
-  const [targetJd, setTargetJd] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'deep_report' | 'keywords' | 'audit' | 'rewriter'>('deep_report');
   const [quickLinkedinInput, setQuickLinkedinInput] = useState('');
   const [newSkillInput, setNewSkillInput] = useState('');
   const [hasEdited, setHasEdited] = useState(false);
-  const [uploadedFileName, setUploadedFileName] = useState<string>('');
   const [selectedBulletIndex, setSelectedBulletIndex] = useState<{
     section: 'experience' | 'project';
     itemIdx: number;
@@ -140,6 +138,48 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const [showFormulaModal, setShowFormulaModal] = useState<boolean>(false);
   // Modal state for Create Your Resume / Template Picker
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showFormulaModal && !showCreateModal) return;
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const modal = modalRef.current;
+    const firstFocusable = modal?.querySelector<HTMLElement>(
+      'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    (firstFocusable || modal)?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowFormulaModal(false);
+        setShowCreateModal(false);
+        return;
+      }
+      if (event.key !== 'Tab' || !modal) return;
+      const focusable = Array.from(modal.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ));
+      if (!focusable.length) {
+        event.preventDefault();
+        modal.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === modal)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [showFormulaModal, showCreateModal]);
 
   // 1. Enterprise ATS Keyword Analysis (Word boundary & alias safe)
   const keywordAnalysis = useMemo(() => {
@@ -1195,6 +1235,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   .stat-row:last-child { border-bottom: 0; }
   .status-pass { font-weight: 800; color: #059669; font-family: 'JetBrains Mono', monospace; }
   .status-flag { font-weight: 800; color: #d97706; font-family: 'JetBrains Mono', monospace; }
+  .status-neutral { font-weight: 700; color: #71717a; font-family: 'JetBrains Mono', monospace; }
   .tag-cloud { display: flex; flex-wrap: wrap; gap: 4pt; margin-top: 4pt; }
   .tag-pass { font-size: 7.5pt; font-weight: 700; background: #ecfdf5; color: #065f46; border: 1pt solid #a7f3d0; padding: 2pt 6pt; border-radius: 4pt; }
   .tag-miss { font-size: 7.5pt; font-weight: 700; background: #fffbeb; color: #92400e; border: 1pt solid #fde68a; padding: 2pt 6pt; border-radius: 4pt; }
@@ -1237,9 +1278,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       <div class="stat-row"><span>2. Essential Sections & Contact</span><span class="${deepAudit.categories.sections.score >= 80 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.sections.score}%</span></div>
       <div class="stat-row"><span>3. File and Formatting Signals</span><span class="${deepAudit.categories.atsEssentials.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.score}%</span></div>
       <div class="stat-row"><span>4. HR Red Flags & Credibility</span><span class="${deepAudit.categories.hrRedFlags.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.score}%</span></div>
-      <div class="stat-row"><span>5. Graduation Date Review</span><span class="${deepAudit.categories.discrimination.score !== null && deepAudit.categories.discrimination.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.score !== null ? `${deepAudit.categories.discrimination.score}%` : 'NOT ASSESSED'}</span></div>
-      <div class="stat-row"><span>6. Verb Pattern Review</span><span class="${deepAudit.categories.seniority.score !== null && deepAudit.categories.seniority.score >= 50 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.score !== null ? `${deepAudit.categories.seniority.score}%` : 'NOT ASSESSED'}</span></div>
-      <div class="stat-row"><span>7. Job Description Match</span><span class="${deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0 ? (deepAudit.categories.tailoring.score >= 70 ? 'status-pass' : 'status-flag') : 'status-flag'}">${deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0 ? `${deepAudit.categories.tailoring.score}%` : 'NOT ASSESSED'}</span></div>
+      <div class="stat-row"><span>5. Age / Graduation-Date Review</span><span class="status-neutral">NOT ASSESSED</span></div>
+      <div class="stat-row"><span>6. Verb Pattern Review</span><span class="${deepAudit.categories.seniority.score === null ? 'status-neutral' : deepAudit.categories.seniority.score >= 50 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.score !== null ? `${deepAudit.categories.seniority.score}%` : 'NOT ASSESSED'}</span></div>
+      <div class="stat-row"><span>7. Job Description Match</span><span class="${deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount === 0 ? 'status-neutral' : deepAudit.categories.tailoring.score >= 70 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.tailoring.matchedCount + deepAudit.categories.tailoring.missingCount > 0 ? `${deepAudit.categories.tailoring.score}%` : 'NOT ASSESSED'}</span></div>
     </div>
 
     <div class="box">
@@ -1249,9 +1290,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       <div class="stat-row"><span>LinkedIn URL Presence</span><span class="${deepAudit.categories.atsEssentials.datesAndLinks.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.atsEssentials.datesAndLinks.passed ? 'FOUND' : 'REVIEW'}</span></div>
       <div class="stat-row"><span>Buzzword & Fluff Review</span><span class="${deepAudit.categories.hrRedFlags.credibility.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.credibility.passed ? 'PASS' : 'REVIEW'}</span></div>
       <div class="stat-row"><span>Interview Risk Review</span><span class="${deepAudit.categories.hrRedFlags.interviewRisks.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.hrRedFlags.interviewRisks.passed ? 'PASS' : 'REVIEW'}</span></div>
-      <div class="stat-row"><span>Date Bias Review</span><span class="${deepAudit.categories.discrimination.ageismDateBias.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.ageismDateBias.passed ? 'PASS' : 'REVIEW'}</span></div>
-      <div class="stat-row"><span>Employment Gap Review</span><span class="${deepAudit.categories.discrimination.employmentGaps.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.employmentGaps.passed ? 'PASS' : 'REVIEW'}</span></div>
-      <div class="stat-row"><span>Verb Pattern Review</span><span class="${deepAudit.categories.seniority.scopeOwnership.ownershipLevel !== 'Not assessed' && deepAudit.categories.seniority.scopeOwnership.leadVerbCount >= deepAudit.categories.seniority.scopeOwnership.passiveVerbCount ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'NOT ASSESSED' : deepAudit.categories.seniority.scopeOwnership.leadVerbCount >= deepAudit.categories.seniority.scopeOwnership.passiveVerbCount ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Date Bias Review</span><span class="${deepAudit.categories.discrimination.score === null ? 'status-neutral' : deepAudit.categories.discrimination.ageismDateBias.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.score === null ? 'NOT ASSESSED' : deepAudit.categories.discrimination.ageismDateBias.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Employment Gap Review</span><span class="${deepAudit.categories.discrimination.score === null ? 'status-neutral' : deepAudit.categories.discrimination.employmentGaps.passed ? 'status-pass' : 'status-flag'}">${deepAudit.categories.discrimination.score === null ? 'NOT ASSESSED' : deepAudit.categories.discrimination.employmentGaps.passed ? 'PASS' : 'REVIEW'}</span></div>
+      <div class="stat-row"><span>Verb Pattern Review</span><span class="${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'status-neutral' : deepAudit.categories.seniority.scopeOwnership.leadVerbCount >= deepAudit.categories.seniority.scopeOwnership.passiveVerbCount ? 'status-pass' : 'status-flag'}">${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'NOT ASSESSED' : deepAudit.categories.seniority.scopeOwnership.leadVerbCount >= deepAudit.categories.seniority.scopeOwnership.passiveVerbCount ? 'PASS' : 'REVIEW'}</span></div>
     </div>
   </div>
 
@@ -1269,7 +1310,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         <tr>
           <td><strong>Detected Section Labels</strong></td>
           <td style="color: #475569;">Detected section-label coverage: ${deepAudit.categories.content.atsParseRate.sectionCoveragePercentage}% (${deepAudit.categories.content.atsParseRate.missingSectionPercentage}% of expected labels were not found). This does not test text extraction or an employer ATS.</td>
-          <td style="text-align: right;"><span class="status-flag">${deepAudit.categories.content.atsParseRate.sectionCoveragePercentage}%</span></td>
+          <td style="text-align: right;"><span class="${deepAudit.categories.content.atsParseRate.sectionCoveragePercentage === 0 ? 'status-flag' : 'status-pass'}">${deepAudit.categories.content.atsParseRate.sectionCoveragePercentage}%</span></td>
         </tr>
         <tr>
           <td><strong>Quantifying Impact</strong></td>
@@ -1289,7 +1330,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         <tr>
           <td><strong>Verb Pattern</strong></td>
           <td style="color: #475569;">${deepAudit.categories.seniority.scopeOwnership.leadVerbCount} ownership-style terms vs ${deepAudit.categories.seniority.scopeOwnership.passiveVerbCount} passive-style terms. This does not establish candidate seniority.</td>
-          <td style="text-align: right;"><span class="${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'status-flag' : 'status-pass'}">${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel)}</span></td>
+          <td style="text-align: right;"><span class="${deepAudit.categories.seniority.scopeOwnership.ownershipLevel === 'Not assessed' ? 'status-neutral' : 'status-pass'}">${esc(deepAudit.categories.seniority.scopeOwnership.ownershipLevel)}</span></td>
         </tr>
       </tbody>
     </table>
@@ -1508,11 +1549,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 <div className="relative w-full max-w-2xl group">
                   <div className="absolute -inset-1 rounded-[36px] bg-gradient-to-r from-emerald-500/15 to-teal-500/15 blur-xl opacity-80 group-hover:opacity-100 transition duration-500" />
                   <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-none transition-transform duration-300 hover:scale-[1.01]">
-                    <img
-                      src="/images/hero-ats-preview.png"
-                      alt="ATS Resume Analysis Preview"
-                      className="w-full h-auto object-cover"
-                    />
+                    <picture className="block w-full">
+                      <source srcSet="/images/hero-ats-preview.webp" type="image/webp" />
+                      <img
+                        src="/images/hero-ats-preview.jpg"
+                        alt="Illustrative preview of the ToolForge resume review interface"
+                        width={1376}
+                        height={768}
+                        fetchPriority="high"
+                        decoding="async"
+                        className="block w-full h-auto object-cover"
+                      />
+                    </picture>
                   </div>
                 </div>
               </div>
@@ -1529,11 +1577,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 <div className="relative w-full max-w-2xl group">
                   <div className="absolute -inset-1 rounded-[36px] bg-gradient-to-r from-rose-500/10 via-emerald-500/15 to-teal-500/10 blur-xl opacity-80 group-hover:opacity-100 transition duration-500" />
                   <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-zinc-800 shadow-none bg-slate-900 transition-transform duration-300 hover:scale-[1.01]">
-                    <img
-                      src="/images/before-after-ats.jpg"
-                      alt="Before and After ATS Optimization"
-                      className="w-full h-auto object-cover"
-                    />
+                    <picture className="block w-full">
+                      <source srcSet="/images/before-after-ats.webp" type="image/webp" />
+                      <img
+                        src="/images/before-after-ats.jpg"
+                        alt="Illustrative before-and-after example of clearer resume structure"
+                        width={1376}
+                        height={768}
+                        loading="lazy"
+                        decoding="async"
+                        className="block w-full h-auto object-cover"
+                      />
+                    </picture>
                   </div>
                 </div>
               </div>
@@ -1549,7 +1604,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 </p>
 
                 <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
-                  That's why the success of your application depends on how tailored your resume is for the job, the format you're using, and what skills and keywords you have included. ToolForge handles that by giving you the exact strategies you need to pass this step.
+            A résumé's relevance, structure, and wording can affect how easy it is to review. ToolForge checks common formatting signals and compares recognized skill terms with a job description; it cannot predict or guarantee an employer's screening result.
                 </p>
 
                 <div className="space-y-5 pt-2">
@@ -1718,11 +1773,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* 3D Visual Mockup */}
               <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden border border-slate-200 dark:border-zinc-800 shadow-none bg-slate-900">
-                <img
-                  src="/images/before-after-ats.png"
-                  alt="ATS Resume Before vs After"
-                  className="w-full h-auto object-cover"
-                />
+                <picture className="block w-full">
+                  <source srcSet="/images/before-after-ats.webp" type="image/webp" />
+                  <img
+                    src="/images/before-after-ats.jpg"
+                    alt="Illustrative resume example showing formatting and evidence improvements"
+                    width={1376}
+                    height={768}
+                    loading="lazy"
+                    decoding="async"
+                    className="block w-full h-auto object-cover"
+                  />
+                </picture>
               </div>
 
               {/* Side-by-side Technical Highlights */}
@@ -1917,7 +1979,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   </div>
 
                   <div className="p-4 rounded-xl bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 text-center space-y-1">
-                    <span className="text-xs font-bold text-slate-700 dark:text-zinc-300 block">Planned for Q2 Release</span>
+                     <span className="text-xs font-bold text-slate-700 dark:text-zinc-300 block">Roadmap preview · timing not announced</span>
                     <p className="text-[11px] text-slate-500 dark:text-zinc-400">
                       Current core scanning engine will always remain 100% free and unmetered.
                     </p>
@@ -1958,7 +2020,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-emerald-200/70 pt-4">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  Confidential & Secure
+                  Résumé text stays in your browser
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Zap className="w-4 h-4 text-amber-400" />
@@ -1966,7 +2028,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Download className="w-4 h-4 text-emerald-400" />
-                  Direct Clean PDF Export
+                  Print-to-PDF export
                 </span>
               </div>
 
@@ -2128,7 +2190,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       <BarChart2 className="w-4 h-4" />
                       <span>Deep Quality Audit</span>
                       <span className="font-mono text-xs opacity-90">
-                        ({deepAudit.overallScore}/100)
+                        ({compositeScore}/100)
                       </span>
                     </button>
 
@@ -3387,7 +3449,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       {/* MATHEMATICAL ATS SCORE FORMULA BREAKDOWN MODAL */}
       {showFormulaModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="relative w-full max-w-lg rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-none p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+          <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="formula-modal-title" tabIndex={-1} className="relative w-full max-w-lg rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-none p-6 space-y-5 max-h-[90vh] overflow-y-auto">
             
             {/* Header */}
             <div className="flex items-start justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
@@ -3396,12 +3458,13 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <Info className="w-3 h-3" />
                   <span>TRANSPARENT ALGORITHMIC AUDITING</span>
                 </div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+                <h3 id="formula-modal-title" className="text-lg font-bold text-zinc-900 dark:text-white">
                   ATS Readiness Formula
                 </h3>
               </div>
               <button
                 type="button"
+                aria-label="Close formula inspector"
                 onClick={() => setShowFormulaModal(false)}
                 className="text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 text-lg font-bold p-1 cursor-pointer"
               >
@@ -3530,7 +3593,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
             {/* Explanation Note */}
             <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-              <strong>Note on Target Job Match:</strong> Your keyword match rate ({keywordAnalysis.matched.length}/{keywordAnalysis.totalJdKeywords} = {keywordAnalysis.matchRate}%) measures technical skills presence. It provides 40% of the overall composite score, which is then synthesized with formatting structure, Google X-Y-Z metrics, and profile completeness.
+              <strong>Note on Target Job Match:</strong>{' '}
+              {hasRecognizedTargetTerms
+                ? `Recognized skill terms found: ${keywordAnalysis.matched.length} of ${keywordAnalysis.totalJdKeywords} (${keywordAnalysis.matchRate}%). Keyword match contributes 40%; formatting, measurable bullets, and profile completeness contribute 25%, 20%, and 15%.`
+                : 'Keyword match is not assessed because no supported job-description terms were found. The remaining formatting, measurable-bullet, and profile-completeness weights are renormalized to total 100%.'}
             </p>
 
             <button
@@ -3548,7 +3614,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       {/* CREATE YOUR RESUME / STARTER TEMPLATES MODAL */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="relative w-full max-w-2xl rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-none p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+          <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="create-resume-modal-title" tabIndex={-1} className="relative w-full max-w-2xl rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-none p-6 space-y-5 max-h-[90vh] overflow-y-auto">
             
             {/* Header */}
             <div className="flex items-start justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
@@ -3557,7 +3623,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <Sparkles className="w-3 h-3 text-emerald-600" />
                   <span>ATS RESUME STARTER</span>
                 </div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+                <h3 id="create-resume-modal-title" className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
                   Choose a Resume Starter
                 </h3>
                 <p className="text-xs text-zinc-500">
@@ -3566,6 +3632,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               </div>
               <button
                 type="button"
+                aria-label="Close resume starter picker"
                 onClick={() => setShowCreateModal(false)}
                 className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 text-lg font-bold p-1 cursor-pointer"
               >
@@ -3578,6 +3645,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               
               {/* Option 1: Clean Starter Canvas (Recommended) */}
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('starter_clean'); } }}
                 onClick={() => handleCreateNewResume('starter_clean')}
                 className="p-3.5 rounded-lg border border-emerald-600 bg-white dark:bg-zinc-900 transition-colors cursor-pointer space-y-2 relative shadow-none"
               >
@@ -3599,6 +3669,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* Option 2: Software Engineer */}
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('software_engineer'); } }}
                 onClick={() => handleCreateNewResume('software_engineer')}
                 className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
               >
@@ -3615,6 +3688,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* Option 3: AI / ML Engineer */}
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('ai_ml_engineer'); } }}
                 onClick={() => handleCreateNewResume('ai_ml_engineer')}
                 className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
               >
@@ -3631,6 +3707,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* Option 4: Product Manager */}
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('product_manager'); } }}
                 onClick={() => handleCreateNewResume('product_manager')}
                 className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
               >
@@ -3647,6 +3726,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* Option 5: Finance & Operations */}
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('finance_ops'); } }}
                 onClick={() => handleCreateNewResume('finance_ops')}
                 className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
               >
@@ -3663,6 +3745,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* Option 6: Blank Slate */}
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('blank_slate'); } }}
                 onClick={() => handleCreateNewResume('blank_slate')}
                 className="p-3.5 rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50/30 dark:bg-zinc-900/20 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
               >

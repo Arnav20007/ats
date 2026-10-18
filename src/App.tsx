@@ -8,8 +8,21 @@ import { ContactPage } from './pages/ContactPage';
 import { GuidePage } from './pages/GuidePage';
 import { ToastProvider } from './components/Toast';
 import { ShieldCheck } from 'lucide-react';
+import routeSeo from './data/routeSeo.json';
+import { ResumeSessionProvider } from './context/ResumeSessionContext';
 
-export type AppPage = 'home' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide';
+export type AppPage = 'home' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'notFound';
+
+const getPageFromPath = (pathname: string): AppPage => {
+  const path = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+  if (path === '/') return 'home';
+  if (path === '/privacy') return 'privacy';
+  if (path === '/terms') return 'terms';
+  if (path === '/about') return 'about';
+  if (path === '/contact') return 'contact';
+  if (path === '/guide') return 'guide';
+  return 'notFound';
+};
 
 // Safe Storage Guard for private browsing / restricted contexts (F-08)
 const safeStorage = {
@@ -31,21 +44,20 @@ const safeStorage = {
   }
 };
 
-export default function App() {
-  const [isDark, setIsDark] = useState<boolean>(() => {
-    return safeStorage.getItem('toolforge_theme') === 'dark';
-  });
+interface AppProps { initialPath?: string }
+
+export default function App({ initialPath }: AppProps = {}) {
+  // Match the static HTML on the first render, then apply the saved preference.
+  const [isDark, setIsDark] = useState<boolean>(false);
 
   // Client-side dedicated page routing
   const [currentPage, setCurrentPage] = useState<AppPage>(() => {
-    const path = window.location.pathname.toLowerCase();
-    if (path.includes('privacy')) return 'privacy';
-    if (path.includes('terms')) return 'terms';
-    if (path.includes('about')) return 'about';
-    if (path.includes('contact')) return 'contact';
-    if (path.includes('guide')) return 'guide';
-    return 'home';
+    return getPageFromPath(initialPath ?? (typeof window === 'undefined' ? '/' : window.location.pathname));
   });
+
+  useEffect(() => {
+    if (safeStorage.getItem('toolforge_theme') === 'dark') setIsDark(true);
+  }, []);
 
   useEffect(() => {
     if (isDark) {
@@ -60,13 +72,7 @@ export default function App() {
   // Handle browser back and forward history
   useEffect(() => {
     const handlePopState = () => {
-      const path = window.location.pathname.toLowerCase();
-      if (path.includes('privacy')) setCurrentPage('privacy');
-      else if (path.includes('terms')) setCurrentPage('terms');
-      else if (path.includes('about')) setCurrentPage('about');
-      else if (path.includes('contact')) setCurrentPage('contact');
-      else if (path.includes('guide')) setCurrentPage('guide');
-      else setCurrentPage('home');
+      setCurrentPage(getPageFromPath(window.location.pathname));
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -75,36 +81,13 @@ export default function App() {
   // Dynamic SEO metadata per route
   useEffect(() => {
     const seoMap: Record<AppPage, { title: string; desc: string; path: string }> = {
-      home: {
-        title: 'ToolForge – Free In-Browser ATS Resume Checker & Keyword Matcher',
-        desc: 'Free in-browser résumé checks, job-description keyword comparisons, and formatting feedback. Results are heuristic guidance, not employer ATS tests.',
-        path: '/'
-      },
-      guide: {
-        title: 'ATS Resume Optimization Guide & Scoring Formula | ToolForge',
-        desc: 'A practical guide to résumé formatting, job-description keyword comparisons, and writing clear achievement bullets.',
-        path: '/guide'
-      },
-      about: {
-        title: 'About ToolForge – Client-Side Privacy First Resume Studio',
-        desc: 'Learn how ToolForge checks résumé text, compares job-description keywords, and processes content in your browser.',
-        path: '/about'
-      },
-      contact: {
-        title: 'Contact & Bug Report | ToolForge',
-        desc: 'Get in touch with the ToolForge team, report parser bugs, suggest features, or request ATS platform verification.',
-        path: '/contact'
-      },
-      privacy: {
-        title: 'Privacy Policy & Zero-Storage Guarantee | ToolForge',
-        desc: 'Résumé text is processed in your browser and is not sent to ToolForge servers. Theme preferences may be stored locally; fonts load from Google Fonts.',
-        path: '/privacy'
-      },
-      terms: {
-        title: 'Terms of Service | ToolForge',
-        desc: 'Terms and conditions for using ToolForge free resume inspection and optimization utilities.',
-        path: '/terms'
-      }
+      home: { title: routeSeo.home.title, desc: routeSeo.home.description, path: routeSeo.home.path },
+      guide: { title: routeSeo.guide.title, desc: routeSeo.guide.description, path: routeSeo.guide.path },
+      about: { title: routeSeo.about.title, desc: routeSeo.about.description, path: routeSeo.about.path },
+      contact: { title: routeSeo.contact.title, desc: routeSeo.contact.description, path: routeSeo.contact.path },
+      privacy: { title: routeSeo.privacy.title, desc: routeSeo.privacy.description, path: routeSeo.privacy.path },
+      terms: { title: routeSeo.terms.title, desc: routeSeo.terms.description, path: routeSeo.terms.path },
+      notFound: { title: routeSeo.notFound.title, desc: routeSeo.notFound.description, path: routeSeo.notFound.path }
     };
 
     const currentSeo = seoMap[currentPage] || seoMap.home;
@@ -113,8 +96,15 @@ export default function App() {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', currentSeo.desc);
 
+    const robotsMeta = document.querySelector('meta[name="robots"]');
+    if (robotsMeta) robotsMeta.setAttribute('content', currentPage === 'notFound' ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+
+    const metaTitle = document.querySelector('meta[name="title"]');
+    if (metaTitle) metaTitle.setAttribute('content', currentSeo.title);
+
     const canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (canonicalLink) canonicalLink.setAttribute('href', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+    if (canonicalLink && currentPage === 'notFound') canonicalLink.remove();
+    else if (canonicalLink) canonicalLink.setAttribute('href', `https://toolforge-ats.vercel.app${currentSeo.path}`);
 
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.setAttribute('content', currentSeo.title);
@@ -124,6 +114,33 @@ export default function App() {
 
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.setAttribute('content', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) twitterTitle.setAttribute('content', currentSeo.title);
+    const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDescription) twitterDescription.setAttribute('content', currentSeo.desc);
+    const twitterUrl = document.querySelector('meta[name="twitter:url"]');
+    if (twitterUrl) twitterUrl.setAttribute('content', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+
+    const structuredData = document.getElementById('toolforge-route-schema');
+    if (structuredData && currentPage !== 'home') {
+      structuredData.textContent = currentPage === 'notFound' ? '' : JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#webpage`,
+        name: currentSeo.title,
+        description: currentSeo.desc,
+        url: `https://toolforge-ats.vercel.app${currentSeo.path}`,
+        isPartOf: { '@id': 'https://toolforge-ats.vercel.app/#website' },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
+            { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://toolforge-ats.vercel.app${currentSeo.path}` }
+          ]
+        }
+      });
+    }
   }, [currentPage]);
 
   const navigateTo = (page: AppPage) => {
@@ -137,6 +154,7 @@ export default function App() {
 
   return (
     <ToastProvider>
+      <ResumeSessionProvider>
       <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 flex flex-col selection:bg-emerald-100 dark:selection:bg-emerald-950 transition-colors">
 
         {/* Global Header */}
@@ -186,6 +204,20 @@ export default function App() {
               onNavigateHome={() => navigateTo('home')}
               onNavigatePrivacy={() => navigateTo('privacy')}
             />
+          )}
+
+          {currentPage === 'notFound' && (
+            <section className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center space-y-5">
+              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">Page not found</h1>
+              <p className="text-slate-600 dark:text-zinc-400">That ToolForge page does not exist or may have moved.</p>
+              <button
+                type="button"
+                onClick={() => navigateTo('home')}
+                className="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold transition-colors cursor-pointer"
+              >
+                Return to Resume Checker
+              </button>
+            </section>
           )}
         </main>
 
@@ -333,6 +365,7 @@ export default function App() {
         </footer>
 
       </div>
+      </ResumeSessionProvider>
     </ToastProvider>
   );
 }

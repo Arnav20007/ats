@@ -1,15 +1,15 @@
-# ToolForge ATS Resume Checker
+# ToolForge Resume Reviewer
 
-> ToolForge is a free, 100% private in-browser ATS (Applicant Tracking System) resume scanner, keyword matcher, and bullet point optimizer. All document parsing and text analysis run client-side in browser memory with zero server uploads.
+> ToolForge is a free browser-based resume reviewer. It checks common document structure and formatting signals, compares recognized job-description skill terms, and offers draft wording suggestions. Its scores are heuristics; it does not connect to or test employer applicant tracking systems.
 
 ## Core Capabilities
-- **Document Structure & Keyword Analysis**: Checks document formatting, font safety, table avoidance, section heading clarity, and contact info placement.
-- **Job Description Keyword Matcher**: Compares candidate resumes against target job descriptions, identifying matching skills, missing keywords, and frequency gaps.
-- **Google X-Y-Z Bullet Polisher**: Guides users in structuring achievements using Google's hiring formula: "Accomplished [X], as measured by [Y], by doing [Z]" with user-provided metrics.
-- **100% Client-Side Privacy**: Resumes are parsed locally in browser memory. Zero bytes of candidate resume text are sent to servers or third-party APIs.
+- **Resume review**: Checks selected text, section labels, contact fields, formatting signals, and measurable achievement details.
+- **Job-description comparison**: Compares recognized skill terms in a job description with text in the resume. Unsupported or unrecognized terms are not assessed.
+- **Draft wording suggestions**: Helps users structure achievement bullets while leaving factual claims and metrics for the user to provide.
+- **Browser-side document handling**: Resume text is processed in the browser and is not sent to ToolForge application servers. The site loads fonts from Google Fonts; the optional UPI support dialog requests a QR image from qrserver.com.
 
 ## Key URLs
 - **Web App**: https://toolforge-ats.vercel.app/
-- **ATS Optimization Guide**: https://toolforge-ats.vercel.app/guide
-- **Privacy Guarantee**: https://toolforge-ats.vercel.app/privacy
+- **Resume Review Guide**: https://toolforge-ats.vercel.app/guide
+- **Privacy Policy**: https://toolforge-ats.vercel.app/privacy
 - **Sitemap**: https://toolforge-ats.vercel.app/sitemap.xml
