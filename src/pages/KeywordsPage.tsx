@@ -12,7 +12,9 @@ import {
   Layers,
   FileCheck,
   AlertTriangle,
-  BookOpen
+  BookOpen,
+  CheckCircle2,
+  ShieldCheck
 } from 'lucide-react';
 import { ROLE_KEYWORD_PROFILES, RoleKeywordData } from '../data/roleKeywords';
 import { useToast } from '../components/Toast';
@@ -277,6 +279,51 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Recruiter Screening Criteria & ATS Formatting Guide */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          {/* Recruiter 6-Second Screening Scan */}
+          <div className="p-6 sm:p-8 rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20 space-y-4 shadow-2xs">
+            <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-400">
+              <CheckCircle2 className="w-5 h-5 shrink-0" />
+              <h3 className="text-base font-bold">
+                How Recruiters Screen a {activeProfile.shortTitle} Resume
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-zinc-400">
+              The 6-second scan criteria hiring managers and automated filters evaluate first:
+            </p>
+            <ul className="space-y-3 text-xs sm:text-sm text-slate-700 dark:text-zinc-300">
+              {activeProfile.recruiterScreeningChecklist?.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <span className="w-4 h-4 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+                    ✓
+                  </span>
+                  <span className="leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ATS Parsing & Layout Guardrails */}
+          <div className="p-6 sm:p-8 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20 space-y-4 shadow-2xs flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-blue-800 dark:text-blue-400">
+                <ShieldCheck className="w-5 h-5 shrink-0" />
+                <h3 className="text-base font-bold">
+                  {activeProfile.shortTitle} ATS Formatting &amp; Parsing Guide
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-zinc-300 leading-relaxed">
+                {activeProfile.atsFormattingAdvice}
+              </p>
+            </div>
+            <div className="p-3 rounded-xl bg-white dark:bg-zinc-900 border border-blue-100 dark:border-blue-900/40 text-xs text-blue-700 dark:text-blue-300 font-medium flex items-center gap-2">
+              <Zap className="w-4 h-4 shrink-0 text-amber-500" />
+              <span>Audit your layout with ToolForge's 100% in-browser single-column PDF parser.</span>
+            </div>
           </div>
         </div>
 

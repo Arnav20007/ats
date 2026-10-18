@@ -2,164 +2,110 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://toolforge-ats.vercel.app/</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/guide</loc>
     <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/about</loc>
     <lastmod>2026-10-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/contact</loc>
     <lastmod>2026-10-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/privacy</loc>
     <lastmod>2026-10-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/terms</loc>
     <lastmod>2026-10-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/software-engineer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/product-manager</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/data-scientist</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/devops-engineer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/full-stack-developer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/frontend-developer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/data-analyst</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/cybersecurity-analyst</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/cloud-architect</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/qa-automation-engineer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/mobile-developer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/ui-ux-designer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/engineering-manager</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/scrum-master</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/systems-administrator</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/business-analyst</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/financial-analyst</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/blockchain-developer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/marketing-manager</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/keywords/ai-engineer</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-10-19</lastmod>
   </url>
 </urlset>

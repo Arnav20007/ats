@@ -6,6 +6,8 @@ export interface RoleKeywordData {
   metaDescription: string;
   overview: string;
   starterTemplateKey: string;
+  recruiterScreeningChecklist: string[];
+  atsFormattingAdvice: string;
   categories: {
     categoryName: string;
     description: string;
@@ -28,7 +30,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Essential ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers and Backend Developers. 100% free checklist.',
     overview: 'Applicant Tracking Systems at tech companies look for specific programming languages, distributed systems concepts, cloud infrastructure, and verifiable metrics rather than generic responsibilities.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume highlight specific programming languages tied to production projects rather than a standalone unverified list?",
+    "Are distributed systems concepts (concurrency, caching, message queues, microservices) backed by measurable throughput (RPS, QPS) or latency numbers?",
+    "Is there clear proof of automated testing, CI/CD pipeline ownership, and production incident resolution?"
+],
+    atsFormattingAdvice: "Software engineering resumes frequently fail ATS scans when candidates use visual multi-column skill bars (e.g. 80% Python) or complex LaTeX table environments. Parsers read these as unparsed metadata or blank lines. Use a single-column layout with clean standard headers like \"Technical Skills\", \"Technical Projects\", and \"Professional Experience\".",
+categories: [
       {
         categoryName: 'Core Languages & Runtimes',
         description: 'Primary programming languages and execution environments tested by technical screeners.',
@@ -82,7 +90,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Must-have ATS keywords, strategic metrics, and Google X-Y-Z resume bullet formulas for Product Managers and Technical PMs. Free checklist.',
     overview: 'Product Manager ATS filters heavily prioritize business impact metrics (ARR, conversion rate, retention), product-led growth (PLG) terminology, cross-functional leadership, and agile roadmapping.',
     starterTemplateKey: 'product_manager',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume show revenue or growth ownership ($ ARR, % trial-to-paid conversion, retention, churn) instead of just feature delivery?",
+    "Is there evidence of customer discovery, user research, and data-driven prioritization (Mixpanel, Amplitude, SQL)?",
+    "Does the candidate clearly demonstrate cross-functional leadership across engineering, UX design, and executive stakeholders?"
+],
+    atsFormattingAdvice: "Product managers often make the mistake of presenting roadmap timelines in graphic Gantt charts or multi-column matrix tables. ATS parsers strip all non-standard elements, leaving behind fragmented sentence snippets. Stick to single-column bullet points structured with the Google X-Y-Z formula.",
+categories: [
       {
         categoryName: 'Product Strategy & Growth',
         description: 'High-level business and go-to-market competencies.',
@@ -136,7 +150,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, machine learning frameworks, data pipeline tools, and Google X-Y-Z formulas for Data Scientists and AI Engineers.',
     overview: 'Data science and AI resumes must showcase statistical foundations, production model deployment, data pipeline engineering, and tangible business or operational outcomes.',
     starterTemplateKey: 'ai_ml_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Did the candidate deploy models to production (APIs, microservices, batch pipelines) or stop at exploratory Jupyter notebooks?",
+    "Are statistical validation metrics (F1 score, AUC-ROC, precision/recall, RMSE) explicitly connected to a business KPI?",
+    "Does the stack reflect modern tooling (PyTorch, Hugging Face, MLflow, Docker) alongside strong SQL querying capabilities?"
+],
+    atsFormattingAdvice: "Data scientists often include mathematical formulas or Greek symbols in LaTeX resumes that export as unreadable Unicode glyphs in standard ATS parsers. Keep technical terminology spelled out in plain text (e.g., \"ROC-AUC\" instead of mathematical equation symbols).",
+categories: [
       {
         categoryName: 'Languages & Core Math',
         description: 'Foundational programming and numerical computing.',
@@ -190,7 +210,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Complete ATS keyword checklist, cloud infrastructure tools, SRE terminology, and Google X-Y-Z resume bullet examples for DevOps Engineers.',
     overview: 'DevOps and Site Reliability Engineering resumes must highlight infrastructure as code, uptime reliability, deployment frequency, automated testing, and cloud cost governance.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Is Infrastructure as Code (Terraform, CloudFormation, Ansible) demonstrated with measurable fleet or cluster scale?",
+    "Does the resume highlight operational reliability improvements (uptime SLAs, MTTR reduction, automated failovers)?",
+    "Is container orchestration (Kubernetes, Helm, Docker) backed by CI/CD pipeline automation and security scanning?"
+],
+    atsFormattingAdvice: "DevOps resumes often list hundreds of acronyms in comma-separated clouds. ATS filters scan for context: ensure core tools like Kubernetes or Terraform appear naturally inside bullet points detailing the infrastructure scale and cost reductions achieved.",
+categories: [
       {
         categoryName: 'Cloud Platforms',
         description: 'Hyperscale cloud providers and managed services.',
@@ -244,7 +270,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Must-have ATS keywords, frontend and backend tech stacks, database skills, and metric-backed resume bullets for Full Stack Web Developers.',
     overview: 'Full Stack resumes must prove end-to-end competency: responsive modern user interfaces, performant APIs, normalized database designs, and seamless cloud deployments.',
     starterTemplateKey: 'arnav_singh',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the candidate demonstrate genuine end-to-end depth across both modern frontend frameworks and relational/NoSQL backends?",
+    "Are RESTful or GraphQL API contracts, database optimizations, and client-side rendering (SSR/hydration) clearly explained?",
+    "Is there measurable evidence of performance tuning (Core Web Vitals, API response latency, bundle size reductions)?"
+],
+    atsFormattingAdvice: "Full stack resumes easily get rejected if skills are lumped into one giant unstructured list. Group technical competencies into clear sub-categories: Frontend, Backend, Databases, and DevOps to help ATS parsers score keyword density accurately.",
+categories: [
       {
         categoryName: 'Frontend Technologies',
         description: 'Client-side frameworks, styling, and web standards.',
@@ -298,7 +330,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, modern JavaScript/TypeScript frameworks, web performance metrics, and Google X-Y-Z resume formulas for Frontend Engineers.',
     overview: 'Frontend ATS parsers prioritize modern component frameworks (React, Next.js, Vue), state management, accessibility (a11y), responsive design, and measurable Core Web Vitals optimizations.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume showcase proficiency with modern component-driven frameworks (React, Next.js, Vue) and state management?",
+    "Are web performance metrics (Core Web Vitals, LCP, INP, bundle optimization, tree-shaking) explicitly quantified?",
+    "Is responsive design, cross-browser compatibility, and accessibility (WCAG, semantic HTML) clearly represented?"
+],
+    atsFormattingAdvice: "Frontend developers frequently design visually intricate portfolio resumes using CSS grids, icon graphics, and floating sidebars. ATS software strips styling completely, scrambling the reading order. Maintain a strictly single-column semantic structure.",
+categories: [
       {
         categoryName: 'Frameworks & Core Languages',
         description: 'Core web technologies and modern client-side runtimes.',
@@ -352,7 +390,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Must-have ATS keywords, SQL querying techniques, BI dashboarding tools, and Google X-Y-Z formulas for Data Analysts and BI Engineers.',
     overview: 'Data Analyst ATS filters look for advanced SQL capabilities, business intelligence platforms (Power BI, Tableau), statistical analysis, and clear executive decision support.',
     starterTemplateKey: 'ai_ml_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume demonstrate advanced SQL (window functions, CTEs, complex joins) and BI dashboard adoption (Tableau, Power BI)?",
+    "Are analytical findings tied directly to business decision-making and operational cost savings or revenue generation?",
+    "Is there evidence of statistical analysis, cohort analysis, and cross-departmental stakeholder reporting?"
+],
+    atsFormattingAdvice: "Avoid embedding charts, dashboard screenshots, or table borders to display analytics project outcomes. ATS software cannot parse images or graphic visual widgets; write out your methodology and numerical findings as concise text bullets.",
+categories: [
       {
         categoryName: 'Querying & Data Manipulation',
         description: 'Languages used for extracting, joining, and transforming data.',
@@ -406,7 +450,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Essential ATS keywords, SIEM tools, vulnerability assessment, compliance frameworks, and Google X-Y-Z formulas for Cybersecurity Analysts.',
     overview: 'Security resumes need to highlight threat hunting, incident response, SIEM telemetry, vulnerability management, zero trust architecture, and compliance standards (SOC 2, ISO 27001).',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume highlight hands-on incident response, SIEM monitoring (Splunk, Sentinel), and threat hunting capabilities?",
+    "Are industry compliance frameworks (SOC 2, ISO 27001, NIST, HIPAA) and vulnerability assessments (OWASP) detailed?",
+    "Are recognized industry certifications (CISSP, CEH, CompTIA Security+) clearly formatted in the education or certifications section?"
+],
+    atsFormattingAdvice: "Security resumes often feature acronym-heavy certifications. Ensure you write both the acronym and the full name at least once (e.g., \"Certified Information Systems Security Professional (CISSP)\") so legacy search filters match both queries.",
+categories: [
       {
         categoryName: 'Threat Detection & SIEM',
         description: 'Monitoring, log correlation, and real-time incident alerting.',
@@ -460,7 +510,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, cloud infrastructure design, multi-region high availability, cost FinOps, and Google X-Y-Z formulas for Cloud Architects.',
     overview: 'Cloud Architect ATS filters seek multi-cloud expertise (AWS, Azure, GCP), high-availability system architecture, infrastructure as code (Terraform), and cloud financial management (FinOps).',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the candidate demonstrate enterprise cloud migration, multi-region failover, and high-availability architecture design?",
+    "Are cloud governance, IAM zero-trust security policies, and FinOps cloud spend optimizations quantified with concrete dollar figures?",
+    "Does the stack reflect major hyperscalers (AWS, Azure, GCP) alongside container ecosystems and infrastructure automation?"
+],
+    atsFormattingAdvice: "Cloud architecture diagrams and complex multi-tier topology schematics break ATS parsers completely. Replace visual diagrams with structured bullets explaining network topologies, transit gateways, and uptime availability figures.",
+categories: [
       {
         categoryName: 'Cloud Infrastructure & Compute',
         description: 'Hyperscale platforms and managed compute services.',
@@ -514,7 +570,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, automated test frameworks, CI/CD pipeline integration, API testing, and Google X-Y-Z formulas for QA Engineers and SDETs.',
     overview: 'QA and SDET resumes must demonstrate automated test suite development (Playwright, Selenium, Cypress), API testing, load testing, CI/CD test gates, and bug escape reduction.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Did the candidate build and maintain automated test frameworks from scratch (Selenium, Cypress, Playwright) or only execute manual test cases?",
+    "Are test coverage improvements (% increase in regression coverage) and release cycle acceleration clearly quantified?",
+    "Is there evidence of integrating automated testing into CI/CD pipelines (GitHub Actions, Jenkins) and performance/load testing (JMeter, k6)?"
+],
+    atsFormattingAdvice: "Do not separate manual testing and automated testing into complex dual-column tables. Outline testing automation frameworks in standard bullet points detailing the number of test suites automated and bug escape rates reduced.",
+categories: [
       {
         categoryName: 'Test Automation Frameworks',
         description: 'End-to-end and integration automation runtimes.',
@@ -568,7 +630,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, Swift, Kotlin, React Native, App Store guidelines, and Google X-Y-Z resume bullet examples for iOS and Android Developers.',
     overview: 'Mobile developer ATS screeners focus on native platforms (Swift/SwiftUI, Kotlin/Jetpack Compose), cross-platform frameworks (React Native, Flutter), offline caching, and app performance.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume clearly indicate native (Swift/iOS, Kotlin/Android) or cross-platform (Flutter, React Native) production mastery?",
+    "Are app store metrics (downloads, active users, crash-free session rates, App Store ratings) quantified?",
+    "Is there evidence of offline-first architectures, memory profiling, and push notification delivery systems?"
+],
+    atsFormattingAdvice: "Including clickable App Store or Google Play badges as images confuses ATS parsers. Place live app links as clean markdown URLs or plain-text links in your projects section alongside user rating statistics.",
+categories: [
       {
         categoryName: 'Native Platforms & Languages',
         description: 'Native mobile languages and platform development kits.',
@@ -622,7 +690,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, design systems, user research, wireframing, Figma components, and Google X-Y-Z formulas for UI/UX and Product Designers.',
     overview: 'UI/UX Designer ATS filters look for design systems, user research, prototyping (Figma), interaction design, usability testing, and metric-proven conversion increases.',
     starterTemplateKey: 'product_manager',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume highlight user research, usability testing methodologies, and design system creation in Figma?",
+    "Are design decisions tied to measurable product impact (conversion rate lift, task completion time reduction, drop-off reduction)?",
+    "Is there evidence of close collaboration with software engineers to inspect implementation fidelity and design tokens?"
+],
+    atsFormattingAdvice: "Designers suffer the highest ATS rejection rate because their resumes often resemble Dribbble shots (creative fonts, dual sidebars, graphic skill meters). An ATS cannot read graphic vectors. Use a clean, typography-led single-column document with a prominent link to your portfolio.",
+categories: [
       {
         categoryName: 'Design Tools & Prototyping',
         description: 'Industry-standard design suites and interactive prototyping.',
@@ -676,7 +750,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, sprint delivery metrics, engineering headcount growth, system architecture, and Google X-Y-Z formulas for Engineering Managers.',
     overview: 'Engineering leadership resumes must prove people management (1:1s, performance reviews), technical architecture oversight, recruitment, and delivery velocity metrics (DORA).',
     starterTemplateKey: 'product_manager',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume detail engineering headcount growth, team retention, performance coaching, and promotion tracking?",
+    "Are delivery metrics (sprint velocity, on-time project shipping, technical debt reduction) clearly outlined?",
+    "Is there a track record of architectural stewardship alongside executive engineering stakeholder management?"
+],
+    atsFormattingAdvice: "Avoid high-level managerial buzzwords like \"spearheaded synergy\". ATS filters for EM roles prioritize concrete team sizes, budget oversight figures, and operational velocity indicators (e.g., \"Led team of 12 backend engineers\").",
+categories: [
       {
         categoryName: 'Leadership & People Management',
         description: 'Team development, performance management, and career ladders.',
@@ -730,7 +810,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Must-have ATS keywords, Agile ceremonies, Jira administration, sprint velocity metrics, and Google X-Y-Z formulas for Scrum Masters.',
     overview: 'Scrum Master ATS filters look for Agile frameworks (Scrum, Kanban, SAFe), team velocity improvements, ceremony facilitation, backlog grooming, and impediment resolution.',
     starterTemplateKey: 'product_manager',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the candidate hold recognized certifications (PSM, CSM, SAFe) and facilitate multi-team agile ceremonies?",
+    "Are agile maturity metrics (velocity stability, cycle time reduction, dependency resolution) quantified?",
+    "Is there demonstrated experience removing cross-functional blockers and mentoring product owners and development teams?"
+],
+    atsFormattingAdvice: "Do not list Scrum events (daily standup, sprint review, retro) as generic duty bullets. ATS parsers score higher when you describe how your facilitation improved sprint predictability or resolved cross-team blockers.",
+categories: [
       {
         categoryName: 'Agile Frameworks & Methodologies',
         description: 'Core agile practices and scaling frameworks.',
@@ -784,7 +870,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, Linux server administration, Bash scripting, virtualization, backup strategies, and Google X-Y-Z formulas for SysAdmins.',
     overview: 'SysAdmin resumes need to highlight Linux/Windows server administration, virtualization (VMware, Proxmox), automated scripting (Bash, Python), backup/restore DR, and server uptime.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume cover Linux/Windows server administration, active directory management, and virtualization (VMware, Hyper-V)?",
+    "Are backup/disaster recovery drills, automated patching, and security compliance audits documented?",
+    "Is there evidence of bash/PowerShell scripting to automate routine administration and resolve helpdesk escalations?"
+],
+    atsFormattingAdvice: "Avoid listing hardware specifications or vendor product numbers unless requested in the JD. Focus your bullets on server uptime percentages, fleet sizes managed, and routine task automation.",
+categories: [
       {
         categoryName: 'Operating Systems & Administration',
         description: 'Server platforms and kernel-level administration.',
@@ -838,7 +930,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, requirements gathering, BRD/FRD documentation, SQL querying, user stories, and Google X-Y-Z formulas for Business Analysts.',
     overview: 'Business Analyst ATS parsers focus on requirements elicitation (BRD, FRD, PRD), user story authoring in Jira, stakeholder management, SQL data validation, and process modeling (BPMN).',
     starterTemplateKey: 'product_manager',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the candidate bridge business requirements into actionable functional specifications, user stories, and acceptance criteria?",
+    "Are process optimization outcomes (cost reductions, cycle time savings, error reduction) quantified?",
+    "Does the stack reflect requirements management tools (Jira, Confluence) alongside data query tools (SQL, Excel, Visio)?"
+],
+    atsFormattingAdvice: "Flowcharts and BPMN process diagrams cannot be extracted by ATS software. Convert your process improvements into descriptive text explaining the \"before vs after\" efficiency gains.",
+categories: [
       {
         categoryName: 'Requirements & Documentation',
         description: 'Translating business objectives into technical specifications.',
@@ -892,7 +990,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, financial modeling, DCF valuations, budget forecasting, variance analysis, and Google X-Y-Z formulas for Financial Analysts.',
     overview: 'Finance resumes must highlight three-statement financial modeling, variance analysis, budget forecasting, SaaS unit economics, ERP systems (NetSuite, SAP), and EBITDA impact.',
     starterTemplateKey: 'finance_ops',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume demonstrate advanced financial modeling (DCF, LBO, 3-statement models), variance analysis, and budgeting?",
+    "Are financial recommendations tied to measurable cost reductions, capital allocation, or EBITDA improvements?",
+    "Is proficiency in ERP and reporting software (SAP, Oracle, Bloomberg Terminal, advanced Excel) explicitly highlighted?"
+],
+    atsFormattingAdvice: "Financial analysts frequently format their experience into grid-like financial statement tables. Table cells often cause ATS parsers to read rows out of sequence. Stick to traditional bullet points with bold metrics.",
+categories: [
       {
         categoryName: 'Financial Modeling & Valuation',
         description: 'Quantitative forecasting, valuation models, and balance sheet modeling.',
@@ -946,7 +1050,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, Solidity smart contracts, DeFi protocols, security auditing, Hardhat, and Google X-Y-Z formulas for Web3 Developers.',
     overview: 'Blockchain ATS parsers evaluate smart contract engineering (Solidity, Rust), security audits, testing suites (Foundry, Hardhat), decentralized storage, and gas optimization.',
     starterTemplateKey: 'software_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the candidate write secure smart contracts (Solidity, Rust) with verifiable mainnet/testnet deployments?",
+    "Are security audits, gas optimization techniques, and reentrancy protections explicitly highlighted?",
+    "Is there experience with Web3 development stacks (Ethers.js, Hardhat, Foundry, The Graph, IPFS)?"
+],
+    atsFormattingAdvice: "Do not paste raw transaction hashes or smart contract bytecode onto your resume. List verified contract links, total value locked (TVL), and audit confirmations in your technical projects section.",
+categories: [
       {
         categoryName: 'Smart Contract Languages',
         description: 'EVM and non-EVM contract programming languages.',
@@ -1000,7 +1110,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, SEO optimization, paid acquisition (PPC), conversion funnels (CRO), email marketing, and Google X-Y-Z formulas for Marketing Managers.',
     overview: 'Marketing resumes must prove ROI-driven acquisition (CAC, ROAS), conversion rate optimization (CRO), search engine optimization (SEO), lifecycle retention, and marketing analytics.',
     starterTemplateKey: 'product_manager',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Does the resume demonstrate customer acquisition (CAC), lifetime value (LTV), and multi-channel campaign ROI?",
+    "Are marketing performance channels (paid search, SEO, social, email automation) quantified with pipeline or revenue contributions?",
+    "Is there proven mastery over martech stacks (HubSpot, Google Analytics 4, Meta Ads Manager, Marketo)?"
+],
+    atsFormattingAdvice: "Marketing resumes often use colorful brand graphics or two-column magazine layouts. Keep your resume single-column so that ATS crawlers capture your revenue impact, ROAS numbers, and campaign metrics without truncation.",
+categories: [
       {
         categoryName: 'Performance Acquisition & PPC',
         description: 'Paid search, social advertising, and campaign scaling.',
@@ -1054,7 +1170,13 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     metaDescription: 'Target ATS keywords, LLM fine-tuning, RAG pipelines, vLLM serving, vector databases, and Google X-Y-Z resume formulas for AI Engineers.',
     overview: 'AI and Large Language Model (LLM) engineering resumes must highlight production inference, RAG architectures, model fine-tuning (LoRA), prompt evaluation, and vector storage.',
     starterTemplateKey: 'ai_ml_engineer',
-    categories: [
+        recruiterScreeningChecklist: [
+    "Did the candidate architect production LLM systems (RAG, vector search, vLLM inference) beyond simple prompt engineering?",
+    "Are latency benchmarks (time-to-first-token, tokens per second, GPU memory footprints) and cost reductions quantified?",
+    "Is there evidence of model fine-tuning (LoRA/QLoRA), synthetic evaluation benchmarks, and hallucination guardrails?"
+],
+    atsFormattingAdvice: "Ensure modern AI terminology (RAG, LoRA, Vector Databases, Embeddings) is clearly written in both acronym and expanded forms. Avoid graphic flowcharts for LLM architectures and present them as structured technical bullets.",
+categories: [
       {
         categoryName: 'LLMs, RAG & Vector Search',
         description: 'Generative AI architectures and contextual document retrieval.',
