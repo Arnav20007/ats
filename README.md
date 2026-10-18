@@ -1,19 +1,19 @@
-# ToolForge — In-Browser ATS Resume Reviewer & Keyword Matcher
+# ToolForge — Free ATS Resume Score Checker & Keyword Matcher
 
 [![Live Demo](https://img.shields.io/badge/Live_Site-toolforge--ats.vercel.app-emerald?style=flat-square&logo=vercel)](https://toolforge-ats.vercel.app)
+[![ATS Score](https://img.shields.io/badge/ATS_Score-Free_Checker-blue?style=flat-square)](https://toolforge-ats.vercel.app)
+[![Overleaf Support](https://img.shields.io/badge/Overleaf_%26_LaTeX-Supported-success?style=flat-square)](https://toolforge-ats.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![React 19](https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square&logo=react)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Privacy: 100% In-Browser](https://img.shields.io/badge/Privacy-100%25_In--Browser-059669?style=flat-square&logo=shield)](https://toolforge-ats.vercel.app/privacy)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Arnav20007/ats/pulls)
 
-> **Free, in-browser résumé checks, job-description keyword comparisons, and formatting feedback.**
-> Heuristic guidance helps you review your résumé before applying. Runs locally with 100% client-side privacy.
+> **Free in-browser ATS resume score checker, job description keyword matcher, and formatting auditor.**
+> Calculate your ATS readiness score (out of 100), audit selectable text layers (PDF, DOCX, Overleaf, LaTeX), and format bullets with the Google X-Y-Z formula. 100% client-side privacy with zero server uploads.
 
-🌐 **Live Website**: [https://toolforge-ats.vercel.app](https://toolforge-ats.vercel.app)
-🔑 **Role Keywords Checklist**: [https://toolforge-ats.vercel.app/keywords](https://toolforge-ats.vercel.app/keywords)
-📦 **Repository**: [https://github.com/Arnav20007/ats](https://github.com/Arnav20007/ats)
-🚀 **Launch & Backlink Kit**: [docs/LAUNCH_AND_BACKLINKS.md](docs/LAUNCH_AND_BACKLINKS.md)
+🌐 **Live Website**: [https://toolforge-ats.vercel.app](https://toolforge-ats.vercel.app)  
+🔑 **Role Keywords Checklist**: [https://toolforge-ats.vercel.app/keywords](https://toolforge-ats.vercel.app/keywords)  
+📦 **Repository**: [https://github.com/Arnav20007/ats](https://github.com/Arnav20007/ats)  
+🚀 **Launch & Backlink Kit**: [docs/LAUNCH_AND_BACKLINKS.md](docs/LAUNCH_AND_BACKLINKS.md)  
 
 
 ---
