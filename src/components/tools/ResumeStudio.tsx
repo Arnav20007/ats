@@ -1551,18 +1551,18 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         <div className="w-full space-y-0">
           
           {/* SECTION 1: HERO */}
-          <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-center py-10 lg:py-16 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-[#f8fafc] via-[#f0fdf4]/50 to-[#f1f5f9] dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-b border-slate-200/80 dark:border-zinc-800">
-            <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <section className="relative overflow-hidden min-h-[calc(100vh-64px)] pt-3 sm:pt-4 lg:pt-5 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-[#f8fafc] via-[#f0fdf4]/50 to-[#f1f5f9] dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-b border-slate-200/80 dark:border-zinc-800">
+            <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               
               {/* LEFT COLUMN: Clean Headline & Direct Upload */}
-              <div className="lg:col-span-6 space-y-5 sm:space-y-6 text-left">
+              <div className="lg:col-span-6 space-y-3.5 sm:space-y-4 text-left">
                 
                 <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                   <span>FREE ATS RESUME SCORE CHECKER</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
+                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
                   Free ATS Resume Score Checker. <br className="hidden sm:inline" />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
                     Check Score, Overleaf &amp; Keywords.
@@ -1578,7 +1578,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`border-2 border-dashed rounded-3xl p-7 sm:p-9 text-center transition-all shadow-sm space-y-5 group ${
+                  className={`border-2 border-dashed rounded-3xl p-6 sm:p-8 text-center transition-all shadow-sm space-y-4 group ${
                     isDragging
                       ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 ring-4 ring-emerald-500/20'
                       : 'border-emerald-400/80 dark:border-emerald-600/60 bg-white/80 dark:bg-zinc-900/80 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/20'
