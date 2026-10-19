@@ -46,9 +46,7 @@ export async function prepareResumeImport(file: File): Promise<PreparedResumeImp
     location: parsed.location || '',
     linkedin: parsed.linkedin || '',
     portfolio: parsed.portfolio || '',
-    summary: parsed.summary || (!extracted.usedOcr && unclassifiedBullets.length > 0
-      ? `Extracted bullets to review and move to the correct section:\n${unclassifiedBullets.map((bullet) => `• ${bullet}`).join('\n')}`
-      : ''),
+    summary: parsed.summary || '',
     skills: parsed.skills?.length ? parsed.skills : [],
     experience,
     projects,

@@ -27,10 +27,6 @@
     {
       "source": "/keywords/:slug",
       "destination": "/keywords/:slug.html"
-    },
-    {
-      "source": "/keywords/(.*)",
-      "destination": "/keywords.html"
     }
   ],
   "headers": [

@@ -12,6 +12,7 @@ import { ShieldCheck } from 'lucide-react';
 import routeSeo from './data/routeSeo.json';
 import { ResumeSessionProvider, useResumeSession } from './context/ResumeSessionContext';
 import { SAMPLE_RESUMES } from './data/resumeSamples';
+import { ROLE_KEYWORD_PROFILES } from './data/roleKeywords';
 
 export type AppPage = 'home' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
 
@@ -23,13 +24,18 @@ const getPageFromPath = (pathname: string): AppPage => {
   if (path === '/about') return 'about';
   if (path === '/contact') return 'contact';
   if (path === '/guide') return 'guide';
-  if (path === '/keywords' || path.startsWith('/keywords/')) return 'keywords';
+  if (path === '/keywords') return 'keywords';
+  if (path.startsWith('/keywords/')) {
+    const slug = path.replace('/keywords/', '').trim();
+    if (ROLE_KEYWORD_PROFILES[slug]) return 'keywords';
+    return 'notFound';
+  }
   return 'notFound';
 };
 
 const getRoleSlugFromPath = (pathname: string): string => {
-  const match = pathname.toLowerCase().match(/^\/keywords\/?([a-z0-9-]+)?$/);
-  return match && match[1] ? match[1] : 'software-engineer';
+  const match = pathname.toLowerCase().match(/^\/keywords(?:\/([a-z0-9-]+))?\/?$/);
+  return match && match[1] && ROLE_KEYWORD_PROFILES[match[1]] ? match[1] : '';
 };
 
 // Safe Storage Guard for private browsing / restricted contexts (F-08)
@@ -55,7 +61,7 @@ const safeStorage = {
 interface AppProps { initialPath?: string }
 
 function AppContent({ initialPath }: AppProps) {
-  const { setResume, setViewMode } = useResumeSession();
+  const { setResume, setViewMode, setStudioTab, setActiveStudioTab } = useResumeSession();
 
   // Match the static HTML on the first render, then apply the saved preference.
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -226,8 +232,9 @@ function AppContent({ initialPath }: AppProps) {
   const navigateTo = (page: AppPage, subpath?: string) => {
     setCurrentPage(page);
     let path = page === 'home' ? '/' : `/${page}`;
-    if (page === 'keywords' && subpath) {
-      path = `/keywords/${subpath}`;
+    if (page === 'keywords') {
+      path = subpath ? `/keywords/${subpath}` : '/keywords';
+      setCurrentRoleSlug(subpath || '');
     }
     setCurrentPath(path);
     if (typeof window !== 'undefined') {
@@ -243,6 +250,13 @@ function AppContent({ initialPath }: AppProps) {
       setViewMode('studio');
       navigateTo('home');
     }
+  };
+
+  const handleOpenStudioTab = (tab: 'deep_report' | 'keywords' | 'audit' | 'rewriter') => {
+    setViewMode('studio');
+    setStudioTab('audit');
+    setActiveStudioTab(tab);
+    navigateTo('home');
   };
 
   const toggleTheme = () => setIsDark((prev) => !prev);
@@ -276,6 +290,7 @@ function AppContent({ initialPath }: AppProps) {
             onNavigateHome={() => navigateTo('home')}
             onSelectRoleTemplate={handleSelectRoleTemplate}
             initialRoleSlug={currentRoleSlug}
+            onSelectRoleSlug={(slug) => navigateTo('keywords', slug)}
           />
         )}
 
@@ -357,11 +372,11 @@ function AppContent({ initialPath }: AppProps) {
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: 'ATS Resume Checker', action: () => navigateTo('home') },
-                  { label: 'Job Keyword Matcher', action: () => navigateTo('home') },
+                  { label: 'ATS Resume Checker', action: () => { setViewMode('studio'); setStudioTab('document'); navigateTo('home'); } },
+                  { label: 'Job Keyword Matcher', action: () => handleOpenStudioTab('keywords') },
                   { label: 'Role Keywords Checklist', action: () => navigateTo('keywords') },
-                  { label: 'Google X-Y-Z Rewriter', action: () => navigateTo('home') },
-                  { label: 'PDF Audit Scorecard', action: () => navigateTo('home') },
+                  { label: 'Google X-Y-Z Rewriter', action: () => handleOpenStudioTab('rewriter') },
+                  { label: 'PDF Audit Scorecard', action: () => handleOpenStudioTab('deep_report') },
                   { label: 'Résumé Formatting Guide', action: () => navigateTo('guide') },
                 ].map((item) => (
                   <li key={item.label}>

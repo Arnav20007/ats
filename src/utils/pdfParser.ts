@@ -436,8 +436,13 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
   let normalizedText = options.ocr
     ? rawText
         .replace(/&amp;/gi, '&')
-        .replace(/^[¢©¤°·•\*\-~+>▪▫‣–—]\s+/gm, '• ')
+        .replace(/^[¢©¤°·•\*\-~+>▪▫‣–—\u2022\u25cf\u25aa\u25ab\u25b8\u2013\u2014]\s*/gm, '• ')
+        .replace(/^[oe0v]\s+(?=[A-Z])/gm, '• ')
         .replace(/^[oe]\s+(?=(?:implemented|developed|built|created|designed|automated|engineered|spearheaded|architected|led|managed|optimized|reduced|increased|tested|constructed|applied|handled)\b)/gim, '• ')
+        .replace(/\bE\s+X\s+P\s+E\s+R\s+I\s+E\s+N\s+C\s+E\b/gi, 'EXPERIENCE')
+        .replace(/\bP\s+R\s+O\s+J\s+E\s+C\s+T\s+S\b/gi, 'PROJECTS')
+        .replace(/\bE\s+D\s+U\s+C\s+A\s+T\s+I\s+O\s+N\b/gi, 'EDUCATION')
+        .replace(/\bS\s+K\s+I\s+L\s+L\s+S\b/gi, 'SKILLS')
         .replace(/\u00a0/g, ' ')
     : rawText;
   let lines = normalizedText
@@ -600,12 +605,16 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
     result.bullets = bulletLines.map((b) => b.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim());
   }
 
-  const experienceHeading = /^(?:(?:professional|work|technical|relevant|industry|corporate|internship)\s+)*(?:experience|employment|work\s+history|history|internships)(?:\s*[:&/].*)?$/i;
-  const sectionHeading = /^(?:(?:professional|work|technical|key|academic|personal|relevant|core)\s+)*(?:summary|profile|objective|skills|technical\s+skills|projects|technical\s+projects|education|certifications|achievements|awards|languages|interests|activities|extracurricular(?:\s+activities)?|publications|references|volunteer(?:\s+experience)?)(?:\s*[:&/].*)?$/i;
-  const experienceStart = lines.findIndex((line) => experienceHeading.test(line));
+  const isSectionBoundary = (line: string): boolean => {
+    if (line.length > 55 || /^[•\-\*▪▫‣–—]/.test(line) || /[.!?]$/.test(line)) return false;
+    return /^(?:(?:professional|work|technical|key|academic|personal|relevant|core|selected)\s+)*(?:summary|profile|objective|skills|technical\s+skills|experience|work\s+experience|employment|work\s+history|history|internships|projects|technical\s+projects|key\s+projects|education|certifications|licenses|achievements|awards|honors|languages|interests|activities|extracurricular(?:\s+activities)?|leadership|publications|references|volunteer(?:\s+experience)?|coursework)(?:\s*[:&/].*)?$/i.test(line.trim());
+  };
+
+  const experienceHeading = /^(?:(?:professional|work|technical|relevant|industry|corporate|internship)\s+)*(?:experience|employment|work\s+history|history|internships|work\s+experiences)(?:\s*[:&/].*)?$/i;
+  const experienceStart = lines.findIndex((line) => experienceHeading.test(line) && line.length < 55);
   if (experienceStart >= 0) {
     const experienceSectionLines: string[] = [];
-    for (let i = experienceStart + 1; i < lines.length && !sectionHeading.test(lines[i]); i++) {
+    for (let i = experienceStart + 1; i < lines.length && !isSectionBoundary(lines[i]); i++) {
       experienceSectionLines.push(lines[i]);
     }
     result.experienceBullets = experienceSectionLines
@@ -617,37 +626,83 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
   let eduDegree = '';
   let eduSchool = '';
   let eduYear = '';
+  let eduLocation = '';
   let eduIdx = -1;
 
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
-    if (/(?:^|[^a-z])(?:b\.?s\.?|b\.?tech|b\.?e\.?|m\.?s\.?|m\.?tech|bachelor|master|ph\.?d|undergraduate)(?:$|[^a-z])/i.test(l) && l.length < 120) {
-      eduDegree = l;
+    const hasDegree = /(?:^|[^a-z])(?:b\.?s\.?|b\.?tech|b\.?e\.?|m\.?s\.?|m\.?tech|bachelor|master|ph\.?d|undergraduate|diploma)(?:$|[^a-z])/i.test(l) && l.length < 140;
+    const hasSchool = /(?:university|college|institute|school|academy|campus|iit|nit|bits|iiit)\b/i.test(l) && l.length < 140;
+
+    if (hasDegree) {
       eduIdx = i;
+      if (hasSchool) {
+        // Line has both school and degree (e.g. "Example University — B.Tech in Computer Science | 2024-2028 GPA: 8.0")
+        const parts = l.split(/\s*[—–|;]\s*|\s+-\s+/).map((p) => p.trim()).filter(Boolean);
+        for (const part of parts) {
+          if (/(?:university|college|institute|school|academy|campus|iit|nit|bits|iiit)\b/i.test(part) && !eduSchool) {
+            eduSchool = part;
+          } else if (/(?:b\.?s\.?|b\.?tech|b\.?e\.?|m\.?s\.?|m\.?tech|bachelor|master|ph\.?d|undergraduate|diploma)\b/i.test(part) && !eduDegree) {
+            eduDegree = part;
+          }
+          const yMatch = part.match(/\b((?:19|20)\d{2}(?:\s*[-–—]\s*(?:(?:19|20)\d{2}|present))?)\b/i);
+          if (yMatch && !eduYear) {
+            eduYear = yMatch[1];
+          }
+        }
+        if (!eduDegree) eduDegree = l;
+      } else {
+        eduDegree = l;
+      }
       break;
     }
   }
 
-  if (eduIdx >= 0) {
+  if (eduIdx >= 0 && !eduSchool) {
     // Check adjacent lines for school name and graduation year
     for (let j = Math.max(0, eduIdx - 2); j <= Math.min(lines.length - 1, eduIdx + 3); j++) {
+      if (j === eduIdx) continue;
       const adjacent = lines[j];
       const isHeaderOrSkill = /^(?:skills|technical|projects|experience|summary|profile|location|email|phone)\b/i.test(adjacent);
-      if (j !== eduIdx && !adjacent.includes('@') && !isHeaderOrSkill && /(?:university|college|institute|school|academy|campus|iit|nit|bits)\b/i.test(adjacent) && adjacent.length < 120) {
-        eduSchool = adjacent.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim();
+      if (!adjacent.includes('@') && !isHeaderOrSkill && /(?:university|college|institute|school|academy|campus|iit|nit|bits|iiit)\b/i.test(adjacent) && adjacent.length < 120) {
+        const cleanSchool = adjacent
+          .split(/\s*[|]\s*/)[0]
+          .replace(/^[•\-\*▪▫‣–—]\s*/, '')
+          .replace(/,\s*(?:cgpa|gpa|grade).*$/i, '')
+          .trim();
+        eduSchool = cleanSchool;
+
+        const locInLine = adjacent.match(/,\s*([A-Z][a-zA-Z\s]+,\s*(?:[A-Z]{2}|[A-Z][a-zA-Z\s]+))\b/);
+        if (locInLine) {
+          eduLocation = locInLine[1].trim();
+        }
       }
       const yearMatch = adjacent.match(/(?:(?:\d{2}\/)?20\d{2}\s*[-–—]\s*(?:(?:\d{2}\/)?20\d{2}|present)|20\d{2})/i);
-      if (yearMatch) {
+      if (yearMatch && !eduYear) {
         eduYear = yearMatch[0];
       }
     }
+  }
+
+  if (eduDegree) {
+    const degreeYear = eduDegree.match(/\b((?:19|20)\d{2}(?:\s*[-–—]\s*(?:(?:19|20)\d{2}|present))?)\b/i);
+    if (degreeYear && !eduYear) {
+      eduYear = degreeYear[1];
+    }
+    eduDegree = eduDegree
+      .replace(/\b(?:c?gpa\s*[:=]?\s*[\d.]+(?:\s*\/\s*[\d.]+)?)\b/gi, '')
+      .replace(/\b(?:19|20)\d{2}\s*[-–—]\s*(?:(?:19|20)\d{2}|present)\b/gi, '')
+      .replace(/\b(?:19|20)\d{2}\b/g, '')
+      .replace(/[|—–-]\s*$/, '')
+      .replace(/^\s*[|—–-]\s*/, '')
+      .trim();
 
     result.education = [
       {
         id: 'edu-extracted-1',
         degree: eduDegree,
         school: eduSchool,
-        location: result.location || '',
+        location: eduLocation || result.location || '',
         year: eduYear
       }
     ];
@@ -660,14 +715,14 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
 
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
-    if (/^(?:(?:key|technical|academic|personal)\s+){0,2}projects\b/i.test(l) && l.length < 60) {
+    if (/^(?:(?:key|technical|academic|personal|selected|software|major|featured|recent)\s+)*(?:projects|project\s+work|open\s+source\s+contributions)(?:\s*[:&/].*)?$/i.test(l) && l.length < 55) {
       inProjectsSection = true;
       continue;
     }
 
     if (inProjectsSection) {
       // Check for exit into another major section
-      if (/^(?:(?:professional|work)\s+)?(?:experience|employment|education|skills|certifications|achievements|awards|languages|interests)\b/i.test(l) && l.length < 60) {
+      if (isSectionBoundary(l)) {
         if (currentProject && currentProject.bullets.length > 0) {
           projectsList.push(currentProject);
           currentProject = null;
@@ -677,7 +732,7 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
       }
 
       // Check if line is a bullet
-      const isBullet = /^[•\-*▪▫‣–—]/.test(l) || /^(?:developed|built|designed|implemented|created|architected|automated)\b/i.test(l);
+      const isBullet = /^[•\-*▪▫‣–—]/.test(l) || /^(?:developed|built|designed|implemented|created|architected|automated|engineered|spearheaded|optimized)\b/i.test(l);
 
       if (isBullet) {
         const cleanBullet = l.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim();

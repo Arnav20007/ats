@@ -23,20 +23,39 @@ interface KeywordsPageProps {
   onNavigateHome: () => void;
   onSelectRoleTemplate?: (templateKey: string) => void;
   initialRoleSlug?: string;
+  onSelectRoleSlug?: (slug: string) => void;
 }
 
 export const KeywordsPage: React.FC<KeywordsPageProps> = ({
   onNavigateHome,
   onSelectRoleTemplate,
-  initialRoleSlug = 'software-engineer'
+  initialRoleSlug = '',
+  onSelectRoleSlug
 }) => {
   const { showToast } = useToast();
   const [activeSlug, setActiveSlug] = useState<string>(initialRoleSlug);
   const [copiedKeyword, setCopiedKeyword] = useState<string | null>(null);
   const [copiedFormulaIdx, setCopiedFormulaIdx] = useState<number | null>(null);
 
-  const activeProfile: RoleKeywordData =
-    ROLE_KEYWORD_PROFILES[activeSlug] || ROLE_KEYWORD_PROFILES['software-engineer'];
+  React.useEffect(() => {
+    setActiveSlug(initialRoleSlug);
+  }, [initialRoleSlug]);
+
+  const handleSelectRole = (slug: string) => {
+    setActiveSlug(slug);
+    if (onSelectRoleSlug) {
+      onSelectRoleSlug(slug);
+    }
+  };
+
+  const handleBackToDirectory = () => {
+    setActiveSlug('');
+    if (onSelectRoleSlug) {
+      onSelectRoleSlug('');
+    }
+  };
+
+  const activeProfile: RoleKeywordData | undefined = ROLE_KEYWORD_PROFILES[activeSlug];
 
   const handleCopySingleKeyword = (keyword: string) => {
     navigator.clipboard.writeText(keyword);
@@ -59,12 +78,126 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
   };
 
   const handleLoadInStudio = () => {
-    if (onSelectRoleTemplate) {
+    if (activeProfile && onSelectRoleTemplate) {
       onSelectRoleTemplate(activeProfile.starterTemplateKey);
     } else {
       onNavigateHome();
     }
   };
+
+  // Directory View when no active role is chosen
+  if (!activeProfile) {
+    return (
+      <div className="w-full min-h-screen bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 py-12 px-4 sm:px-6 lg:px-12 animate-in fade-in duration-200">
+        <div className="max-w-6xl mx-auto space-y-10">
+          {/* Navigation Breadcrumb */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={onNavigateHome}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold text-slate-800 dark:text-zinc-200 transition-colors shadow-2xs cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>← Back to Resume Checker</span>
+            </button>
+
+            <span className="text-xs font-mono text-slate-400">
+              PAGE: /KEYWORDS
+            </span>
+          </div>
+
+          {/* Page Hero Header */}
+          <div className="space-y-4 border-b border-slate-200 dark:border-zinc-800 pb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>2026 ATS Keyword Database</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+              Top ATS Resume Keywords by Role
+            </h1>
+
+            <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
+              Curated ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers, Product Managers, and Data Scientists. Select a career profile below to view verified recruiter screening checklists and industry-standard keyword benchmarks.
+            </p>
+          </div>
+
+          {/* Role Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Object.values(ROLE_KEYWORD_PROFILES).map((prof) => {
+              const totalKws = prof.categories.reduce((acc, c) => acc + c.keywords.length, 0);
+              return (
+                <div
+                  key={prof.slug}
+                  onClick={() => handleSelectRole(prof.slug)}
+                  className="group p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500/60 dark:hover:border-emerald-500/60 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-4"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <h2 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        {prof.shortTitle}
+                      </h2>
+                      <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 shrink-0">
+                        {totalKws} keywords
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+                      {prof.overview}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {prof.categories[0]?.keywords.slice(0, 4).map((kw) => (
+                        <span
+                          key={kw}
+                          className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+                        >
+                          {kw}
+                        </span>
+                      ))}
+                      {prof.categories[0]?.keywords.length > 4 && (
+                        <span className="px-1.5 py-0.5 text-[10px] text-slate-400">
+                          +{prof.categories[0].keywords.length - 4} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 dark:border-zinc-800/60 flex items-center justify-between text-xs">
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      <span>View Keyword Checklist</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                    <span className="text-slate-400 dark:text-zinc-500 font-medium">
+                      {prof.categories.length} domains
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Primary CTA */}
+          <div className="p-8 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+            <div className="space-y-1 text-center sm:text-left">
+              <h3 className="text-xl font-black">
+                Want to check your resume against these keywords?
+              </h3>
+              <p className="text-xs sm:text-sm text-emerald-100">
+                Run our free in-browser ATS parser and compare your document directly against any target job description.
+              </p>
+            </div>
+            <button
+              onClick={onNavigateHome}
+              className="px-6 py-3 rounded-xl bg-white text-emerald-800 hover:bg-emerald-50 text-sm font-extrabold transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer active:scale-95"
+            >
+              <span>Open in Free Resume Checker</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 py-12 px-4 sm:px-6 lg:px-12 animate-in fade-in duration-200">
@@ -72,13 +205,22 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
 
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
-          <button
-            onClick={onNavigateHome}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold text-slate-800 dark:text-zinc-200 transition-colors shadow-2xs cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>← Back to Resume Checker</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onNavigateHome}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold text-slate-800 dark:text-zinc-200 transition-colors shadow-2xs cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Resume Checker</span>
+            </button>
+            <button
+              onClick={handleBackToDirectory}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs sm:text-sm font-bold text-emerald-800 dark:text-emerald-300 transition-colors shadow-2xs cursor-pointer"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>All 20 Roles</span>
+            </button>
+          </div>
 
           <span className="text-xs font-mono text-slate-400">
             PAGE: /KEYWORDS/{activeSlug.toUpperCase()}
@@ -111,7 +253,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
                 return (
                   <button
                     key={prof.slug}
-                    onClick={() => setActiveSlug(prof.slug)}
+                    onClick={() => handleSelectRole(prof.slug)}
                     className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                       isActive
                         ? 'bg-emerald-600 text-white shadow-md'

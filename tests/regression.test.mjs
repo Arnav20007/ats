@@ -105,8 +105,10 @@ test('static route render includes real page content for each indexable route', 
     ['/', 'Resume Checker'], ['/guide', 'Prepare a Clear Résumé for Applicant Tracking Systems'],
     ['/about', 'About ToolForge'], ['/contact', 'Contact &amp; Support'],
     ['/privacy', 'Privacy Policy'], ['/terms', 'Terms of Use'],
-    ['/keywords', 'Top ATS Keywords for Software Engineers'],
+    ['/keywords', 'Top ATS Resume Keywords by Role'],
+    ['/keywords/software-engineer', 'Top ATS Keywords for Software Engineers'],
     ['/keywords/product-manager', 'Essential ATS Keywords for Product Managers'],
+    ['/keywords/unknown-slug', 'Page not found'],
     ['/unknown-route', 'Page not found']
   ];
   for (const [path, heading] of routes) {
@@ -433,5 +435,40 @@ test('gentle filler scoring gives 8 points for single filler phrase instead of a
   const fillerCheck = result.checks.find((c) => c.id === 'filler');
   assert.equal(fillerCheck?.points, 8, `expected 8 points for single filler word, got ${fillerCheck?.points}`);
 });
+
+test('real-world fresher resume properly separates education fields and terminates projects before extracurriculars', async () => {
+  const resumeText = [
+    'Arnav Singh',
+    'Full Stack Software Engineer',
+    'arnav@example.com | Bengaluru, Karnataka',
+    'EDUCATION',
+    'National Institute of Technology, Tiruchirappalli — B.Tech in Computer Science | 2021-2025 GPA: 8.8',
+    'TECHNICAL SKILLS',
+    'React, TypeScript, Python, Node.js, PostgreSQL, Docker',
+    'PROJECTS',
+    'ToolForge ATS Platform',
+    'React, TypeScript, Vite | 2025 - Present',
+    '• Architected high-performance in-browser client-side ATS analysis engine.',
+    '• Engineered real-time keyword matching algorithm processing 40+ tech domains.',
+    'EXTRACURRICULAR ACTIVITIES',
+    '• Organized regional college hackathon hosting 350+ student developers.',
+    '• Mentored 40 junior students in open source software practices.'
+  ].join('\n');
+
+  const file = new File([resumeText], 'arnav-resume.txt', { type: 'text/plain' });
+  const { resume } = await prepareResumeImport(file);
+
+  assert.ok(resume);
+  assert.equal(resume.fullName, 'Arnav Singh');
+  assert.equal(resume.education.length, 1);
+  assert.equal(resume.education[0].school, 'National Institute of Technology, Tiruchirappalli');
+  assert.equal(resume.education[0].degree, 'B.Tech in Computer Science');
+  assert.equal(resume.education[0].year, '2021-2025');
+  assert.equal(resume.projects.length, 1, 'extracurricular activities must not become project cards');
+  assert.equal(resume.projects[0].name, 'ToolForge ATS Platform');
+  assert.equal(resume.projects[0].bullets.length, 2);
+  assert.equal(resume.summary, '', 'extracurricular bullets must never be dumped into summary');
+});
+
 
 

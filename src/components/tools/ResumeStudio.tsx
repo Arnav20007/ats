@@ -82,7 +82,20 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const { showToast } = useToast();
 
   // Mode: 'landing' (Enhancv-style marketing flow) vs 'studio' (focused interactive ATS editor)
-  const { viewMode, setViewMode, resume, setResume, targetJd, setTargetJd, uploadedFileName, setUploadedFileName } = useResumeSession();
+  const {
+    viewMode,
+    setViewMode,
+    resume,
+    setResume,
+    targetJd,
+    setTargetJd,
+    uploadedFileName,
+    setUploadedFileName,
+    studioTab,
+    setStudioTab,
+    activeStudioTab: activeTab,
+    setActiveStudioTab: setActiveTab
+  } = useResumeSession();
 
   // Scanning animation states
   const [isScanning, setIsScanning] = useState(false);
@@ -96,10 +109,8 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [isInspectorOpen, setIsInspectorOpen] = useState<boolean>(true);
-  const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
 
   // Active Resume State
-  const [activeTab, setActiveTab] = useState<'deep_report' | 'keywords' | 'audit' | 'rewriter'>('deep_report');
   const [quickLinkedinInput, setQuickLinkedinInput] = useState('');
   const [newSkillInput, setNewSkillInput] = useState('');
   const [hasEdited, setHasEdited] = useState(false);

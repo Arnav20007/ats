@@ -2,9 +2,15 @@ import React, { createContext, useContext, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { BLANK_STARTER_RESUME, type ResumeData } from '../data/resumeSamples';
 
+export type StudioActiveTab = 'deep_report' | 'keywords' | 'audit' | 'rewriter';
+
 interface ResumeSession {
   viewMode: 'landing' | 'studio';
   setViewMode: Dispatch<SetStateAction<'landing' | 'studio'>>;
+  studioTab: 'document' | 'audit';
+  setStudioTab: Dispatch<SetStateAction<'document' | 'audit'>>;
+  activeStudioTab: StudioActiveTab;
+  setActiveStudioTab: Dispatch<SetStateAction<StudioActiveTab>>;
   resume: ResumeData;
   setResume: Dispatch<SetStateAction<ResumeData>>;
   targetJd: string;
@@ -17,12 +23,27 @@ const ResumeSessionContext = createContext<ResumeSession | null>(null);
 
 export function ResumeSessionProvider({ children }: { children: React.ReactNode }) {
   const [viewMode, setViewMode] = useState<'landing' | 'studio'>('landing');
+  const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
+  const [activeStudioTab, setActiveStudioTab] = useState<StudioActiveTab>('deep_report');
   const [resume, setResume] = useState<ResumeData>(() => ({ ...BLANK_STARTER_RESUME }));
   const [targetJd, setTargetJd] = useState('');
   const [uploadedFileName, setUploadedFileName] = useState('');
 
   return (
-    <ResumeSessionContext.Provider value={{ viewMode, setViewMode, resume, setResume, targetJd, setTargetJd, uploadedFileName, setUploadedFileName }}>
+    <ResumeSessionContext.Provider value={{
+      viewMode,
+      setViewMode,
+      studioTab,
+      setStudioTab,
+      activeStudioTab,
+      setActiveStudioTab,
+      resume,
+      setResume,
+      targetJd,
+      setTargetJd,
+      uploadedFileName,
+      setUploadedFileName
+    }}>
       {children}
     </ResumeSessionContext.Provider>
   );
