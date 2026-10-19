@@ -136,14 +136,14 @@ export interface DeepAuditReport {
   };
 }
 
-const COMMON_REPETITIVE_VERBS: Record<string, string[]> = {
-  developed: ['architected', 'engineered', 'spearheaded', 'crafted', 'designed'],
-  implemented: ['deployed', 'executed', 'enforced', 'integrated', 'orchestrated'],
-  automated: ['systematized', 'streamlined', 'mechanized', 'optimized'],
-  managed: ['directed', 'guided', 'orchestrated', 'steered', 'championed'],
-  built: ['constructed', 'assembled', 'delivered', 'established'],
-  created: ['authored', 'originated', 'formulated', 'devised'],
-  worked: ['collaborated', 'partnered', 'drove initiatives', 'executed']
+export const COMMON_REPETITIVE_VERBS: Record<string, string[]> = {
+  developed: ['architected', 'engineered', 'spearheaded', 'designed', 'built'],
+  implemented: ['deployed', 'executed', 'integrated', 'orchestrated', 'engineered'],
+  automated: ['streamlined', 'optimized', 'systematized', 'scaled'],
+  managed: ['directed', 'guided', 'orchestrated', 'championed', 'led'],
+  built: ['constructed', 'assembled', 'delivered', 'established', 'engineered'],
+  created: ['authored', 'formulated', 'devised', 'pioneered', 'designed'],
+  worked: ['collaborated', 'partnered', 'executed', 'contributed']
 };
 
 const EMPTY_BUZZWORDS = [

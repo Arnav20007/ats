@@ -10,10 +10,35 @@ export interface ResumeReadinessCheck {
 }
 
 const REVIEW_BULLET_PREFIX = 'Extracted bullets to review and move to the correct section:';
-const ACTION_VERBS = new Set([
-  'achieved', 'automated', 'built', 'created', 'designed', 'developed', 'delivered',
-  'engineered', 'implemented', 'improved', 'increased', 'launched', 'led', 'managed',
-  'optimized', 'reduced', 'streamlined', 'tested'
+export const ACTION_VERBS = new Set([
+  'accelerated', 'accomplished', 'achieved', 'administered', 'analyzed', 'applied',
+  'architected', 'assembled', 'authored', 'automated', 'benchmarked', 'built',
+  'centralized', 'championed', 'coached', 'collaborated', 'compiled', 'composed',
+  'conceptualized', 'configured', 'constructed', 'converted', 'coordinated', 'crafted',
+  'created', 'customized', 'debugged', 'decreased', 'delegated', 'delivered',
+  'deployed', 'designed', 'developed', 'devised', 'diagnosed', 'directed',
+  'discovered', 'dispatched', 'diversified', 'documented', 'doubled', 'drafted',
+  'drove', 'eliminated', 'enabled', 'enforced', 'engineered', 'enhanced',
+  'established', 'evaluated', 'executed', 'expanded', 'expedited', 'extracted',
+  'fabricated', 'facilitated', 'finalized', 'forecasted', 'formulated', 'fostered',
+  'founded', 'generated', 'governed', 'guided', 'handled', 'headed',
+  'identified', 'implemented', 'improved', 'increased', 'initiated', 'innovated',
+  'inspected', 'installed', 'instituted', 'instructed', 'integrated', 'intensified',
+  'interpreted', 'introduced', 'invented', 'investigated', 'launched', 'led',
+  'leveraged', 'maintained', 'managed', 'maximized', 'mentored', 'migrated',
+  'minimized', 'modernized', 'modified', 'monitored', 'motivated', 'navigated',
+  'negotiated', 'operated', 'optimized', 'orchestrated', 'organized', 'originated',
+  'overhauled', 'oversaw', 'partnered', 'performed', 'pioneered', 'planned',
+  'prepared', 'presented', 'produced', 'programmed', 'projected', 'promoted',
+  'published', 'quantified', 'realized', 'rebuilt', 'redesigned', 'reduced',
+  'refactored', 'refined', 'reorganized', 'replaced', 'resolved', 'restructured',
+  'retrieved', 'revamped', 'reviewed', 'revised', 'revitalized', 'routed',
+  'scaled', 'scheduled', 'secured', 'simplified', 'solved', 'spearheaded',
+  'standardized', 'steered', 'strategized', 'streamlined', 'strengthened', 'structured',
+  'supervised', 'supported', 'surpassed', 'synthesized', 'systematized', 'tabulated',
+  'targeted', 'tested', 'tracked', 'trained', 'transformed', 'transitioned',
+  'translated', 'tripled', 'troubleshot', 'unified', 'upgraded', 'utilized',
+  'validated', 'verified', 'visualized', 'won', 'wrote', 'yielded'
 ]);
 const FILLER_PHRASES = /\b(?:responsible for|duties included|duties include|team[- ]?player|hard[- ]?working|results[- ]?oriented|go[- ]?getter)\b/gi;
 
@@ -40,8 +65,11 @@ export function calculateResumeReadiness(resume: ResumeData): {
   ].filter(Boolean);
   const bulletsWithMetricsCount = bullets.filter(hasQuantifiableMetric).length;
   const actionVerbCount = new Set(
-    bullets.map((bullet) => bullet.trim().match(/^(?:[•\-*▪▫‣–—]\s*)?([a-z]+)/i)?.[1]?.toLowerCase() || '')
-      .filter((verb) => ACTION_VERBS.has(verb))
+    bullets.map((bullet) => {
+      const clean = bullet.trim().replace(/^[•\-*▪▫‣–—\d.)\]\s]+/, '');
+      const match = clean.match(/^(?:(?:successfully|effectively|independently|rapidly|collaboratively|consistently|actively|solely|co-)\s+)?([a-z]+)/i);
+      return match?.[1]?.toLowerCase() || '';
+    }).filter((verb) => ACTION_VERBS.has(verb))
   ).size;
   const resumeText = [
     resume.fullName, resume.jobTitle, resume.email, resume.phone, resume.location,
@@ -56,9 +84,9 @@ export function calculateResumeReadiness(resume: ResumeData): {
   const sectionCount = Number(resume.experience.length > 0) + Number(resume.education.length > 0) + Number(resume.skills.length > 0);
   const contactPoints = (resume.email.trim() ? 10 : 0) + (resume.phone.trim().length > 7 ? 10 : 0);
   const sectionPoints = Math.round((sectionCount / 3) * 20);
-  const lengthPoints = wordCount >= 220 && wordCount <= 1000 ? 10
-    : wordCount >= 150 && wordCount < 220 || wordCount > 1000 && wordCount <= 1200 ? 7
-      : wordCount >= 80 && wordCount < 150 || wordCount > 1200 && wordCount <= 1500 ? 4
+  const lengthPoints = wordCount >= 160 && wordCount <= 1000 ? 10
+    : (wordCount >= 110 && wordCount < 160) || (wordCount > 1000 && wordCount <= 1200) ? 7
+      : (wordCount >= 60 && wordCount < 110) || (wordCount > 1200 && wordCount <= 1500) ? 4
         : 0;
   const bulletPoints = bullets.length >= 3 ? 10 : bullets.length > 0 ? 5 : 0;
   const metricPoints = bulletsWithMetricsCount >= 4 ? 15 : bulletsWithMetricsCount >= 2 ? 10 : bulletsWithMetricsCount === 1 ? 5 : 0;

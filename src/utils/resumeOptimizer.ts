@@ -81,13 +81,13 @@ function optimizeBullet(bullet: string): { text: string; removedPlaceholder: boo
 
   const removedPlaceholder = PLACEHOLDER_MARKER.test(text);
 
-  // Remove only a trailing metric clause when its claimed value is a template token.
+  // Remove only a trailing metric clause when its claimed value is a template token AND has no real digits.
   // Never alter a numeric result the résumé owner actually supplied.
   const clausePattern = new RegExp(PLACEHOLDER_CLAUSE_START.source, 'gi');
   let clauseMatch: RegExpExecArray | null;
   while ((clauseMatch = clausePattern.exec(text)) !== null) {
     const suffix = text.slice(clauseMatch.index);
-    if (PLACEHOLDER_MARKER.test(suffix)) {
+    if (PLACEHOLDER_MARKER.test(suffix) && !/\d/.test(suffix)) {
       text = text.slice(0, clauseMatch.index).trim();
       break;
     }
@@ -122,7 +122,7 @@ function optimizeBullet(bullet: string): { text: string; removedPlaceholder: boo
     text = text.replace(PASSIVE_NOUN_PATTERN, 'Designed and implemented');
   } else if (PASSIVE_SIMPLE_RESPONSIBLE.test(text)) {
     cleanedPassive = true;
-    text = text.replace(PASSIVE_SIMPLE_RESPONSIBLE, '');
+    text = text.replace(PASSIVE_SIMPLE_RESPONSIBLE, 'Managed and maintained ');
   }
 
   // Strip harsh filler adjectives at start of bullet

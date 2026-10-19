@@ -57,7 +57,7 @@ import { CompetitorBenchmark } from '../CompetitorBenchmark';
 import { ResumeFaq } from '../ResumeFaq';
 import { prepareResumeImport } from '../../utils/resumeImport';
 import { analyzeAtsKeywords, hasQuantifiableMetric } from '../../utils/atsKeywordMatcher';
-import { generateDeepAuditReport, DeepAuditReport } from '../../utils/deepAuditAnalyzer';
+import { generateDeepAuditReport, DeepAuditReport, COMMON_REPETITIVE_VERBS } from '../../utils/deepAuditAnalyzer';
 import { safelyOptimizeResume } from '../../utils/resumeOptimizer';
 import { calculateResumeReadiness } from '../../utils/resumeReadiness';
 import { useResumeSession, type AtsTemplateId } from '../../context/ResumeSessionContext';
@@ -739,41 +739,48 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       return;
     }
 
-    setResume((prev) => {
-      const counts: Record<string, number> = {};
-      const replaceInBullets = (bullets: string[]) => {
-        return bullets.map((b) => {
-          let updated = b;
-          repeated.forEach((rw) => {
-            const wLower = rw.word.toLowerCase();
-            const regex = new RegExp(`\\b${rw.word}\\b`, 'gi');
-            updated = updated.replace(regex, (match) => {
-              counts[wLower] = (counts[wLower] || 0) + 1;
-              if (counts[wLower] > 1 && rw.synonyms && rw.synonyms.length > 0) {
-                const syn = rw.synonyms[(counts[wLower] - 2) % rw.synonyms.length];
-                return match[0] === match[0].toUpperCase()
-                  ? syn.charAt(0).toUpperCase() + syn.slice(1)
-                  : syn.toLowerCase();
-              }
-              return match;
-            });
+    const initialReadiness = calculateResumeReadiness(resume);
+    const initialScore = initialReadiness.score;
+
+    const counts: Record<string, number> = {};
+    const replaceInBullets = (bullets: string[]) => {
+      return bullets.map((b) => {
+        let updated = b;
+        repeated.forEach((rw) => {
+          const wLower = rw.word.toLowerCase();
+          const regex = new RegExp(`(^|[•\\-*▪▫‣–—\\d.)\\]\\s]+)${rw.word}\\b`, 'gi');
+          updated = updated.replace(regex, (match, prefix) => {
+            counts[wLower] = (counts[wLower] || 0) + 1;
+            if (counts[wLower] > 1 && rw.synonyms && rw.synonyms.length > 0) {
+              const syn = rw.synonyms[(counts[wLower] - 2) % rw.synonyms.length];
+              return `${prefix}${syn.charAt(0).toUpperCase() + syn.slice(1)}`;
+            }
+            return match;
           });
-          return updated;
         });
-      };
+        return updated;
+      });
+    };
 
-      const nextExp = prev.experience.map((exp) => ({
-        ...exp,
-        bullets: replaceInBullets(exp.bullets)
-      }));
+    const nextExp = resume.experience.map((exp) => ({
+      ...exp,
+      bullets: replaceInBullets(exp.bullets)
+    }));
 
-      const nextProjects = (prev.projects || []).map((proj) => ({
-        ...proj,
-        bullets: replaceInBullets(proj.bullets)
-      }));
+    const nextProjects = (resume.projects || []).map((proj) => ({
+      ...proj,
+      bullets: replaceInBullets(proj.bullets)
+    }));
 
-      return { ...prev, experience: nextExp, projects: nextProjects };
-    });
+    const nextResume = { ...resume, experience: nextExp, projects: nextProjects };
+    const newScore = calculateResumeReadiness(nextResume).score;
+
+    if (newScore < initialScore) {
+      showToast('Action verbs are already optimal for ATS scoring.', 'info');
+      return;
+    }
+
+    setResume(nextResume);
     setHasEdited(true);
     showToast('Auto-replaced repetitive action verbs with strong synonyms!', 'success');
     if (onActionLogged) onActionLogged();
@@ -824,50 +831,61 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
   // Apply comprehensive formatting, active verbs, and structural cleanup.
   const handleOneClickOptimize = () => {
+    const initialReadiness = calculateResumeReadiness(resume);
+    const initialScore = initialReadiness.score;
+
     const result = safelyOptimizeResume(resume);
     let workingResume = result.resume;
     let didChange = result.changedBullets > 0 || (result.cleanedSkillsCount || 0) > 0;
 
-    // Check if repetitive verbs can also be auto-diversified
-    const repeated = deepAudit.categories.content.repetition.repeatedWords;
-    if (repeated && repeated.length > 0) {
-      const counts: Record<string, number> = {};
-      const replaceInBullets = (bullets: string[]) => {
-        return bullets.map((b) => {
-          let updated = b;
-          repeated.forEach((rw) => {
-            const wLower = rw.word.toLowerCase();
-            const regex = new RegExp(`\\b${rw.word}\\b`, 'gi');
-            updated = updated.replace(regex, (match) => {
-              counts[wLower] = (counts[wLower] || 0) + 1;
-              if (counts[wLower] > 1 && rw.synonyms && rw.synonyms.length > 0) {
-                const syn = rw.synonyms[(counts[wLower] - 2) % rw.synonyms.length];
-                didChange = true;
-                return match[0] === match[0].toUpperCase()
-                  ? syn.charAt(0).toUpperCase() + syn.slice(1)
-                  : syn.toLowerCase();
-              }
-              return match;
-            });
-          });
-          return updated;
-        });
-      };
+    // Diversify repetitive opening action verbs using verified ATS power verbs
+    const openingCounts: Record<string, number> = {};
+    const diversifyOpening = (bullets: string[]) => {
+      return bullets.map((b) => {
+        const clean = b.trim().replace(/^[•\-*▪▫‣–—\d.)\]\s]+/, '');
+        const match = clean.match(/^([a-zA-Z]+)\b/);
+        if (!match) return b;
+        const verbLower = match[1].toLowerCase();
+        openingCounts[verbLower] = (openingCounts[verbLower] || 0) + 1;
 
-      workingResume = {
-        ...workingResume,
-        experience: workingResume.experience.map((exp) => ({
-          ...exp,
-          bullets: replaceInBullets(exp.bullets)
-        })),
-        projects: (workingResume.projects || []).map((proj) => ({
-          ...proj,
-          bullets: replaceInBullets(proj.bullets)
-        }))
+        const syns = COMMON_REPETITIVE_VERBS[verbLower];
+        if (openingCounts[verbLower] > 1 && syns && syns.length > 0) {
+          const syn = syns[(openingCounts[verbLower] - 2) % syns.length];
+          const capitalized = syn.charAt(0).toUpperCase() + syn.slice(1);
+          didChange = true;
+          return b.replace(new RegExp(`(^|[•\\-*▪▫‣–—\\d.)\\]\\s]+)${match[1]}\\b`), `$1${capitalized}`);
+        }
+        return b;
+      });
+    };
+
+    workingResume = {
+      ...workingResume,
+      experience: workingResume.experience.map((exp) => ({ ...exp, bullets: diversifyOpening(exp.bullets) })),
+      projects: (workingResume.projects || []).map((proj) => ({ ...proj, bullets: diversifyOpening(proj.bullets) }))
+    };
+
+    let newReadiness = calculateResumeReadiness(workingResume);
+    let newScore = newReadiness.score;
+
+    // Hard safety guard: 1-Click Optimize MUST NEVER lower the score under any circumstance
+    if (newScore < initialScore) {
+      const safeBulletsOnly: ResumeData = {
+        ...resume,
+        experience: workingResume.experience,
+        projects: workingResume.projects
       };
+      const safeBulletsScore = calculateResumeReadiness(safeBulletsOnly).score;
+      if (safeBulletsScore >= initialScore) {
+        workingResume = safeBulletsOnly;
+        newScore = safeBulletsScore;
+      } else {
+        workingResume = resume;
+        newScore = initialScore;
+      }
     }
 
-    if (!didChange) {
+    if (!didChange && newScore === initialScore) {
       showToast('Résumé formatting and action verbs are already in top ATS shape!', 'sparkle');
       return;
     }
@@ -876,23 +894,24 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     setHasEdited(true);
 
     const parts: string[] = [];
+    if (newScore > initialScore) {
+      parts.push(`Score improved: ${initialScore}% → ${newScore}%`);
+    }
     if (result.cleanedPassiveBullets > 0) {
       parts.push(`${result.cleanedPassiveBullets} active verb${result.cleanedPassiveBullets === 1 ? '' : 's'}`);
     }
     if (result.removedPlaceholderBullets > 0) {
-      parts.push(`removed placeholders`);
+      parts.push('cleaned placeholders');
     }
     if (result.changedBullets > 0 && result.cleanedPassiveBullets === 0) {
-      parts.push(`standardized formatting & punctuation`);
+      parts.push('standardized formatting & punctuation');
     }
     if ((result.cleanedSkillsCount || 0) > 0) {
-      parts.push(`deduplicated skills`);
+      parts.push('deduplicated skills');
     }
 
     showToast(
-      parts.length > 0
-        ? `✨ Cleaned résumé: ${parts.join(', ')}!`
-        : '✨ Standardized bullet capitalization, active verbs, and punctuation!',
+      parts.length > 0 ? `✨ ${parts.join(' · ')}!` : '✨ Standardized bullet capitalization, active verbs, and punctuation!',
       'sparkle'
     );
     if (onActionLogged) onActionLogged();

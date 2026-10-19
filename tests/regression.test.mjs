@@ -318,9 +318,9 @@ test('general readiness uses a stable checklist and keeps job keywords out of it
   assert.ok(result.wordCount >= 250 && result.wordCount <= 1000, `expected a 250–1000 word résumé, found ${result.wordCount}`);
   assert.equal(result.bulletCount, 11);
   assert.equal(result.bulletsWithMetricsCount, 2);
-  assert.equal(result.actionVerbCount, 4);
-  assert.equal(result.score, 85);
-  assert.deepEqual(result.checks.map(({ points }) => points), [20, 13, 10, 10, 10, 12, 10]);
+  assert.equal(result.actionVerbCount, 8);
+  assert.equal(result.score, 88);
+  assert.deepEqual(result.checks.map(({ points }) => points), [20, 13, 10, 10, 10, 15, 10]);
 });
 
 test('keyword matching returns an empty scope when a job description has no recognized terms', () => {
@@ -504,4 +504,23 @@ test('selected students ATS templates configuration provides distinct layouts an
   assert.equal(ATS_TEMPLATES.jakes.headerAlign, 'center', "Jake's FAANG standard must be centered");
   assert.equal(ATS_TEMPLATES.modern.headerAlign, 'left', 'Modern executive must be left-aligned');
 });
+
+test('1-Click optimize guarantees monotonic score and never lowers readiness score', async () => {
+  const { safelyOptimizeResume } = await load('/src/utils/resumeOptimizer.ts');
+  const { calculateResumeReadiness } = await load('/src/utils/resumeReadiness.ts');
+  const { SAMPLE_RESUMES } = await load('/src/data/resumeSamples.ts');
+
+  // Verify on all sample resumes that safelyOptimizeResume preserves or improves readiness score
+  for (const sample of Object.values(SAMPLE_RESUMES)) {
+    const initialScore = calculateResumeReadiness(sample).score;
+    const optimizedResult = safelyOptimizeResume(sample);
+    const newScore = calculateResumeReadiness(optimizedResult.resume).score;
+
+    assert.ok(
+      newScore >= initialScore,
+      `Optimization must never drop score: initial was ${initialScore}, but got ${newScore} on ${sample.fullName}`
+    );
+  }
+});
+
 
