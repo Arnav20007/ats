@@ -49,7 +49,8 @@ import {
   AlertTriangle,
   HelpCircle,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Copy
 } from 'lucide-react';
 import { useToast } from '../Toast';
 import { CompetitorBenchmark } from '../CompetitorBenchmark';
@@ -504,59 +505,180 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     ribbonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // Generate editable drafts that preserve the user's facts and leave unknown results as prompts.
+  // Generate high-impact, professional bullet drafts without dummy [X] brackets
   const rewrittenOptions = useMemo(() => {
-    const text = rewriterInput.trim().replace(/^[-•*]\s*/, '').replace(/[.!?]+$/, '');
+    const raw = rewriterInput.trim().replace(/^[-•*o~+]\s*/, '').replace(/[.!?]+$/, '').trim();
+    if (!raw) {
+      return [
+        {
+          type: 'Executive Impact (Google X-Y-Z)',
+          badge: 'Google X-Y-Z',
+          text: 'Architected and deployed high-performance services, reducing system latency and accelerating operational throughput.',
+          rationale: 'Focuses on executive action verbs and verifiable operational impact.'
+        },
+        {
+          type: 'Concise & Minimal',
+          badge: 'Clean ATS',
+          text: 'Engineered scalable core components to standardize workflows and enhance maintainability.',
+          rationale: 'Tight, direct phrasing that eliminates wordiness and highlights core ownership.'
+        },
+        {
+          type: 'Scalability & Reliability',
+          badge: 'Production Grade',
+          text: 'Built robust production workflows with automated test coverage and zero-downtime deployment pipelines.',
+          rationale: 'Emphasizes production reliability, automated testing, and resilience.'
+        }
+      ];
+    }
+
+    // Clean passive prefix
+    let core = raw;
+    const passivePrefix = /^(?:responsible for|tasked with|worked on|helped with|helped in|helped to|assisted in|assisted with|involved in|participated in|handled)\s+(?:the\s+)?/i;
+    core = core.replace(passivePrefix, '');
+
+    // Convert gerunds to past tense if core starts with gerund
+    core = core.replace(/^([a-z]+ing)\b/i, (m) => {
+      const g = m.toLowerCase();
+      const pastMap: Record<string, string> = {
+        building: 'Built',
+        developing: 'Developed',
+        designing: 'Designed',
+        implementing: 'Implemented',
+        managing: 'Managed',
+        creating: 'Created',
+        leading: 'Led',
+        spearheading: 'Spearheaded',
+        architecting: 'Architected',
+        maintaining: 'Maintained',
+        optimizing: 'Optimized',
+        testing: 'Tested',
+        automating: 'Automated',
+        deploying: 'Deployed',
+        configuring: 'Configured',
+        migrating: 'Migrated',
+        refactoring: 'Refactored',
+        writing: 'Authored'
+      };
+      return pastMap[g] || (m.charAt(0).toUpperCase() + m.slice(1));
+    });
+
+    // Ensure first character is uppercase
+    core = core.charAt(0).toUpperCase() + core.slice(1);
+
+    // Check if original already has a metric
+    const hasMetric = /\b\d+(?:[.,]\d+)?%|\b\d+\s*(?:ms|k|m|x|sec|s|min|hrs?|hours?|users?|reqs?|records?)\b/i.test(core);
+
+    let opt1 = '';
+    let opt2 = '';
+    let opt3 = '';
+
+    const lower = core.toLowerCase();
+
+    if (hasMetric) {
+      opt1 = `Architected and executed ${core.charAt(0).toLowerCase() + core.slice(1)}, ensuring high system availability and verifiable impact.`;
+      opt2 = `${core}, streamlining core operational workflows.`;
+      opt3 = `Engineered production-grade solution: ${core}, maintaining end-to-end data integrity and service resilience.`;
+    } else {
+      if (lower.includes('api') || lower.includes('backend') || lower.includes('flask') || lower.includes('service') || lower.includes('node') || lower.includes('server')) {
+        opt1 = `Architected and deployed ${core.charAt(0).toLowerCase() + core.slice(1)}, optimizing response times and reducing system latency under peak traffic.`;
+        opt2 = `Engineered scalable backend services for ${core.charAt(0).toLowerCase() + core.slice(1)}, streamlining core data exchange and API stability.`;
+        opt3 = `Developed production-grade ${core.charAt(0).toLowerCase() + core.slice(1)} with automated end-to-end testing and fault-tolerant architecture.`;
+      } else if (lower.includes('react') || lower.includes('ui') || lower.includes('frontend') || lower.includes('web') || lower.includes('dashboard')) {
+        opt1 = `Architected and shipped ${core.charAt(0).toLowerCase() + core.slice(1)}, improving page load performance and streamlining user workflows.`;
+        opt2 = `Engineered responsive modern interface for ${core.charAt(0).toLowerCase() + core.slice(1)}, maximizing cross-device accessibility and usability.`;
+        opt3 = `Developed modular frontend components for ${core.charAt(0).toLowerCase() + core.slice(1)} with reusable design patterns and robust state management.`;
+      } else if (lower.includes('data') || lower.includes('pipeline') || lower.includes('sql') || lower.includes('python') || lower.includes('etl')) {
+        opt1 = `Spearheaded and built ${core.charAt(0).toLowerCase() + core.slice(1)}, accelerating data throughput with zero data degradation.`;
+        opt2 = `Designed automated processing pipeline for ${core.charAt(0).toLowerCase() + core.slice(1)}, ensuring deterministic parsing and deduplication.`;
+        opt3 = `Engineered resilient data workflows for ${core.charAt(0).toLowerCase() + core.slice(1)} with comprehensive validation and schema verification.`;
+      } else {
+        opt1 = `Architected and spearheaded ${core.charAt(0).toLowerCase() + core.slice(1)}, driving operational efficiency and measurable execution speed.`;
+        opt2 = `Designed and implemented ${core.charAt(0).toLowerCase() + core.slice(1)} to standardize processes and eliminate bottlenecks.`;
+        opt3 = `Engineered production-ready solution for ${core.charAt(0).toLowerCase() + core.slice(1)} with robust quality standards and zero regression rate.`;
+      }
+    }
+
+    const cleanDraft = (s: string) => {
+      const t = s.trim().replace(/\s{2,}/g, ' ').replace(/[.!?]+$/, '').trim();
+      return t ? `${t.charAt(0).toUpperCase() + t.slice(1)}.` : '';
+    };
+
     return [
       {
-        type: 'Focus on results (Google X-Y-Z formula)',
-        text: `${text} — Add your verified result [X], measure [Y], and action [Z].`,
-        powerVerbs: [],
-        rationale: 'Replace the prompts with outcomes and measurements you can verify.'
+        type: 'Executive Impact (Google X-Y-Z)',
+        badge: 'Google X-Y-Z',
+        text: cleanDraft(opt1),
+        rationale: 'Leads with executive power verbs and measurable operational impact.'
       },
       {
-        type: 'Focus on leadership and initiative',
-        text: `${text} — Add the scope you personally owned [team, users, or process] and its verified outcome [result].`,
-        powerVerbs: [],
-        rationale: 'Add only the scope and outcomes that accurately describe your contribution.'
+        type: 'Concise & Minimal',
+        badge: 'Clean ATS',
+        text: cleanDraft(opt2),
+        rationale: 'Direct, punchy phrasing that eliminates fluff and highlights direct technical ownership.'
       },
       {
-        type: 'Short, clean, and direct',
-        text: `${text} — Add one concise, verified outcome and metric, if available.`,
-        powerVerbs: [],
-        rationale: 'A concise draft; keep the outcome factual and omit a metric if you cannot verify one.'
+        type: 'Scalability & Reliability',
+        badge: 'Production Grade',
+        text: cleanDraft(opt3),
+        rationale: 'Emphasizes software resilience, automated testing, and production reliability.'
       }
     ];
   }, [rewriterInput]);
 
   // Apply rewrite to resume
   const handleApplyRewrite = (newBulletText: string) => {
+    let applied = false;
     setResume((prev) => {
       if (selectedBulletIndex.section === 'project') {
         const nextProjects = [...(prev.projects || [])];
-        if (nextProjects[selectedBulletIndex.itemIdx]) {
+        if (nextProjects[selectedBulletIndex.itemIdx]?.bullets?.[selectedBulletIndex.bulletIdx] !== undefined) {
           const bullets = [...nextProjects[selectedBulletIndex.itemIdx].bullets];
           bullets[selectedBulletIndex.bulletIdx] = newBulletText;
           nextProjects[selectedBulletIndex.itemIdx] = {
             ...nextProjects[selectedBulletIndex.itemIdx],
             bullets
           };
+          applied = true;
+          return { ...prev, projects: nextProjects };
         }
-        return { ...prev, projects: nextProjects };
       }
 
       const newExp = [...prev.experience];
-      if (newExp[selectedBulletIndex.itemIdx]) {
+      if (newExp[selectedBulletIndex.itemIdx]?.bullets?.[selectedBulletIndex.bulletIdx] !== undefined) {
         const bullets = [...newExp[selectedBulletIndex.itemIdx].bullets];
         bullets[selectedBulletIndex.bulletIdx] = newBulletText;
         newExp[selectedBulletIndex.itemIdx] = {
           ...newExp[selectedBulletIndex.itemIdx],
           bullets
         };
+        applied = true;
+        return { ...prev, experience: newExp };
       }
-      return { ...prev, experience: newExp };
+
+      if (newExp.length > 0 && newExp[0].bullets && newExp[0].bullets.length > 0) {
+        const bullets = [...newExp[0].bullets];
+        bullets[0] = newBulletText;
+        newExp[0] = { ...newExp[0], bullets };
+        applied = true;
+        return { ...prev, experience: newExp };
+      } else if (prev.projects && prev.projects.length > 0 && prev.projects[0].bullets && prev.projects[0].bullets.length > 0) {
+        const nextProjects = [...prev.projects];
+        nextProjects[0] = { ...nextProjects[0], bullets: [newBulletText, ...nextProjects[0].bullets.slice(1)] };
+        applied = true;
+        return { ...prev, projects: nextProjects };
+      }
+
+      return prev;
     });
-    showToast('Updated on your resume!', 'success');
+
+    try {
+      navigator.clipboard.writeText(newBulletText);
+    } catch {
+      // ignore
+    }
+
+    setHasEdited(true);
+    showToast(applied ? '✨ Updated bullet in your résumé!' : 'Copied optimized bullet to clipboard!', 'success');
     if (onActionLogged) onActionLogged();
   };
 
@@ -684,20 +806,77 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     if (onActionLogged) onActionLogged();
   };
 
-  // Apply only factual-neutral cleanup; never invent metrics or achievements.
+  // Apply comprehensive formatting, active verbs, and structural cleanup.
   const handleOneClickOptimize = () => {
     const result = safelyOptimizeResume(resume);
-    if (result.changedBullets === 0) {
-      showToast('No safe automatic edits found. Add only results you can verify.', 'info');
+    let workingResume = result.resume;
+    let didChange = result.changedBullets > 0 || (result.cleanedSkillsCount || 0) > 0;
+
+    // Check if repetitive verbs can also be auto-diversified
+    const repeated = deepAudit.categories.content.repetition.repeatedWords;
+    if (repeated && repeated.length > 0) {
+      const counts: Record<string, number> = {};
+      const replaceInBullets = (bullets: string[]) => {
+        return bullets.map((b) => {
+          let updated = b;
+          repeated.forEach((rw) => {
+            const wLower = rw.word.toLowerCase();
+            const regex = new RegExp(`\\b${rw.word}\\b`, 'gi');
+            updated = updated.replace(regex, (match) => {
+              counts[wLower] = (counts[wLower] || 0) + 1;
+              if (counts[wLower] > 1 && rw.synonyms && rw.synonyms.length > 0) {
+                const syn = rw.synonyms[(counts[wLower] - 2) % rw.synonyms.length];
+                didChange = true;
+                return match[0] === match[0].toUpperCase()
+                  ? syn.charAt(0).toUpperCase() + syn.slice(1)
+                  : syn.toLowerCase();
+              }
+              return match;
+            });
+          });
+          return updated;
+        });
+      };
+
+      workingResume = {
+        ...workingResume,
+        experience: workingResume.experience.map((exp) => ({
+          ...exp,
+          bullets: replaceInBullets(exp.bullets)
+        })),
+        projects: (workingResume.projects || []).map((proj) => ({
+          ...proj,
+          bullets: replaceInBullets(proj.bullets)
+        }))
+      };
+    }
+
+    if (!didChange) {
+      showToast('Résumé formatting and action verbs are already in top ATS shape!', 'sparkle');
       return;
     }
 
-    setResume(result.resume);
+    setResume(workingResume);
     setHasEdited(true);
+
+    const parts: string[] = [];
+    if (result.cleanedPassiveBullets > 0) {
+      parts.push(`${result.cleanedPassiveBullets} active verb${result.cleanedPassiveBullets === 1 ? '' : 's'}`);
+    }
+    if (result.removedPlaceholderBullets > 0) {
+      parts.push(`removed placeholders`);
+    }
+    if (result.changedBullets > 0 && result.cleanedPassiveBullets === 0) {
+      parts.push(`standardized formatting & punctuation`);
+    }
+    if ((result.cleanedSkillsCount || 0) > 0) {
+      parts.push(`deduplicated skills`);
+    }
+
     showToast(
-      result.removedPlaceholderBullets > 0
-        ? `Removed unverified metric placeholders from ${result.removedPlaceholderBullets} bullet${result.removedPlaceholderBullets === 1 ? '' : 's'} and standardized punctuation. No résumé facts were added.`
-        : 'Standardized bullet capitalization and punctuation. No résumé facts were added.',
+      parts.length > 0
+        ? `✨ Cleaned résumé: ${parts.join(', ')}!`
+        : '✨ Standardized bullet capitalization, active verbs, and punctuation!',
       'sparkle'
     );
     if (onActionLogged) onActionLogged();
@@ -1372,25 +1551,25 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         <div className="w-full space-y-0">
           
           {/* SECTION 1: HERO */}
-          <section className="relative overflow-hidden pt-12 pb-20 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-[#f8fafc] via-[#f0fdf4]/50 to-[#f1f5f9] dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-b border-slate-200/80 dark:border-zinc-800">
-            <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <section className="relative overflow-hidden pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f8fafc] via-[#f0fdf4]/50 to-[#f1f5f9] dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-b border-slate-200/80 dark:border-zinc-800">
+            <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
               
               {/* LEFT COLUMN: Clean Headline & Direct Upload */}
-              <div className="lg:col-span-6 space-y-6 text-left">
+              <div className="lg:col-span-6 space-y-3 sm:space-y-3.5 text-left">
                 
-                <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                   <span>FREE ATS RESUME SCORE CHECKER</span>
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.08]">
+                <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.14]">
                   Free ATS Resume Score Checker. <br className="hidden sm:inline" />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
                     Check Score, Overleaf &amp; Keywords.
                   </span>
                 </h1>
 
-                <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-normal font-normal max-w-xl">
                   Check your ATS resume score, calculate readiness, test Overleaf/LaTeX/Word PDFs, and compare job keywords in seconds. 100% private in-browser.
                 </p>
 
@@ -1399,47 +1578,47 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`border-2 border-dashed rounded-2xl p-8 sm:p-10 text-center transition-all shadow-sm space-y-5 group ${
+                  className={`border-2 border-dashed rounded-2xl p-4 sm:p-5 text-center transition-all shadow-sm space-y-3 group ${
                     isDragging
                       ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 ring-4 ring-emerald-500/20'
                       : 'border-emerald-400/80 dark:border-emerald-600/60 bg-white/80 dark:bg-zinc-900/80 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/20'
                   }`}
                 >
-                  <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform">
-                    <Upload className="w-8 h-8" />
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950/80 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform">
+                    <Upload className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <p className="text-lg sm:text-xl font-bold text-slate-800 dark:text-zinc-100">
+                  <div className="space-y-1">
+                    <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-zinc-100">
                       {isDragging ? 'Drop your resume file to analyze' : 'Drop your resume here or browse files'}
                     </p>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
+                    <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">
                       Supports PDF, DOCX, Overleaf &amp; LaTeX Exports (100% In-Browser Private)
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 w-full pt-0.5">
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-base font-bold transition-all shadow-md inline-flex items-center justify-center gap-2 focus:ring-2 focus:ring-emerald-500/20 active:scale-[0.99] cursor-pointer"
+                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm sm:text-base font-bold transition-all shadow-md inline-flex items-center justify-center gap-2 focus:ring-2 focus:ring-emerald-500/20 active:scale-[0.99] cursor-pointer"
                     >
-                      <Upload className="w-5 h-5" />
+                      <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>Upload Your Resume</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setShowCreateModal(true)}
-                      className="w-full sm:w-auto px-7 py-3.5 rounded-xl border-2 border-emerald-600/80 dark:border-emerald-500/80 bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-base font-bold transition-all shadow-xs inline-flex items-center justify-center gap-2 active:scale-[0.99] cursor-pointer"
+                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 rounded-xl border-2 border-emerald-600/80 dark:border-emerald-500/80 bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-sm sm:text-base font-bold transition-all shadow-xs inline-flex items-center justify-center gap-2 active:scale-[0.99] cursor-pointer"
                     >
-                      <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400" />
                       <span>Create Your Resume</span>
                     </button>
                   </div>
 
                   {/* Quick Sample Selector */}
-                  <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500 dark:text-zinc-400 font-medium pt-1">
+                  <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500 dark:text-zinc-400 font-medium pt-0.5">
                     <span>Or test with a sample profile:</span>
                     <button
                       type="button"
@@ -1471,7 +1650,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* RIGHT COLUMN: Visual Product ATS Preview */}
               <div className="lg:col-span-6 flex justify-center">
-                <div className="relative w-full max-w-2xl group">
+                <div className="relative w-full max-w-md lg:max-w-xl group">
                   <div className="absolute -inset-1 rounded-[36px] bg-gradient-to-r from-emerald-500/15 to-teal-500/15 blur-xl opacity-80 group-hover:opacity-100 transition duration-500" />
                   <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-none transition-transform duration-300 hover:scale-[1.01]">
                     <picture className="block w-full">
@@ -2592,28 +2771,50 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                           {rewrittenOptions.map((opt, i) => (
                             <div
                               key={i}
-                              className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-none hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
+                              className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-none hover:border-emerald-500/60 transition-colors"
                             >
-                              <div className="space-y-1 flex-1">
+                              <div className="space-y-1.5 flex-1">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-[10px] font-mono font-bold uppercase px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">
+                                  <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-emerald-700 dark:text-emerald-400">
                                     {opt.type}
                                   </span>
-                                  <span className="text-xs font-mono text-emerald-600 font-semibold">
-                                    Draft suggestion
-                                  </span>
+                                  {opt.rationale && (
+                                    <span className="text-[11px] text-zinc-500 hidden sm:inline">
+                                      · {opt.rationale}
+                                    </span>
+                                  )}
                                 </div>
-                                <p className="text-xs text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                                <p className="text-xs sm:text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed font-medium">
                                   • {opt.text}
                                 </p>
                               </div>
-                              <button
-                                onClick={() => handleApplyRewrite(opt.text)}
-                                className="shrink-0 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
-                              >
-                                <Check className="w-3.5 h-3.5" />
-                                <span>Apply</span>
-                              </button>
+                              <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    try {
+                                      navigator.clipboard.writeText(opt.text);
+                                      showToast('Copied variation to clipboard!', 'success');
+                                    } catch {
+                                      // ignore
+                                    }
+                                  }}
+                                  className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95"
+                                  title="Copy to clipboard"
+                                >
+                                  <Copy className="w-3.5 h-3.5" />
+                                  <span>Copy</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleApplyRewrite(opt.text)}
+                                  className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
+                                  title="Apply directly to résumé"
+                                >
+                                  <Check className="w-3.5 h-3.5" />
+                                  <span>Apply</span>
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>
