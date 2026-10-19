@@ -108,6 +108,9 @@ test('static route render includes real page content for each indexable route', 
     ['/keywords', 'Top ATS Resume Keywords by Role'],
     ['/keywords/software-engineer', 'Top ATS Keywords for Software Engineers'],
     ['/keywords/product-manager', 'Essential ATS Keywords for Product Managers'],
+    ['/templates', 'Selected Students ATS Resume Templates'],
+    ['/builder', 'ATS Resume Studio'],
+    ['/checker', 'Resume Checker'],
     ['/keywords/unknown-slug', 'Page not found'],
     ['/unknown-route', 'Page not found']
   ];

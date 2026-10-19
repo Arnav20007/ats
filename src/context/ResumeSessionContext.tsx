@@ -24,8 +24,9 @@ interface ResumeSession {
 
 const ResumeSessionContext = createContext<ResumeSession | null>(null);
 
-export function ResumeSessionProvider({ children }: { children: React.ReactNode }) {
-  const [viewMode, setViewMode] = useState<'landing' | 'studio'>('landing');
+export function ResumeSessionProvider({ children, initialPath }: { children: React.ReactNode; initialPath?: string }) {
+  const isBuilder = initialPath === '/builder' || (typeof window !== 'undefined' && window.location.pathname === '/builder');
+  const [viewMode, setViewMode] = useState<'landing' | 'studio'>(isBuilder ? 'studio' : 'landing');
   const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
   const [activeStudioTab, setActiveStudioTab] = useState<StudioActiveTab>('deep_report');
   const [selectedTemplate, setSelectedTemplate] = useState<AtsTemplateId>('jakes');

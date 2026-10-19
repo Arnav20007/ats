@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { ResumeStudio } from './components/tools/ResumeStudio';
+import { TemplatesPage } from './pages/TemplatesPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { AboutPage } from './pages/AboutPage';
@@ -10,15 +11,18 @@ import { KeywordsPage } from './pages/KeywordsPage';
 import { ToastProvider } from './components/Toast';
 import { ShieldCheck } from 'lucide-react';
 import routeSeo from './data/routeSeo.json';
-import { ResumeSessionProvider, useResumeSession } from './context/ResumeSessionContext';
+import { ResumeSessionProvider, useResumeSession, type AtsTemplateId } from './context/ResumeSessionContext';
 import { SAMPLE_RESUMES } from './data/resumeSamples';
 import { ROLE_KEYWORD_PROFILES } from './data/roleKeywords';
 
-export type AppPage = 'home' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
+export type AppPage = 'home' | 'templates' | 'builder' | 'checker' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
 
 const getPageFromPath = (pathname: string): AppPage => {
   const path = pathname.toLowerCase().replace(/\/+$/, '') || '/';
   if (path === '/') return 'home';
+  if (path === '/templates' || path === '/resume-templates') return 'templates';
+  if (path === '/builder' || path === '/resume-builder') return 'builder';
+  if (path === '/checker' || path === '/resume-checker') return 'checker';
   if (path === '/privacy') return 'privacy';
   if (path === '/terms') return 'terms';
   if (path === '/about') return 'about';
@@ -61,7 +65,7 @@ const safeStorage = {
 interface AppProps { initialPath?: string }
 
 function AppContent({ initialPath }: AppProps) {
-  const { setResume, setViewMode, setStudioTab, setActiveStudioTab } = useResumeSession();
+  const { setResume, setViewMode, setStudioTab, setActiveStudioTab, setSelectedTemplate } = useResumeSession();
 
   // Match the static HTML on the first render, then apply the saved preference.
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -101,10 +105,23 @@ function AppContent({ initialPath }: AppProps) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Sync session viewMode with dedicated tool routes
+  useEffect(() => {
+    if (currentPage === 'builder') {
+      setViewMode('studio');
+      setStudioTab('document');
+    } else if (currentPage === 'checker' || currentPage === 'home') {
+      setViewMode('landing');
+    }
+  }, [currentPage]);
+
   // Dynamic SEO metadata per route
   useEffect(() => {
     let currentSeo = { title: routeSeo.home.title, desc: routeSeo.home.description, path: routeSeo.home.path };
     if (currentPage === 'home') currentSeo = { title: routeSeo.home.title, desc: routeSeo.home.description, path: routeSeo.home.path };
+    else if (currentPage === 'templates') currentSeo = { title: routeSeo.templates.title, desc: routeSeo.templates.description, path: routeSeo.templates.path };
+    else if (currentPage === 'builder') currentSeo = { title: routeSeo.builder.title, desc: routeSeo.builder.description, path: routeSeo.builder.path };
+    else if (currentPage === 'checker') currentSeo = { title: routeSeo.checker.title, desc: routeSeo.checker.description, path: routeSeo.checker.path };
     else if (currentPage === 'guide') currentSeo = { title: routeSeo.guide.title, desc: routeSeo.guide.description, path: routeSeo.guide.path };
     else if (currentPage === 'about') currentSeo = { title: routeSeo.about.title, desc: routeSeo.about.description, path: routeSeo.about.path };
     else if (currentPage === 'contact') currentSeo = { title: routeSeo.contact.title, desc: routeSeo.contact.description, path: routeSeo.contact.path };
@@ -236,11 +253,29 @@ function AppContent({ initialPath }: AppProps) {
       path = subpath ? `/keywords/${subpath}` : '/keywords';
       setCurrentRoleSlug(subpath || '');
     }
+    if (page === 'builder') {
+      setViewMode('studio');
+      setStudioTab('document');
+    }
+    if (page === 'checker' || page === 'home') {
+      setViewMode('landing');
+    }
     setCurrentPath(path);
     if (typeof window !== 'undefined') {
       window.history.pushState({}, '', path);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const handleSelectTemplateFromShowcase = (templateId: AtsTemplateId, loadSampleData?: boolean) => {
+    setSelectedTemplate(templateId);
+    if (loadSampleData) {
+      const sample = SAMPLE_RESUMES.software_engineer;
+      if (sample) setResume({ ...sample });
+    }
+    setViewMode('studio');
+    setStudioTab('document');
+    navigateTo('builder');
   };
 
   const handleSelectRoleTemplate = (templateKey: string) => {
@@ -269,6 +304,9 @@ function AppContent({ initialPath }: AppProps) {
         isDark={isDark}
         onToggleTheme={toggleTheme}
         onNavigateHome={() => navigateTo('home')}
+        onNavigateChecker={() => navigateTo('checker')}
+        onNavigateBuilder={() => navigateTo('builder')}
+        onNavigateTemplates={() => navigateTo('templates')}
         onNavigateGuide={() => navigateTo('guide')}
         onNavigateKeywords={() => navigateTo('keywords')}
       />
@@ -277,11 +315,50 @@ function AppContent({ initialPath }: AppProps) {
       <main className="flex-1 w-full">
         {currentPage === 'home' && (
           <ResumeStudio
+            forcedMode="landing"
             onOpenPrivacy={() => navigateTo('privacy')}
             onOpenTerms={() => navigateTo('terms')}
             onOpenGuide={() => navigateTo('guide')}
             onOpenAbout={() => navigateTo('about')}
             onOpenContact={() => navigateTo('contact')}
+            onOpenTemplates={() => navigateTo('templates')}
+            onNavigateBuilder={() => navigateTo('builder')}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {currentPage === 'builder' && (
+          <ResumeStudio
+            forcedMode="studio"
+            onOpenPrivacy={() => navigateTo('privacy')}
+            onOpenTerms={() => navigateTo('terms')}
+            onOpenGuide={() => navigateTo('guide')}
+            onOpenAbout={() => navigateTo('about')}
+            onOpenContact={() => navigateTo('contact')}
+            onOpenTemplates={() => navigateTo('templates')}
+            onNavigateBuilder={() => navigateTo('builder')}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {currentPage === 'checker' && (
+          <ResumeStudio
+            onOpenPrivacy={() => navigateTo('privacy')}
+            onOpenTerms={() => navigateTo('terms')}
+            onOpenGuide={() => navigateTo('guide')}
+            onOpenAbout={() => navigateTo('about')}
+            onOpenContact={() => navigateTo('contact')}
+            onOpenTemplates={() => navigateTo('templates')}
+            onNavigateBuilder={() => navigateTo('builder')}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {currentPage === 'templates' && (
+          <TemplatesPage
+            onNavigateHome={() => navigateTo('home')}
+            onSelectTemplate={handleSelectTemplateFromShowcase}
+            onNavigateBuilder={() => navigateTo('builder')}
           />
         )}
 
@@ -372,7 +449,9 @@ function AppContent({ initialPath }: AppProps) {
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: 'ATS Resume Checker', action: () => { setViewMode('studio'); setStudioTab('document'); navigateTo('home'); } },
+                  { label: 'ATS Resume Checker', action: () => navigateTo('checker') },
+                  { label: 'ATS Resume Builder', action: () => navigateTo('builder') },
+                  { label: 'Selected Students ATS Templates', action: () => navigateTo('templates') },
                   { label: 'Job Keyword Matcher', action: () => handleOpenStudioTab('keywords') },
                   { label: 'Role Keywords Checklist', action: () => navigateTo('keywords') },
                   { label: 'Google X-Y-Z Rewriter', action: () => handleOpenStudioTab('rewriter') },
@@ -498,7 +577,7 @@ function AppContent({ initialPath }: AppProps) {
 export default function App({ initialPath }: AppProps = {}) {
   return (
     <ToastProvider>
-      <ResumeSessionProvider>
+      <ResumeSessionProvider initialPath={initialPath}>
         <AppContent initialPath={initialPath} />
       </ResumeSessionProvider>
     </ToastProvider>

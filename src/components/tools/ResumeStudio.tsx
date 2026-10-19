@@ -70,6 +70,10 @@ interface ResumeStudioProps {
   onOpenGuide?: () => void;
   onOpenAbout?: () => void;
   onOpenContact?: () => void;
+  onOpenTemplates?: () => void;
+  onNavigateBuilder?: () => void;
+  onNavigateHome?: () => void;
+  forcedMode?: 'landing' | 'studio';
 }
 
 export const ResumeStudio: React.FC<ResumeStudioProps> = ({
@@ -79,6 +83,10 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   onOpenGuide,
   onOpenAbout,
   onOpenContact,
+  onOpenTemplates,
+  onNavigateBuilder,
+  onNavigateHome,
+  forcedMode,
 }) => {
   const { showToast } = useToast();
 
@@ -100,6 +108,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     setSelectedTemplate
   } = useResumeSession();
 
+  const effectiveViewMode = forcedMode || viewMode;
   const templateConfig = ATS_TEMPLATES[selectedTemplate] || ATS_TEMPLATES.jakes;
 
   // Scanning animation states
@@ -343,7 +352,11 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       setRewriterInput(s.experience[0]?.bullets[0] || '');
       setUploadedFileName('');
       setHasEdited(true);
-      setViewMode('studio');
+      if (onNavigateBuilder) {
+        onNavigateBuilder();
+      } else {
+        setViewMode('studio');
+      }
       showToast('Loaded a fictional sample profile. Replace its details before using it.', 'sparkle');
       if (onActionLogged) onActionLogged();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -411,16 +424,22 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
         setTimeout(() => {
           setIsScanning(false);
-          setViewMode('studio');
 
-          if (!cleanUploadedResume) return;
-          setResume(cleanUploadedResume);
-          const firstBullet = cleanUploadedResume.experience[0]?.bullets[0] ||
-            cleanUploadedResume.projects?.[0]?.bullets[0] ||
-            '';
-          setRewriterInput(firstBullet);
-          setHasEdited(true);
-          setStudioTab('document'); // Always land directly on Document Canvas!
+          if (cleanUploadedResume) {
+            setResume(cleanUploadedResume);
+            const firstBullet = cleanUploadedResume.experience[0]?.bullets[0] ||
+              cleanUploadedResume.projects?.[0]?.bullets[0] ||
+              '';
+            setRewriterInput(firstBullet);
+            setHasEdited(true);
+            setStudioTab('document'); // Always land directly on Document Canvas!
+          }
+
+          if (onNavigateBuilder) {
+            onNavigateBuilder();
+          } else {
+            setViewMode('studio');
+          }
 
           if (extracted.usedOcr) {
             showToast('OCR extracted text from this scan. Review names, dates, contact details, and metrics carefully.', 'warning');
@@ -1019,7 +1038,11 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     setHasEdited(true);
     setUploadedFileName('');
     setShowCreateModal(false);
-    setViewMode('studio');
+    if (onNavigateBuilder) {
+      onNavigateBuilder();
+    } else {
+      setViewMode('studio');
+    }
     showToast(templateKey === 'starter_clean'
       ? 'Blank résumé draft is ready.'
       : 'Loaded a fictional sample profile. Replace its details before using it.', 'sparkle');
@@ -1684,7 +1707,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       {/* ========================================================================= */}
       {/* MODE 1: MARKETING LANDING PAGE (ENHANCV VISUAL STANDARDS)                */}
       {/* ========================================================================= */}
-      {viewMode === 'landing' && (
+      {effectiveViewMode === 'landing' && (
         <div className="w-full space-y-0">
           
           {/* SECTION 1: HERO */}
@@ -2282,11 +2305,12 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       {/* ========================================================================= */}
       {/* MODE 2: DEDICATED LIVE ATS STUDIO (CENTERED, MINIMALIST, HIGH-IMPACT)     */}
       {/* ========================================================================= */}
-      {viewMode === 'studio' && (
+      {effectiveViewMode === 'studio' && (
         <div className={`w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-5 animate-in fade-in duration-300 ${
           isFocusMode ? 'fixed inset-0 z-50 bg-slate-950/95 overflow-y-auto max-w-full p-4 sm:p-8' : ''
         }`}>
-          
+          <h1 className="sr-only">ATS Resume Studio &amp; Builder</h1>
+
           {/* STUDIO TOP CONTROL BAR (CLEAN MINIMALIST 1PX BORDER) */}
           <header className="px-5 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 shadow-none">
             
@@ -2294,7 +2318,11 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
             <div className="flex items-center gap-3 min-w-0">
               <button
                 onClick={() => {
-                  setViewMode('landing');
+                  if (onNavigateHome) {
+                    onNavigateHome();
+                  } else {
+                    setViewMode('landing');
+                  }
                   setIsFocusMode(false);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
@@ -3704,7 +3732,11 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-none">
             <button
               onClick={() => {
-                setViewMode('landing');
+                if (onNavigateHome) {
+                  onNavigateHome();
+                } else {
+                  setViewMode('landing');
+                }
                 setIsFocusMode(false);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -3889,15 +3921,30 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     Changes visual layout, typography, and PDF export rules immediately without altering your text.
                   </p>
                 </div>
-                <span className="text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
-                  Active: {ATS_TEMPLATES[selectedTemplate]?.name.split(' ')[0]}
-                </span>
+                <div className="flex items-center gap-2">
+                  {onOpenTemplates && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowTemplateModal(false);
+                        onOpenTemplates();
+                      }}
+                      className="text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer"
+                    >
+                      Full Showcase →
+                    </button>
+                  )}
+                  <span className="text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
+                    Active: {ATS_TEMPLATES[selectedTemplate]?.name.split(' ')[0]}
+                  </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {(['jakes', 'harvard', 'modern', 'compact'] as AtsTemplateId[]).map((tid) => {
                   const t = ATS_TEMPLATES[tid];
                   const isSelected = selectedTemplate === tid;
+                  const isSerif = tid === 'harvard';
 
                   return (
                     <div
@@ -3915,12 +3962,57 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                         setSelectedTemplate(tid);
                         showToast(`Applied ${t.name}`, 'sparkle');
                       }}
-                      className={`p-3.5 rounded-lg border text-left transition-all cursor-pointer space-y-2 relative shadow-none ${
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer space-y-3 relative shadow-none ${
                         isSelected
                           ? 'border-emerald-600 bg-emerald-50/20 dark:bg-emerald-950/20 ring-1 ring-emerald-500/50'
                           : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700'
                       }`}
                     >
+                      {/* Visual Miniature A4 Wireframe Preview */}
+                      <div className="w-full h-20 bg-slate-50 dark:bg-zinc-950 rounded-lg border border-slate-200/90 dark:border-zinc-800 p-2 flex flex-col justify-between overflow-hidden shadow-2xs pointer-events-none select-none">
+                        <div className={`space-y-0.5 ${t.headerAlign === 'center' ? 'text-center' : 'text-left'}`}>
+                          <div
+                            style={{ fontFamily: t.fontFamily, color: t.headingColor }}
+                            className="text-[11px] font-black tracking-tight leading-tight"
+                          >
+                            {resume.fullName || 'ARNAV SINGH'}
+                          </div>
+                          <div className={`flex items-center gap-1 text-[7px] text-zinc-400 ${t.headerAlign === 'center' ? 'justify-center' : 'justify-start'}`}>
+                            <span>San Francisco, CA</span>
+                            <span>•</span>
+                            <span>arnav@example.com</span>
+                          </div>
+                        </div>
+
+                        {/* Divider Line Preview */}
+                        <div
+                          className="w-full my-0.5"
+                          style={{
+                            borderBottom: t.dividerStyle === 'double'
+                              ? `2px double ${t.accentColor}`
+                              : t.dividerStyle === 'subtle'
+                              ? `1.5px solid ${t.headingColor}`
+                              : t.dividerStyle === 'minimal'
+                              ? `1px dashed #94a3b8`
+                              : `1px solid ${t.headingColor}`
+                          }}
+                        />
+
+                        {/* Miniature Section Header & Bullets */}
+                        <div className="space-y-0.5">
+                          <div
+                            style={{ fontFamily: t.fontFamily, color: t.headingColor }}
+                            className="text-[8px] font-bold uppercase tracking-wider"
+                          >
+                            Experience
+                          </div>
+                          <div className="space-y-0.5">
+                            <div className="w-full h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+                            <div className="w-3/4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
                           {t.badge}
@@ -3934,16 +4026,21 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       </div>
 
                       <div>
-                        <h5 className="text-sm font-bold text-zinc-900 dark:text-white">
+                        <h5
+                          style={{ fontFamily: t.fontFamily }}
+                          className="text-sm font-bold text-zinc-900 dark:text-white"
+                        >
                           {t.name}
                         </h5>
-                        <p className="text-[11px] text-zinc-500 leading-relaxed mt-0.5">
-                          {t.tagline}
-                        </p>
+                        <div className="flex items-center gap-1 text-[10px] text-zinc-400 mt-0.5 font-medium">
+                          <span>{isSerif ? 'Serif (Merriweather)' : 'Sans-Serif (Plus Jakarta)'}</span>
+                          <span>•</span>
+                          <span className="capitalize">{t.headerAlign} Aligned</span>
+                        </div>
                       </div>
 
-                      <div className="pt-1 border-t border-zinc-100 dark:border-zinc-800/80 text-[10px] text-zinc-500">
-                        <strong className="text-zinc-700 dark:text-zinc-300">Recommended for:</strong> {t.recommendedFor}
+                      <div className="pt-1.5 border-t border-zinc-100 dark:border-zinc-800/80 text-[10px] text-zinc-500">
+                        <strong className="text-zinc-700 dark:text-zinc-300">Best for:</strong> {t.recommendedFor.split(',').slice(0, 2).join(', ')}
                       </div>
                     </div>
                   );

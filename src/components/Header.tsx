@@ -13,6 +13,9 @@ interface HeaderProps {
   onNavigateHome?: () => void;
   onNavigateGuide?: () => void;
   onNavigateKeywords?: () => void;
+  onNavigateTemplates?: () => void;
+  onNavigateBuilder?: () => void;
+  onNavigateChecker?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -21,6 +24,9 @@ export const Header: React.FC<HeaderProps> = ({
   onNavigateHome,
   onNavigateGuide,
   onNavigateKeywords,
+  onNavigateTemplates,
+  onNavigateBuilder,
+  onNavigateChecker,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md transition-colors">
@@ -49,19 +55,40 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Center: Top Nav Links & Trust Message */}
-        <div className="hidden md:flex items-center gap-4 text-xs">
-          <nav className="flex items-center gap-1 font-semibold">
+        <div className="hidden md:flex items-center gap-3 text-xs">
+          <nav className="flex items-center gap-0.5 font-semibold">
+            <button
+              type="button"
+              onClick={onNavigateChecker || onNavigateHome}
+              className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            >
+              Resume Checker
+            </button>
+            <button
+              type="button"
+              onClick={onNavigateBuilder || onNavigateHome}
+              className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            >
+              Resume Builder
+            </button>
+            <button
+              type="button"
+              onClick={onNavigateTemplates || onNavigateHome}
+              className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            >
+              ATS Templates
+            </button>
             <button
               type="button"
               onClick={onNavigateKeywords}
-              className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Role Keywords
             </button>
             <button
               type="button"
               onClick={onNavigateGuide}
-              className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               ATS Guide
             </button>

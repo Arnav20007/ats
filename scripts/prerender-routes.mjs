@@ -151,8 +151,8 @@ const makePage = (page, bodyMarkup, isNotFound = false) => {
   return html;
 };
 
-// Top-level informational pages
-for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords']) {
+// Top-level informational and tool pages
+for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords', 'templates', 'builder', 'checker']) {
   await writeFile(path.join(outputDir, `${key}.html`), makePage(seo[key], renderPage(seo[key].path)));
 }
 

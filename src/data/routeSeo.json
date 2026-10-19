@@ -5,6 +5,24 @@
     "path": "/",
     "heading": "Free ATS Resume Score Checker & Keyword Matcher"
   },
+  "templates": {
+    "title": "Selected Students ATS Resume Templates (FAANG & Ivy League) | ToolForge",
+    "description": "Authentic single-column ATS resume templates used by students selected at Google, Meta, Amazon, and Goldman Sachs. 100% free, parser-compliant, and printable.",
+    "path": "/templates",
+    "heading": "Selected Students ATS Resume Templates"
+  },
+  "builder": {
+    "title": "Free ATS Resume Builder & Editor (Single-Column Formats) | ToolForge",
+    "description": "Build and format single-column FAANG & Ivy League ATS resumes with live readiness scoring, 1-click action verb optimization, and instant PDF download.",
+    "path": "/builder",
+    "heading": "ATS Resume Studio & Builder"
+  },
+  "checker": {
+    "title": "Free ATS Resume Score Checker & Diagnostic Audit | ToolForge",
+    "description": "Free in-browser ATS resume checker and keyword matcher. Check your ATS score, calculate readiness, test Overleaf/PDF formats, and match skills 100% privately.",
+    "path": "/checker",
+    "heading": "Free ATS Resume Score Checker & Keyword Matcher"
+  },
   "guide": {
     "title": "ATS Resume Optimization Guide | ToolForge",
     "description": "Practical guidance on resume formatting, job-description terms, and clear achievement bullets. ToolForge provides heuristic feedback, not employer ATS results.",

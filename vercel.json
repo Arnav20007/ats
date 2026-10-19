@@ -1,6 +1,18 @@
 {
   "rewrites": [
     {
+      "source": "/templates",
+      "destination": "/templates.html"
+    },
+    {
+      "source": "/builder",
+      "destination": "/builder.html"
+    },
+    {
+      "source": "/checker",
+      "destination": "/checker.html"
+    },
+    {
       "source": "/guide",
       "destination": "/guide.html"
     },
