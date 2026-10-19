@@ -1551,74 +1551,74 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         <div className="w-full space-y-0">
           
           {/* SECTION 1: HERO */}
-          <section className="relative overflow-hidden pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f8fafc] via-[#f0fdf4]/50 to-[#f1f5f9] dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-b border-slate-200/80 dark:border-zinc-800">
-            <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-center py-10 lg:py-16 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-[#f8fafc] via-[#f0fdf4]/50 to-[#f1f5f9] dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-b border-slate-200/80 dark:border-zinc-800">
+            <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* LEFT COLUMN: Clean Headline & Direct Upload */}
-              <div className="lg:col-span-6 space-y-3 sm:space-y-3.5 text-left">
+              <div className="lg:col-span-6 space-y-5 sm:space-y-6 text-left">
                 
-                <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                   <span>FREE ATS RESUME SCORE CHECKER</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.14]">
+                <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
                   Free ATS Resume Score Checker. <br className="hidden sm:inline" />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
                     Check Score, Overleaf &amp; Keywords.
                   </span>
                 </h1>
 
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-normal font-normal max-w-xl">
+                <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
                   Check your ATS resume score, calculate readiness, test Overleaf/LaTeX/Word PDFs, and compare job keywords in seconds. 100% private in-browser.
                 </p>
 
-                {/* Clean Drag & Drop Upload Box */}
+                {/* Clean Drag & Drop Upload Box (Square, Well-Proportioned Shape) */}
                 <div
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`border-2 border-dashed rounded-2xl p-4 sm:p-5 text-center transition-all shadow-sm space-y-3 group ${
+                  className={`border-2 border-dashed rounded-3xl p-7 sm:p-9 text-center transition-all shadow-sm space-y-5 group ${
                     isDragging
                       ? 'border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 ring-4 ring-emerald-500/20'
                       : 'border-emerald-400/80 dark:border-emerald-600/60 bg-white/80 dark:bg-zinc-900/80 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/20'
                   }`}
                 >
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950/80 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform">
-                    <Upload className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+                  <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform">
+                    <Upload className="w-8 h-8" />
                   </div>
 
-                  <div className="space-y-1">
-                    <p className="text-base sm:text-lg font-bold text-slate-800 dark:text-zinc-100">
+                  <div className="space-y-1.5">
+                    <p className="text-lg sm:text-xl font-bold text-slate-800 dark:text-zinc-100">
                       {isDragging ? 'Drop your resume file to analyze' : 'Drop your resume here or browse files'}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
                       Supports PDF, DOCX, Overleaf &amp; LaTeX Exports (100% In-Browser Private)
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 w-full pt-0.5">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full pt-1">
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm sm:text-base font-bold transition-all shadow-md inline-flex items-center justify-center gap-2 focus:ring-2 focus:ring-emerald-500/20 active:scale-[0.99] cursor-pointer"
+                      className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-base font-bold transition-all shadow-md inline-flex items-center justify-center gap-2 focus:ring-2 focus:ring-emerald-500/20 active:scale-[0.99] cursor-pointer"
                     >
-                      <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <Upload className="w-5 h-5" />
                       <span>Upload Your Resume</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setShowCreateModal(true)}
-                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 rounded-xl border-2 border-emerald-600/80 dark:border-emerald-500/80 bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-sm sm:text-base font-bold transition-all shadow-xs inline-flex items-center justify-center gap-2 active:scale-[0.99] cursor-pointer"
+                      className="w-full sm:w-auto px-7 py-3.5 rounded-xl border-2 border-emerald-600/80 dark:border-emerald-500/80 bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-base font-bold transition-all shadow-xs inline-flex items-center justify-center gap-2 active:scale-[0.99] cursor-pointer"
                     >
-                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400" />
+                      <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       <span>Create Your Resume</span>
                     </button>
                   </div>
 
                   {/* Quick Sample Selector */}
-                  <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500 dark:text-zinc-400 font-medium pt-0.5">
+                  <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium pt-1">
                     <span>Or test with a sample profile:</span>
                     <button
                       type="button"
@@ -1650,7 +1650,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
               {/* RIGHT COLUMN: Visual Product ATS Preview */}
               <div className="lg:col-span-6 flex justify-center">
-                <div className="relative w-full max-w-md lg:max-w-xl group">
+                <div className="relative w-full max-w-xl lg:max-w-2xl group">
                   <div className="absolute -inset-1 rounded-[36px] bg-gradient-to-r from-emerald-500/15 to-teal-500/15 blur-xl opacity-80 group-hover:opacity-100 transition duration-500" />
                   <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-none transition-transform duration-300 hover:scale-[1.01]">
                     <picture className="block w-full">
