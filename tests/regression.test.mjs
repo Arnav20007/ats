@@ -470,5 +470,38 @@ test('real-world fresher resume properly separates education fields and terminat
   assert.equal(resume.summary, '', 'extracurricular bullets must never be dumped into summary');
 });
 
+test('index.html structured data contains valid JSON-LD without syntax or closing brace errors', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const path = await import('node:path');
+  const { fileURLToPath } = await import('node:url');
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const html = await readFile(path.join(root, 'index.html'), 'utf8');
 
+  const match = html.match(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
+  assert.ok(match, 'index.html should contain a structured data script tag');
+  const parsed = JSON.parse(match[1]);
+  assert.equal(parsed['@context'], 'https://schema.org');
+  assert.ok(Array.isArray(parsed['@graph']));
+  assert.equal(parsed['@graph'].length, 3);
+});
+
+test('selected students ATS templates configuration provides distinct layouts and typographies', async () => {
+  const { ATS_TEMPLATES } = await import('../src/data/atsTemplates.ts');
+  const templateIds = ['jakes', 'harvard', 'modern', 'compact'];
+
+  templateIds.forEach((id) => {
+    const t = ATS_TEMPLATES[id];
+    assert.ok(t, `Template ${id} must exist in ATS_TEMPLATES`);
+    assert.equal(t.id, id);
+    assert.ok(t.name && t.name.length > 0);
+    assert.ok(t.fontFamily && t.fontFamily.length > 0);
+    assert.ok(t.headingColor && t.headingColor.startsWith('#'));
+    assert.ok(['center', 'left'].includes(t.headerAlign));
+    assert.ok(['solid', 'subtle', 'double', 'minimal'].includes(t.dividerStyle));
+  });
+
+  assert.equal(ATS_TEMPLATES.harvard.fontFamily.includes('Merriweather'), true, 'Harvard must use elegant serif Merriweather');
+  assert.equal(ATS_TEMPLATES.jakes.headerAlign, 'center', "Jake's FAANG standard must be centered");
+  assert.equal(ATS_TEMPLATES.modern.headerAlign, 'left', 'Modern executive must be left-aligned');
+});
 

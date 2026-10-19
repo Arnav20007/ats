@@ -60,7 +60,8 @@ import { analyzeAtsKeywords, hasQuantifiableMetric } from '../../utils/atsKeywor
 import { generateDeepAuditReport, DeepAuditReport } from '../../utils/deepAuditAnalyzer';
 import { safelyOptimizeResume } from '../../utils/resumeOptimizer';
 import { calculateResumeReadiness } from '../../utils/resumeReadiness';
-import { useResumeSession } from '../../context/ResumeSessionContext';
+import { useResumeSession, type AtsTemplateId } from '../../context/ResumeSessionContext';
+import { ATS_TEMPLATES } from '../../data/atsTemplates';
 
 interface ResumeStudioProps {
   onActionLogged?: () => void;
@@ -94,8 +95,12 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     studioTab,
     setStudioTab,
     activeStudioTab: activeTab,
-    setActiveStudioTab: setActiveTab
+    setActiveStudioTab: setActiveTab,
+    selectedTemplate,
+    setSelectedTemplate
   } = useResumeSession();
+
+  const templateConfig = ATS_TEMPLATES[selectedTemplate] || ATS_TEMPLATES.jakes;
 
   // Scanning animation states
   const [isScanning, setIsScanning] = useState(false);
@@ -1177,9 +1182,15 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       .replace(/'/g, '&#039;');
   };
 
-  // Export PDF with standard @page margins and page-break guards
+  // Export PDF with standard @page margins, selected ATS template typography & divider rules
   const handleExportPdf = () => {
     const r = resume;
+    const t = templateConfig;
+    const isSerif = t.id === 'harvard';
+    const fontFamilyCss = isSerif
+      ? "'Merriweather', Georgia, 'Times New Roman', serif"
+      : "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
+
     const contactParts = [
       esc(r.email),
       esc(r.phone),
@@ -1192,74 +1203,169 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 <html>
 <head>
 <meta charset="utf-8" />
-<title>${esc(r.fullName)} — Resume</title>
+<title>${esc(r.fullName)} — Resume (${esc(t.name)})</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   @page {
     size: letter portrait;
-    margin: 12mm 15mm;
+    margin: ${t.density === 'compact' ? '8mm 12mm' : '12mm 15mm'};
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    font-size: 9.5pt;
+    font-family: ${fontFamilyCss};
+    font-size: ${t.density === 'compact' ? '9pt' : '9.5pt'};
     color: #18181b;
-    line-height: 1.5;
+    line-height: ${t.density === 'compact' ? '1.38' : '1.48'};
     padding: 0;
     max-width: 100%;
     margin: 0 auto;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  h1 { font-size: 20pt; font-weight: 800; color: #09090b; letter-spacing: -0.03em; margin-bottom: 2pt; }
-  .title { font-size: 11pt; font-weight: 700; color: #059669; margin-bottom: 5pt; }
-  .contact { font-size: 8.5pt; color: #52525b; margin-bottom: 12pt; padding-bottom: 6pt; border-bottom: 1pt solid #e4e4e7; }
-  .section { margin-top: 12pt; }
-  .section-heading { font-size: 8pt; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #059669; border-bottom: 1.5pt solid #059669; padding-bottom: 2pt; margin-bottom: 7pt; }
-  .summary { font-size: 9pt; color: #27272a; line-height: 1.55; }
-  .skills { font-size: 9pt; color: #27272a; line-height: 1.6; }
-  .exp-block { margin-bottom: 10pt; page-break-inside: avoid; }
-  .exp-header { display: flex; justify-content: space-between; align-items: baseline; }
-  .exp-role { font-size: 10pt; font-weight: 700; color: #09090b; }
-  .exp-dates { font-size: 8.5pt; font-weight: 600; color: #71717a; font-family: 'JetBrains Mono', monospace; }
-  .exp-company { font-size: 9pt; font-weight: 600; color: #3f3f46; margin-top: 1pt; margin-bottom: 3pt; }
-  .exp-tech { font-size: 8.5pt; color: #52525b; font-style: italic; margin-bottom: 3pt; }
-  ul { margin-top: 3pt; padding-left: 13pt; }
-  li { margin-bottom: 3pt; font-size: 9pt; color: #27272a; line-height: 1.45; }
-  .edu-block { display: flex; justify-content: space-between; margin-bottom: 5pt; page-break-inside: avoid; }
-  .edu-degree { font-weight: 700; font-size: 9.5pt; color: #09090b; }
-  .edu-school { font-size: 9pt; color: #3f3f46; }
-  .edu-year { font-size: 8.5pt; font-weight: 600; color: #71717a; font-family: 'JetBrains Mono', monospace; }
+  .header {
+    text-align: ${t.headerAlign};
+    margin-bottom: ${t.density === 'compact' ? '8pt' : '11pt'};
+  }
+  h1 {
+    font-size: ${t.density === 'compact' ? '18pt' : '21pt'};
+    font-weight: 800;
+    color: #09090b;
+    letter-spacing: ${isSerif ? 'normal' : '-0.03em'};
+    margin-bottom: 2pt;
+    text-transform: ${t.id === 'harvard' ? 'uppercase' : 'none'};
+  }
+  .title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: ${t.headingColor};
+    margin-bottom: 4pt;
+  }
+  .contact {
+    font-size: 8.5pt;
+    color: #3f3f46;
+    margin-bottom: ${t.density === 'compact' ? '6pt' : '8pt'};
+  }
+  .section {
+    margin-top: ${t.density === 'compact' ? '8pt' : '11pt'};
+  }
+  .section-heading {
+    font-size: 8.5pt;
+    font-weight: 800;
+    text-transform: ${t.sectionTransform === 'uppercase' ? 'uppercase' : 'none'};
+    letter-spacing: 0.08em;
+    color: ${t.headingColor};
+    border-bottom: ${t.dividerStyle === 'subtle' ? '1.5pt solid ' + t.headingColor : '1pt solid ' + t.headingColor};
+    padding-bottom: 2pt;
+    margin-bottom: ${t.density === 'compact' ? '5pt' : '7pt'};
+  }
+  .summary {
+    font-size: 9pt;
+    color: #27272a;
+    line-height: 1.5;
+  }
+  .skills {
+    font-size: 9pt;
+    color: #27272a;
+    line-height: 1.55;
+  }
+  .item-block {
+    margin-bottom: ${t.density === 'compact' ? '6pt' : '9pt'};
+    page-break-inside: avoid;
+  }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .item-role {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #09090b;
+  }
+  .item-dates {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #52525b;
+    font-family: ${isSerif ? fontFamilyCss : "'JetBrains Mono', monospace"};
+  }
+  .item-sub {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #3f3f46;
+    margin-top: 1pt;
+    margin-bottom: 2pt;
+  }
+  .item-tech {
+    font-size: 8.5pt;
+    color: #52525b;
+    font-style: italic;
+    margin-bottom: 2pt;
+  }
+  ul {
+    margin-top: 2pt;
+    padding-left: 13pt;
+  }
+  li {
+    margin-bottom: 2.5pt;
+    font-size: 9pt;
+    color: #27272a;
+    line-height: 1.42;
+  }
+  .edu-block {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5pt;
+    page-break-inside: avoid;
+  }
+  .edu-degree {
+    font-weight: 700;
+    font-size: 9.5pt;
+    color: #09090b;
+  }
+  .edu-school {
+    font-size: 8.5pt;
+    color: #3f3f46;
+  }
+  .edu-year {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #52525b;
+    font-family: ${isSerif ? fontFamilyCss : "'JetBrains Mono', monospace"};
+  }
 </style>
 </head>
 <body>
-  <h1>${esc(r.fullName)}</h1>
-  <div class="title">${esc(r.jobTitle)}</div>
-  <div class="contact">${contactParts}</div>
+  <div class="header">
+    <h1>${esc(r.fullName)}</h1>
+    ${r.jobTitle ? `<div class="title">${esc(r.jobTitle)}</div>` : ''}
+    <div class="contact">${contactParts}</div>
+  </div>
 
+  ${r.summary ? `
   <div class="section">
     <div class="section-heading">Professional Summary</div>
     <div class="summary">${esc(r.summary)}</div>
-  </div>
+  </div>` : ''}
 
+  ${r.skills && r.skills.length > 0 ? `
   <div class="section">
     <div class="section-heading">Technical Skills & Competencies</div>
     <div class="skills">${r.skills.map(s => esc(s)).join(' · ')}</div>
-  </div>
+  </div>` : ''}
 
   ${r.projects && r.projects.length > 0 ? `
   <div class="section">
     <div class="section-heading">Key Technical Projects</div>
     ${r.projects.map(proj => `
-    <div class="exp-block">
-      <div class="exp-header">
-        <span class="exp-role">${esc(proj.name)}${proj.role ? ' — ' + esc(proj.role) : ''}</span>
-        <span class="exp-dates">${proj.startDate ? `${esc(proj.startDate)} – ${esc(proj.endDate || 'Present')}` : ''}</span>
+    <div class="item-block">
+      <div class="item-header">
+        <span class="item-role">${esc(proj.name)}${proj.role ? ' — ' + esc(proj.role) : ''}</span>
+        <span class="item-dates">${proj.startDate ? `${esc(proj.startDate)} – ${esc(proj.endDate || 'Present')}` : ''}</span>
       </div>
-      ${proj.technologies ? `<div class="exp-tech">Stack: ${esc(proj.technologies)}</div>` : ''}
-      ${proj.link ? `<div class="exp-company">${esc(proj.link)}</div>` : ''}
+      ${proj.technologies ? `<div class="item-tech">Stack: ${esc(proj.technologies)}</div>` : ''}
+      ${proj.link ? `<div class="item-sub">${esc(proj.link)}</div>` : ''}
       <ul>${proj.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
     </div>`).join('')}
   </div>` : ''}
@@ -1268,16 +1374,17 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   <div class="section">
     <div class="section-heading">Work Experience</div>
     ${r.experience.map(exp => `
-    <div class="exp-block">
-      <div class="exp-header">
-        <span class="exp-role">${esc(exp.role)}</span>
-        <span class="exp-dates">${esc(exp.startDate)} – ${esc(exp.endDate)}</span>
+    <div class="item-block">
+      <div class="item-header">
+        <span class="item-role">${esc(exp.role)}</span>
+        <span class="item-dates">${esc(exp.startDate)} – ${esc(exp.endDate)}</span>
       </div>
-      <div class="exp-company">${esc(exp.company)} · ${esc(exp.location)}</div>
+      <div class="item-sub">${esc(exp.company)} · ${esc(exp.location)}</div>
       <ul>${exp.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
     </div>`).join('')}
   </div>` : ''}
 
+  ${r.education && r.education.length > 0 ? `
   <div class="section">
     <div class="section-heading">Education</div>
     ${r.education.map(edu => `
@@ -1288,7 +1395,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       </div>
       <div class="edu-year">${esc(edu.year)}</div>
     </div>`).join('')}
-  </div>
+  </div>` : ''}
 </body>
 </html>`;
 
@@ -1298,7 +1405,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     win.document.close();
     win.focus();
     setTimeout(() => { win.print(); }, 600);
-    showToast('Opening clean PDF — save as PDF in print dialog', 'success');
+    showToast(`Opening clean PDF in ${t.name} format — save as PDF in print dialog`, 'success');
     if (onActionLogged) onActionLogged();
   };
 
@@ -2907,7 +3014,34 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0 ml-auto">
+                  <div className="flex flex-wrap items-center gap-2 shrink-0 ml-auto">
+                    {/* ATS Template Fast Switcher */}
+                    <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                      <span className="text-[10px] font-bold text-zinc-500 uppercase px-1.5 hidden xl:inline">Template:</span>
+                      {(['jakes', 'harvard', 'modern', 'compact'] as AtsTemplateId[]).map((tid) => {
+                        const t = ATS_TEMPLATES[tid];
+                        const isSelected = selectedTemplate === tid;
+                        return (
+                          <button
+                            key={tid}
+                            type="button"
+                            onClick={() => {
+                              setSelectedTemplate(tid);
+                              showToast(`Switched to ${t.name}`, 'sparkle');
+                            }}
+                            className={`px-2 py-1 rounded text-xs font-semibold transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-xs font-bold border border-zinc-200/80 dark:border-zinc-700'
+                                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                            }`}
+                            title={`${t.name} — ${t.tagline}`}
+                          >
+                            {t.name.split(' ')[0]}
+                          </button>
+                        );
+                      })}
+                    </div>
+
                     {/* Zoom Controls */}
                     <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
                       <button
@@ -2947,595 +3081,605 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   </div>
                 </div>
 
-                {/* Paper Sheet with Transform Zoom */}
-                <div className="overflow-x-auto pb-4">
+                {/* Studio Desk & Physical White Paper Sheet */}
+                <div className="w-full py-8 px-2 sm:px-6 bg-zinc-200/60 dark:bg-zinc-900/80 rounded-2xl flex justify-center items-start overflow-x-auto min-h-[900px] border border-zinc-300/60 dark:border-zinc-800/80">
                   <div
                     style={{
                       transform: `scale(${zoomLevel / 100})`,
                       transformOrigin: 'top center',
-                      transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+                      transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                      fontFamily: templateConfig.fontFamily
                     }}
-                    className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-8 sm:p-12 shadow-none space-y-7 text-zinc-900 dark:text-zinc-100 max-w-[860px] mx-auto"
+                    className={`w-full max-w-[800px] min-h-[1050px] bg-white text-zinc-900 shadow-2xl p-8 sm:p-14 border border-zinc-300/80 rounded-xs ${
+                      templateConfig.density === 'compact' ? 'space-y-4' : 'space-y-6'
+                    } mx-auto transition-all`}
                   >
               
-              {/* DOCUMENT HEADER */}
-              <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5 space-y-3">
-
-                <div className="space-y-1">
-                  <input
-                    type="text"
-                    value={resume.fullName}
-                    onChange={(e) => {
-                      setResume({ ...resume, fullName: e.target.value });
-                      setHasEdited(true);
-                    }}
-                    className="w-full text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-colors tracking-tight"
-                    placeholder="Your Full Name"
-                  />
-                  
-                  <input
-                    type="text"
-                    value={resume.jobTitle}
-                    onChange={(e) => {
-                      setResume({ ...resume, jobTitle: e.target.value });
-                      setHasEdited(true);
-                    }}
-                    className="w-full text-base sm:text-lg font-bold text-emerald-700 dark:text-emerald-400 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-colors"
-                    placeholder="Target Professional Title"
-                  />
-                </div>
-                
-                {/* Contact Line */}
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-xs sm:text-sm text-slate-600 dark:text-zinc-400">
-                  <div className="flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-slate-400" />
-                    <input
-                      type="email"
-                      value={resume.email}
-                      onChange={(e) => {
-                        setResume({ ...resume, email: e.target.value });
-                        setHasEdited(true);
-                      }}
-                      className="bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-colors"
-                      placeholder="email@example.com"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-slate-400" />
-                    <input
-                      type="text"
-                      value={resume.phone}
-                      onChange={(e) => {
-                        setResume({ ...resume, phone: e.target.value });
-                        setHasEdited(true);
-                      }}
-                      className="bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-colors"
-                      placeholder="+1 (555) 000-0000"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                    <input
-                      type="text"
-                      value={resume.location}
-                      onChange={(e) => {
-                        setResume({ ...resume, location: e.target.value });
-                        setHasEdited(true);
-                      }}
-                      className="bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-colors"
-                      placeholder="City, State"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-1.5">
-                    <Linkedin className="w-3.5 h-3.5 text-slate-400" />
-                    <input
-                      type="text"
-                      value={resume.linkedin}
-                      onChange={(e) => {
-                        setResume({ ...resume, linkedin: e.target.value });
-                        setHasEdited(true);
-                      }}
-                      className="bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-colors"
-                      placeholder="linkedin.com/in/profile"
-                    />
-                  </div>
-                </div>
-
-              </div>
-
-              {/* SECTION: SUMMARY */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 dark:border-zinc-800">
-                  <h3 className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                    Professional Summary
-                  </h3>
-                  <span className="text-[11px] text-slate-400 font-medium">Editable</span>
-                </div>
-                <textarea
-                  ref={summaryRef}
-                  value={resume.summary}
-                  onChange={(e) => {
-                    setResume({ ...resume, summary: e.target.value });
-                    setHasEdited(true);
-                    autoResize(e.target);
-                  }}
-                  className="w-full text-sm sm:text-base text-slate-700 dark:text-zinc-300 leading-relaxed bg-transparent border border-transparent hover:border-slate-200 dark:hover:border-zinc-800 focus:border-emerald-500 focus:bg-slate-50 dark:focus:bg-zinc-900 rounded-lg p-2 focus:outline-none transition-all resize-none overflow-hidden"
-                />
-              </div>
-
-              {/* SECTION: SKILLS */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 dark:border-zinc-800">
-                  <h3 className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                    Skills & Competencies
-                  </h3>
-                  <span className="text-[11px] text-slate-400 font-medium">
-                    {resume.skills.length} skills listed
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {resume.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700 transition-all"
+                    {/* DOCUMENT HEADER */}
+                    <div
+                      className={`pb-3 border-b ${
+                        templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                      }`}
+                      style={{ borderColor: templateConfig.dividerStyle === 'subtle' ? templateConfig.headingColor : '#e4e4e7' }}
                     >
-                      <span>{skill}</span>
-                      <button
-                        onClick={() => handleRemoveSkill(skill)}
-                        className="text-slate-400 hover:text-rose-600 transition-colors"
-                        title="Remove skill"
+                      <div className="space-y-0.5">
+                        <input
+                          type="text"
+                          value={resume.fullName}
+                          onChange={(e) => {
+                            setResume({ ...resume, fullName: e.target.value });
+                            setHasEdited(true);
+                          }}
+                          className={`w-full text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors ${
+                            templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                          } ${templateConfig.id === 'harvard' ? 'uppercase font-serif' : ''}`}
+                          placeholder="Your Full Name"
+                        />
+                        
+                        <input
+                          type="text"
+                          value={resume.jobTitle}
+                          onChange={(e) => {
+                            setResume({ ...resume, jobTitle: e.target.value });
+                            setHasEdited(true);
+                          }}
+                          style={{ color: templateConfig.id === 'modern' ? '#059669' : '#52525b' }}
+                          className={`w-full text-xs sm:text-sm font-bold bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors ${
+                            templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                          }`}
+                          placeholder="Target Professional Title"
+                        />
+                      </div>
+                      
+                      {/* Clean Typographic Single-Line Contact Row */}
+                      <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 pt-2 text-xs text-zinc-600 ${
+                        templateConfig.headerAlign === 'center' ? 'justify-center' : 'justify-start'
+                      }`}>
+                        <input
+                          type="email"
+                          value={resume.email}
+                          onChange={(e) => {
+                            setResume({ ...resume, email: e.target.value });
+                            setHasEdited(true);
+                          }}
+                          className={`bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none text-xs text-zinc-700 min-w-[140px] ${
+                            templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                          }`}
+                          placeholder="email@example.com"
+                        />
+                        <span className="text-zinc-400 select-none">•</span>
+                        <input
+                          type="text"
+                          value={resume.phone}
+                          onChange={(e) => {
+                            setResume({ ...resume, phone: e.target.value });
+                            setHasEdited(true);
+                          }}
+                          className={`bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none text-xs text-zinc-700 w-28 ${
+                            templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                          }`}
+                          placeholder="(555) 000-0000"
+                        />
+                        <span className="text-zinc-400 select-none">•</span>
+                        <input
+                          type="text"
+                          value={resume.location}
+                          onChange={(e) => {
+                            setResume({ ...resume, location: e.target.value });
+                            setHasEdited(true);
+                          }}
+                          className={`bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none text-xs text-zinc-700 min-w-[90px] ${
+                            templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                          }`}
+                          placeholder="City, State"
+                        />
+                        <span className="text-zinc-400 select-none">•</span>
+                        <input
+                          type="text"
+                          value={resume.linkedin}
+                          onChange={(e) => {
+                            setResume({ ...resume, linkedin: e.target.value });
+                            setHasEdited(true);
+                          }}
+                          className={`bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none text-xs text-zinc-700 min-w-[130px] ${
+                            templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                          }`}
+                          placeholder="linkedin.com/in/profile"
+                        />
+                        {resume.portfolio && (
+                          <>
+                            <span className="text-zinc-400 select-none">•</span>
+                            <input
+                              type="text"
+                              value={resume.portfolio}
+                              onChange={(e) => {
+                                setResume({ ...resume, portfolio: e.target.value });
+                                setHasEdited(true);
+                              }}
+                              className={`bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none text-xs text-zinc-700 min-w-[110px] ${
+                                templateConfig.headerAlign === 'center' ? 'text-center' : 'text-left'
+                              }`}
+                              placeholder="portfolio.com"
+                            />
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* SECTION: SUMMARY */}
+                    <div className="space-y-1.5">
+                      <div
+                        className={`pb-0.5 ${templateConfig.dividerStyle === 'subtle' ? 'border-b-2' : 'border-b'}`}
+                        style={{ borderColor: templateConfig.headingColor }}
                       >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                        <h3
+                          style={{ color: templateConfig.headingColor }}
+                          className={`text-xs sm:text-sm font-bold tracking-wider ${
+                            templateConfig.sectionTransform === 'uppercase' ? 'uppercase' : ''
+                          }`}
+                        >
+                          Professional Summary
+                        </h3>
+                      </div>
+                      <textarea
+                        ref={summaryRef}
+                        value={resume.summary}
+                        onChange={(e) => {
+                          setResume({ ...resume, summary: e.target.value });
+                          setHasEdited(true);
+                          autoResize(e.target);
+                        }}
+                        rows={2}
+                        className="w-full text-xs sm:text-sm text-zinc-800 leading-relaxed bg-transparent border-0 hover:bg-zinc-50/70 focus:bg-zinc-50 rounded p-1 focus:outline-none transition-all resize-none overflow-hidden"
+                        placeholder="Concise summary highlighting core engineering qualifications..."
+                      />
+                    </div>
 
-                {/* Inline Add Skill */}
-                <form onSubmit={handleAddNewSkill} className="flex gap-2 pt-1 max-w-md">
-                  <input
-                    type="text"
-                    value={newSkillInput}
-                    onChange={(e) => setNewSkillInput(e.target.value)}
-                    placeholder="Add a skill (e.g. System Architecture, Redis, AWS)..."
-                    className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors flex-1"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors flex items-center gap-1 shrink-0"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Add</span>
-                  </button>
-                </form>
-              </div>
+                    {/* SECTION: SKILLS */}
+                    <div className="space-y-1.5">
+                      <div
+                        className={`flex items-center justify-between pb-0.5 ${templateConfig.dividerStyle === 'subtle' ? 'border-b-2' : 'border-b'}`}
+                        style={{ borderColor: templateConfig.headingColor }}
+                      >
+                        <h3
+                          style={{ color: templateConfig.headingColor }}
+                          className={`text-xs sm:text-sm font-bold tracking-wider ${
+                            templateConfig.sectionTransform === 'uppercase' ? 'uppercase' : ''
+                          }`}
+                        >
+                          Technical Skills & Competencies
+                        </h3>
+                      </div>
 
-              {/* SECTION: TECHNICAL PROJECTS */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 dark:border-zinc-800">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                      Technical Projects
-                    </h3>
-                    <span className="text-[11px] text-slate-400 font-medium">
-                      ({(resume.projects || []).length} {(resume.projects || []).length === 1 ? 'project' : 'projects'})
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleAddProject}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add Project</span>
-                  </button>
-                </div>
-
-                {(!resume.projects || resume.projects.length === 0) ? (
-                  <div className="p-4 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center space-y-2">
-                    <p className="text-xs text-zinc-500">No projects added yet. Adding 2–3 technical projects showcases hands-on engineering capability.</p>
-                    <button
-                      type="button"
-                      onClick={handleAddProject}
-                      className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all inline-flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add Technical Project</span>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-8">
-                    {resume.projects.map((proj, projIdx) => (
-                      <div key={proj.id} className="space-y-3 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-zinc-800/80 bg-slate-50/30 dark:bg-zinc-900/30">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-1">
-                          <div className="flex-1 space-y-1">
-                            <div className="flex items-center justify-between gap-2">
-                              <input
-                                type="text"
-                                value={proj.name}
-                                onChange={(e) => handleUpdateProject(projIdx, 'name', e.target.value)}
-                                className="w-full text-base sm:text-lg font-bold text-slate-900 dark:text-white bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none"
-                                placeholder="Project Name (e.g. MoodMate, PDFlex)"
-                              />
+                      <div className="pt-0.5 text-xs sm:text-sm text-zinc-800 leading-relaxed">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          {resume.skills.map((skill, idx) => (
+                            <span key={idx} className="group/sk inline-flex items-center text-zinc-800">
+                              <span className="font-medium">{skill}</span>
+                              {idx < resume.skills.length - 1 && <span className="text-zinc-400 select-none ml-2">•</span>}
                               <button
                                 type="button"
-                                onClick={() => handleDeleteProject(projIdx)}
-                                className="p-1 rounded text-slate-400 hover:text-rose-600 transition-colors"
-                                title="Delete this project"
+                                onClick={() => handleRemoveSkill(skill)}
+                                className="opacity-0 group-hover/sk:opacity-100 text-zinc-400 hover:text-rose-600 text-xs ml-1 cursor-pointer transition-opacity"
+                                title="Remove skill"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                ×
                               </button>
-                            </div>
-                            <div className="flex flex-wrap items-center gap-2 text-sm">
-                              <input
-                                type="text"
-                                value={proj.role || ''}
-                                onChange={(e) => handleUpdateProject(projIdx, 'role', e.target.value)}
-                                className="font-semibold text-emerald-700 dark:text-emerald-400 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none"
-                                placeholder="Your Role (e.g. Lead Developer)"
-                              />
-                              <span className="text-slate-400 font-normal">·</span>
-                              <input
-                                type="text"
-                                value={proj.technologies || ''}
-                                onChange={(e) => handleUpdateProject(projIdx, 'technologies', e.target.value)}
-                                className="text-slate-500 dark:text-zinc-400 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none flex-1 min-w-[180px]"
-                                placeholder="Technologies (e.g. React, Flask, SQLite, Render)"
-                              />
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1 shrink-0 text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
-                            <input
-                              type="text"
-                              value={proj.startDate || ''}
-                              onChange={(e) => handleUpdateProject(projIdx, 'startDate', e.target.value)}
-                              className="w-20 text-right bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none font-medium tabular-nums"
-                              placeholder="2025"
-                            />
-                            <span>–</span>
-                            <input
-                              type="text"
-                              value={proj.endDate || ''}
-                              onChange={(e) => handleUpdateProject(projIdx, 'endDate', e.target.value)}
-                              className="w-20 text-left bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none font-medium tabular-nums"
-                              placeholder="Present"
-                            />
-                          </div>
+                            </span>
+                          ))}
                         </div>
 
-                        {/* Bullets with In-Place Edit, Hover Improve Action & Metric Tags */}
-                        <ul className="space-y-2.5 pt-1">
-                          {proj.bullets.map((bullet, bulletIdx) => {
-                            const isSelected =
-                              selectedBulletIndex.section === 'project' &&
-                              selectedBulletIndex.itemIdx === projIdx &&
-                              selectedBulletIndex.bulletIdx === bulletIdx;
-                            const hasMetric = hasQuantifiableMetric(bullet);
+                        {/* Inline subtle Add Skill */}
+                        <form onSubmit={handleAddNewSkill} className="flex gap-2 pt-2 max-w-sm">
+                          <input
+                            type="text"
+                            value={newSkillInput}
+                            onChange={(e) => setNewSkillInput(e.target.value)}
+                            placeholder="+ Add skill (e.g. Docker, TypeScript)..."
+                            className="px-2 py-0.5 rounded text-xs border-b border-zinc-200 hover:border-zinc-400 focus:border-zinc-800 bg-transparent text-zinc-900 focus:outline-none flex-1 transition-colors"
+                          />
+                        </form>
+                      </div>
+                    </div>
 
-                            return (
-                              <li
-                                key={bulletIdx}
-                                className={`p-3 rounded-xl transition-all flex items-start justify-between gap-3 group ${
-                                  isSelected
-                                    ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700'
-                                    : 'hover:bg-slate-50 dark:hover:bg-zinc-900 border border-transparent'
-                                }`}
-                              >
-                                <div className="flex-1 space-y-1.5">
-                                  <div className="flex items-start gap-2">
-                                    <span className="text-slate-400 font-bold select-none mt-0.5">•</span>
-                                    <textarea
-                                      value={bullet}
-                                      rows={2}
-                                      onChange={(e) => handleUpdateProjectBullet(projIdx, bulletIdx, e.target.value)}
-                                      className="w-full text-sm sm:text-base text-slate-700 dark:text-zinc-300 leading-relaxed bg-transparent border-0 focus:outline-none resize-none p-0 focus:ring-0"
-                                      placeholder="Describe your project achievement using Google X-Y-Z formula..."
-                                    />
-                                  </div>
-                                  <div className="flex items-center gap-2 pl-4">
-                                    {hasMetric ? (
-                                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60 font-mono">
-                                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                                        <span>Google X-Y-Z Quantified</span>
-                                      </span>
-                                    ) : (
-                                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800/60 font-mono">
-                                        <AlertCircle className="w-3 h-3 text-amber-600" />
-                                        <span>Lacks Metric · Click Improve</span>
-                                      </span>
-                                    )}
-                                  </div>
+                    {/* SECTION: TECHNICAL PROJECTS */}
+                    <div className="space-y-3">
+                      <div
+                        className={`flex items-center justify-between pb-0.5 ${templateConfig.dividerStyle === 'subtle' ? 'border-b-2' : 'border-b'}`}
+                        style={{ borderColor: templateConfig.headingColor }}
+                      >
+                        <h3
+                          style={{ color: templateConfig.headingColor }}
+                          className={`text-xs sm:text-sm font-bold tracking-wider ${
+                            templateConfig.sectionTransform === 'uppercase' ? 'uppercase' : ''
+                          }`}
+                        >
+                          Technical Projects
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={handleAddProject}
+                          className="text-[11px] font-bold text-zinc-500 hover:text-emerald-700 flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Add Project</span>
+                        </button>
+                      </div>
+
+                      {(!resume.projects || resume.projects.length === 0) ? (
+                        <div className="py-2 text-center">
+                          <button
+                            type="button"
+                            onClick={handleAddProject}
+                            className="text-xs text-zinc-500 hover:text-emerald-600 font-semibold cursor-pointer"
+                          >
+                            + Add technical projects to showcase engineering impact
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {resume.projects.map((proj, projIdx) => (
+                            <div key={proj.id} className="space-y-0.5 group/item">
+                              {/* Header Row: Title on Left, Dates on Right */}
+                              <div className="flex items-baseline justify-between gap-2">
+                                <div className="flex-1 flex flex-wrap items-baseline gap-2">
+                                  <input
+                                    type="text"
+                                    value={proj.name}
+                                    onChange={(e) => handleUpdateProject(projIdx, 'name', e.target.value)}
+                                    className="font-bold text-xs sm:text-sm text-zinc-900 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                                    placeholder="Project Name"
+                                  />
+                                  {proj.role && (
+                                    <span className="text-xs text-zinc-500 italic">| {proj.role}</span>
+                                  )}
                                 </div>
-                                <div className="flex items-center gap-1.5 shrink-0">
+                                <div className="flex items-center gap-1 shrink-0 text-xs text-zinc-600 font-medium tabular-nums">
+                                  <input
+                                    type="text"
+                                    value={proj.startDate || ''}
+                                    onChange={(e) => handleUpdateProject(projIdx, 'startDate', e.target.value)}
+                                    className="w-16 text-right bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none font-medium tabular-nums text-xs"
+                                    placeholder="2024"
+                                  />
+                                  <span>–</span>
+                                  <input
+                                    type="text"
+                                    value={proj.endDate || ''}
+                                    onChange={(e) => handleUpdateProject(projIdx, 'endDate', e.target.value)}
+                                    className="w-16 text-left bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none font-medium tabular-nums text-xs"
+                                    placeholder="Present"
+                                  />
                                   <button
                                     type="button"
-                                    onClick={() => handleSelectProjectBulletForRewrite(projIdx, bulletIdx, bullet)}
-                                    className="opacity-0 group-hover:opacity-100 px-3 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-600 hover:text-white text-emerald-800 dark:text-emerald-300 text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
-                                    title="Improve with Google X-Y-Z formula"
+                                    onClick={() => handleDeleteProject(projIdx)}
+                                    className="opacity-0 group-hover/item:opacity-100 p-0.5 text-zinc-400 hover:text-rose-600 transition-opacity ml-1 cursor-pointer"
+                                    title="Delete project"
                                   >
-                                    <Sparkles className="w-3.5 h-3.5 text-emerald-600 group-hover:text-white transition-colors" />
-                                    <span>Improve</span>
+                                    <Trash2 className="w-3.5 h-3.5" />
                                   </button>
-                                  {proj.bullets.length > 1 && (
+                                </div>
+                              </div>
+
+                              {/* Subheader: Tech Stack */}
+                              {proj.technologies && (
+                                <div className="text-xs text-zinc-600 italic">
+                                  <input
+                                    type="text"
+                                    value={proj.technologies}
+                                    onChange={(e) => handleUpdateProject(projIdx, 'technologies', e.target.value)}
+                                    className="w-full bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none text-xs text-zinc-600 italic"
+                                    placeholder="Stack: React, TypeScript, Python..."
+                                  />
+                                </div>
+                              )}
+
+                              {/* Clean Bullet Points */}
+                              <ul className="space-y-1 pt-0.5 pl-3">
+                                {proj.bullets.map((bullet, bulletIdx) => {
+                                  const isSelected =
+                                    selectedBulletIndex.section === 'project' &&
+                                    selectedBulletIndex.itemIdx === projIdx &&
+                                    selectedBulletIndex.bulletIdx === bulletIdx;
+
+                                  return (
+                                    <li
+                                      key={bulletIdx}
+                                      className={`group/b flex items-start gap-1.5 text-xs sm:text-sm text-zinc-800 leading-relaxed rounded p-0.5 transition-colors ${
+                                        isSelected ? 'bg-emerald-50/80 ring-1 ring-emerald-400' : 'hover:bg-zinc-50/80'
+                                      }`}
+                                    >
+                                      <span className="text-zinc-500 font-bold select-none mt-0.5 leading-none">•</span>
+                                      <div className="flex-1">
+                                        <textarea
+                                          value={bullet}
+                                          rows={1}
+                                          onChange={(e) => handleUpdateProjectBullet(projIdx, bulletIdx, e.target.value)}
+                                          className="w-full text-xs sm:text-sm text-zinc-800 leading-relaxed bg-transparent border-0 focus:outline-none resize-none p-0 focus:ring-0"
+                                          placeholder="Describe achievement with quantifiable metrics..."
+                                        />
+                                      </div>
+                                      <div className="opacity-0 group-hover/b:opacity-100 flex items-center gap-1 shrink-0 pt-0.5 transition-opacity">
+                                        <button
+                                          type="button"
+                                          onClick={() => handleSelectProjectBulletForRewrite(projIdx, bulletIdx, bullet)}
+                                          className="px-2 py-0.5 rounded text-[11px] font-bold bg-zinc-100 hover:bg-emerald-600 hover:text-white text-zinc-700 transition-colors flex items-center gap-1 cursor-pointer"
+                                          title="Improve with Google X-Y-Z formula"
+                                        >
+                                          <Sparkles className="w-3 h-3" />
+                                          <span>Improve</span>
+                                        </button>
+                                        {proj.bullets.length > 1 && (
+                                          <button
+                                            type="button"
+                                            onClick={() => handleDeleteProjectBullet(projIdx, bulletIdx)}
+                                            className="p-1 rounded text-zinc-400 hover:text-rose-600 transition-colors cursor-pointer"
+                                            title="Delete bullet"
+                                          >
+                                            <Trash2 className="w-3 h-3" />
+                                          </button>
+                                        )}
+                                      </div>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+
+                              <div className="pl-3 pt-0.5">
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddProjectBullet(projIdx)}
+                                  className="text-[11px] font-semibold text-zinc-400 hover:text-emerald-700 inline-flex items-center gap-1 cursor-pointer"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                  <span>Add bullet</span>
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* SECTION: EXPERIENCE */}
+                    <div className="space-y-3">
+                      <div
+                        className={`flex items-center justify-between pb-0.5 ${templateConfig.dividerStyle === 'subtle' ? 'border-b-2' : 'border-b'}`}
+                        style={{ borderColor: templateConfig.headingColor }}
+                      >
+                        <h3
+                          style={{ color: templateConfig.headingColor }}
+                          className={`text-xs sm:text-sm font-bold tracking-wider ${
+                            templateConfig.sectionTransform === 'uppercase' ? 'uppercase' : ''
+                          }`}
+                        >
+                          Work Experience
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={handleAddExperience}
+                          className="text-[11px] font-bold text-zinc-500 hover:text-emerald-700 flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Add Position</span>
+                        </button>
+                      </div>
+
+                      {resume.experience.length === 0 ? (
+                        <div className="py-2 text-center">
+                          <button
+                            type="button"
+                            onClick={handleAddExperience}
+                            className="text-xs text-zinc-500 hover:text-emerald-600 font-semibold cursor-pointer"
+                          >
+                            + Add internships, full-time or freelance experience
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {resume.experience.map((exp, expIdx) => (
+                            <div key={exp.id} className="space-y-0.5 group/item">
+                              {/* Header Row: Role on Left, Dates on Right */}
+                              <div className="flex items-baseline justify-between gap-2">
+                                <input
+                                  type="text"
+                                  value={exp.role}
+                                  onChange={(e) => handleUpdateExperience(expIdx, 'role', e.target.value)}
+                                  className="font-bold text-xs sm:text-sm text-zinc-900 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none flex-1"
+                                  placeholder="Job Title / Role"
+                                />
+                                <div className="flex items-center gap-1 shrink-0 text-xs text-zinc-600 font-medium tabular-nums">
+                                  <input
+                                    type="text"
+                                    value={exp.startDate}
+                                    onChange={(e) => handleUpdateExperience(expIdx, 'startDate', e.target.value)}
+                                    className="w-20 text-right bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none font-medium tabular-nums text-xs"
+                                    placeholder="Jan 2022"
+                                  />
+                                  <span>–</span>
+                                  <input
+                                    type="text"
+                                    value={exp.endDate}
+                                    onChange={(e) => handleUpdateExperience(expIdx, 'endDate', e.target.value)}
+                                    className="w-20 text-left bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none font-medium tabular-nums text-xs"
+                                    placeholder="Present"
+                                  />
+                                  {(resume.experience.length > 1 || (resume.projects && resume.projects.length > 0)) && (
                                     <button
                                       type="button"
-                                      onClick={() => handleDeleteProjectBullet(projIdx, bulletIdx)}
-                                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all cursor-pointer"
-                                      title="Delete bullet point"
+                                      onClick={() => handleDeleteExperience(expIdx)}
+                                      className="opacity-0 group-hover/item:opacity-100 p-0.5 text-zinc-400 hover:text-rose-600 transition-opacity ml-1 cursor-pointer"
+                                      title="Delete position"
                                     >
-                                      <Trash2 className="w-4 h-4" />
+                                      <Trash2 className="w-3.5 h-3.5" />
                                     </button>
                                   )}
                                 </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                        <div className="pl-2 pt-1.5">
-                          <button
-                            type="button"
-                            onClick={() => handleAddProjectBullet(projIdx)}
-                            className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 inline-flex items-center gap-1.5 cursor-pointer py-1"
-                          >
-                            <Plus className="w-4 h-4" />
-                            <span>Add Bullet Point</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                              </div>
 
-              {/* SECTION: EXPERIENCE */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 dark:border-zinc-800">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                      Work Experience
-                    </h3>
-                    <span className="text-[11px] text-slate-400 font-medium">({resume.experience.length} positions)</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleAddExperience}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add Position</span>
-                  </button>
-                </div>
+                              {/* Subheader: Company · Location */}
+                              <div className="flex items-center gap-1 text-xs text-zinc-700 font-medium">
+                                <input
+                                  type="text"
+                                  value={exp.company}
+                                  onChange={(e) => handleUpdateExperience(expIdx, 'company', e.target.value)}
+                                  className="font-semibold text-zinc-800 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                                  placeholder="Company Name"
+                                />
+                                <span className="text-zinc-400">·</span>
+                                <input
+                                  type="text"
+                                  value={exp.location}
+                                  onChange={(e) => handleUpdateExperience(expIdx, 'location', e.target.value)}
+                                  className="text-zinc-600 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                                  placeholder="Location"
+                                />
+                              </div>
 
-                {resume.experience.length === 0 ? (
-                  <div className="p-4 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center space-y-1.5">
-                    <p className="text-xs text-zinc-500">Optional for Freshers/Students: Have corporate, internship, or freelance experience? Click below to add.</p>
-                    <button
-                      type="button"
-                      onClick={handleAddExperience}
-                      className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all inline-flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add Work Experience</span>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-8">
-                    {resume.experience.map((exp, expIdx) => (
-                      <div key={exp.id} className="space-y-3 p-3 sm:p-4 rounded-xl border border-slate-100 dark:border-zinc-800/80 bg-slate-50/30 dark:bg-zinc-900/30">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-1">
-                          <div className="flex-1 space-y-1">
-                            <div className="flex items-center justify-between gap-2">
-                              <input
-                                type="text"
-                                value={exp.role}
-                                onChange={(e) => handleUpdateExperience(expIdx, 'role', e.target.value)}
-                                className="w-full text-base sm:text-lg font-bold text-slate-900 dark:text-white bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none"
-                                placeholder="Job Title (e.g. Senior Software Engineer)"
-                              />
-                              {(resume.experience.length > 1 || (resume.projects && resume.projects.length > 0)) && (
+                              {/* Bullets */}
+                              <ul className="space-y-1 pt-0.5 pl-3">
+                                {exp.bullets.map((bullet, bulletIdx) => {
+                                  const isSelected =
+                                    selectedBulletIndex.section === 'experience' &&
+                                    selectedBulletIndex.itemIdx === expIdx &&
+                                    selectedBulletIndex.bulletIdx === bulletIdx;
+
+                                  return (
+                                    <li
+                                      key={bulletIdx}
+                                      className={`group/b flex items-start gap-1.5 text-xs sm:text-sm text-zinc-800 leading-relaxed rounded p-0.5 transition-colors ${
+                                        isSelected ? 'bg-emerald-50/80 ring-1 ring-emerald-400' : 'hover:bg-zinc-50/80'
+                                      }`}
+                                    >
+                                      <span className="text-zinc-500 font-bold select-none mt-0.5 leading-none">•</span>
+                                      <div className="flex-1">
+                                        <textarea
+                                          value={bullet}
+                                          rows={1}
+                                          onChange={(e) => handleUpdateBullet(expIdx, bulletIdx, e.target.value)}
+                                          className="w-full text-xs sm:text-sm text-zinc-800 leading-relaxed bg-transparent border-0 focus:outline-none resize-none p-0 focus:ring-0"
+                                          placeholder="Describe achievement with quantifiable impact..."
+                                        />
+                                      </div>
+                                      <div className="opacity-0 group-hover/b:opacity-100 flex items-center gap-1 shrink-0 pt-0.5 transition-opacity">
+                                        <button
+                                          type="button"
+                                          onClick={() => handleSelectBulletForRewrite(expIdx, bulletIdx, bullet)}
+                                          className="px-2 py-0.5 rounded text-[11px] font-bold bg-zinc-100 hover:bg-emerald-600 hover:text-white text-zinc-700 transition-colors flex items-center gap-1 cursor-pointer"
+                                          title="Improve with Google X-Y-Z formula"
+                                        >
+                                          <Sparkles className="w-3 h-3" />
+                                          <span>Improve</span>
+                                        </button>
+                                        {exp.bullets.length > 1 && (
+                                          <button
+                                            type="button"
+                                            onClick={() => handleDeleteBullet(expIdx, bulletIdx)}
+                                            className="p-1 rounded text-zinc-400 hover:text-rose-600 transition-colors cursor-pointer"
+                                            title="Delete bullet"
+                                          >
+                                            <Trash2 className="w-3 h-3" />
+                                          </button>
+                                        )}
+                                      </div>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+
+                              <div className="pl-3 pt-0.5">
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteExperience(expIdx)}
-                                  className="p-1 rounded text-slate-400 hover:text-rose-600 transition-colors"
-                                  title="Delete this position"
+                                  onClick={() => handleAddBullet(expIdx)}
+                                  className="text-[11px] font-semibold text-zinc-400 hover:text-emerald-700 inline-flex items-center gap-1 cursor-pointer"
                                 >
-                                  <Trash2 className="w-4 h-4" />
+                                  <Plus className="w-3 h-3" />
+                                  <span>Add bullet</span>
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* SECTION: EDUCATION */}
+                    <div className="space-y-2">
+                      <div
+                        className={`flex items-center justify-between pb-0.5 ${templateConfig.dividerStyle === 'subtle' ? 'border-b-2' : 'border-b'}`}
+                        style={{ borderColor: templateConfig.headingColor }}
+                      >
+                        <h3
+                          style={{ color: templateConfig.headingColor }}
+                          className={`text-xs sm:text-sm font-bold tracking-wider ${
+                            templateConfig.sectionTransform === 'uppercase' ? 'uppercase' : ''
+                          }`}
+                        >
+                          Education
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={handleAddEducation}
+                          className="text-[11px] font-bold text-zinc-500 hover:text-emerald-700 flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Add Education</span>
+                        </button>
+                      </div>
+
+                      {resume.education.map((edu, eduIdx) => (
+                        <div key={edu.id} className="space-y-0.5 group/edu py-0.5">
+                          <div className="flex items-baseline justify-between gap-2">
+                            <input
+                              type="text"
+                              value={edu.degree}
+                              onChange={(e) => handleUpdateEducation(eduIdx, 'degree', e.target.value)}
+                              className="w-full text-xs sm:text-sm font-bold text-zinc-900 bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                              placeholder="Degree (e.g. B.S. in Computer Science)"
+                            />
+                            <div className="flex items-center gap-1 shrink-0 text-xs text-zinc-600 font-medium tabular-nums">
+                              <input
+                                type="text"
+                                value={edu.year}
+                                onChange={(e) => handleUpdateEducation(eduIdx, 'year', e.target.value)}
+                                className="w-24 text-xs text-zinc-600 font-medium tabular-nums text-right bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                                placeholder="Graduation Year"
+                              />
+                              {resume.education.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteEducation(eduIdx)}
+                                  className="opacity-0 group-hover/edu:opacity-100 p-0.5 text-zinc-400 hover:text-rose-600 transition-opacity cursor-pointer"
+                                  title="Delete education entry"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
                                 </button>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-2 text-sm">
-                              <input
-                                type="text"
-                                value={exp.company}
-                                onChange={(e) => handleUpdateExperience(expIdx, 'company', e.target.value)}
-                                className="font-semibold text-emerald-700 dark:text-emerald-400 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none"
-                                placeholder="Company Name"
-                              />
-                              <span className="text-slate-400 font-normal">·</span>
-                              <input
-                                type="text"
-                                value={exp.location}
-                                onChange={(e) => handleUpdateExperience(expIdx, 'location', e.target.value)}
-                                className="text-slate-500 dark:text-zinc-400 bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-zinc-700 focus:border-emerald-500 focus:outline-none"
-                                placeholder="City, State / Remote"
-                              />
-                            </div>
                           </div>
-                          <div className="flex items-center gap-1 shrink-0 text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
+                          <div className="flex items-center gap-1 text-xs text-zinc-600">
                             <input
                               type="text"
-                              value={exp.startDate}
-                              onChange={(e) => handleUpdateExperience(expIdx, 'startDate', e.target.value)}
-                              className="w-20 text-right bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none font-medium tabular-nums"
-                              placeholder="Jan 2022"
+                              value={edu.school}
+                              onChange={(e) => handleUpdateEducation(eduIdx, 'school', e.target.value)}
+                              className="bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                              placeholder="School / University"
                             />
-                            <span>–</span>
+                            {edu.location && <span>·</span>}
                             <input
                               type="text"
-                              value={exp.endDate}
-                              onChange={(e) => handleUpdateExperience(expIdx, 'endDate', e.target.value)}
-                              className="w-20 text-left bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none font-medium tabular-nums"
-                              placeholder="Present"
+                              value={edu.location}
+                              onChange={(e) => handleUpdateEducation(eduIdx, 'location', e.target.value)}
+                              className="bg-transparent border-b border-transparent hover:border-zinc-300 focus:border-zinc-900 focus:outline-none"
+                              placeholder="City, State"
                             />
                           </div>
                         </div>
+                      ))}
+                    </div>
 
-                        {/* Bullets with In-Place Edit, Hover Improve Action & Metric Tags */}
-                        <ul className="space-y-2.5 pt-1">
-                          {exp.bullets.map((bullet, bulletIdx) => {
-                            const isSelected =
-                              selectedBulletIndex.section === 'experience' &&
-                              selectedBulletIndex.itemIdx === expIdx &&
-                              selectedBulletIndex.bulletIdx === bulletIdx;
-                            const hasMetric = hasQuantifiableMetric(bullet);
-
-                            return (
-                              <li
-                                key={bulletIdx}
-                                className={`p-3 rounded-xl transition-all flex items-start justify-between gap-3 group ${
-                                  isSelected
-                                    ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700'
-                                    : 'hover:bg-slate-50 dark:hover:bg-zinc-900 border border-transparent'
-                                }`}
-                              >
-                                <div className="flex-1 space-y-1.5">
-                                  <div className="flex items-start gap-2">
-                                    <span className="text-slate-400 font-bold select-none mt-0.5">•</span>
-                                    <textarea
-                                      value={bullet}
-                                      rows={2}
-                                      onChange={(e) => handleUpdateBullet(expIdx, bulletIdx, e.target.value)}
-                                      className="w-full text-sm sm:text-base text-slate-700 dark:text-zinc-300 leading-relaxed bg-transparent border-0 focus:outline-none resize-none p-0 focus:ring-0"
-                                      placeholder="Describe your achievement using Google X-Y-Z formula..."
-                                    />
-                                  </div>
-                                  <div className="flex items-center gap-2 pl-4">
-                                    {hasMetric ? (
-                                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60 font-mono">
-                                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                                        <span>Google X-Y-Z Quantified</span>
-                                      </span>
-                                    ) : (
-                                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800/60 font-mono">
-                                        <AlertCircle className="w-3 h-3 text-amber-600" />
-                                        <span>Lacks Metric · Click Improve</span>
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-1.5 shrink-0">
-                                  <button
-                                    type="button"
-                                    onClick={() => handleSelectBulletForRewrite(expIdx, bulletIdx, bullet)}
-                                    className="opacity-0 group-hover:opacity-100 px-3 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-600 hover:text-white text-emerald-800 dark:text-emerald-300 text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
-                                    title="Improve with Google X-Y-Z formula"
-                                  >
-                                    <Sparkles className="w-3.5 h-3.5 text-emerald-600 group-hover:text-white transition-colors" />
-                                    <span>Improve</span>
-                                  </button>
-                                  {exp.bullets.length > 1 && (
-                                    <button
-                                      type="button"
-                                      onClick={() => handleDeleteBullet(expIdx, bulletIdx)}
-                                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all cursor-pointer"
-                                      title="Delete bullet point"
-                                    >
-                                      <Trash2 className="w-4 h-4" />
-                                    </button>
-                                  )}
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                        <div className="pl-2 pt-1.5">
-                          <button
-                            type="button"
-                            onClick={() => handleAddBullet(expIdx)}
-                            className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 inline-flex items-center gap-1.5 cursor-pointer py-1"
-                          >
-                            <Plus className="w-4 h-4" />
-                            <span>Add Bullet Point</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
                   </div>
-                )}
-              </div>
-
-              {/* SECTION: EDUCATION */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 dark:border-zinc-800">
-                  <h3 className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                    Education
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={handleAddEducation}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add Education</span>
-                  </button>
                 </div>
-                {resume.education.map((edu, eduIdx) => (
-                  <div key={edu.id} className="p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-900/60 transition-colors flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 group">
-                    <div className="flex-1 space-y-1">
-                      <input
-                        type="text"
-                        value={edu.degree}
-                        onChange={(e) => handleUpdateEducation(eduIdx, 'degree', e.target.value)}
-                        className="w-full text-sm sm:text-base font-bold text-slate-900 dark:text-white bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none"
-                        placeholder="Degree (e.g. B.S. in Computer Science)"
-                      />
-                      <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-zinc-400">
-                        <input
-                          type="text"
-                          value={edu.school}
-                          onChange={(e) => handleUpdateEducation(eduIdx, 'school', e.target.value)}
-                          className="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none"
-                          placeholder="School / University"
-                        />
-                        <span>·</span>
-                        <input
-                          type="text"
-                          value={edu.location}
-                          onChange={(e) => handleUpdateEducation(eduIdx, 'location', e.target.value)}
-                          className="bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none"
-                          placeholder="City, State"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={edu.year}
-                        onChange={(e) => handleUpdateEducation(eduIdx, 'year', e.target.value)}
-                        className="w-28 text-xs text-slate-500 dark:text-zinc-400 font-medium tabular-nums text-right bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none"
-                        placeholder="Graduation Year"
-                      />
-                      {resume.education.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteEducation(eduIdx)}
-                          className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-rose-600 transition-all cursor-pointer"
-                          title="Delete education entry"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-          </div>
 
           {/* BOTTOM ACTIONS BAR */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-none">
@@ -3689,20 +3833,20 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       {/* CREATE YOUR RESUME / STARTER TEMPLATES MODAL */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="create-resume-modal-title" tabIndex={-1} className="relative w-full max-w-2xl rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-none p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+          <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="create-resume-modal-title" tabIndex={-1} className="relative w-full max-w-3xl rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-none p-6 space-y-6 max-h-[90vh] overflow-y-auto">
             
             {/* Header */}
             <div className="flex items-start justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
                   <Sparkles className="w-3 h-3 text-emerald-600" />
-                  <span>ATS RESUME STARTER</span>
+                  <span>ATS TEMPLATES &amp; STARTERS</span>
                 </div>
-                <h3 id="create-resume-modal-title" className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
-                  Choose a Resume Starter
+                <h3 id="create-resume-modal-title" className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+                  Choose ATS Template &amp; Starter
                 </h3>
                 <p className="text-xs text-zinc-500">
-                  Pre-configured single-column ATS layouts. Click any to load and edit.
+                  Select an authentic single-column ATS layout used by students selected at top companies, or populate with starter data.
                 </p>
               </div>
               <button
@@ -3715,133 +3859,213 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               </button>
             </div>
 
-            {/* Template Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              
-              {/* Option 1: Clean Starter Canvas (Recommended) */}
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('starter_clean'); } }}
-                onClick={() => handleCreateNewResume('starter_clean')}
-                className="p-3.5 rounded-lg border border-emerald-600 bg-white dark:bg-zinc-900 transition-colors cursor-pointer space-y-2 relative shadow-none"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 rounded border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center">
-                    <FileText className="w-4 h-4" />
+            {/* SECTION 1: VISUAL ATS TEMPLATES (LAYOUT & TYPOGRAPHY) */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
+                    1. Real-World Selected Students ATS Templates
+                  </h4>
+                  <p className="text-[11px] text-zinc-500">
+                    Changes visual layout, typography, and PDF export rules immediately without altering your text.
+                  </p>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
+                  Active: {ATS_TEMPLATES[selectedTemplate]?.name.split(' ')[0]}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {(['jakes', 'harvard', 'modern', 'compact'] as AtsTemplateId[]).map((tid) => {
+                  const t = ATS_TEMPLATES[tid];
+                  const isSelected = selectedTemplate === tid;
+
+                  return (
+                    <div
+                      key={tid}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedTemplate(tid);
+                          showToast(`Applied ${t.name}`, 'sparkle');
+                        }
+                      }}
+                      onClick={() => {
+                        setSelectedTemplate(tid);
+                        showToast(`Applied ${t.name}`, 'sparkle');
+                      }}
+                      className={`p-3.5 rounded-lg border text-left transition-all cursor-pointer space-y-2 relative shadow-none ${
+                        isSelected
+                          ? 'border-emerald-600 bg-emerald-50/20 dark:bg-emerald-950/20 ring-1 ring-emerald-500/50'
+                          : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+                          {t.badge}
+                        </span>
+                        {isSelected && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded">
+                            <Check className="w-3 h-3" />
+                            <span>Active</span>
+                          </span>
+                        )}
+                      </div>
+
+                      <div>
+                        <h5 className="text-sm font-bold text-zinc-900 dark:text-white">
+                          {t.name}
+                        </h5>
+                        <p className="text-[11px] text-zinc-500 leading-relaxed mt-0.5">
+                          {t.tagline}
+                        </p>
+                      </div>
+
+                      <div className="pt-1 border-t border-zinc-100 dark:border-zinc-800/80 text-[10px] text-zinc-500">
+                        <strong className="text-zinc-700 dark:text-zinc-300">Recommended for:</strong> {t.recommendedFor}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* SECTION 2: STARTER DATA & EXAMPLE ROLES */}
+            <div className="space-y-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+              <div>
+                <h4 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
+                  2. Load Example Role Data (Optional)
+                </h4>
+                <p className="text-[11px] text-zinc-500">
+                  Populates the canvas with pre-written, Google X-Y-Z quantified bullets for common technical roles.
+                </p>
+              </div>
+
+              {/* Template Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                
+                {/* Option 1: Clean Starter Canvas (Recommended) */}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('starter_clean'); } }}
+                  onClick={() => handleCreateNewResume('starter_clean')}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500 transition-colors cursor-pointer space-y-1.5 shadow-none"
+                >
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <h5 className="text-xs font-bold text-zinc-900 dark:text-white">
+                      Clean Starter
+                    </h5>
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-600 text-white">
-                    Default
-                  </span>
+                  <p className="text-[11px] text-zinc-500 leading-snug">
+                    Standard single-column hierarchy ready for fresh entries.
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
-                  Clean Starter Canvas
-                </h4>
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                  Optimal single-column hierarchy, bullet placeholders, and standard sections.
-                </p>
-              </div>
 
-              {/* Option 2: Software Engineer */}
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('software_engineer'); } }}
-                onClick={() => handleCreateNewResume('software_engineer')}
-                className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
-              >
-                <div className="w-8 h-8 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                {/* Option 2: Software Engineer */}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('software_engineer'); } }}
+                  onClick={() => handleCreateNewResume('software_engineer')}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500 transition-colors cursor-pointer space-y-1.5 shadow-none"
+                >
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <h5 className="text-xs font-bold text-zinc-900 dark:text-white">
+                      Software Engineer
+                    </h5>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-snug">
+                    Microservices, Go, TypeScript, distributed systems.
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
-                  Senior Software Engineer
-                </h4>
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                  Distributed systems, high-scale Go & TypeScript microservices, and Kafka streams.
-                </p>
-              </div>
 
-              {/* Option 3: AI / ML Engineer */}
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('ai_ml_engineer'); } }}
-                onClick={() => handleCreateNewResume('ai_ml_engineer')}
-                className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
-              >
-                <div className="w-8 h-8 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                {/* Option 3: AI / ML Engineer */}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('ai_ml_engineer'); } }}
+                  onClick={() => handleCreateNewResume('ai_ml_engineer')}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500 transition-colors cursor-pointer space-y-1.5 shadow-none"
+                >
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <h5 className="text-xs font-bold text-zinc-900 dark:text-white">
+                      AI &amp; ML Engineer
+                    </h5>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-snug">
+                    LLMs, PyTorch, RAG architectures, vector search.
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
-                  AI & Machine Learning
-                </h4>
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                  LLMs, PyTorch, RAG architectures, model inference optimization, and vector search.
-                </p>
-              </div>
 
-              {/* Option 4: Product Manager */}
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('product_manager'); } }}
-                onClick={() => handleCreateNewResume('product_manager')}
-                className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
-              >
-                <div className="w-8 h-8 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center">
-                  <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                {/* Option 4: Product Manager */}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('product_manager'); } }}
+                  onClick={() => handleCreateNewResume('product_manager')}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500 transition-colors cursor-pointer space-y-1.5 shadow-none"
+                >
+                  <div className="flex items-center gap-2">
+                    <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <h5 className="text-xs font-bold text-zinc-900 dark:text-white">
+                      Product Manager
+                    </h5>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-snug">
+                    PLG, ARR expansion, conversion metrics, OKRs.
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
-                  Product Manager
-                </h4>
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                  Product-led growth (PLG), B2B SaaS ARR expansion, conversion optimization & OKRs.
-                </p>
-              </div>
 
-              {/* Option 5: Finance & Operations */}
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('finance_ops'); } }}
-                onClick={() => handleCreateNewResume('finance_ops')}
-                className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
-              >
-                <div className="w-8 h-8 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center">
-                  <Briefcase className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                {/* Option 5: Finance & Operations */}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('finance_ops'); } }}
+                  onClick={() => handleCreateNewResume('finance_ops')}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500 transition-colors cursor-pointer space-y-1.5 shadow-none"
+                >
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <h5 className="text-xs font-bold text-zinc-900 dark:text-white">
+                      Finance &amp; Operations
+                    </h5>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-snug">
+                    FP&amp;A, EBITDA optimization, operational models.
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
-                  Finance & Operations
-                </h4>
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                  FP&A, EBITDA optimization, operational models, and vendor management.
-                </p>
-              </div>
 
-              {/* Option 6: Blank Slate */}
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('blank_slate'); } }}
-                onClick={() => handleCreateNewResume('blank_slate')}
-                className="p-3.5 rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50/30 dark:bg-zinc-900/20 hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer space-y-2 shadow-none"
-              >
-                <div className="w-8 h-8 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center">
-                  <Plus className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                {/* Option 6: Blank Slate */}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleCreateNewResume('blank_slate'); } }}
+                  onClick={() => handleCreateNewResume('blank_slate')}
+                  className="p-3 rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50/30 dark:bg-zinc-900/20 hover:border-emerald-500 transition-colors cursor-pointer space-y-1.5 shadow-none"
+                >
+                  <div className="flex items-center gap-2">
+                    <Plus className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <h5 className="text-xs font-bold text-zinc-900 dark:text-white">
+                      Blank Slate
+                    </h5>
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-snug">
+                    Completely empty fields to write from scratch.
+                  </p>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
-                  Blank Slate
-                </h4>
-                <p className="text-xs text-zinc-500 leading-relaxed">
-                  Clean starter template ready to type in your own custom achievements from scratch.
-                </p>
-              </div>
 
+              </div>
             </div>
 
             <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center shadow-none">
               <p className="text-xs text-zinc-500">
-                🔒 <strong>Local Privacy:</strong> Résumé text is processed in your browser and is not sent to ToolForge servers. The site may request external fonts.
+                🔒 <strong>100% In-Browser Private:</strong> Résumé text stays in your browser memory and is never uploaded to any remote server.
               </p>
             </div>
 

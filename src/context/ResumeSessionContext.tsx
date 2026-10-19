@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { BLANK_STARTER_RESUME, type ResumeData } from '../data/resumeSamples';
 
 export type StudioActiveTab = 'deep_report' | 'keywords' | 'audit' | 'rewriter';
+export type AtsTemplateId = 'jakes' | 'harvard' | 'modern' | 'compact';
 
 interface ResumeSession {
   viewMode: 'landing' | 'studio';
@@ -11,6 +12,8 @@ interface ResumeSession {
   setStudioTab: Dispatch<SetStateAction<'document' | 'audit'>>;
   activeStudioTab: StudioActiveTab;
   setActiveStudioTab: Dispatch<SetStateAction<StudioActiveTab>>;
+  selectedTemplate: AtsTemplateId;
+  setSelectedTemplate: Dispatch<SetStateAction<AtsTemplateId>>;
   resume: ResumeData;
   setResume: Dispatch<SetStateAction<ResumeData>>;
   targetJd: string;
@@ -25,6 +28,7 @@ export function ResumeSessionProvider({ children }: { children: React.ReactNode 
   const [viewMode, setViewMode] = useState<'landing' | 'studio'>('landing');
   const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
   const [activeStudioTab, setActiveStudioTab] = useState<StudioActiveTab>('deep_report');
+  const [selectedTemplate, setSelectedTemplate] = useState<AtsTemplateId>('jakes');
   const [resume, setResume] = useState<ResumeData>(() => ({ ...BLANK_STARTER_RESUME }));
   const [targetJd, setTargetJd] = useState('');
   const [uploadedFileName, setUploadedFileName] = useState('');
@@ -37,6 +41,8 @@ export function ResumeSessionProvider({ children }: { children: React.ReactNode 
       setStudioTab,
       activeStudioTab,
       setActiveStudioTab,
+      selectedTemplate,
+      setSelectedTemplate,
       resume,
       setResume,
       targetJd,
