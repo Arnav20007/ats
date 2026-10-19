@@ -343,9 +343,51 @@ test('audit report preserves unavailable checks as null or explicitly not assess
 test('contact draft preserves entered details and safely encodes mailto parameters', () => {
   const input = { name: 'A & B', email: 'alex@example.com', subject: 'Bug', message: 'Line one & line two' };
   const url = createContactMailto(input);
-  assert.ok(url.startsWith('mailto:hello@toolforge.app?'));
+  assert.ok(url.startsWith('mailto:arnavsinghas1221@gmail.com?'));
   assert.ok(url.includes(encodeURIComponent('[ToolForge Bug] from A & B')));
   assert.ok(url.includes(encodeURIComponent('Line one & line two')));
   assert.match(createContactCopyText(input), /alex@example\.com/);
   assert.match(createContactCopyText(input), /Line one & line two/);
 });
+
+test('modern tech stack matching verifies full-stack and cloud skills against target job description', () => {
+  const jd = 'Seeking a Senior Backend Engineer proficient in Python, FastAPI, PostgreSQL, Redis, Docker, and AWS. Experience with Kubernetes and Terraform is a plus.';
+  const candidate = {
+    fullName: 'Arnav Singh',
+    jobTitle: 'Backend Engineer',
+    summary: 'Experienced with FastAPI, PostgreSQL, and Docker.',
+    skills: ['Python', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
+    experienceBullets: [
+      'Architected high-throughput REST APIs using FastAPI and PostgreSQL, serving 10M+ daily requests.',
+      'Containerized backend services with Docker and deployed scalable workloads on AWS.'
+    ]
+  };
+  const result = analyzeAtsKeywords(jd, candidate);
+
+  assert.ok(result.totalJdKeywords >= 7, `expected at least 7 recognized JD keywords, found ${result.totalJdKeywords}`);
+  const matchedCanonical = result.matchedKeywords.map((m) => m.canonical);
+  assert.ok(matchedCanonical.includes('FastAPI'));
+  assert.ok(matchedCanonical.includes('Python'));
+  assert.ok(matchedCanonical.includes('PostgreSQL'));
+  assert.ok(matchedCanonical.includes('Redis'));
+  assert.ok(matchedCanonical.includes('Docker'));
+  assert.ok(matchedCanonical.includes('AWS'));
+
+  const missingCanonical = result.missingKeywords.map((m) => m.canonical);
+  assert.ok(missingCanonical.includes('Kubernetes'));
+  assert.ok(missingCanonical.includes('Terraform'));
+  assert.ok(result.matchRate > 70, `expected high match rate above 70%, found ${result.matchRate}%`);
+});
+
+test('Overleaf and LaTeX style metrics detection recognizes complex engineering throughput and latency figures', () => {
+  const bullets = [
+    'Reduced p99 API latency from 450ms to 85ms across 12 microservices.',
+    'Processed 45M+ daily streaming records via Kafka and Spark pipelines.',
+    'Scaled system throughput from 2,500 to 50,000 QPS with 99.99% uptime.',
+    'Automated CI/CD pipelines reducing deployment time by 65% for a team of 14 engineers.'
+  ];
+  for (const bullet of bullets) {
+    assert.equal(hasQuantifiableMetric(bullet), true, `bullet should have quantifiable metric: "${bullet}"`);
+  }
+});
+

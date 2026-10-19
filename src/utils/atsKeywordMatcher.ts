@@ -26,26 +26,52 @@ export const SKILL_DEFINITIONS: SkillDefinition[] = [
   { canonical: 'C#', aliases: ['c#', 'csharp', 'c-sharp'], category: 'languages' },
   { canonical: 'Rust', aliases: ['rust'], category: 'languages' },
   { canonical: 'SQL', aliases: ['sql', 't-sql', 'pl/sql'], category: 'languages' },
+  { canonical: 'PHP', aliases: ['php'], category: 'languages' },
+  { canonical: 'Ruby', aliases: ['ruby'], category: 'languages' },
+  { canonical: 'Kotlin', aliases: ['kotlin'], category: 'languages' },
+  { canonical: 'Swift', aliases: ['swift'], category: 'languages' },
+  { canonical: 'Bash', aliases: ['bash', 'shell scripting', 'shell script'], category: 'languages' },
 
   // Frontend & Frameworks
   { canonical: 'React', aliases: ['react', 'react.js', 'reactjs'], category: 'frameworks' },
   { canonical: 'Next.js', aliases: ['next.js', 'nextjs', 'next'], category: 'frameworks' },
   { canonical: 'Vue', aliases: ['vue', 'vue.js', 'vuejs'], category: 'frameworks' },
   { canonical: 'Angular', aliases: ['angular', 'angularjs'], category: 'frameworks' },
+  { canonical: 'Svelte', aliases: ['svelte', 'sveltekit'], category: 'frameworks' },
   { canonical: 'Tailwind CSS', aliases: ['tailwind css', 'tailwind'], category: 'frameworks' },
+  { canonical: 'HTML5', aliases: ['html5', 'html'], category: 'frameworks' },
+  { canonical: 'CSS3', aliases: ['css3', 'css'], category: 'frameworks' },
+  { canonical: 'Redux', aliases: ['redux', 'redux toolkit'], category: 'frameworks' },
+  { canonical: 'React Native', aliases: ['react native'], category: 'frameworks' },
+  { canonical: 'Flutter', aliases: ['flutter'], category: 'frameworks' },
 
   // Backend & Runtime
   { canonical: 'Node.js', aliases: ['node.js', 'nodejs', 'node'], category: 'backend' },
+  { canonical: 'FastAPI', aliases: ['fastapi', 'fast-api'], category: 'backend' },
+  { canonical: 'Flask', aliases: ['flask'], category: 'backend' },
+  { canonical: 'Django', aliases: ['django'], category: 'backend' },
+  { canonical: 'Spring Boot', aliases: ['spring boot', 'spring framework'], category: 'backend' },
+  { canonical: 'Express.js', aliases: ['express.js', 'expressjs', 'express'], category: 'backend' },
+  { canonical: 'NestJS', aliases: ['nestjs'], category: 'backend' },
   { canonical: 'REST APIs', aliases: ['rest apis', 'rest api', 'restful api', 'restful apis', 'restful'], category: 'backend' },
   { canonical: 'GraphQL', aliases: ['graphql', 'apollo graphql'], category: 'backend' },
+  { canonical: 'gRPC', aliases: ['grpc'], category: 'backend' },
   { canonical: 'WebSockets', aliases: ['websockets', 'websocket'], category: 'backend' },
+  { canonical: 'RabbitMQ', aliases: ['rabbitmq', 'amqp'], category: 'backend' },
 
   // Databases & Streaming
   { canonical: 'PostgreSQL', aliases: ['postgresql', 'postgres', 'psql'], category: 'data' },
   { canonical: 'MySQL', aliases: ['mysql'], category: 'data' },
   { canonical: 'MongoDB', aliases: ['mongodb', 'mongo'], category: 'data' },
   { canonical: 'Redis', aliases: ['redis', 'redis cache'], category: 'data' },
+  { canonical: 'SQLite', aliases: ['sqlite', 'sqlite3'], category: 'data' },
+  { canonical: 'Elasticsearch', aliases: ['elasticsearch', 'elastic search', 'opensearch'], category: 'data' },
+  { canonical: 'DynamoDB', aliases: ['dynamodb'], category: 'data' },
   { canonical: 'Kafka', aliases: ['kafka', 'apache kafka'], category: 'data' },
+  { canonical: 'Snowflake', aliases: ['snowflake'], category: 'data' },
+  { canonical: 'BigQuery', aliases: ['bigquery'], category: 'data' },
+  { canonical: 'Apache Spark', aliases: ['spark', 'apache spark', 'pyspark'], category: 'data' },
+  { canonical: 'Airflow', aliases: ['airflow', 'apache airflow'], category: 'data' },
   { canonical: 'Vector Databases', aliases: ['vector databases', 'vector db', 'pinecone', 'milvus', 'weaviate'], category: 'data' },
 
   // Cloud & DevOps
@@ -54,6 +80,9 @@ export const SKILL_DEFINITIONS: SkillDefinition[] = [
   { canonical: 'AWS', aliases: ['aws', 'amazon web services', 'ecs', 's3', 'rds', 'lambda', 'ec2'], category: 'cloud' },
   { canonical: 'Google Cloud', aliases: ['google cloud', 'gcp', 'google cloud platform'], category: 'cloud' },
   { canonical: 'Azure', aliases: ['azure', 'microsoft azure'], category: 'cloud' },
+  { canonical: 'Terraform', aliases: ['terraform', 'iac', 'infrastructure as code'], category: 'cloud' },
+  { canonical: 'Ansible', aliases: ['ansible'], category: 'cloud' },
+  { canonical: 'Nginx', aliases: ['nginx'], category: 'cloud' },
   { canonical: 'CI/CD Pipelines', aliases: ['ci/cd pipelines', 'ci/cd', 'continuous integration', 'continuous delivery', 'github actions', 'gitlab ci', 'jenkins'], category: 'cloud' },
 
   // Architecture & Engineering Concepts
@@ -63,19 +92,28 @@ export const SKILL_DEFINITIONS: SkillDefinition[] = [
   { canonical: 'Performance Optimization', aliases: ['performance optimization', 'latency optimization', 'latency reduction', 'query optimization'], category: 'architecture' },
   { canonical: 'Security', aliases: ['security', 'cybersecurity', 'owasp', 'authentication', 'oauth', 'jwt'], category: 'architecture' },
 
-  // AI & Emerging Tech
+  // AI, Data Science & Emerging Tech
   { canonical: 'PyTorch', aliases: ['pytorch', 'torch'], category: 'architecture' },
+  { canonical: 'TensorFlow', aliases: ['tensorflow'], category: 'architecture' },
+  { canonical: 'Pandas', aliases: ['pandas'], category: 'data' },
+  { canonical: 'NumPy', aliases: ['numpy'], category: 'data' },
+  { canonical: 'Scikit-Learn', aliases: ['scikit-learn', 'sklearn'], category: 'architecture' },
   { canonical: 'LLMs', aliases: ['llms', 'llm', 'large language models'], category: 'architecture' },
   { canonical: 'RAG', aliases: ['rag', 'retrieval-augmented generation'], category: 'architecture' },
 
-  // Methodologies
+  // Methodologies & Tools
   { canonical: 'Agile', aliases: ['agile', 'scrum', 'kanban', 'sprint planning'], category: 'practices' },
-  { canonical: 'Unit Testing', aliases: ['unit testing', 'test driven development', 'tdd', 'jest', 'vitest'], category: 'practices' },
+  { canonical: 'Unit Testing', aliases: ['unit testing', 'test driven development', 'tdd', 'jest', 'vitest', 'pytest'], category: 'practices' },
   { canonical: 'Git', aliases: ['git', 'github', 'gitlab'], category: 'practices' },
-  { canonical: 'Linux', aliases: ['linux', 'unix', 'ubuntu', 'bash'], category: 'practices' },
+  { canonical: 'Linux', aliases: ['linux', 'unix', 'ubuntu'], category: 'practices' },
+  { canonical: 'Postman', aliases: ['postman'], category: 'practices' },
+  { canonical: 'Figma', aliases: ['figma', 'ui/ux design', 'wireframing'], category: 'practices' },
+  { canonical: 'Jira', aliases: ['jira', 'confluence'], category: 'practices' },
   { canonical: 'Mentoring', aliases: ['mentoring', 'mentorship', 'engineering leadership', 'code reviews'], category: 'practices' },
 
-  // Business & Finance
+  // Business, Product & Finance
+  { canonical: 'A/B Testing', aliases: ['a/b testing', 'ab testing', 'split testing'], category: 'business' },
+  { canonical: 'Product Roadmap', aliases: ['product roadmap', 'roadmapping', 'feature roadmap'], category: 'business' },
   { canonical: 'FP&A', aliases: ['fp&a', 'financial planning and analysis', 'financial modeling'], category: 'business' },
   { canonical: 'P&L Management', aliases: ['p&l management', 'p&l', 'profit and loss'], category: 'business' },
   { canonical: 'EBITDA', aliases: ['ebitda', 'ebitda optimization'], category: 'business' },

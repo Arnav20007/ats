@@ -26,7 +26,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     window.location.href = mailtoUrl;
 
     setSubmitted(true);
-    showToast('Email draft opened. Send via your mail app or hello@toolforge.app', 'success');
+    showToast('Email draft opened. Send via your mail app or arnavsinghas1221@gmail.com', 'success');
   };
 
   const handleCopyMessage = async () => {
@@ -85,10 +85,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               General inquiries, partnerships, and technical questions:
             </p>
             <a
-              href="mailto:hello@toolforge.app"
+              href="mailto:arnavsinghas1221@gmail.com"
               className="inline-block text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
             >
-              hello@toolforge.app
+              arnavsinghas1221@gmail.com
             </a>
           </div>
 
