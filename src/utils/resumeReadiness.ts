@@ -15,7 +15,7 @@ const ACTION_VERBS = new Set([
   'engineered', 'implemented', 'improved', 'increased', 'launched', 'led', 'managed',
   'optimized', 'reduced', 'streamlined', 'tested'
 ]);
-const FILLER_PHRASES = /\b(?:responsible for|duties included|duties include|team player|hard[- ]working|results[- ]oriented|go[- ]getter)\b/gi;
+const FILLER_PHRASES = /\b(?:responsible for|duties included|duties include|team[- ]?player|hard[- ]?working|results[- ]?oriented|go[- ]?getter)\b/gi;
 
 function countWords(text: string): number {
   return (text.match(/\b[\p{L}\p{N}]+(?:['’.-][\p{L}\p{N}]+)*\b/gu) || []).length;
@@ -56,15 +56,15 @@ export function calculateResumeReadiness(resume: ResumeData): {
   const sectionCount = Number(resume.experience.length > 0) + Number(resume.education.length > 0) + Number(resume.skills.length > 0);
   const contactPoints = (resume.email.trim() ? 10 : 0) + (resume.phone.trim().length > 7 ? 10 : 0);
   const sectionPoints = Math.round((sectionCount / 3) * 20);
-  const lengthPoints = wordCount >= 250 && wordCount <= 1000 ? 10
-    : wordCount >= 150 && wordCount < 250 || wordCount > 1000 && wordCount <= 1200 ? 7
+  const lengthPoints = wordCount >= 220 && wordCount <= 1000 ? 10
+    : wordCount >= 150 && wordCount < 220 || wordCount > 1000 && wordCount <= 1200 ? 7
       : wordCount >= 80 && wordCount < 150 || wordCount > 1200 && wordCount <= 1500 ? 4
         : 0;
   const bulletPoints = bullets.length >= 3 ? 10 : bullets.length > 0 ? 5 : 0;
   const metricPoints = bulletsWithMetricsCount >= 4 ? 15 : bulletsWithMetricsCount >= 2 ? 10 : bulletsWithMetricsCount === 1 ? 5 : 0;
   const actionPoints = actionVerbCount >= 6 ? 15 : actionVerbCount === 5 ? 14 : actionVerbCount === 4 ? 12 : actionVerbCount * 3;
   const fillerCount = Array.from(resumeText.matchAll(FILLER_PHRASES)).length;
-  const fillerPoints = fillerCount === 0 ? 10 : fillerCount <= 2 ? 5 : 0;
+  const fillerPoints = fillerCount === 0 ? 10 : fillerCount === 1 ? 8 : fillerCount === 2 ? 5 : 0;
 
   const checks: ResumeReadinessCheck[] = [
     { id: 'contact', title: 'Contact details', detail: `${resume.email.trim() ? 'Email found' : 'Email missing'} · ${resume.phone.trim().length > 7 ? 'phone found' : 'phone missing'}`, points: contactPoints, maxPoints: 20 },

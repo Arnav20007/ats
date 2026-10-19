@@ -1126,6 +1126,11 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script>
+  window.onload = function() {
+    setTimeout(function() { window.print(); }, 400);
+  };
+</script>
 <style>
   @page { size: letter portrait; margin: 12mm 15mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }

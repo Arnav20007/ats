@@ -434,7 +434,11 @@ export interface ParsedResumeFields {
 export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}): ParsedResumeFields {
   const result: ParsedResumeFields = {};
   let normalizedText = options.ocr
-    ? rawText.replace(/&amp;/gi, '&').replace(/^[¢©¤°·]\s+/gm, '• ').replace(/^e\s+(?=(?:implemented|developed|built|created|designed|automated)\b)/gim, '• ').replace(/\u00a0/g, ' ')
+    ? rawText
+        .replace(/&amp;/gi, '&')
+        .replace(/^[¢©¤°·•\*\-~+>▪▫‣–—]\s+/gm, '• ')
+        .replace(/^[oe]\s+(?=(?:implemented|developed|built|created|designed|automated|engineered|spearheaded|architected|led|managed|optimized|reduced|increased|tested|constructed|applied|handled)\b)/gim, '• ')
+        .replace(/\u00a0/g, ' ')
     : rawText;
   let lines = normalizedText
     .split('\n')
@@ -596,8 +600,8 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
     result.bullets = bulletLines.map((b) => b.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim());
   }
 
-  const experienceHeading = /^(?:professional\s+)?(?:work\s+)?experience$|^employment(?:\s+history)?$/i;
-  const sectionHeading = /^(?:(?:professional|work|technical|key|academic|personal)\s+)*(?:summary|profile|objective|skills|technical\s+skills|projects|technical\s+projects|education|certifications|achievements|awards|languages|interests|activities|publications|references|volunteer(?:\s+experience)?)$/i;
+  const experienceHeading = /^(?:(?:professional|work|technical|relevant|industry|corporate|internship)\s+)*(?:experience|employment|work\s+history|history|internships)(?:\s*[:&/].*)?$/i;
+  const sectionHeading = /^(?:(?:professional|work|technical|key|academic|personal|relevant|core)\s+)*(?:summary|profile|objective|skills|technical\s+skills|projects|technical\s+projects|education|certifications|achievements|awards|languages|interests|activities|extracurricular(?:\s+activities)?|publications|references|volunteer(?:\s+experience)?)(?:\s*[:&/].*)?$/i;
   const experienceStart = lines.findIndex((line) => experienceHeading.test(line));
   if (experienceStart >= 0) {
     const experienceSectionLines: string[] = [];
@@ -605,7 +609,7 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
       experienceSectionLines.push(lines[i]);
     }
     result.experienceBullets = experienceSectionLines
-      .filter((line) => /^(?:[•\-\*▪▫‣–—]\s*|(?:improved|led|built|developed|created|managed|engineered|designed|architected|spearheaded|orchestrated|automated|scaled|delivered|implemented|reduced|increased)\b)/i.test(line) && line.length > 20 && line.length < 500)
+      .filter((line) => /^(?:[•\-\*▪▫‣–—]\s*|(?:improved|led|built|developed|created|managed|engineered|designed|architected|spearheaded|orchestrated|automated|scaled|delivered|implemented|reduced|increased|tested|constructed|applied|handled|analyzed|collaborated|maintained|optimized)\b)/i.test(line) && line.length > 20 && line.length < 500)
       .map((line) => line.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim());
   }
 
@@ -628,8 +632,9 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
     // Check adjacent lines for school name and graduation year
     for (let j = Math.max(0, eduIdx - 2); j <= Math.min(lines.length - 1, eduIdx + 3); j++) {
       const adjacent = lines[j];
-      if (j !== eduIdx && /(?:university|college|institute|school|academy|campus|iit|nit|bits)\b/i.test(adjacent) && adjacent.length < 120) {
-        eduSchool = adjacent;
+      const isHeaderOrSkill = /^(?:skills|technical|projects|experience|summary|profile|location|email|phone)\b/i.test(adjacent);
+      if (j !== eduIdx && !adjacent.includes('@') && !isHeaderOrSkill && /(?:university|college|institute|school|academy|campus|iit|nit|bits)\b/i.test(adjacent) && adjacent.length < 120) {
+        eduSchool = adjacent.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim();
       }
       const yearMatch = adjacent.match(/(?:(?:\d{2}\/)?20\d{2}\s*[-–—]\s*(?:(?:\d{2}\/)?20\d{2}|present)|20\d{2})/i);
       if (yearMatch) {

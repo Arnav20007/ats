@@ -391,3 +391,47 @@ test('Overleaf and LaTeX style metrics detection recognizes complex engineering 
   }
 });
 
+test('flexible experience headers with colons and prefixes correctly extract experience bullets', () => {
+  const text = [
+    'Jordan Rivera',
+    'Senior Backend Engineer',
+    'jordan@example.com',
+    'RELEVANT WORK EXPERIENCE:',
+    '• Architected event-driven microservices using Go and Kafka.',
+    '• Maintained PostgreSQL database replicas with 99.99% uptime.',
+    'EDUCATION:',
+    'Bachelor of Science in Computer Science',
+    'Example University',
+    '2022'
+  ].join('\n');
+  const parsed = parseResumeText(text);
+
+  assert.equal(parsed.experienceBullets?.length, 2);
+  assert.equal(parsed.experienceBullets?.[0], 'Architected event-driven microservices using Go and Kafka.');
+  assert.equal(parsed.experienceBullets?.[1], 'Maintained PostgreSQL database replicas with 99.99% uptime.');
+  assert.equal(parsed.education?.length, 1);
+  assert.equal(parsed.education?.[0].school, 'Example University');
+});
+
+test('gentle filler scoring gives 8 points for single filler phrase instead of a harsh 5-point drop', () => {
+  const resume = {
+    ...BLANK_STARTER_RESUME,
+    fullName: 'Alex Rivera',
+    jobTitle: 'Software Engineer',
+    email: 'alex@example.com',
+    phone: '+1 555 555 1212',
+    summary: 'A hardworking software engineer passionate about clean code.',
+    skills: ['React', 'TypeScript', 'Node.js'],
+    experience: [{ id: 'e1', role: 'Developer', company: 'Tech', location: '', startDate: '', endDate: '', bullets: [
+      'Built a dashboard serving 50,000 daily active users.',
+      'Optimized backend SQL queries reducing latency by 35%.',
+      'Engineered automated tests covering 95% of codebase.'
+    ] }],
+    education: [{ id: 'ed1', degree: 'BS CS', school: 'University', location: '', year: '2023' }]
+  };
+  const result = calculateResumeReadiness(resume);
+  const fillerCheck = result.checks.find((c) => c.id === 'filler');
+  assert.equal(fillerCheck?.points, 8, `expected 8 points for single filler word, got ${fillerCheck?.points}`);
+});
+
+
