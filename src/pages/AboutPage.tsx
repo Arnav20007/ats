@@ -123,26 +123,34 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           <div className="flex items-center gap-2">
             <Globe className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              Creator & Open-Source Engineering
+              Creator & Lead Engineer: Arnav Singh
             </h3>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 p-4 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800">
+          <div
+            id="arnav-singh"
+            itemScope
+            itemType="https://schema.org/Person"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-5 p-4 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800"
+          >
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white text-xl font-black shadow-md shrink-0">
               AS
             </div>
             <div className="space-y-1.5 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-bold text-base text-slate-900 dark:text-white">Arnav Singh</span>
-                <span className="text-xs px-2 py-0.5 rounded-md font-mono bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                  Lead Developer & Creator
+                <span itemProp="name" className="font-bold text-base text-slate-900 dark:text-white">
+                  Arnav Singh
+                </span>
+                <span itemProp="jobTitle" className="text-xs px-2 py-0.5 rounded-md font-mono bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  Full Stack Software Engineer & Creator
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-                Full-stack software engineer focused on high-performance browser architectures and accessible career technology. ToolForge was created to provide candidates with a zero-signup, 100% private, and mathematically transparent alternative to predatory career tech paywalls.
+              <p itemProp="description" className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
+                Full-stack software engineer focused on high-performance browser architectures and accessible career technology. Founded ToolForge as a 100% private, zero-signup, open-source alternative to predatory career tech paywalls.
               </p>
               <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                 <a
+                  itemProp="email"
                   href="mailto:arnavsinghas1221@gmail.com"
                   className="hover:underline flex items-center gap-1 text-slate-700 dark:text-zinc-300 font-mono"
                 >
@@ -150,6 +158,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   <span>arnavsinghas1221@gmail.com</span>
                 </a>
                 <a
+                  itemProp="sameAs"
                   href="https://github.com/Arnav20007"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -159,6 +168,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   <ArrowRight className="w-3 h-3" />
                 </a>
                 <a
+                  itemProp="sameAs"
                   href="https://github.com/Arnav20007/ats"
                   target="_blank"
                   rel="noopener noreferrer"

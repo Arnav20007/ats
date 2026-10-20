@@ -166,6 +166,11 @@ const pageSchema = (page) => {
     description: page.description,
     url: `${siteUrl}${page.path}`,
     isPartOf: { '@id': `${siteUrl}/#website` },
+    author: {
+      '@type': 'Person',
+      name: 'Arnav Singh',
+      url: `${siteUrl}/about`
+    },
     breadcrumb: {
       '@type': 'BreadcrumbList',
       itemListElement: [

@@ -1,6 +1,13 @@
-# ToolForge Resume Reviewer
+# ToolForge Resume Reviewer & ATS Keyword Matcher
 
-> ToolForge is a free browser-based resume reviewer. It checks common document structure and formatting signals, compares recognized job-description skill terms, and offers draft wording suggestions. Its scores are heuristics; it does not connect to or test employer applicant tracking systems.
+> ToolForge is a free browser-based resume reviewer and ATS keyword matcher engineered open-source by full-stack developer Arnav Singh. It checks common document structure and formatting signals, compares recognized job-description skill terms, and offers draft wording suggestions 100% privately in-browser.
+
+## Creator & Engineering
+- **Founder & Lead Developer**: Arnav Singh (Full-Stack Software Engineer)
+- **Developer Profile & Mission**: https://toolforge-ats.vercel.app/about
+- **GitHub**: https://github.com/Arnav20007
+- **Source Code**: https://github.com/Arnav20007/ats
+- **Contact Email**: arnavsinghas1221@gmail.com
 
 ## Core Capabilities
 - **Resume review**: Checks selected text, section labels, contact fields, formatting signals, and measurable achievement details.

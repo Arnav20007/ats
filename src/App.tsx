@@ -591,7 +591,22 @@ function AppContent({ initialPath }: AppProps) {
         {/* Bottom bar */}
         <div className="border-t border-slate-100 dark:border-zinc-800">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 dark:text-zinc-500">
-            <span>© {new Date().getFullYear()} ToolForge · Created open-source by Arnav Singh.</span>
+            <span>
+              © {new Date().getFullYear()} ToolForge · Created open-source by{' '}
+              <a
+                href="/about"
+                rel="author"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo('about');
+                }}
+                className="font-semibold text-slate-700 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 underline decoration-slate-300 dark:decoration-zinc-700 underline-offset-2 transition-colors cursor-pointer"
+                title="Arnav Singh - Software Engineer & Creator of ToolForge"
+              >
+                Arnav Singh
+              </a>
+              .
+            </span>
             <div className="flex flex-wrap items-center gap-5 sm:gap-6">
               <button
                 onClick={() => navigateTo('keywords')}
