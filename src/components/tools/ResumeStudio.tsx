@@ -63,6 +63,25 @@ import { calculateResumeReadiness } from '../../utils/resumeReadiness';
 import { useResumeSession, type AtsTemplateId } from '../../context/ResumeSessionContext';
 import { ATS_TEMPLATES } from '../../data/atsTemplates';
 
+const XYZ_PRESETS = [
+  {
+    role: 'SDE / Backend',
+    bullet: 'Architected high-throughput microservices in Go, reducing P99 API latency by 42% across 2.5M daily active users.'
+  },
+  {
+    role: 'Frontend / Full Stack',
+    bullet: 'Redesigned core web application with React and TypeScript, improving Lighthouse performance from 62 to 98 and cutting bundle size by 35%.'
+  },
+  {
+    role: 'Data & Machine Learning',
+    bullet: 'Constructed automated ETL data pipelines in PySpark and AWS, accelerating model inference throughput by 3x across 5TB+ daily transaction data.'
+  },
+  {
+    role: 'Product & Systems',
+    bullet: 'Spearheaded end-to-end launch of automated customer onboarding flow, increasing user completion rate by 28% and reducing drop-offs by 15%.'
+  }
+];
+
 interface ResumeStudioProps {
   onActionLogged?: () => void;
   onOpenPrivacy?: () => void;
@@ -1233,34 +1252,61 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
       ? "'Merriweather', Georgia, 'Times New Roman', serif"
       : "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 
-    const contactParts = [
-      esc(r.email),
-      esc(r.phone),
-      esc(r.location),
-      esc(r.linkedin),
-      r.portfolio ? esc(r.portfolio) : ''
-    ].filter(Boolean).join(' · ');
+    const makeLink = (text: string, href: string) =>
+      `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(text)}</a>`;
+
+    const primaryParts: string[] = [];
+    if (r.phone) primaryParts.push(makeLink(r.phone, `tel:${r.phone.replace(/[^0-9+]/g, '')}`));
+    if (r.email) primaryParts.push(makeLink(r.email, `mailto:${r.email}`));
+    if (r.location) primaryParts.push(`<span>${esc(r.location)}</span>`);
+
+    const profileParts: string[] = [];
+    if (r.linkedin) {
+      const url = r.linkedin.startsWith('http') ? r.linkedin : `https://${r.linkedin}`;
+      profileParts.push(makeLink(r.linkedin, url));
+    }
+    if (r.portfolio) {
+      const url = r.portfolio.startsWith('http') ? r.portfolio : `https://${r.portfolio}`;
+      profileParts.push(makeLink(r.portfolio, url));
+    }
+
+    let contactHtml = '';
+    if (primaryParts.length > 0 && profileParts.length > 0) {
+      contactHtml = `<div class="contact-line">${primaryParts.join(' · ')}</div><div class="contact-line">${profileParts.join(' · ')}</div>`;
+    } else {
+      contactHtml = `<div class="contact-line">${[...primaryParts, ...profileParts].join(' · ')}</div>`;
+    }
+
+    const formatRange = (start?: string, end?: string) => {
+      if (!start && !end) return '';
+      const s = (start || '').trim();
+      const e = (end || '').trim();
+      if (s && e && s === e) return esc(s);
+      if (s && e) return `${esc(s)} – ${esc(e)}`;
+      if (s) return `${esc(s)} – Present`;
+      return esc(e);
+    };
 
     const html = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
-<title>${esc(r.fullName)} — Resume (${esc(t.name)})</title>
+<title>${esc(r.fullName)} — Resume</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   @page {
     size: letter portrait;
-    margin: ${t.density === 'compact' ? '8mm 12mm' : '12mm 15mm'};
+    margin: 0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: ${fontFamilyCss};
-    font-size: ${t.density === 'compact' ? '9pt' : '9.5pt'};
+    font-size: ${t.density === 'compact' ? '8.8pt' : '9pt'};
     color: #18181b;
-    line-height: ${t.density === 'compact' ? '1.38' : '1.48'};
-    padding: 0;
+    line-height: ${t.density === 'compact' ? '1.34' : '1.38'};
+    padding: ${t.density === 'compact' ? '7mm 10mm' : '9mm 12mm'};
     max-width: 100%;
     margin: 0 auto;
     -webkit-print-color-adjust: exact;
@@ -1268,29 +1314,41 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   }
   .header {
     text-align: ${t.headerAlign};
-    margin-bottom: ${t.density === 'compact' ? '8pt' : '11pt'};
+    margin-bottom: ${t.density === 'compact' ? '6pt' : '8pt'};
   }
   h1 {
-    font-size: ${t.density === 'compact' ? '18pt' : '21pt'};
+    font-size: ${t.density === 'compact' ? '17pt' : '19pt'};
     font-weight: 800;
     color: #09090b;
     letter-spacing: ${isSerif ? 'normal' : '-0.03em'};
-    margin-bottom: 2pt;
+    margin-bottom: 1.5pt;
     text-transform: ${t.id === 'harvard' ? 'uppercase' : 'none'};
   }
   .title {
-    font-size: 10pt;
+    font-size: 9.5pt;
     font-weight: 700;
     color: ${t.headingColor};
-    margin-bottom: 4pt;
+    margin-bottom: 3pt;
   }
   .contact {
     font-size: 8.5pt;
     color: #3f3f46;
-    margin-bottom: ${t.density === 'compact' ? '6pt' : '8pt'};
+    margin-bottom: ${t.density === 'compact' ? '4pt' : '6pt'};
+    line-height: 1.38;
+  }
+  .contact-line {
+    margin-bottom: 1.5pt;
+  }
+  .contact a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 0.5pt solid transparent;
+  }
+  .contact a:hover {
+    border-bottom-color: #52525b;
   }
   .section {
-    margin-top: ${t.density === 'compact' ? '8pt' : '11pt'};
+    margin-top: ${t.density === 'compact' ? '6pt' : '8pt'};
   }
   .section-heading {
     font-size: 8.5pt;
@@ -1299,21 +1357,21 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     letter-spacing: 0.08em;
     color: ${t.headingColor};
     border-bottom: ${t.dividerStyle === 'subtle' ? '1.5pt solid ' + t.headingColor : '1pt solid ' + t.headingColor};
-    padding-bottom: 2pt;
-    margin-bottom: ${t.density === 'compact' ? '5pt' : '7pt'};
+    padding-bottom: 1.5pt;
+    margin-bottom: ${t.density === 'compact' ? '4pt' : '5pt'};
   }
   .summary {
-    font-size: 9pt;
+    font-size: 8.8pt;
     color: #27272a;
-    line-height: 1.5;
+    line-height: 1.42;
   }
   .skills {
-    font-size: 9pt;
+    font-size: 8.8pt;
     color: #27272a;
-    line-height: 1.55;
+    line-height: 1.45;
   }
   .item-block {
-    margin-bottom: ${t.density === 'compact' ? '6pt' : '9pt'};
+    margin-bottom: ${t.density === 'compact' ? '5pt' : '6.5pt'};
     page-break-inside: avoid;
   }
   .item-header {
@@ -1322,56 +1380,56 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     align-items: baseline;
   }
   .item-role {
-    font-size: 9.5pt;
+    font-size: 9pt;
     font-weight: 700;
     color: #09090b;
   }
   .item-dates {
-    font-size: 8.5pt;
+    font-size: 8.2pt;
     font-weight: 600;
     color: #52525b;
     font-family: ${isSerif ? fontFamilyCss : "'JetBrains Mono', monospace"};
   }
   .item-sub {
-    font-size: 8.5pt;
+    font-size: 8.2pt;
     font-weight: 600;
     color: #3f3f46;
     margin-top: 1pt;
-    margin-bottom: 2pt;
+    margin-bottom: 1.5pt;
   }
   .item-tech {
-    font-size: 8.5pt;
+    font-size: 8.2pt;
     color: #52525b;
     font-style: italic;
-    margin-bottom: 2pt;
+    margin-bottom: 1.5pt;
   }
   ul {
-    margin-top: 2pt;
-    padding-left: 13pt;
+    margin-top: 1.5pt;
+    padding-left: 12pt;
   }
   li {
-    margin-bottom: 2.5pt;
-    font-size: 9pt;
+    margin-bottom: 1.8pt;
+    font-size: 8.8pt;
     color: #27272a;
-    line-height: 1.42;
+    line-height: 1.36;
   }
   .edu-block {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5pt;
+    margin-bottom: 4pt;
     page-break-inside: avoid;
   }
   .edu-degree {
     font-weight: 700;
-    font-size: 9.5pt;
+    font-size: 9pt;
     color: #09090b;
   }
   .edu-school {
-    font-size: 8.5pt;
+    font-size: 8.2pt;
     color: #3f3f46;
   }
   .edu-year {
-    font-size: 8.5pt;
+    font-size: 8.2pt;
     font-weight: 600;
     color: #52525b;
     font-family: ${isSerif ? fontFamilyCss : "'JetBrains Mono', monospace"};
@@ -1382,7 +1440,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   <div class="header">
     <h1>${esc(r.fullName)}</h1>
     ${r.jobTitle ? `<div class="title">${esc(r.jobTitle)}</div>` : ''}
-    <div class="contact">${contactParts}</div>
+    <div class="contact">${contactHtml}</div>
   </div>
 
   ${r.summary ? `
@@ -1404,7 +1462,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     <div class="item-block">
       <div class="item-header">
         <span class="item-role">${esc(proj.name)}${proj.role ? ' — ' + esc(proj.role) : ''}</span>
-        <span class="item-dates">${proj.startDate ? `${esc(proj.startDate)} – ${esc(proj.endDate || 'Present')}` : ''}</span>
+        <span class="item-dates">${formatRange(proj.startDate, proj.endDate)}</span>
       </div>
       ${proj.technologies ? `<div class="item-tech">Stack: ${esc(proj.technologies)}</div>` : ''}
       ${proj.link ? `<div class="item-sub">${esc(proj.link)}</div>` : ''}
@@ -1419,7 +1477,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
     <div class="item-block">
       <div class="item-header">
         <span class="item-role">${esc(exp.role)}</span>
-        <span class="item-dates">${esc(exp.startDate)} – ${esc(exp.endDate)}</span>
+        <span class="item-dates">${formatRange(exp.startDate, exp.endDate)}</span>
       </div>
       <div class="item-sub">${esc(exp.company)} · ${esc(exp.location)}</div>
       <ul>${exp.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
@@ -2425,9 +2483,9 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   <span>← Back to Resume Canvas</span>
                 </button>
 
-                <div className="flex items-center gap-3.5">
-                  <div className="flex items-center gap-2 text-sm text-zinc-500">
-                    <span>Overall heuristic score:</span>
+                <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2 text-sm text-zinc-500 hidden sm:flex">
+                    <span>Overall score:</span>
                     <span className="font-mono text-base font-bold text-zinc-900 dark:text-white">
                       {compositeScore}%
                     </span>
@@ -2798,7 +2856,12 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                               <AlertCircle className="w-4 h-4 text-amber-600" />
                               Missing Skills ({keywordAnalysis.missing.length})
                             </span>
-                            <span className="text-[11px] font-mono text-zinc-500">Click to inject</span>
+                            <span className="text-[11px] font-mono text-zinc-500">Add if proficient</span>
+                          </div>
+
+                          <div className="p-2.5 rounded-md border border-amber-200 dark:border-amber-900/50 bg-amber-50/70 dark:bg-amber-950/20 text-[11px] text-amber-900 dark:text-amber-200 flex items-start gap-2">
+                            <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                            <span><strong>Interview Defense Rule:</strong> Only inject skills you have genuine hands-on experience with. Keywords get you through ATS filters, but you will need to defend them in technical rounds.</span>
                           </div>
 
                           {keywordAnalysis.missing.length === 0 ? (
@@ -2914,6 +2977,27 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                             Selected Bullet Point:
                           </h4>
                         </div>
+                      </div>
+
+                      {/* Quick Google X-Y-Z Role Presets */}
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <span className="text-[11px] font-semibold text-zinc-500 flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-emerald-500" />
+                          <span>Google X-Y-Z Presets:</span>
+                        </span>
+                        {XYZ_PRESETS.map((p, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => {
+                              setRewriterInput(p.bullet);
+                              showToast(`Loaded ${p.role} preset! Adapt metrics to your experience.`, 'sparkle');
+                            }}
+                            className="px-2.5 py-1 rounded-md text-[11px] font-medium border border-zinc-200 dark:border-zinc-800 bg-zinc-50 hover:bg-emerald-50 hover:border-emerald-300 dark:bg-zinc-900 dark:hover:bg-emerald-950/40 text-zinc-700 dark:text-zinc-300 hover:text-emerald-700 dark:hover:text-emerald-300 transition-all cursor-pointer shadow-none active:scale-95"
+                          >
+                            {p.role}
+                          </button>
+                        ))}
                       </div>
 
                       <textarea

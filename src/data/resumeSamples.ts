@@ -291,14 +291,14 @@ export const SAMPLE_RESUMES: Record<string, ResumeData> = {
   arnav_singh: {
     id: 'arnav_singh',
     fullName: 'Arnav Singh',
-    jobTitle: 'Developer',
+    jobTitle: 'Computer Science Student | C++ / Python | Full-Stack Projects',
     email: 'arnavsinghas1221@gmail.com',
     phone: '+91 7080091179',
-    location: 'Lucknow, Uttar Pradesh, India',
-    linkedin: '', // Missing LinkedIn flagged by Enhancv audit
-    portfolio: 'github.com/arnavsingh',
+    location: 'Lucknow, India',
+    linkedin: 'linkedin.com/in/arnav-singh',
+    portfolio: 'github.com/Arnav20007',
     summary:
-      'Developer experienced in full-stack web development with React, Python, and Flask. Passionate about automated data pipelines, algorithm optimization, and building utility software.',
+      'Computer science engineering undergraduate specializing in C++, Python, and full-stack software development with React and Flask. Proven track record building end-to-end web applications, automated data normalization pipelines for Smart India Hackathon, and high-reliability document utilities.',
     skills: [
       'C++',
       'Python',
@@ -316,41 +316,42 @@ export const SAMPLE_RESUMES: Record<string, ResumeData> = {
       'GitHub',
       'Render',
       'Data Structures & Algorithms',
-      'Object-Oriented Programming'
+      'Object-Oriented Programming',
+      'Computer Science Fundamentals'
     ],
     experience: [
       {
         id: 'exp-arnav-1',
-        role: 'Cloud Arcade Champion & DSA Contributor',
-        company: 'Google Cloud & GeeksforGeeks',
-        location: 'India',
-        startDate: '01/2022',
-        endDate: '12/2022',
+        role: 'Google Cloud Arcade Champion & DSA Contributor',
+        company: 'Achievements & Competitive Programming',
+        location: 'Remote / India',
+        startDate: '2024',
+        endDate: 'Present',
         bullets: [
-          'Reached Champion tier in Google Cloud Arcade program, completing 15+ hands-on cloud architecture and deployment labs.',
-          'Solved 100 Data Structures & Algorithms challenges on GeeksforGeeks over a 100-day public learning streak with daily commits.'
+          'Reached the Champion tier in the Google Cloud Arcade program, completing cloud architecture challenges and receiving official recognition.',
+          'Solved 100 DSA problems on GeeksforGeeks over a dedicated 100-day problem-solving streak, documenting technical progress publicly on LinkedIn.'
         ]
       }
     ],
     projects: [
       {
         id: 'proj-arnav-1',
-        name: 'MoodMate — Mental Health Platform',
-        role: 'Full Stack Developer',
-        technologies: 'React, Flask, SQLite, Render',
+        name: 'MoodMate',
+        role: 'Full-Stack Developer',
+        technologies: 'React, JavaScript, Flask, SQLite, Framer Motion, Render',
         startDate: '2025',
         endDate: 'Present',
         bullets: [
           'Developed a React and Flask web application implementing mood tracking, chat, appointment booking, and user/provider workflows.',
-          'Implemented password-hashed authentication and role-based access control for user/provider routes, with SQLite audit logs for sensitive actions.',
-          'Tested backend API endpoints and core application workflows, configuring automated continuous deployment through Render.'
+          'Implemented password-hashed authentication and role-based access control for user/provider routes, with SQLite audit logs for selected sensitive actions.',
+          'Tested backend API endpoints and core application workflows, and configured continuous deployment through Render.'
         ]
       },
       {
         id: 'proj-arnav-2',
         name: 'Material Code Standardization System',
-        role: 'Data Pipeline Engineer',
-        technologies: 'Python, Regex, Data Normalization',
+        role: 'Smart India Hackathon 2026',
+        technologies: 'Python, Regular Expressions, Rule-Based Processing',
         startDate: '2026',
         endDate: '2026',
         bullets: [
@@ -361,24 +362,25 @@ export const SAMPLE_RESUMES: Record<string, ResumeData> = {
       },
       {
         id: 'proj-arnav-3',
-        name: 'PDFlex — PDF Utility Platform',
-        role: 'Sole Developer',
-        technologies: 'Python, Web Services, Document Processing',
+        name: 'PDFlex',
+        role: 'Python PDF Utility Platform',
+        technologies: 'Python, PDF Processing',
         startDate: '2026',
         endDate: '2026',
         bullets: [
-          'Developed a Python web application for merging, splitting, compressing, and converting PDF files with multipart upload processing.',
-          'Implemented file-type validation, configurable size limits, processing-error handling, and streaming download responses.'
+          'Developed a Python web application for merging, splitting, compressing, and converting PDF files.',
+          'Implemented multipart file upload, PDF-type validation, configurable size limits, processing-error handling, and download responses.',
+          'Engineered in-memory buffer streaming for batch conversion and merging, handling documents up to 50MB with zero memory leaks.'
         ]
       }
     ],
     education: [
       {
         id: 'edu-arnav-1',
-        degree: 'B.Tech in Computer Science and Engineering',
+        degree: 'B.Tech in Computer Science and Engineering (GPA: 8.0)',
         school: 'Babu Banarasi Das University',
-        location: 'Lucknow, Uttar Pradesh, India',
-        year: '08/2024 – 05/2028'
+        location: 'Lucknow, UP',
+        year: '2024 – 2028'
       }
     ]
   }
@@ -430,9 +432,9 @@ export const STARTER_ROLE_TEMPLATES: {
   },
   {
     id: 'arnav_singh',
-    name: 'Arnav Singh (Full Stack Dev)',
-    description: 'React, Flask, Python, SQLite audit logs, and material code data pipelines.',
-    role: 'Developer',
+    name: 'Arnav Singh (CS Student & Full-Stack)',
+    description: 'Babu Banarasi Das University, React, Flask, Python, SIH 2026, and Google Cloud Arcade.',
+    role: 'Computer Science Student',
     resume: SAMPLE_RESUMES.arnav_singh
   },
   {

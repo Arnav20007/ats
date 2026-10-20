@@ -225,6 +225,57 @@ function AppContent({ initialPath }: AppProps) {
             ]
           }
         });
+      } else if (currentPage === 'checker' || currentPage === 'guide') {
+        structuredData.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'WebPage',
+              '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#webpage`,
+              name: currentSeo.title,
+              description: currentSeo.desc,
+              url: `https://toolforge-ats.vercel.app${currentSeo.path}`,
+              isPartOf: { '@id': 'https://toolforge-ats.vercel.app/#website' },
+              breadcrumb: {
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
+                  { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://toolforge-ats.vercel.app${currentSeo.path}` }
+                ]
+              }
+            },
+            {
+              '@type': 'FAQPage',
+              '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#faq`,
+              mainEntity: [
+                {
+                  '@type': 'Question',
+                  name: 'What is a good ATS resume score?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'An ATS readiness score of 80% or higher is considered strong for applicant tracking systems. This indicates single-column formatting, verifiable Google X-Y-Z achievement metrics, and high keyword overlap with target job descriptions.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Why do applicant tracking systems reject multi-column resumes?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Older ATS parsers read text strictly left-to-right across the page width. Multi-column resumes cause employment dates, company names, and bullet points from adjacent columns to be merged together, corrupting the candidate profile.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Does ToolForge upload my resume to a server?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'No. ToolForge extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
+                  }
+                }
+              ]
+            }
+          ]
+        });
       } else {
         structuredData.textContent = JSON.stringify({
           '@context': 'https://schema.org',

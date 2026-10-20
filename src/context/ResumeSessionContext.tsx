@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { BLANK_STARTER_RESUME, type ResumeData } from '../data/resumeSamples';
+import { BLANK_STARTER_RESUME, SAMPLE_RESUMES, type ResumeData } from '../data/resumeSamples';
 
 export type StudioActiveTab = 'deep_report' | 'keywords' | 'audit' | 'rewriter';
 export type AtsTemplateId = 'jakes' | 'harvard' | 'modern' | 'compact';
@@ -30,7 +30,7 @@ export function ResumeSessionProvider({ children, initialPath }: { children: Rea
   const [studioTab, setStudioTab] = useState<'document' | 'audit'>('document');
   const [activeStudioTab, setActiveStudioTab] = useState<StudioActiveTab>('deep_report');
   const [selectedTemplate, setSelectedTemplate] = useState<AtsTemplateId>('jakes');
-  const [resume, setResume] = useState<ResumeData>(() => ({ ...BLANK_STARTER_RESUME }));
+  const [resume, setResume] = useState<ResumeData>(() => ({ ...SAMPLE_RESUMES.arnav_singh }));
   const [targetJd, setTargetJd] = useState('');
   const [uploadedFileName, setUploadedFileName] = useState('');
 
