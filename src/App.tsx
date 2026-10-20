@@ -8,12 +8,13 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { GuidePage } from './pages/GuidePage';
 import { KeywordsPage } from './pages/KeywordsPage';
-import { ToastProvider } from './components/Toast';
+import { ToastProvider, useToast } from './components/Toast';
 import { ShieldCheck } from 'lucide-react';
 import routeSeo from './data/routeSeo.json';
 import { ResumeSessionProvider, useResumeSession, type AtsTemplateId } from './context/ResumeSessionContext';
 import { SAMPLE_RESUMES } from './data/resumeSamples';
 import { ROLE_KEYWORD_PROFILES } from './data/roleKeywords';
+import { ATS_TEMPLATES } from './data/atsTemplates';
 
 export type AppPage = 'home' | 'templates' | 'builder' | 'checker' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
 
@@ -65,7 +66,8 @@ const safeStorage = {
 interface AppProps { initialPath?: string }
 
 function AppContent({ initialPath }: AppProps) {
-  const { setResume, setViewMode, setStudioTab, setActiveStudioTab, setSelectedTemplate } = useResumeSession();
+  const { resume, setResume, setViewMode, setStudioTab, setActiveStudioTab, setSelectedTemplate } = useResumeSession();
+  const { showToast } = useToast();
 
   // Match the static HTML on the first render, then apply the saved preference.
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -320,9 +322,20 @@ function AppContent({ initialPath }: AppProps) {
 
   const handleSelectTemplateFromShowcase = (templateId: AtsTemplateId, loadSampleData?: boolean) => {
     setSelectedTemplate(templateId);
+    const templateConfig = ATS_TEMPLATES[templateId];
+    const templateName = templateConfig?.name || templateId;
+
     if (loadSampleData) {
-      const sample = SAMPLE_RESUMES.software_engineer;
-      if (sample) setResume({ ...sample });
+      if (templateId === 'harvard') {
+        setResume({ ...SAMPLE_RESUMES.finance_ops });
+      } else if (templateId === 'modern') {
+        setResume({ ...SAMPLE_RESUMES.product_manager });
+      } else {
+        setResume({ ...SAMPLE_RESUMES.arnav_singh });
+      }
+      showToast(`Activated ${templateName} with sample role data!`, 'sparkle');
+    } else {
+      showToast(`Applied ${templateName} template styling!`, 'sparkle');
     }
     setViewMode('studio');
     setStudioTab('document');

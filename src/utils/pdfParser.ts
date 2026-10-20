@@ -537,7 +537,13 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
   // 5. Location extraction
   const locMatch = normalizedText.match(/\b([A-Z][a-zA-Z\s]+,\s*(?:[A-Z]{2}|[A-Z][a-zA-Z\s]+))\b/);
   if (locMatch && !locMatch[1].toLowerCase().includes('university') && !locMatch[1].toLowerCase().includes('college')) {
-    result.location = locMatch[1].trim();
+    let loc = locMatch[1].trim();
+    loc = loc
+      .replace(/\s*linkedin(?:\.com)?.*$/i, '')
+      .replace(/Indialinkedin/i, 'India')
+      .replace(/\s*github(?:\.com)?.*$/i, '')
+      .trim();
+    result.location = loc;
   }
 
   // 6. LinkedIn & Portfolio
@@ -732,7 +738,8 @@ export function parseResumeText(rawText: string, options: { ocr?: boolean } = {}
       }
 
       // Check if line is a bullet
-      const isBullet = /^[•\-*▪▫‣–—]/.test(l) || /^(?:developed|built|designed|implemented|created|architected|automated|engineered|spearheaded|optimized)\b/i.test(l);
+      const isBullet = /^[•\-*▪▫‣–—]/.test(l) ||
+        /^(?:developed|built|designed|implemented|created|architected|automated|engineered|spearheaded|optimized|tested|constructed|applied|deployed|handled|reached|solved|configured|analyzed|evaluated|achieved|collaborated|maintained|integrated)\b/i.test(l);
 
       if (isBullet) {
         const cleanBullet = l.replace(/^[•\-\*▪▫‣–—]\s*/, '').trim();

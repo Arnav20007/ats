@@ -245,18 +245,20 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
                   <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-2">
                     <button
                       type="button"
-                      onClick={() => onSelectTemplate(template.id, false)}
+                      onClick={() => onSelectTemplate(template.id, true)}
                       className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5 active:scale-[0.98]"
+                      title="Open this template in builder with role sample content"
                     >
                       <span>Use This Template in Builder</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
-                      onClick={() => onSelectTemplate(template.id, true)}
+                      onClick={() => onSelectTemplate(template.id, false)}
                       className="w-full sm:w-auto py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-200 text-xs font-semibold transition-all cursor-pointer"
+                      title="Switch to this layout while keeping whatever is currently typed in your builder"
                     >
-                      Load Sample Role
+                      Format Only (Keep Current Text)
                     </button>
                   </div>
                 </div>
