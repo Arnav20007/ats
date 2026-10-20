@@ -2,7 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://toolforge-ats.vercel.app/</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://toolforge-ats.vercel.app/templates</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://toolforge-ats.vercel.app/builder</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://toolforge-ats.vercel.app/checker</loc>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://toolforge-ats.vercel.app/guide</loc>
