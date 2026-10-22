@@ -84,11 +84,11 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            Selected Students ATS Resume Templates
+            Selected Students ATS Resume Templates (Free)
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
-            Authentic, single-column ATS templates used by candidates hired at Google, Meta, Amazon, Goldman Sachs, and top tech companies. 100% free, parser-compliant for Workday, Greenhouse, Taleo, and Lever, with zero paywalls.
+            FAANG selected students resume templates free for everyone. Authentic, single-column ATS templates used by candidates hired at Google, Meta, Amazon, Goldman Sachs, and top tech companies. 100% free, parser-compliant for Workday, Greenhouse, Taleo, and Lever, with zero paywalls.
           </p>
 
           {/* Filter Pills */}

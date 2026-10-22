@@ -26,7 +26,7 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     slug: 'software-engineer',
     roleTitle: 'Software Engineer & Backend Developer',
     shortTitle: 'Software Engineer',
-    seoTitle: 'Top ATS Keywords for Software Engineers (2026 Checklist)',
+    seoTitle: 'Top ATS Keywords for Software Engineers – Resume Checker & Checklist',
     metaDescription: 'Essential ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers and Backend Developers. 100% free checklist.',
     overview: 'Applicant Tracking Systems at tech companies look for specific programming languages, distributed systems concepts, cloud infrastructure, and verifiable metrics rather than generic responsibilities.',
     starterTemplateKey: 'software_engineer',

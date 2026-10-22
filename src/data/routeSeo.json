@@ -1,13 +1,13 @@
 {
   "home": {
-    "title": "Free ATS Resume Score Checker & Keyword Matcher | ATSCheck",
-    "description": "Scan your resume against any job description for free. 100% private in-browser ATS scoring, Google X-Y-Z formula rewriting, and single-column PDF export audit.",
+    "title": "Free ATS Resume Checker (No Login Required) | ATSCheck",
+    "description": "Free ATS resume checker with no login or account required. 100% private in-browser ATS scoring, job keyword matching, and instant PDF download audit.",
     "path": "/",
     "heading": "Free ATS Resume Score Checker & Keyword Matcher"
   },
   "templates": {
-    "title": "FAANG & Ivy League ATS Resume Templates (Free) | ATSCheck",
-    "description": "Authentic single-column ATS resume templates used by students selected at Google, Meta, Amazon, and Goldman Sachs. 100% free, parser-compliant, and printable.",
+    "title": "FAANG Selected Students ATS Resume Templates Free | ATSCheck",
+    "description": "Free single-column ATS resume templates used by students selected at Google, Meta, and Amazon. 100% free, FAANG-compliant, and instant PDF download.",
     "path": "/templates",
     "heading": "Selected Students ATS Resume Templates"
   },
@@ -18,8 +18,8 @@
     "heading": "ATS Resume Studio & Builder"
   },
   "checker": {
-    "title": "Free ATS Resume Score Checker & Diagnostic Audit | ATSCheck",
-    "description": "Test your resume ATS score and match target job keywords. Free in-browser diagnostic audit, Google X-Y-Z formula rewriting, and 100% private PDF parsing.",
+    "title": "ATS Resume Score Calculator for Freshers & Pros | ATSCheck",
+    "description": "Free ATS resume score calculator for freshers and experienced candidates. Check ATS readability 0-100, calculate metric density, and match job keywords.",
     "path": "/checker",
     "heading": "Free ATS Resume Score Checker & Keyword Matcher"
   },
@@ -60,8 +60,8 @@
     "heading": "Top ATS Resume Keywords by Role"
   },
   "keywords_software_engineer": {
-    "title": "Software Engineer ATS Keywords & Checklist 2026 | ATSCheck",
-    "description": "Essential ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers and Backend Developers. 100% free checklist.",
+    "title": "Software Engineer ATS Resume Checker & Keywords | ATSCheck",
+    "description": "Software engineer ATS resume checker, skills checklist, and Google X-Y-Z achievement formulas for backend and full-stack developers. 100% free test.",
     "path": "/keywords/software-engineer",
     "heading": "Software Engineer ATS Resume Keywords"
   },
