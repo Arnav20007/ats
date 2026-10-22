@@ -407,6 +407,8 @@ function AppContent({ initialPath }: AppProps) {
 
         {currentPage === 'checker' && (
           <ResumeStudio
+            forcedMode="landing"
+            isCheckerPage={true}
             onOpenPrivacy={() => navigateTo('privacy')}
             onOpenTerms={() => navigateTo('terms')}
             onOpenGuide={() => navigateTo('guide')}

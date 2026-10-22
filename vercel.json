@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/:path*",
@@ -6,6 +8,17 @@
         {
           "type": "host",
           "value": "toolforge-ats.vercel.app"
+        }
+      ],
+      "destination": "https://atscheck.tech/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.atscheck.tech"
         }
       ],
       "destination": "https://atscheck.tech/:path*",

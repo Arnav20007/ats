@@ -94,6 +94,7 @@ interface ResumeStudioProps {
   onNavigateBuilder?: () => void;
   onNavigateHome?: () => void;
   forcedMode?: 'landing' | 'studio';
+  isCheckerPage?: boolean;
 }
 
 export const ResumeStudio: React.FC<ResumeStudioProps> = ({
@@ -107,6 +108,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   onNavigateBuilder,
   onNavigateHome,
   forcedMode,
+  isCheckerPage,
 }) => {
   const { showToast } = useToast();
 
@@ -1789,21 +1791,43 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               {/* LEFT COLUMN: Clean Headline & Direct Upload */}
               <div className="lg:col-span-6 space-y-3.5 sm:space-y-4 text-left">
                 
-                <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
-                  <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                  <span>FREE ATS RESUME CHECKER • NO LOGIN REQUIRED</span>
-                </div>
+                {isCheckerPage ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                      <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span>ATS RESUME SCORE CALCULATOR • FRESHERS &amp; PROS</span>
+                    </div>
 
-                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
-                  Free ATS Resume Score Checker. <br className="hidden sm:inline" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
-                    Without Login &amp; In-Browser Private.
-                  </span>
-                </h1>
+                    <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
+                      ATS Resume Score Calculator. <br className="hidden sm:inline" />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
+                        Free Resume Checker for Freshers &amp; Pros.
+                      </span>
+                    </h1>
 
-                <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                  Free ATS resume checker with no login or account required. Calculate ATS resume score for freshers and experienced software engineers, test Overleaf/LaTeX/Word PDFs, and match job keywords in seconds — 100% private in your browser.
-                </p>
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
+                      Calculate your ATS resume score, test readability 0-100, analyze metric density, scan Overleaf/LaTeX/Word PDFs, and compare job keywords in seconds — 100% free with no login required.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                      <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span>FREE ATS RESUME CHECKER • NO LOGIN REQUIRED</span>
+                    </div>
+
+                    <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
+                      Free ATS Resume Score Checker. <br className="hidden sm:inline" />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
+                        Without Login &amp; In-Browser Private.
+                      </span>
+                    </h1>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
+                      Free ATS resume checker with no login or account required. Calculate ATS resume score for freshers and experienced software engineers, test Overleaf/LaTeX/Word PDFs, and match job keywords in seconds — 100% private in your browser.
+                    </p>
+                  </>
+                )}
 
                 {/* Clean Drag & Drop Upload Box (Square, Well-Proportioned Shape) */}
                 <div
