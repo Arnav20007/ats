@@ -39,28 +39,31 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            About ToolForge
+            About ATSCheck
           </h1>
+          <span className="text-xs text-slate-400 dark:text-zinc-500 font-mono">
+            Official Architecture &amp; Mission (About ToolForge Engine)
+          </span>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
-            Built by job seekers, for job seekers. ToolForge exists to eliminate the gatekeeping, paywalls, and predatory subscriptions common in career tech.
+            Built by job seekers, for job seekers. ATSCheck exists to eliminate the gatekeeping, paywalls, and predatory subscriptions common in career tech.
           </p>
         </div>
 
         {/* Story Section */}
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Why We Built ToolForge
+            Why We Built ATSCheck
           </h2>
           <div className="prose dark:prose-invert max-w-none text-slate-600 dark:text-zinc-300 leading-relaxed space-y-4 text-sm sm:text-base">
             <p>
-              Reviewing a résumé for a specific role can take time. ToolForge offers browser-based checks to help you examine wording, sections, and keyword overlap.
+              Reviewing a résumé for a specific role can take time. ATSCheck offers browser-based checks to help you examine wording, sections, and keyword overlap.
             </p>
             <p>
               Many commercial resume scanners require account creation, recurring credit card subscriptions, or cloud uploads of personal documents just to view basic feedback. With sensitive details like work history, contact numbers, and personal references on every resume, privacy and transparency often become secondary considerations.
             </p>
             <p className="font-semibold text-slate-800 dark:text-zinc-200">
-              ToolForge is a free résumé review tool. Résumé text is processed in your browser and is not sent to ToolForge servers; site fonts are loaded from Google Fonts.
+              ATSCheck is a free résumé review tool. Résumé text is processed in your browser and is not sent to ATSCheck servers; site fonts are loaded from Google Fonts.
             </p>
           </div>
         </div>
@@ -73,7 +76,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">In-Browser Processing</h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Résumé text is extracted and analyzed in your browser using PDF.js and Web APIs. The site loads fonts from Google Fonts, but résumé text is not sent to ToolForge servers.
+              Résumé text is extracted and analyzed in your browser using PDF.js and Web APIs. The site loads fonts from Google Fonts, but résumé text is not sent to ATSCheck servers.
             </p>
           </div>
 
@@ -93,7 +96,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">How the checks work</h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-              ToolForge checks résumé text, section labels, keyword overlap, and common formatting patterns in your browser. It does not test or certify results against Workday, Greenhouse, Taleo, Lever, or iCIMS.
+              ATSCheck checks résumé text, section labels, keyword overlap, and common formatting patterns in your browser. It does not test or certify results against Workday, Greenhouse, Taleo, Lever, or iCIMS.
             </p>
           </div>
         </div>
@@ -103,11 +106,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           <div className="flex items-center gap-2">
             <Cpu className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              The Technology Stack Behind ToolForge
+              The Technology Stack Behind ATSCheck
             </h3>
           </div>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-            ToolForge is engineered as a static, single-page progressive web application built with React, TypeScript, and Tailwind CSS. Document parsing is handled via Mozilla's <code className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 font-mono text-xs">pdfjs-dist</code> client-side engine. Because our business model does not rely on collecting user data or ad tracking, there are zero tracking scripts, analytics cookies, or backend databases.
+            ATSCheck is engineered as a static, single-page progressive web application built with React, TypeScript, and Tailwind CSS. Document parsing is handled via Mozilla's <code className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 font-mono text-xs">pdfjs-dist</code> client-side engine. Because our business model does not rely on collecting user data or ad tracking, there are zero tracking scripts, analytics cookies, or backend databases.
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
             {['React 19', 'TypeScript', 'Tailwind CSS', 'PDF.js Client Engine', 'No app résumé database', 'In-browser text processing'].map((tag) => (
@@ -146,7 +149,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 </span>
               </div>
               <p itemProp="description" className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-                Full-stack software engineer focused on high-performance browser architectures and accessible career technology. Founded ToolForge as a 100% private, zero-signup, open-source alternative to predatory career tech paywalls.
+                Full-stack software engineer focused on high-performance browser architectures and accessible career technology. Founded ATSCheck as a 100% private, zero-signup, open-source alternative to predatory career tech paywalls.
               </p>
               <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                 <a

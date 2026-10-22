@@ -1,4 +1,4 @@
-# ToolForge Robots.txt - SEO & AEO Optimized
+# ATSCheck Robots.txt - SEO & AEO Optimized
 User-agent: *
 Allow: /
 
@@ -25,5 +25,5 @@ User-agent: Bingbot
 Allow: /
 
 # Sitemaps & Machine-Readable AI Standards
-Sitemap: https://toolforge-ats.vercel.app/sitemap.xml
-LLMs-Txt: https://toolforge-ats.vercel.app/llms.txt
+Sitemap: https://atscheck.tech/sitemap.xml
+LLMs-Txt: https://atscheck.tech/llms.txt

@@ -1,186 +1,186 @@
 {
   "home": {
-    "title": "ToolForge | Free ATS Resume Score Checker & Keyword Matcher",
-    "description": "Free ATS resume score checker and keyword matcher. Check your ATS score, calculate readiness, test Overleaf/PDF formats, and match skills 100% privately in-browser.",
+    "title": "Free ATS Resume Score Checker & Keyword Matcher | ATSCheck",
+    "description": "Scan your resume against any job description for free. 100% private in-browser ATS scoring, Google X-Y-Z formula rewriting, and single-column PDF export audit.",
     "path": "/",
     "heading": "Free ATS Resume Score Checker & Keyword Matcher"
   },
   "templates": {
-    "title": "Selected Students ATS Resume Templates (FAANG & Ivy League) | ToolForge",
+    "title": "FAANG & Ivy League ATS Resume Templates (Free) | ATSCheck",
     "description": "Authentic single-column ATS resume templates used by students selected at Google, Meta, Amazon, and Goldman Sachs. 100% free, parser-compliant, and printable.",
     "path": "/templates",
     "heading": "Selected Students ATS Resume Templates"
   },
   "builder": {
-    "title": "Free ATS Resume Builder & Editor (Single-Column Formats) | ToolForge",
+    "title": "Free Single-Column ATS Resume Builder & Editor | ATSCheck",
     "description": "Build and format single-column FAANG & Ivy League ATS resumes with live readiness scoring, 1-click action verb optimization, and instant PDF download.",
     "path": "/builder",
     "heading": "ATS Resume Studio & Builder"
   },
   "checker": {
-    "title": "Free ATS Resume Score Checker & Diagnostic Audit | ToolForge",
-    "description": "Free in-browser ATS resume checker and keyword matcher. Check your ATS score, calculate readiness, test Overleaf/PDF formats, and match skills 100% privately.",
+    "title": "Free ATS Resume Score Checker & Diagnostic Audit | ATSCheck",
+    "description": "Test your resume ATS score and match target job keywords. Free in-browser diagnostic audit, Google X-Y-Z formula rewriting, and 100% private PDF parsing.",
     "path": "/checker",
     "heading": "Free ATS Resume Score Checker & Keyword Matcher"
   },
   "guide": {
-    "title": "ATS Resume Optimization Guide | ToolForge",
-    "description": "Practical guidance on resume formatting, job-description terms, and clear achievement bullets. ToolForge provides heuristic feedback, not employer ATS results.",
+    "title": "ATS Resume Optimization & Formatting Guide 2026 | ATSCheck",
+    "description": "Master applicant tracking systems with our practical guide to single-column layouts, job keyword density, and verified Google X-Y-Z achievement formulas.",
     "path": "/guide",
     "heading": "Prepare a Clear Resume for Applicant Tracking Systems"
   },
   "about": {
-    "title": "About ToolForge & Creator Arnav Singh | Engineering & Mission",
-    "description": "Learn how ToolForge reviews resume text privately in your browser. Founded and engineered open-source by full-stack software engineer Arnav Singh.",
+    "title": "About ATSCheck & Creator Arnav Singh | Engineering & Mission",
+    "description": "Learn how ATSCheck reviews resume text privately in your browser. Founded and engineered open-source by full-stack software engineer Arnav Singh.",
     "path": "/about",
-    "heading": "About ToolForge & Creator Arnav Singh"
+    "heading": "About ATSCheck & Creator Arnav Singh"
   },
   "contact": {
-    "title": "Contact ToolForge | Support and Bug Reports",
-    "description": "Contact ToolForge support, prepare a bug report, suggest a feature, or ask a question about browser-based resume review.",
+    "title": "Contact ATSCheck | Developer Support & Feedback",
+    "description": "Get in touch with ATSCheck engineering for support, feature suggestions, or bug reports. Direct developer assistance with zero automated bot tickets.",
     "path": "/contact",
     "heading": "Contact & Support"
   },
   "privacy": {
-    "title": "Privacy Policy | ToolForge Resume Checker",
-    "description": "How ToolForge handles résumé text, local theme preferences, hosting logs, font requests, and the optional support QR image.",
+    "title": "Privacy Policy – 100% In-Browser Resume Review | ATSCheck",
+    "description": "Read how ATSCheck protects your career privacy with 100% client-side document processing, zero server uploads, local storage preferences, and zero cookies.",
     "path": "/privacy",
     "heading": "Privacy Policy"
   },
   "terms": {
-    "title": "Terms of Use | ToolForge",
-    "description": "Terms for using ToolForge's free browser-based resume review and keyword comparison tools.",
+    "title": "Terms of Use – Free Browser Career Utility | ATSCheck",
+    "description": "Read the terms and conditions for using ATSCheck's free in-browser ATS resume score checker, job description keyword matcher, and single-column templates.",
     "path": "/terms",
     "heading": "Terms of Use"
   },
   "keywords": {
-    "title": "Top ATS Resume Keywords by Role (2026 Skills Checklist) | ToolForge",
-    "description": "Curated ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers, Product Managers, and Data Scientists.",
+    "title": "Top ATS Resume Keywords by Role (2026 Checklist) | ATSCheck",
+    "description": "Explore curated ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers, Product Managers, and Data Scientists.",
     "path": "/keywords",
     "heading": "Top ATS Resume Keywords by Role"
   },
   "keywords_software_engineer": {
-    "title": "Top ATS Keywords for Software Engineers (2026 Checklist) | ToolForge",
+    "title": "Software Engineer ATS Keywords & Checklist 2026 | ATSCheck",
     "description": "Essential ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers and Backend Developers. 100% free checklist.",
     "path": "/keywords/software-engineer",
     "heading": "Software Engineer ATS Resume Keywords"
   },
   "keywords_product_manager": {
-    "title": "Essential ATS Keywords for Product Managers (2026 Guide) | ToolForge",
-    "description": "Must-have ATS keywords, strategic metrics, and Google X-Y-Z resume bullet formulas for Product Managers and Technical PMs. Free checklist.",
+    "title": "Product Manager ATS Resume Keywords Guide 2026 | ATSCheck",
+    "description": "Target must-have ATS keywords, strategic product metrics, and Google X-Y-Z resume bullet formulas for Product Managers and Technical PMs. Free checklist.",
     "path": "/keywords/product-manager",
     "heading": "Product Manager ATS Resume Keywords"
   },
   "keywords_data_scientist": {
-    "title": "Top ATS Keywords for Data Scientists & ML Engineers (2026) | ToolForge",
-    "description": "Target ATS keywords, machine learning frameworks, data pipeline tools, and Google X-Y-Z formulas for Data Scientists and AI Engineers.",
+    "title": "Data Scientist & ML ATS Resume Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, machine learning frameworks, data pipeline tools, and Google X-Y-Z formulas for Data Scientists and AI Engineers. Free 2026 checklist.",
     "path": "/keywords/data-scientist",
     "heading": "Data Scientist ATS Resume Keywords"
   },
   "keywords_devops_engineer": {
-    "title": "Essential ATS Keywords for DevOps & Cloud Engineers (2026) | ToolForge",
-    "description": "Complete ATS keyword checklist, cloud infrastructure tools, SRE terminology, and Google X-Y-Z resume bullet examples for DevOps Engineers.",
+    "title": "DevOps & SRE Engineer ATS Resume Keywords 2026 | ATSCheck",
+    "description": "Complete ATS keyword checklist, cloud infrastructure tools, SRE terminology, and Google X-Y-Z resume bullet examples for DevOps Engineers. 100% free.",
     "path": "/keywords/devops-engineer",
     "heading": "DevOps Engineer ATS Resume Keywords"
   },
   "keywords_full_stack_developer": {
-    "title": "Top ATS Keywords for Full Stack Developers (2026 Checklist) | ToolForge",
-    "description": "Must-have ATS keywords, frontend and backend tech stacks, database skills, and metric-backed resume bullets for Full Stack Web Developers.",
+    "title": "Full Stack Developer ATS Resume Keywords (2026) | ATSCheck",
+    "description": "Must-have ATS keywords, frontend and backend tech stacks, database skills, and metric-backed resume bullets for Full Stack Web Developers. Free checklist.",
     "path": "/keywords/full-stack-developer",
     "heading": "Full Stack Developer ATS Resume Keywords"
   },
   "keywords_frontend_developer": {
-    "title": "Top ATS Keywords for Frontend Developers (2026 Checklist) | ToolForge",
-    "description": "Target ATS keywords, modern JavaScript/TypeScript frameworks, web performance metrics, and Google X-Y-Z resume formulas for Frontend Engineers.",
+    "title": "Frontend Developer ATS Resume Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, modern JavaScript and TypeScript frameworks, web performance metrics, and Google X-Y-Z resume formulas for Frontend Engineers.",
     "path": "/keywords/frontend-developer",
     "heading": "Frontend Developer ATS Resume Keywords"
   },
   "keywords_data_analyst": {
-    "title": "Essential ATS Keywords for Data Analysts (2026 Checklist) | ToolForge",
-    "description": "Must-have ATS keywords, SQL querying techniques, BI dashboarding tools, and Google X-Y-Z formulas for Data Analysts and BI Engineers.",
+    "title": "Data Analyst ATS Resume Keywords Checklist 2026 | ATSCheck",
+    "description": "Must-have ATS keywords, SQL querying techniques, BI dashboarding tools, and Google X-Y-Z formulas for Data Analysts and Business Intelligence Engineers.",
     "path": "/keywords/data-analyst",
     "heading": "Data Analyst ATS Resume Keywords"
   },
   "keywords_cybersecurity_analyst": {
-    "title": "Top ATS Keywords for Cybersecurity Analysts (2026 Checklist) | ToolForge",
-    "description": "Essential ATS keywords, SIEM tools, vulnerability assessment, compliance frameworks, and Google X-Y-Z formulas for Cybersecurity Analysts.",
+    "title": "Cybersecurity Analyst ATS Keywords (2026 List) | ATSCheck",
+    "description": "Essential ATS keywords, SIEM tools, vulnerability assessment, compliance frameworks, and Google X-Y-Z formulas for Cybersecurity Analysts. Free checklist.",
     "path": "/keywords/cybersecurity-analyst",
     "heading": "Cybersecurity Analyst ATS Resume Keywords"
   },
   "keywords_cloud_architect": {
-    "title": "Essential ATS Keywords for Cloud Solutions Architects (2026) | ToolForge",
-    "description": "Target ATS keywords, cloud infrastructure design, multi-region high availability, cost FinOps, and Google X-Y-Z formulas for Cloud Architects.",
+    "title": "Cloud Solutions Architect ATS Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, cloud infrastructure design, multi-region high availability, cost FinOps, and Google X-Y-Z formulas for Cloud Architects. Free guide.",
     "path": "/keywords/cloud-architect",
     "heading": "Cloud Architect ATS Resume Keywords"
   },
   "keywords_qa_automation_engineer": {
-    "title": "Top ATS Keywords for QA Automation Engineers & SDETs (2026) | ToolForge",
-    "description": "Target ATS keywords, automated test frameworks, CI/CD pipeline integration, API testing, and Google X-Y-Z formulas for QA Engineers and SDETs.",
+    "title": "QA Automation & SDET ATS Resume Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, automated test frameworks, CI/CD pipeline integration, API testing, and Google X-Y-Z formulas for QA Automation Engineers and SDETs.",
     "path": "/keywords/qa-automation-engineer",
     "heading": "QA Automation Engineer ATS Resume Keywords"
   },
   "keywords_mobile_developer": {
-    "title": "Essential ATS Keywords for Mobile Developers (iOS & Android 2026) | ToolForge",
-    "description": "Target ATS keywords, Swift, Kotlin, React Native, App Store guidelines, and Google X-Y-Z resume bullet examples for iOS and Android Developers.",
+    "title": "Mobile Developer (iOS & Android) ATS Keywords | ATSCheck",
+    "description": "Target ATS keywords, Swift, Kotlin, React Native, App Store guidelines, and Google X-Y-Z resume bullet examples for iOS and Android Mobile Developers.",
     "path": "/keywords/mobile-developer",
     "heading": "Mobile Developer ATS Resume Keywords"
   },
   "keywords_ui_ux_designer": {
-    "title": "Top ATS Keywords for UI/UX & Product Designers (2026 Checklist) | ToolForge",
-    "description": "Target ATS keywords, design systems, user research, wireframing, Figma components, and Google X-Y-Z formulas for UI/UX and Product Designers.",
+    "title": "UI/UX & Product Designer ATS Keywords Checklist | ATSCheck",
+    "description": "Target ATS keywords, design systems, user research, wireframing, Figma components, and Google X-Y-Z formulas for UI/UX and Product Designers. Free guide.",
     "path": "/keywords/ui-ux-designer",
     "heading": "UI/UX Designer ATS Resume Keywords"
   },
   "keywords_engineering_manager": {
-    "title": "Essential ATS Keywords for Engineering Managers (2026 Guide) | ToolForge",
+    "title": "Engineering Manager ATS Resume Keywords (2026) | ATSCheck",
     "description": "Target ATS keywords, sprint delivery metrics, engineering headcount growth, system architecture, and Google X-Y-Z formulas for Engineering Managers.",
     "path": "/keywords/engineering-manager",
     "heading": "Engineering Manager ATS Resume Keywords"
   },
   "keywords_scrum_master": {
-    "title": "Top ATS Keywords for Scrum Masters & Agile Coaches (2026 Checklist) | ToolForge",
-    "description": "Must-have ATS keywords, Agile ceremonies, Jira administration, sprint velocity metrics, and Google X-Y-Z formulas for Scrum Masters.",
+    "title": "Scrum Master & Agile Coach ATS Keywords (2026) | ATSCheck",
+    "description": "Must-have ATS keywords, Agile ceremonies, Jira administration, sprint velocity metrics, and Google X-Y-Z formulas for Scrum Masters. Free 2026 checklist.",
     "path": "/keywords/scrum-master",
     "heading": "Scrum Master ATS Resume Keywords"
   },
   "keywords_systems_administrator": {
-    "title": "Essential ATS Keywords for Systems Administrators & Linux Admins (2026) | ToolForge",
-    "description": "Target ATS keywords, Linux server administration, Bash scripting, virtualization, backup strategies, and Google X-Y-Z formulas for SysAdmins.",
+    "title": "Systems Administrator ATS Keywords Checklist | ATSCheck",
+    "description": "Target ATS keywords, Linux server administration, Bash scripting, virtualization, backup strategies, and Google X-Y-Z formulas for Systems Administrators.",
     "path": "/keywords/systems-administrator",
     "heading": "Systems Administrator ATS Resume Keywords"
   },
   "keywords_business_analyst": {
-    "title": "Top ATS Keywords for Technical Business Analysts (2026 Checklist) | ToolForge",
-    "description": "Target ATS keywords, requirements gathering, BRD/FRD documentation, SQL querying, user stories, and Google X-Y-Z formulas for Business Analysts.",
+    "title": "Technical Business Analyst ATS Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, requirements gathering, BRD/FRD documentation, SQL querying, user stories, and Google X-Y-Z formulas for Technical Business Analysts.",
     "path": "/keywords/business-analyst",
     "heading": "Business Analyst ATS Resume Keywords"
   },
   "keywords_financial_analyst": {
-    "title": "Essential ATS Keywords for Financial Analysts & FP&A (2026 Checklist) | ToolForge",
-    "description": "Target ATS keywords, financial modeling, DCF valuations, budget forecasting, variance analysis, and Google X-Y-Z formulas for Financial Analysts.",
+    "title": "Financial Analyst & FP&A ATS Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, financial modeling, DCF valuations, budget forecasting, variance analysis, and Google X-Y-Z formulas for Financial Analysts and FP&A.",
     "path": "/keywords/financial-analyst",
     "heading": "Financial Analyst ATS Resume Keywords"
   },
   "keywords_blockchain_developer": {
-    "title": "Top ATS Keywords for Web3 & Blockchain Developers (2026 Checklist) | ToolForge",
-    "description": "Target ATS keywords, Solidity smart contracts, DeFi protocols, security auditing, Hardhat, and Google X-Y-Z formulas for Web3 Developers.",
+    "title": "Web3 & Blockchain Developer ATS Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, Solidity smart contracts, DeFi protocols, security auditing, Hardhat, and Google X-Y-Z formulas for Web3 and Blockchain Developers.",
     "path": "/keywords/blockchain-developer",
     "heading": "Blockchain Developer ATS Resume Keywords"
   },
   "keywords_marketing_manager": {
-    "title": "Essential ATS Keywords for Growth & Marketing Managers (2026 Guide) | ToolForge",
+    "title": "Growth & Marketing Manager ATS Keywords (2026) | ATSCheck",
     "description": "Target ATS keywords, SEO optimization, paid acquisition (PPC), conversion funnels (CRO), email marketing, and Google X-Y-Z formulas for Marketing Managers.",
     "path": "/keywords/marketing-manager",
     "heading": "Marketing Manager ATS Resume Keywords"
   },
   "keywords_ai_engineer": {
-    "title": "Top ATS Keywords for AI & LLM Systems Engineers (2026 Checklist) | ToolForge",
-    "description": "Target ATS keywords, LLM fine-tuning, RAG pipelines, vLLM serving, vector databases, and Google X-Y-Z resume formulas for AI Engineers.",
+    "title": "AI & LLM Systems Engineer ATS Keywords (2026) | ATSCheck",
+    "description": "Target ATS keywords, LLM fine-tuning, RAG pipelines, vLLM serving, vector databases, and Google X-Y-Z resume formulas for AI and Machine Learning Engineers.",
     "path": "/keywords/ai-engineer",
     "heading": "AI Systems Engineer ATS Resume Keywords"
   },
   "notFound": {
-    "title": "Page Not Found | ToolForge",
+    "title": "Page Not Found | ATSCheck",
     "description": "The page you requested could not be found.",
     "path": "",
     "heading": "Page not found"

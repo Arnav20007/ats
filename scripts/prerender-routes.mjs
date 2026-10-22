@@ -9,7 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outputDir = path.join(root, 'dist');
 const seo = JSON.parse(await readFile(path.join(root, 'src/data/routeSeo.json'), 'utf8'));
 const baseHtml = await readFile(path.join(outputDir, 'index.html'), 'utf8');
-const siteUrl = 'https://toolforge-ats.vercel.app';
+const siteUrl = 'https://atscheck.tech';
 await mkdir(outputDir, { recursive: true });
 const vite = await createServer({
   configFile: path.join(root, 'vite.config.ts'),

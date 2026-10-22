@@ -41,12 +41,12 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <img
             src="/favicon.svg"
-            alt="ToolForge"
+            alt="ATSCheck"
             className="w-8 h-8 rounded-xl shadow-xs"
           />
           <span className="flex items-center gap-2">
             <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">
-              ToolForge
+              ATSCheck
             </span>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/80">
               Resume Checker

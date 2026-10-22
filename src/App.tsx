@@ -156,7 +156,7 @@ function AppContent({ initialPath }: AppProps) {
 
     const canonicalLink = document.querySelector('link[rel="canonical"]');
     if (canonicalLink && currentPage === 'notFound') canonicalLink.remove();
-    else if (canonicalLink) canonicalLink.setAttribute('href', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+    else if (canonicalLink) canonicalLink.setAttribute('href', `https://atscheck.tech${currentSeo.path}`);
 
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.setAttribute('content', currentSeo.title);
@@ -165,14 +165,14 @@ function AppContent({ initialPath }: AppProps) {
     if (ogDesc) ogDesc.setAttribute('content', currentSeo.desc);
 
     const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) ogUrl.setAttribute('content', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+    if (ogUrl) ogUrl.setAttribute('content', `https://atscheck.tech${currentSeo.path}`);
 
     const twitterTitle = document.querySelector('meta[name="twitter:title"]');
     if (twitterTitle) twitterTitle.setAttribute('content', currentSeo.title);
     const twitterDescription = document.querySelector('meta[name="twitter:description"]');
     if (twitterDescription) twitterDescription.setAttribute('content', currentSeo.desc);
     const twitterUrl = document.querySelector('meta[name="twitter:url"]');
-    if (twitterUrl) twitterUrl.setAttribute('content', `https://toolforge-ats.vercel.app${currentSeo.path}`);
+    if (twitterUrl) twitterUrl.setAttribute('content', `https://atscheck.tech${currentSeo.path}`);
 
     const structuredData = document.getElementById('toolforge-route-schema');
     if (structuredData && currentPage !== 'home') {
@@ -182,16 +182,16 @@ function AppContent({ initialPath }: AppProps) {
         structuredData.textContent = JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'AboutPage',
-          '@id': 'https://toolforge-ats.vercel.app/about#webpage',
+          '@id': 'https://atscheck.tech/about#webpage',
           name: currentSeo.title,
           description: currentSeo.desc,
-          url: 'https://toolforge-ats.vercel.app/about',
-          isPartOf: { '@id': 'https://toolforge-ats.vercel.app/#website' },
+          url: 'https://atscheck.tech/about',
+          isPartOf: { '@id': 'https://atscheck.tech/#website' },
           mainEntity: {
             '@type': 'Person',
             name: 'Arnav Singh',
             jobTitle: 'Founder & Full Stack Software Engineer',
-            url: 'https://toolforge-ats.vercel.app/about',
+            url: 'https://atscheck.tech/about',
             sameAs: [
               'https://github.com/Arnav20007',
               'https://github.com/Arnav20007/ats'
@@ -200,8 +200,8 @@ function AppContent({ initialPath }: AppProps) {
           breadcrumb: {
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: 'About ToolForge', item: 'https://toolforge-ats.vercel.app/about' }
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://atscheck.tech/' },
+              { '@type': 'ListItem', position: 2, name: 'About ATSCheck', item: 'https://atscheck.tech/about' }
             ]
           }
         });
@@ -210,20 +210,20 @@ function AppContent({ initialPath }: AppProps) {
         structuredData.textContent = JSON.stringify({
           '@context': 'https://schema.org',
           '@type': isSubrole ? 'ItemPage' : 'CollectionPage',
-          '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#webpage`,
+          '@id': `https://atscheck.tech${currentSeo.path}#webpage`,
           name: currentSeo.title,
           description: currentSeo.desc,
-          url: `https://toolforge-ats.vercel.app${currentSeo.path}`,
-          isPartOf: { '@id': 'https://toolforge-ats.vercel.app/#website' },
+          url: `https://atscheck.tech${currentSeo.path}`,
+          isPartOf: { '@id': 'https://atscheck.tech/#website' },
           breadcrumb: {
             '@type': 'BreadcrumbList',
             itemListElement: isSubrole ? [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: 'https://toolforge-ats.vercel.app/keywords' },
-              { '@type': 'ListItem', position: 3, name: currentSeo.title, item: `https://toolforge-ats.vercel.app${currentSeo.path}` }
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://atscheck.tech/' },
+              { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: 'https://atscheck.tech/keywords' },
+              { '@type': 'ListItem', position: 3, name: currentSeo.title, item: `https://atscheck.tech${currentSeo.path}` }
             ] : [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: 'Role Keywords Checklist', item: 'https://toolforge-ats.vercel.app/keywords' }
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://atscheck.tech/' },
+              { '@type': 'ListItem', position: 2, name: 'Role Keywords Checklist', item: 'https://atscheck.tech/keywords' }
             ]
           }
         });
@@ -233,22 +233,22 @@ function AppContent({ initialPath }: AppProps) {
           '@graph': [
             {
               '@type': 'WebPage',
-              '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#webpage`,
+              '@id': `https://atscheck.tech${currentSeo.path}#webpage`,
               name: currentSeo.title,
               description: currentSeo.desc,
-              url: `https://toolforge-ats.vercel.app${currentSeo.path}`,
-              isPartOf: { '@id': 'https://toolforge-ats.vercel.app/#website' },
+              url: `https://atscheck.tech${currentSeo.path}`,
+              isPartOf: { '@id': 'https://atscheck.tech/#website' },
               breadcrumb: {
                 '@type': 'BreadcrumbList',
                 itemListElement: [
-                  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
-                  { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://toolforge-ats.vercel.app${currentSeo.path}` }
+                  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://atscheck.tech/' },
+                  { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://atscheck.tech${currentSeo.path}` }
                 ]
               }
             },
             {
               '@type': 'FAQPage',
-              '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#faq`,
+              '@id': `https://atscheck.tech${currentSeo.path}#faq`,
               mainEntity: [
                 {
                   '@type': 'Question',
@@ -282,16 +282,16 @@ function AppContent({ initialPath }: AppProps) {
         structuredData.textContent = JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'WebPage',
-          '@id': `https://toolforge-ats.vercel.app${currentSeo.path}#webpage`,
+          '@id': `https://atscheck.tech${currentSeo.path}#webpage`,
           name: currentSeo.title,
           description: currentSeo.desc,
-          url: `https://toolforge-ats.vercel.app${currentSeo.path}`,
-          isPartOf: { '@id': 'https://toolforge-ats.vercel.app/#website' },
+          url: `https://atscheck.tech${currentSeo.path}`,
+          isPartOf: { '@id': 'https://atscheck.tech/#website' },
           breadcrumb: {
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolforge-ats.vercel.app/' },
-              { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://toolforge-ats.vercel.app${currentSeo.path}` }
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://atscheck.tech/' },
+              { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://atscheck.tech${currentSeo.path}` }
             ]
           }
         });
@@ -493,11 +493,11 @@ function AppContent({ initialPath }: AppProps) {
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <img src="/favicon.svg" alt="ToolForge" className="w-5 h-5 rounded-md" />
-                  <span className="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">ToolForge</span>
+                  <span className="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">ATSCheck</span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">FREE</span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed max-w-[220px]">
-                  Free browser-based résumé checks. No account required. Your résumé text is not sent to ToolForge servers.
+                  Free browser-based résumé checks. No account required. Your résumé text is not sent to ATSCheck servers.
                 </p>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-zinc-400">
@@ -568,7 +568,7 @@ function AppContent({ initialPath }: AppProps) {
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: 'About ToolForge & Creator', action: () => navigateTo('about') },
+                  { label: 'About ATSCheck & Creator', action: () => navigateTo('about') },
                   { label: 'Contact & Support', action: () => navigateTo('contact') },
                   { label: 'Privacy Policy', action: () => navigateTo('privacy') },
                   { label: 'Terms of Use', action: () => navigateTo('terms') },
@@ -592,7 +592,7 @@ function AppContent({ initialPath }: AppProps) {
         <div className="border-t border-slate-100 dark:border-zinc-800">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 dark:text-zinc-500">
             <span>
-              © {new Date().getFullYear()} ToolForge · Created open-source by{' '}
+              © {new Date().getFullYear()} ATSCheck · Created open-source by{' '}
               <a
                 href="/about"
                 rel="author"
@@ -601,7 +601,7 @@ function AppContent({ initialPath }: AppProps) {
                   navigateTo('about');
                 }}
                 className="font-semibold text-slate-700 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 underline decoration-slate-300 dark:decoration-zinc-700 underline-offset-2 transition-colors cursor-pointer"
-                title="Arnav Singh - Software Engineer & Creator of ToolForge"
+                title="Arnav Singh - Software Engineer & Creator of ATSCheck"
               >
                 Arnav Singh
               </a>
