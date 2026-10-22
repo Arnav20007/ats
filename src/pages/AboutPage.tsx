@@ -162,6 +162,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 </a>
                 <a
                   itemProp="sameAs"
+                  href="https://arnavsingh.me/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline flex items-center gap-1"
+                >
+                  <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>Portfolio (arnavsingh.me)</span>
+                  <ArrowRight className="w-3 h-3" />
+                </a>
+                <a
+                  itemProp="sameAs"
                   href="https://github.com/Arnav20007"
                   target="_blank"
                   rel="noopener noreferrer"

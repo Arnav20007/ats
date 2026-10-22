@@ -52,6 +52,7 @@ const pageSchema = (page) => {
         jobTitle: 'Founder & Full Stack Software Engineer',
         url: `${siteUrl}/about`,
         sameAs: [
+          'https://arnavsingh.me',
           'https://github.com/Arnav20007',
           'https://github.com/Arnav20007/ats'
         ]

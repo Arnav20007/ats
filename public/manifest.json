@@ -1,7 +1,7 @@
 {
-  "name": "ToolForge ATS Resume Checker",
-  "short_name": "ToolForge",
-  "description": "Browser-based resume review and job-description keyword comparison. Résumé text is processed locally; external font requests may occur.",
+  "name": "ATSCheck – Free ATS Resume Checker",
+  "short_name": "ATSCheck",
+  "description": "Free in-browser ATS resume checker and keyword matcher. Check score, test Overleaf/LaTeX/Word PDFs, and compare job keywords 100% privately.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#09090b",
