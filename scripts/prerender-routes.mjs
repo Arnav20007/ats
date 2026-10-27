@@ -70,20 +70,54 @@ const pageSchema = (page) => {
   if (page.path.startsWith('/keywords/')) {
     return {
       '@context': 'https://schema.org',
-      '@type': 'ItemPage',
-      '@id': `${siteUrl}${page.path}#webpage`,
-      name: page.title,
-      description: page.description,
-      url: `${siteUrl}${page.path}`,
-      isPartOf: { '@id': `${siteUrl}/#website` },
-      breadcrumb: {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-          { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: `${siteUrl}/keywords` },
-          { '@type': 'ListItem', position: 3, name: page.heading, item: `${siteUrl}${page.path}` }
-        ]
-      }
+      '@graph': [
+        {
+          '@type': 'ItemPage',
+          '@id': `${siteUrl}${page.path}#webpage`,
+          name: page.title,
+          description: page.description,
+          url: `${siteUrl}${page.path}`,
+          isPartOf: { '@id': `${siteUrl}/#website` },
+          breadcrumb: {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+              { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: `${siteUrl}/keywords` },
+              { '@type': 'ListItem', position: 3, name: page.heading, item: `${siteUrl}${page.path}` }
+            ]
+          }
+        },
+        {
+          '@type': 'FAQPage',
+          '@id': `${siteUrl}${page.path}#faq`,
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: `What is the recommended ATS resume format for ${page.heading}?`,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: `A clean, single-column layout without tables, multi-column sidebars, or graphic rating bars is required. Use standard section headers and verified Google X-Y-Z formula metrics.`
+              }
+            },
+            {
+              '@type': 'Question',
+              name: `How do applicant tracking systems evaluate keywords for ${page.heading}?`,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: `ATS software scans for exact technical skills, frameworks, and tools mentioned in the job description. Candidates should incorporate these skills directly within measurable project bullet points.`
+              }
+            },
+            {
+              '@type': 'Question',
+              name: 'Can I check my resume score for free without creating an account?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Yes. ATSCheck provides 100% free, private in-browser ATS scoring, metric density checks, and keyword gap analysis with zero logins or server uploads.'
+              }
+            }
+          ]
+        }
+      ]
     };
   }
 

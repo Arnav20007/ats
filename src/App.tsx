@@ -485,19 +485,20 @@ function AppContent({ initialPath }: AppProps) {
       {/* Footer */}
       <footer className="w-full border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
             {/* Brand */}
             <div className="col-span-2 lg:col-span-1 space-y-5">
               <div className="space-y-2">
-                <div
-                  onClick={() => navigateTo('home')}
+                <a
+                  href="/"
+                  onClick={(e) => { e.preventDefault(); navigateTo('home'); }}
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <img src="/favicon.svg" alt="ToolForge" className="w-5 h-5 rounded-md" />
+                  <img src="/favicon.svg" alt="ATSCheck" className="w-5 h-5 rounded-md" />
                   <span className="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">ATSCheck</span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">FREE</span>
-                </div>
+                </a>
                 <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed max-w-[220px]">
                   Free browser-based résumé checks. No account required. Your résumé text is not sent to ATSCheck servers.
                 </p>
@@ -515,73 +516,112 @@ function AppContent({ initialPath }: AppProps) {
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: 'ATS Resume Checker', action: () => navigateTo('checker') },
-                  { label: 'ATS Resume Builder', action: () => navigateTo('builder') },
-                  { label: 'Selected Students ATS Templates', action: () => navigateTo('templates') },
-                  { label: 'Job Keyword Matcher', action: () => handleOpenStudioTab('keywords') },
-                  { label: 'Role Keywords Checklist', action: () => navigateTo('keywords') },
-                  { label: 'Google X-Y-Z Rewriter', action: () => handleOpenStudioTab('rewriter') },
-                  { label: 'PDF Audit Scorecard', action: () => handleOpenStudioTab('deep_report') },
-                  { label: 'Résumé Formatting Guide', action: () => navigateTo('guide') },
+                  { label: 'ATS Resume Checker', href: '/checker', action: () => navigateTo('checker') },
+                  { label: 'ATS Resume Builder', href: '/builder', action: () => navigateTo('builder') },
+                  { label: 'Selected Students ATS Templates', href: '/templates', action: () => navigateTo('templates') },
+                  { label: 'Job Keyword Matcher', href: '/checker', action: () => handleOpenStudioTab('keywords') },
+                  { label: 'Role Keywords Checklist', href: '/keywords', action: () => navigateTo('keywords') },
+                  { label: 'Google X-Y-Z Rewriter', href: '/checker', action: () => handleOpenStudioTab('rewriter') },
+                  { label: 'PDF Audit Scorecard', href: '/checker', action: () => handleOpenStudioTab('deep_report') },
+                  { label: 'Résumé Formatting Guide', href: '/guide', action: () => navigateTo('guide') },
                 ].map((item) => (
                   <li key={item.label}>
-                    <button
-                      onClick={item.action}
-                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                    <a
+                      href={item.href}
+                      onClick={(e) => { e.preventDefault(); item.action(); }}
+                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left block"
                     >
                       {item.label}
-                    </button>
+                    </a>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Column 2: Resources & Guides */}
+            {/* Column 2: Campus & Fresher Placements */}
             <div className="space-y-4">
               <h4 className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">
-                Role Keywords & Examples
+                Campus Placements
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: 'Software Engineer Keywords', action: () => navigateTo('keywords', 'software-engineer') },
-                  { label: 'Product Manager Keywords', action: () => navigateTo('keywords', 'product-manager') },
-                  { label: 'Data Scientist & AI Keywords', action: () => navigateTo('keywords', 'data-scientist') },
-                  { label: 'DevOps & Cloud Keywords', action: () => navigateTo('keywords', 'devops-engineer') },
-                  { label: 'Full Stack Developer Keywords', action: () => navigateTo('keywords', 'full-stack-developer') },
-                  { label: 'ATS Optimization Guide', action: () => navigateTo('guide') },
-                  { label: 'Client-Side Privacy Guarantee', action: () => navigateTo('privacy') },
+                  { label: 'TCS NQT ATS Resume Checker', href: '/keywords/tcs-nqt', action: () => navigateTo('keywords', 'tcs-nqt') },
+                  { label: 'Infosys Fresher Resume Guide', href: '/keywords/infosys-fresher', action: () => navigateTo('keywords', 'infosys-fresher') },
+                  { label: 'Accenture Placement Format', href: '/keywords/accenture-fresher', action: () => navigateTo('keywords', 'accenture-fresher') },
+                  { label: 'Cognizant GenC ATS Resume', href: '/keywords/cognizant-fresher', action: () => navigateTo('keywords', 'cognizant-fresher') },
+                  { label: 'Wipro Elite Fresher Checklist', href: '/keywords/wipro-fresher', action: () => navigateTo('keywords', 'wipro-fresher') },
+                  { label: 'B.Tech CSE Fresher ATS Format', href: '/keywords/btech-cse-fresher', action: () => navigateTo('keywords', 'btech-cse-fresher') },
+                  { label: 'BCA & MCA Placement Guide', href: '/keywords/bca-mca-fresher', action: () => navigateTo('keywords', 'bca-mca-fresher') },
+                  { label: 'Overleaf LaTeX ATS Checker', href: '/keywords/overleaf-latex-ats', action: () => navigateTo('keywords', 'overleaf-latex-ats') },
                 ].map((item) => (
                   <li key={item.label}>
-                    <button
-                      onClick={item.action}
-                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                    <a
+                      href={item.href}
+                      onClick={(e) => { e.preventDefault(); item.action(); }}
+                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left block"
                     >
                       {item.label}
-                    </button>
+                    </a>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Column 3: Company & Legal */}
+            {/* Column 3: Tech & FAANG Roles */}
+            <div className="space-y-4">
+              <h4 className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">
+                Tech & FAANG Roles
+              </h4>
+              <ul className="space-y-2.5">
+                {[
+                  { label: 'Amazon SDE Fresher Resume', href: '/keywords/amazon-sde', action: () => navigateTo('keywords', 'amazon-sde') },
+                  { label: 'Google SWE Intern Resume', href: '/keywords/google-swe-intern', action: () => navigateTo('keywords', 'google-swe-intern') },
+                  { label: 'Software Engineer Keywords', href: '/keywords/software-engineer', action: () => navigateTo('keywords', 'software-engineer') },
+                  { label: 'Product Manager Keywords', href: '/keywords/product-manager', action: () => navigateTo('keywords', 'product-manager') },
+                  { label: 'Data Scientist & AI Keywords', href: '/keywords/data-scientist', action: () => navigateTo('keywords', 'data-scientist') },
+                  { label: 'DevOps & Cloud Keywords', href: '/keywords/devops-engineer', action: () => navigateTo('keywords', 'devops-engineer') },
+                  { label: 'Full Stack Developer Keywords', href: '/keywords/full-stack-developer', action: () => navigateTo('keywords', 'full-stack-developer') },
+                  { label: 'AI & LLM Engineer Keywords', href: '/keywords/ai-engineer', action: () => navigateTo('keywords', 'ai-engineer') },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <a
+                      href={item.href}
+                      onClick={(e) => { e.preventDefault(); item.action(); }}
+                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left block"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 4: Company & Legal */}
             <div className="space-y-4">
               <h4 className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">
                 Company & Legal
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: 'About ATSCheck & Creator', action: () => navigateTo('about') },
-                  { label: 'Contact & Support', action: () => navigateTo('contact') },
-                  { label: 'Privacy Policy', action: () => navigateTo('privacy') },
-                  { label: 'Terms of Use', action: () => navigateTo('terms') },
+                  { label: 'About ATSCheck & Creator', href: '/about', action: () => navigateTo('about') },
+                  { label: 'Contact & Support', href: '/contact', action: () => navigateTo('contact') },
+                  { label: 'Privacy Policy', href: '/privacy', action: () => navigateTo('privacy') },
+                  { label: 'Terms of Use', href: '/terms', action: () => navigateTo('terms') },
+                  { label: 'ATS Optimization Guide', href: '/guide', action: () => navigateTo('guide') },
+                  { label: 'Portfolio (arnavsingh.me)', href: 'https://arnavsingh.me/', action: () => { window.open('https://arnavsingh.me/', '_blank'); } },
                 ].map((item) => (
                   <li key={item.label}>
-                    <button
-                      onClick={item.action}
-                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                    <a
+                      href={item.href}
+                      onClick={(e) => {
+                        if (item.href.startsWith('http')) return;
+                        e.preventDefault();
+                        item.action();
+                      }}
+                      className="text-xs text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left block"
                     >
                       {item.label}
-                    </button>
+                    </a>
                   </li>
                 ))}
               </ul>

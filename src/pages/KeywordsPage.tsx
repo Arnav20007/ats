@@ -36,6 +36,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
   const [activeSlug, setActiveSlug] = useState<string>(initialRoleSlug);
   const [copiedKeyword, setCopiedKeyword] = useState<string | null>(null);
   const [copiedFormulaIdx, setCopiedFormulaIdx] = useState<number | null>(null);
+  const [directoryCategory, setDirectoryCategory] = useState<'all' | 'campus' | 'faang' | 'engineering'>('all');
 
   React.useEffect(() => {
     setActiveSlug(initialRoleSlug);
@@ -119,11 +120,46 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
               Curated ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers, Product Managers, and Data Scientists. Select a career profile below to view verified recruiter screening checklists and industry-standard keyword benchmarks.
             </p>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap items-center gap-2 pt-2">
+              {[
+                { id: 'all', label: 'All 30 Guides' },
+                { id: 'campus', label: 'Campus Placements (TCS, Infosys, Accenture)' },
+                { id: 'faang', label: 'FAANG & Big Tech (Amazon, Google)' },
+                { id: 'engineering', label: 'Software & Cloud' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setDirectoryCategory(tab.id as any)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    directoryCategory === tab.id
+                      ? 'bg-slate-900 dark:bg-white text-white dark:text-zinc-950 shadow-xs'
+                      : 'bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 border border-slate-200 dark:border-zinc-800 hover:border-slate-300'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Role Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Object.values(ROLE_KEYWORD_PROFILES).map((prof) => {
+            {Object.values(ROLE_KEYWORD_PROFILES)
+              .filter((prof) => {
+                if (directoryCategory === 'campus') {
+                  return ['tcs-nqt', 'infosys-fresher', 'accenture-fresher', 'cognizant-fresher', 'wipro-fresher', 'btech-cse-fresher', 'bca-mca-fresher', 'overleaf-latex-ats'].includes(prof.slug);
+                }
+                if (directoryCategory === 'faang') {
+                  return ['amazon-sde', 'google-swe-intern', 'software-engineer', 'ai-engineer', 'data-scientist', 'product-manager'].includes(prof.slug);
+                }
+                if (directoryCategory === 'engineering') {
+                  return ['software-engineer', 'full-stack-developer', 'frontend-developer', 'devops-engineer', 'cloud-architect', 'qa-automation-engineer', 'mobile-developer', 'blockchain-developer'].includes(prof.slug);
+                }
+                return true;
+              })
+              .map((prof) => {
               const totalKws = prof.categories.reduce((acc, c) => acc + c.keywords.length, 0);
               return (
                 <div
@@ -218,7 +254,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs sm:text-sm font-bold text-emerald-800 dark:text-emerald-300 transition-colors shadow-2xs cursor-pointer"
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>All 20 Roles</span>
+              <span>All 30 Guides</span>
             </button>
           </div>
 
