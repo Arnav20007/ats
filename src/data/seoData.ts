@@ -220,11 +220,11 @@ export const SEO_DATA: Record<ToolId, EnhancedSeoData> = {
     ]
   },
   resume: {
-    title: 'Free ATS Resume Bullet Polisher & Executive Action-Verb Optimizer | ToolForge',
-    pageTitle: 'Free ATS Resume Bullet Polisher | ToolForge',
-    metaDescription: 'Review résumé bullet clarity and add your own verified outcomes. Free browser-based guidance with no account required.',
+    title: 'Free Resume Bullet Rewriter & X-Y-Z-Style Examples | ATSCheck',
+    pageTitle: 'Free Resume Bullet Rewriter | ATSCheck',
+    metaDescription: 'Review resume bullet clarity and draft stronger wording with your own verified outcomes. Free browser-based guidance with no account required.',
     canonicalPath: '/tools/ats-resume-bullet-polisher',
-    h1: 'ATS-Optimized Resume Bullet & LinkedIn Impact Polisher',
+    h1: 'Resume Bullet Rewriter and Writing Suggestions',
     category: 'Career & Employment Utilities',
     targetKeywords: [
       'resume bullet point rewriter free',
@@ -232,11 +232,11 @@ export const SEO_DATA: Record<ToolId, EnhancedSeoData> = {
       'ats keyword optimizer resume',
       'action verbs for job resume bullets',
       'convert passive resume to metrics',
-      'google xyz resume formula generator',
+      'x-y-z resume bullet structure',
       'linkedin experience bullet points enhancer'
     ],
     searchIntent: 'Informational',
-    monthlySearchVolume: '520,000+ seasonal searches',
+    monthlySearchVolume: 'Not verified — no Keyword Planner export',
     schemaType: 'WebApplication',
     howToSteps: [
       {
@@ -248,8 +248,8 @@ export const SEO_DATA: Record<ToolId, EnhancedSeoData> = {
         text: 'Choose Entry-Level, Mid-Level, or Executive to calibrate tone and strategic vocabulary.'
       },
       {
-        name: 'Review 3 Google X-Y-Z Rewrites',
-        text: 'Examine Metric-Driven, Executive Strategic, and ATS-Optimized variations.'
+        name: 'Review illustrative X-Y-Z-style suggestions',
+        text: 'Compare draft wording options and keep only claims, details, and metrics that accurately reflect your work.'
       },
       {
         name: 'Copy to Word or Docs',
@@ -257,23 +257,23 @@ export const SEO_DATA: Record<ToolId, EnhancedSeoData> = {
       }
     ],
     competitorComparison: [
-      { feature: 'Paywall after 1 use', toolForge: '100% Free forever with no limits', competitors: '$19–$39/mo subscription paywall' },
-      { feature: 'Google X-Y-Z Formula', toolForge: 'Built-in metric framing on every rewrite', competitors: 'Basic synonym replacement' },
-      { feature: 'Privacy', toolForge: 'Zero storage of your work history', competitors: 'Saves your resume data to sell leads' },
-      { feature: 'ATS Keyword Scoring', toolForge: 'Visual breakdown of executive action verbs', competitors: 'Generic score with no explanations' }
+      { feature: 'Access', toolForge: 'Available without an account or paid plan', competitors: 'Not independently compared' },
+      { feature: 'Bullet wording', toolForge: 'Draft suggestions with factual placeholders', competitors: 'Not independently compared' },
+      { feature: 'Resume data handling', toolForge: 'Resume text is processed in the browser; see the privacy policy for site services', competitors: 'Not independently compared' },
+      { feature: 'Employer ATS testing', toolForge: 'Not performed', competitors: 'Not independently compared' }
     ],
     faqs: [
       {
-        question: 'What is the "Google X-Y-Z" formula for resume bullets?',
-        answer: 'The gold standard executive formula popularized by Google recruiters is: "Accomplished [X], as measured by [Y], by doing [Z]". Our tool automatically reformulates your draft bullets into this high-impact structure.'
+        question: 'What is an X-Y-Z-style structure for resume bullets?',
+        answer: 'One commonly shared structure describes an accomplishment, how it was measured, and the action behind it. The tool offers draft wording; use only details and results that accurately reflect your own work.'
       },
       {
-        question: 'Why do applicant tracking systems (ATS) reject ordinary resumes?',
-        answer: 'ATS systems look for specific power verbs (e.g., "Spearheaded", "Architected", "Optimized") paired with quantifiable business metrics (%, $, volume). Generic duties like "responsible for managing" lack keyword weight and trigger low candidate match scores.'
+        question: 'Can a resume bullet suggestion predict an ATS decision?',
+        answer: 'No. Employer systems and screening criteria differ. A clear bullet can help a reader understand your contribution, but these suggestions do not test a resume in an employer ATS or predict a hiring outcome.'
       },
       {
         question: 'Can I use these polished bullets on LinkedIn?',
-        answer: 'Yes. The generated bullets are specifically formatted for both standard 1-page PDF resumes and LinkedIn Experience sections.'
+        answer: 'You can copy a draft to another document, then review its wording and formatting for that platform. Remove any details that do not accurately describe your work.'
       },
       {
         question: 'How do I quantify my achievements if I do not have exact sales numbers?',
@@ -281,7 +281,7 @@ export const SEO_DATA: Record<ToolId, EnhancedSeoData> = {
       },
       {
         question: 'Does this tool work for technical software engineering resumes?',
-        answer: 'Yes. It automatically emphasizes architecture choices, latency reductions, test coverage, and automated deployment pipelines.'
+        answer: 'It can help draft clearer wording, but it does not validate technical accuracy. Check every tool, architecture detail, result, and metric before using a suggestion.'
       }
     ]
   },

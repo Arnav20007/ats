@@ -9,7 +9,7 @@ const guarantees = [
   {
     icon: HardDrive,
     title: 'Résumé text stays in your browser',
-    body: 'Your browser parses résumé text locally in memory. The text is not sent to ATSCheck servers; the site may request external fonts.',
+    body: 'Your browser parses résumé text locally in the current page session. The site also loads Google Analytics, Google AdSense, and Google Fonts; see the details below.',
     color: 'emerald',
   },
   {
@@ -20,14 +20,14 @@ const guarantees = [
   },
   {
     icon: Lock,
-    title: 'Never used to train AI',
-    body: 'Résumé suggestions are produced by client-side JavaScript. Résumé text is not sent to an AI service or used to train a model.',
+    title: 'No AI service processes résumé text',
+    body: 'Résumé suggestions are produced by client-side JavaScript. The app does not send résumé text to an external AI service.',
     color: 'purple',
   },
   {
     icon: CheckCircle2,
     title: 'No sign-up or registration',
-    body: 'No email required, no password, no credit card, no tracking walls. Open the tool and start working immediately.',
+    body: 'No email, password, or credit card is required to use the resume review tools.',
     color: 'amber',
   },
 ];
@@ -42,23 +42,23 @@ const colorMap: Record<string, { bg: string; border: string; icon: string }> = {
 const detailedSections = [
   {
     title: '1. What Information Do We Process?',
-    content: "When you upload or paste a resume, ATSCheck processes your text strictly in temporary browser RAM (client-side memory). We do not record your name, contact information, phone numbers, email addresses, employment history, or educational credentials on any server.",
+    content: "When you upload or paste a resume, the app parses and reviews its text in your browser session. The resume review code does not send that text to ATSCheck application servers. The site separately loads Google Analytics, Google AdSense, and Google Fonts; those providers may receive standard browser, device, and page-request data under their own policies.",
   },
   {
     title: '2. Cookies and Local Storage',
-    content: "ATSCheck uses one localStorage item, 'toolforge_theme', to store the light or dark mode preference. We do not set tracking cookies, advertising pixels, or behavioral trackers. Google Fonts receives standard connection metadata when fonts load. If you open the optional UPI support dialog, the QR image is requested from qrserver.com and contains the displayed payment intent; résumé content is not included.",
+    content: "ATSCheck stores the theme preference in the browser's localStorage under 'toolforge_theme'. The page loads Google Analytics and Google AdSense scripts as well as Google Fonts. These third-party services may use their own storage or identifiers and process standard page and browser information under their policies. If you open the optional UPI support dialog, the QR image is requested from qrserver.com and contains the displayed payment intent; résumé content is not included in that request.",
   },
   {
     title: '3. Third-Party Data Sharing',
-    content: "Résumé text is not sent to ATSCheck servers or third parties. The site loads fonts from Google Fonts. If you choose to open the optional UPI support dialog, qrserver.com receives a request to render the payment QR code; this request does not contain résumé text.",
+    content: "Résumé text is processed in the browser and is not sent by the resume review code to ATSCheck application servers or third-party analytics, advertising, or AI services. Google Analytics, Google AdSense, and Google Fonts are loaded for the site and may receive standard page or browser data. If you open the optional UPI support dialog, qrserver.com receives a request to render the payment QR code; that request does not contain résumé text.",
   },
   {
     title: '4. AI Architecture and Processing',
-    content: "All resume formatting checks, keyword density matching against job descriptions, and Google X-Y-Z formula rewriting logic execute via deterministic client-side JavaScript in your browser tab. Your document is never transmitted to OpenAI, Anthropic, or external cloud LLM APIs.",
+    content: "Resume formatting checks, keyword comparisons, and bullet-writing suggestions run in client-side JavaScript. The application does not send resume content to OpenAI, Anthropic, or another external AI API.",
   },
   {
     title: '5. File Upload Handling (PDF & DOCX)',
-    content: "When you drag and drop or select a file, PDF.js extracts readable text in your browser. If a PDF has no text layer, a locally hosted English OCR engine reads its rendered pages in your browser. The original binary file and its text are not uploaded.",
+    content: "When you select a supported file, PDF.js extracts readable text in your browser. If a PDF has no text layer, the bundled English OCR engine can attempt local text recognition. OCR may make mistakes; check the extracted text. The app's parsing flow does not upload the original file or extracted text to ATSCheck application servers.",
   },
   {
     title: '6. Contact & Data Controller',
@@ -98,7 +98,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigateHome }) => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
-            Your résumé text is analyzed in your browser and is not sent to ATSCheck servers. Theme preference is stored locally, and fonts load from Google Fonts.
+            Resume text is analyzed in your browser and is not sent to ATSCheck application servers by the review code. Theme preference is stored locally. Google Analytics, Google AdSense, and Google Fonts also load on the site and may process standard page or browser data under their own policies.
           </p>
 
           <div className="pt-1 text-xs text-slate-400 font-mono">
@@ -150,7 +150,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigateHome }) => {
               Ready to review your résumé in your browser?
             </h3>
             <p className="text-xs sm:text-sm text-emerald-200/80 font-normal">
-              No account required. Résumé text is not sent to ToolForge servers.
+              No account required. Resume text is processed in your browser; see this policy for site services and storage details.
             </p>
           </div>
 

@@ -93,7 +93,7 @@ export const VisualShowcase: React.FC = () => {
             <div className="p-4 space-y-1.5">
               <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                 <Zap className="w-4 h-4 shrink-0" />
-                <span className="text-xs font-bold uppercase tracking-wider">Google X-Y-Z Formula</span>
+                <span className="text-xs font-bold uppercase tracking-wider">X-Y-Z-style Formula</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
                 Use the draft as a starting point, then add only outcomes and figures you can verify.

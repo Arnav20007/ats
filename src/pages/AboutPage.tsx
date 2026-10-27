@@ -149,7 +149,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 </span>
               </div>
               <p itemProp="description" className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-                Full-stack software engineer focused on high-performance browser architectures and accessible career technology. Founded ATSCheck as a 100% private, zero-signup, open-source alternative to predatory career tech paywalls.
+                Full-stack software engineer focused on browser-based tools and accessible career technology. Founded ATSCheck as a no-account resume review and open-source project.
               </p>
               <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                 <a
@@ -196,7 +196,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
 
           <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
-            <strong>Editorial & Heuristic Integrity:</strong> All 27 formatting heuristics and keyword rules are based on published ATS guidelines from Workday, Greenhouse, Taleo, and Google X-Y-Z recruiting principles. The client-side code is entirely public and open-source on GitHub.
+            <strong>Editorial &amp; Heuristic Integrity:</strong> ATSCheck uses in-house checks for resume structure, text, and keyword overlap. The checks are general guidance and have not been certified or validated against private employer configurations. Review the open-source code on GitHub to inspect how the checks work.
           </p>
         </div>
 

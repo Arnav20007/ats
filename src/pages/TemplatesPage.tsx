@@ -33,22 +33,22 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
     {
       ...ATS_TEMPLATES.jakes,
       filterCategory: 'tech',
-      sampleCompany: 'Google, Meta, Amazon, Microsoft'
+      sampleCompany: 'Software engineering roles'
     },
     {
       ...ATS_TEMPLATES.harvard,
       filterCategory: 'finance',
-      sampleCompany: 'Goldman Sachs, McKinsey, Big Tech, Research'
+      sampleCompany: 'Finance and research roles'
     },
     {
       ...ATS_TEMPLATES.modern,
       filterCategory: 'tech',
-      sampleCompany: 'Stripe, Linear, Senior Tech & PM Roles'
+      sampleCompany: 'Technology and product roles'
     },
     {
       ...ATS_TEMPLATES.compact,
       filterCategory: 'compact',
-      sampleCompany: 'Hackathons, High-Project Engineers, New Grads'
+      sampleCompany: 'Projects and early-career experience'
     }
   ];
 
@@ -80,23 +80,23 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
         <div className="space-y-4 border-b border-slate-200 dark:border-zinc-800 pb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
             <Award className="w-3.5 h-3.5" />
-            <span>Real-World Selected Students ATS Formats</span>
+            <span>Editable Resume Layouts for Students</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            Selected Students ATS Resume Templates (Free)
+            Free ATS Resume Templates for Students
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
-            FAANG selected students resume templates free for everyone. Authentic, single-column ATS templates used by candidates hired at Google, Meta, Amazon, Goldman Sachs, and top tech companies. 100% free, parser-compliant for Workday, Greenhouse, Taleo, and Lever, with zero paywalls.
+            Choose from editable, single-column resume layouts for students and early-career candidates. Preview details are fictional examples; replace them with your own accurate information. Each template can be customized and exported as a PDF. A clear layout can help readability, but parsing behavior varies by employer and applicant tracking system.
           </p>
 
           {/* Filter Pills */}
           <div className="flex flex-wrap items-center gap-2 pt-2">
             {[
               { id: 'all', label: 'All ATS Templates (4)' },
-              { id: 'tech', label: 'Top Tech & FAANG' },
-              { id: 'finance', label: 'Ivy League & Finance' },
+              { id: 'tech', label: 'Technology Roles' },
+              { id: 'finance', label: 'Finance & Research' },
               { id: 'compact', label: '1-Page High Density' },
             ].map((f) => (
               <button
@@ -203,7 +203,7 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
                         {template.badge}
                       </span>
                       <span className="text-[11px] font-semibold text-slate-500 dark:text-zinc-400">
-                        Parser Compliant: 100%
+                        Format review: heuristic
                       </span>
                     </div>
 
@@ -234,7 +234,7 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
                       </span>
                     </div>
                     <div className="col-span-2 pt-1 border-t border-slate-200 dark:border-zinc-800">
-                      <span className="text-slate-400 block text-[10px] uppercase font-bold">Target Companies</span>
+                      <span className="text-slate-400 block text-[10px] uppercase font-bold">Example Focus</span>
                       <span className="font-medium text-slate-700 dark:text-zinc-300">
                         {template.sampleCompany}
                       </span>
@@ -272,10 +272,10 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
         <div className="p-8 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-6 shadow-2xs">
           <div className="space-y-1">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              Why Are These 4 Templates Chosen by Selected Students?
+              What Do These Resume Templates Include?
             </h3>
             <p className="text-xs text-slate-500 dark:text-zinc-400">
-              Technical recruiters at Google, Microsoft, and Amazon discard flashy multi-column Canva designs because ATS engines read left-to-right across columns.
+              These editable layouts use familiar resume sections and a straightforward reading order. They are provided as starting points; adapt the content and formatting to each application.
             </p>
           </div>
 
@@ -285,7 +285,7 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" /> 100% Single-Column
               </span>
               <p className="text-slate-600 dark:text-zinc-400 leading-relaxed">
-                Applicant tracking systems read linear text top-to-bottom. Two-column layouts cause skills and dates to merge awkwardly.
+                A single-column layout provides a straightforward reading order. Text extraction can still vary by PDF, parser, and employer configuration, so review the exported file.
               </p>
             </div>
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2">
@@ -293,7 +293,7 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Standard Heading Tags
               </span>
               <p className="text-slate-600 dark:text-zinc-400 leading-relaxed">
-                Uses universal section tags (Experience, Education, Skills) that Workday and Greenhouse parsers recognize out-of-the-box.
+                Uses familiar labels such as Experience, Education, and Skills. Common headings can make sections easier to identify, but no heading guarantees a particular parser result.
               </p>
             </div>
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2">
@@ -301,7 +301,7 @@ export const TemplatesPage: React.FC<TemplatesPageProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Vector &amp; Print Ready
               </span>
               <p className="text-slate-600 dark:text-zinc-400 leading-relaxed">
-                High-density single page A4 formatting prevents awkward multi-page page breaks and saves recruiter reading time.
+                Preview page breaks and spacing before sending your resume. The best page length depends on your experience, role, and application guidance.
               </p>
             </div>
           </div>

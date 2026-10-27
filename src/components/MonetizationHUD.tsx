@@ -25,12 +25,12 @@ export const MonetizationHUD: React.FC<MonetizationHUDProps> = ({
         <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-slate-600 font-medium">
           <div className="flex items-center gap-1.5 text-slate-900 font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span>100% Client-Side & Free</span>
+            <span>Browser-Based Resume Review &amp; Free</span>
           </div>
           <span className="text-slate-300 hidden sm:inline">·</span>
           <div className="flex items-center gap-1.5 text-slate-600">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Zero Server Uploads</span>
+            <span>Resume Text Stays in Browser</span>
           </div>
           <span className="text-slate-300 hidden sm:inline">·</span>
           <div className="flex items-center gap-1.5 text-slate-600">

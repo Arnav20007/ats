@@ -255,7 +255,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div className="border-t border-slate-100 dark:border-zinc-800 pt-3">
                   <h4 className="font-bold text-slate-800 dark:text-zinc-200">Why was a bullet point flagged?</h4>
                   <p className="text-slate-500 dark:text-zinc-400 pt-0.5 leading-relaxed">
-                    The Google X-Y-Z formula is one way to describe impact, evidence, and method. Employer screening systems and criteria vary, so this guidance cannot predict screening outcomes.
+                    The X-Y-Z-style formula is one way to describe impact, evidence, and method. Employer screening systems and criteria vary, so this guidance cannot predict screening outcomes.
                   </p>
                 </div>
                 <div className="border-t border-slate-100 dark:border-zinc-800 pt-3">

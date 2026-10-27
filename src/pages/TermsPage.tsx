@@ -30,7 +30,7 @@ const termsSections = [
   },
   {
     title: '3. Intellectual Property and Content Ownership',
-    content: "Your résumé text is processed in your browser and is not sent to ATSCheck application servers. Theme preference may be saved in local browser storage, and fonts are loaded from Google Fonts. This page does not claim rights to your résumé content.",
+    content: "Your résumé text is processed in your browser and is not sent to ATSCheck application servers by the resume review code. Theme preference may be saved in local browser storage. Google Analytics, Google AdSense, and Google Fonts also load on the site and may process standard page or browser data under their policies. This page does not claim rights to your résumé content.",
   },
   {
     title: '4. Scoring and Algorithmic Disclaimers',

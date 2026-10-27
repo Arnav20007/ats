@@ -16,9 +16,9 @@ export interface AtsTemplateConfig {
 export const ATS_TEMPLATES: Record<'jakes' | 'harvard' | 'modern' | 'compact', AtsTemplateConfig> = {
   jakes: {
     id: 'jakes',
-    name: "Jake's Overleaf (FAANG Standard)",
-    badge: "Top Tech Standard",
-    tagline: "The #1 LaTeX template used by students selected at Google, Meta, Microsoft & Amazon. 100% clean single-column with monochrome divider rules.",
+    name: "Jake's Overleaf-Style Layout",
+    badge: "Single-Column",
+    tagline: "A familiar LaTeX-inspired single-column layout with monochrome divider rules. Customize the sample content and check the exported PDF before applying.",
     recommendedFor: "Software Engineers, CS Students, Full Stack, DevOps",
     fontFamily: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif",
     headingColor: "#09090b",
@@ -30,9 +30,9 @@ export const ATS_TEMPLATES: Record<'jakes' | 'harvard' | 'modern' | 'compact', A
   },
   harvard: {
     id: 'harvard',
-    name: "Harvard Classic (Ivy League)",
-    badge: "Ivy League & Finance",
-    tagline: "Official Ivy League format for Goldman Sachs, McKinsey, Big Tech, and research institutions. Elegant serif typography with centered hierarchy.",
+    name: "Classic Serif Layout",
+    badge: "Serif Layout",
+    tagline: "A serif resume layout with a centered hierarchy. Customize the sample content and follow the formatting instructions for each application.",
     recommendedFor: "Finance, Management, Consulting, Tech Leadership",
     fontFamily: "'Merriweather', Georgia, serif",
     headingColor: "#111827",
@@ -58,9 +58,9 @@ export const ATS_TEMPLATES: Record<'jakes' | 'harvard' | 'modern' | 'compact', A
   },
   compact: {
     id: 'compact',
-    name: "Deedy Compact (1-Page High-Density)",
-    badge: "Guaranteed 1-Page",
-    tagline: "High-density single page layout engineered by top engineering students to fit multiple complex projects and skills without page overflow.",
+    name: "Compact Resume Layout",
+    badge: "Compact Layout",
+    tagline: "A compact layout for organizing projects and skills. Page count depends on your content and export settings, so review the PDF before applying.",
     recommendedFor: "Students with multiple projects, Hackathon winners, Career switchers",
     fontFamily: "'Plus Jakarta Sans', sans-serif",
     headingColor: "#1e293b",

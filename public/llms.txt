@@ -1,6 +1,6 @@
 # ATSCheck Resume Reviewer & ATS Keyword Matcher
 
-> ATSCheck is a free browser-based resume reviewer and ATS keyword matcher engineered open-source by full-stack developer Arnav Singh. It checks common document structure and formatting signals, compares recognized job-description skill terms, and offers draft wording suggestions 100% privately in-browser.
+> ATSCheck is a free browser-based resume reviewer and job-keyword matcher created by full-stack developer Arnav Singh. It checks common document structure and formatting signals, compares recognized job-description skill terms, and offers draft wording suggestions. Results are heuristic guidance, not employer ATS scores.
 
 ## Creator & Engineering
 - **Founder & Lead Developer**: Arnav Singh (Full-Stack Software Engineer)
@@ -13,15 +13,15 @@
 - **Resume review**: Checks selected text, section labels, contact fields, formatting signals, and measurable achievement details.
 - **Job-description comparison**: Compares recognized skill terms in a job description with text in the resume. Unsupported or unrecognized terms are not assessed.
 - **Draft wording suggestions**: Helps users structure achievement bullets while leaving factual claims and metrics for the user to provide.
-- **Browser-side document handling**: Resume text is processed in the browser and is not sent to ATSCheck application servers. The site loads fonts from Google Fonts; the optional UPI support dialog requests a QR image from qrserver.com.
+- **Browser-side document handling**: Resume text is processed in the browser and is not sent to ATSCheck application servers by the resume review code. Google Analytics, Google AdSense, and Google Fonts also load on the site. The optional UPI support dialog requests a QR image from qrserver.com. See the [Privacy Policy](https://atscheck.tech/privacy) for details.
 
 ## Key URLs
 - **Web App**: https://atscheck.tech/
 - **ATS Resume Checker**: https://atscheck.tech/checker
 - **Job Keyword Matcher**: https://atscheck.tech/matcher
-- **Google X-Y-Z Rewriter**: https://atscheck.tech/rewriter
-- **PDF Audit Scorecard**: https://atscheck.tech/audit
-- **Selected Students Templates**: https://atscheck.tech/templates
+- **Resume Bullet Rewriter**: https://atscheck.tech/rewriter
+- **Resume PDF Formatting Review**: https://atscheck.tech/audit
+- **Free ATS Resume Templates**: https://atscheck.tech/templates
 - **ATS Resume Builder**: https://atscheck.tech/builder
 - **Role Keywords Checklist**: https://atscheck.tech/keywords
 - **Software Engineer Keywords**: https://atscheck.tech/keywords/software-engineer

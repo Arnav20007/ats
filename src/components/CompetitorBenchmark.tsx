@@ -38,7 +38,7 @@ const comparisonData = [
     teal: 'Check current product features',
   },
   {
-    feature: 'Google X-Y-Z rewriter',
+    feature: 'X-Y-Z-style bullet suggestions',
     atscheck: 'Draft suggestions with factual placeholders',
     jobscan: 'Check current product features',
     resumeworded: 'Check current product features',

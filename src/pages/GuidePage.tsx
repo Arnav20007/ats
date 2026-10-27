@@ -74,14 +74,14 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
           </div>
         </div>
 
-        {/* Rule 2: Google X-Y-Z Formula */}
+        {/* Rule 2: X-Y-Z-style bullet structure */}
         <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4 shadow-2xs">
           <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm uppercase tracking-wider">
             <BarChart2 className="w-4 h-4" />
             <span>Rule #2: Impact Scoring</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-            Write Bullet Points Using Google’s X-Y-Z Formula
+            Use an X-Y-Z-Style Structure for Resume Bullets
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
             A useful bullet can describe what you did, the outcome, and how you measured it. Add metrics only when you can support them, and keep your description accurate to your role.
@@ -144,8 +144,8 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
                 a: "There is no universal passing score. ATSCheck provides a heuristic based on keyword overlap, formatting checks, measurable bullets, and profile completeness; employers use different systems and criteria."
               },
               {
-                q: "What is Google's X-Y-Z formula for resume bullets?",
-                a: "The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. Use results and measures that accurately reflect your own work."
+                q: "What is an X-Y-Z-style structure for resume bullets?",
+                a: "One commonly shared X-Y-Z-style format describes an accomplishment, how it was measured, and the action behind it. Use results and measures that accurately reflect your own work."
               },
               {
                 q: "Does ATSCheck store or sell my resume data?",

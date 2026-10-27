@@ -10,7 +10,7 @@ const guarantees = [
   {
     icon: HardDrive,
     title: 'Runs on your device',
-    body: 'Résumé text is processed in your browser and is not sent to ATSCheck servers. The site still makes requests for fonts, and the optional support dialog loads a payment QR image.',
+    body: 'Résumé text is processed in your browser and is not sent to ATSCheck application servers by the review code. Google Analytics, Google AdSense, and Google Fonts also load on the site.',
     color: 'emerald',
   },
   {
@@ -43,15 +43,15 @@ const colorMap: Record<string, { bg: string; border: string; icon: string }> = {
 const sections = [
   {
     title: 'What information do we collect?',
-    body: "Résumé content — name, contact details, job history, skills, and education — is processed in your browser and is not sent to ATSCheck servers. It remains in the current page session."
+    body: "Résumé content — name, contact details, job history, skills, and education — is processed in your browser and is not sent to ATSCheck application servers by the review code. It remains in the current page session."
   },
   {
     title: 'Do we use cookies or tracking?',
-    body: "The site stores a light or dark theme preference in localStorage; this is not a cookie. Fonts load from Google Fonts. Opening the optional UPI support dialog requests a payment QR image from qrserver.com; résumé text is not included."
+    body: "The site stores a light or dark theme preference in localStorage. Google Analytics and Google AdSense scripts and Google Fonts also load; those providers may process standard browser or page data under their own policies. Opening the optional UPI support dialog requests a payment QR image from qrserver.com; résumé text is not included."
   },
   {
     title: 'Do we share data with third parties?',
-    body: "Résumé content is not sent to ATSCheck servers or third parties. Google Fonts receives standard connection metadata when font assets load. Opening the optional UPI support dialog requests a QR image from qrserver.com containing the displayed payment intent, not résumé content."
+    body: "The resume review code does not send résumé content to ATSCheck application servers or third-party analytics, advertising, or AI services. Google Analytics, Google AdSense, and Google Fonts load on the site and may receive standard page or browser data. Opening the optional UPI support dialog requests a QR image from qrserver.com containing the displayed payment intent, not résumé content."
   },
   {
     title: 'What about AI features?',

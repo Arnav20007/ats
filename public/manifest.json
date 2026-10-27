@@ -1,7 +1,7 @@
 {
   "name": "ATSCheck – Free ATS Resume Checker",
   "short_name": "ATSCheck",
-  "description": "Free in-browser ATS resume checker and keyword matcher. Check score, test Overleaf/LaTeX/Word PDFs, and compare job keywords 100% privately.",
+  "description": "Free browser-based ATS resume checker, formatting review, and job-description keyword matcher. Review extracted text and keyword overlap; scores are heuristic guidance, not employer ATS results.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#09090b",

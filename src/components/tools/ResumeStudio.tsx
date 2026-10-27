@@ -190,7 +190,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   const [showFormulaModal, setShowFormulaModal] = useState<boolean>(false);
   // Modal state for Create Your Resume / Template Picker
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
-  // Modal state for Google X-Y-Z Bullet Improver
+  // Modal state for X-Y-Z-style Bullet Improver
   const [showImproverModal, setShowImproverModal] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -296,7 +296,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
     checks.push({
       id: 'metrics',
-      title: 'Measurable achievements (Google X-Y-Z)',
+      title: 'Measurable achievements (X-Y-Z-style)',
       passed: metricRate >= 60,
       explanation: readiness.bulletCount > 0
         ? `${metricRate}% of your bullet points contain numbers or measurable terms. Verify that each figure is accurate.`
@@ -548,19 +548,19 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     }
   };
 
-  // Select bullet for rewriting and open the Google X-Y-Z Improver Modal directly
+  // Select bullet for rewriting and open the X-Y-Z-style Improver Modal directly
   const handleSelectBulletForRewrite = (expIdx: number, bulletIdx: number, text: string) => {
     setSelectedBulletIndex({ section: 'experience', itemIdx: expIdx, bulletIdx });
     setRewriterInput(text);
     setShowImproverModal(true);
-    showToast('Loaded bullet into Google X-Y-Z improver', 'sparkle');
+    showToast('Loaded bullet into X-Y-Z-style improver', 'sparkle');
   };
 
   const handleSelectProjectBulletForRewrite = (projIdx: number, bulletIdx: number, text: string) => {
     setSelectedBulletIndex({ section: 'project', itemIdx: projIdx, bulletIdx });
     setRewriterInput(text);
     setShowImproverModal(true);
-    showToast('Loaded project bullet into Google X-Y-Z improver', 'sparkle');
+    showToast('Loaded project bullet into X-Y-Z-style improver', 'sparkle');
   };
 
   // Generate high-impact, professional bullet drafts without dummy [X] brackets
@@ -569,8 +569,8 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     if (!raw) {
       return [
         {
-          type: 'Executive Impact (Google X-Y-Z)',
-          badge: 'Google X-Y-Z',
+          type: 'Executive Impact (X-Y-Z-style)',
+          badge: 'X-Y-Z-style',
           text: 'Architected and deployed high-performance services, reducing system latency and accelerating operational throughput.',
           rationale: 'Focuses on executive action verbs and verifiable operational impact.'
         },
@@ -663,8 +663,8 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
 
     return [
       {
-        type: 'Executive Impact (Google X-Y-Z)',
-        badge: 'Google X-Y-Z',
+        type: 'Executive Impact (X-Y-Z-style)',
+        badge: 'X-Y-Z-style',
         text: cleanDraft(opt1),
         rationale: 'Leads with executive power verbs and measurable operational impact.'
       },
@@ -741,7 +741,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
     if (onActionLogged) onActionLogged();
   };
 
-  // Apply suggested Google X-Y-Z bullet from deep audit
+  // Apply suggested X-Y-Z-style bullet from deep audit
   const handleApplySuggestedBullet = (original: string, suggested: string) => {
     setResume((prev) => {
       let matched = false;
@@ -770,7 +770,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
       return { ...prev, experience: nextExp, projects: nextProjects };
     });
     setHasEdited(true);
-    showToast('Applied high-impact Google X-Y-Z bullet point!', 'sparkle');
+    showToast('Applied high-impact X-Y-Z-style bullet point!', 'sparkle');
     if (onActionLogged) onActionLogged();
   };
 
@@ -1654,7 +1654,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
         </tr>
         <tr>
           <td><strong>Quantifying Impact</strong></td>
-          <td style="color: #475569;">${deepAudit.categories.content.quantifyingImpact.issueCount === 0 ? 'All bullets feature measurable Google X-Y-Z achievements.' : `${deepAudit.categories.content.quantifyingImpact.issueCount} bullet points lack measurable percentages or scale.`}</td>
+          <td style="color: #475569;">${deepAudit.categories.content.quantifyingImpact.issueCount === 0 ? 'All bullets feature measurable X-Y-Z-style achievements.' : `${deepAudit.categories.content.quantifyingImpact.issueCount} bullet points lack measurable percentages or scale.`}</td>
           <td style="text-align: right;"><span class="${deepAudit.categories.content.quantifyingImpact.issueCount === 0 ? 'status-pass' : 'status-flag'}">${deepAudit.categories.content.quantifyingImpact.issueCount === 0 ? 'PASS' : 'FLAG'}</span></td>
         </tr>
         <tr>
@@ -1808,43 +1808,43 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </h1>
 
                     <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                      Compare your resume against any target job description. Instantly identify missing technical keywords, skill gaps, and keyword match percentage — 100% private in your browser.
+                      Compare resume text with a target job description to review recognized terms and possible keyword gaps. Results are heuristic and may miss context.
                     </p>
                   </>
                 ) : activeTool === 'rewriter' ? (
                   <>
                     <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                       <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                      <span>GOOGLE X-Y-Z BULLET REWRITER • ACTION VERB OPTIMIZER</span>
+                      <span>RESUME BULLET REWRITER • ACTION VERB SUGGESTIONS</span>
                     </div>
 
                     <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
-                      Free Google X-Y-Z Resume Rewriter. <br className="hidden sm:inline" />
+                      Free Resume Bullet Point Rewriter. <br className="hidden sm:inline" />
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
                         Transform Weak Bullet Points into Metrics.
                       </span>
                     </h1>
 
                     <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                      Transform weak resume bullet points into measurable, high-impact achievements using Google's X-Y-Z formula (Accomplished [X], measured by [Y], by doing [Z]) with 100% private in-browser analysis.
+                      Draft clearer resume bullets with an illustrative X-Y-Z-style structure. Review every suggestion and keep only details and results that accurately describe your work.
                     </p>
                   </>
                 ) : activeTool === 'audit' ? (
                   <>
                     <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                       <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                      <span>ATS PDF FORMATTING AUDIT • WORKDAY &amp; GREENHOUSE COMPLIANCE</span>
+                      <span>ATS PDF FORMATTING REVIEW • GENERAL GUIDANCE</span>
                     </div>
 
                     <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
                       ATS Resume Formatting Audit Scorecard. <br className="hidden sm:inline" />
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
-                        Test Workday &amp; Enterprise ATS Readiness.
+                        Review Resume PDF Readability.
                       </span>
                     </h1>
 
                     <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                      Audit your resume against enterprise ATS parser standards. Test single-column compliance, table detection, font readability, section header formats, and contact details instantly.
+                      Review extracted PDF text, section headings, and common layout risks. ATSCheck provides general formatting guidance and does not certify results in a specific employer system.
                     </p>
                   </>
                 ) : (isCheckerPage || activeTool === 'checker') ? (
@@ -1880,7 +1880,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </h1>
 
                     <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
-                      Free ATS resume checker with no login or account required. Calculate ATS resume score for freshers and experienced software engineers, test Overleaf/LaTeX/Word PDFs, and match job keywords in seconds — 100% private in your browser.
+                      Free ATS resume checker with no login or account required. Review resume structure and formatting, extract text from supported PDFs and DOCX files, and compare job keywords. Scores are heuristic guidance, not an employer ATS result.
                     </p>
                   </>
                 )}
@@ -1905,7 +1905,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       {isDragging ? 'Drop your resume file to analyze' : 'Drop your resume here or browse files'}
                     </p>
                     <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
-                      Supports PDF, DOCX, Overleaf &amp; LaTeX Exports (100% In-Browser Private)
+                      Supports PDF, DOCX, Overleaf &amp; LaTeX Exports (Browser-Based Review)
                     </p>
                   </div>
 
@@ -2016,7 +2016,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 </h2>
 
                 <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed font-normal">
-                  When you apply for a job, your resume is screened through applicant tracking systems (like Workday, Greenhouse, or Taleo) before reaching a human recruiter. ATSCheck scores your document across 7 transparent checklist categories totaling 100 points.
+                  Employers may use application systems to collect or review candidate information, but workflows and screening criteria differ. ATSCheck scores a resume across seven transparent checklist categories totaling 100 points.
                 </p>
 
                 <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
@@ -2033,7 +2033,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                         Structural Parseability (50 Points)
                       </h4>
                       <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-                        Evaluates contact details (20 pts), standard section headings (20 pts), and single-column length density (10 pts) so ATS software never merges columns or loses contact data.
+                        Evaluates contact details (20 pts), standard section headings (20 pts), and document structure (10 pts) as general readability signals. It cannot predict how another parser will read the file.
                       </p>
                     </div>
                   </div>
@@ -2047,7 +2047,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                         Recruiter Impact & Quality (50 Points)
                       </h4>
                       <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-                        Evaluates quantified Google X-Y-Z metrics (15 pts), recognized action verbs (15 pts), achievement bullets (10 pts), and zero weak filler phrases (10 pts), plus a separate job description keyword match.
+                        Evaluates measurable details (15 pts), action verbs (15 pts), achievement bullets (10 pts), and filler phrases (10 pts), plus a separate job-description keyword comparison. These checks do not establish a universal hiring threshold.
                       </p>
                     </div>
                   </div>
@@ -2327,7 +2327,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span><strong>Google X-Y-Z</strong> quantifiable bullet rewriter</span>
+                        <span><strong>X-Y-Z-style</strong> bullet-writing suggestions</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -2389,7 +2389,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       </li>
                       <li className="flex items-center gap-3">
                         <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                        <span><strong>FAANG & Big Tech</strong> custom parser emulation</span>
+                        <span><strong>Role-specific</strong> formatting and keyword guidance</span>
                       </li>
                     </ul>
                   </div>
@@ -2709,7 +2709,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                                 <div className="space-y-1.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                                   <div className="flex items-center justify-between">
                                     <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
-                                      Draft suggestion (Google X-Y-Z)
+                                      Draft suggestion (X-Y-Z style)
                                     </span>
                                     <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
                                       Add verified results where available
@@ -3065,7 +3065,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
                           <span className="text-[10px] font-mono font-semibold text-zinc-500 uppercase tracking-wider block">
-                            Google X-Y-Z Method: Accomplished [X] as measured by [Y], by doing [Z]
+                            X-Y-Z-Style Structure: Accomplished [X], as measured by [Y], by doing [Z]
                           </span>
                           <h4 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
                             Selected Bullet Point:
@@ -3073,11 +3073,11 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                         </div>
                       </div>
 
-                      {/* Quick Google X-Y-Z Role Presets */}
+                      {/* Quick X-Y-Z-style Role Presets */}
                       <div className="flex flex-wrap items-center gap-1.5 pt-1">
                         <span className="text-[11px] font-semibold text-zinc-500 flex items-center gap-1">
                           <Sparkles className="w-3 h-3 text-emerald-500" />
-                          <span>Google X-Y-Z Presets:</span>
+                          <span>X-Y-Z-Style Presets:</span>
                         </span>
                         {XYZ_PRESETS.map((p, idx) => (
                           <button
@@ -3640,7 +3640,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                                           type="button"
                                           onClick={() => handleSelectProjectBulletForRewrite(projIdx, bulletIdx, bullet)}
                                           className="px-2 py-0.5 rounded text-[11px] font-bold bg-zinc-100 hover:bg-emerald-600 hover:text-white text-zinc-700 transition-colors flex items-center gap-1 cursor-pointer"
-                                          title="Improve with Google X-Y-Z formula"
+                                          title="Improve with X-Y-Z-style formula"
                                         >
                                           <Sparkles className="w-3 h-3" />
                                           <span>Improve</span>
@@ -3802,7 +3802,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                                           type="button"
                                           onClick={() => handleSelectBulletForRewrite(expIdx, bulletIdx, bullet)}
                                           className="px-2 py-0.5 rounded text-[11px] font-bold bg-zinc-100 hover:bg-emerald-600 hover:text-white text-zinc-700 transition-colors flex items-center gap-1 cursor-pointer"
-                                          title="Improve with Google X-Y-Z formula"
+                                          title="Improve with X-Y-Z-style formula"
                                         >
                                           <Sparkles className="w-3 h-3" />
                                           <span>Improve</span>
@@ -4086,7 +4086,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   Choose ATS Template &amp; Starter
                 </h3>
                 <p className="text-xs text-zinc-500">
-                  Select an authentic single-column ATS layout used by students selected at top companies, or populate with starter data.
+                  Select an editable single-column layout or populate it with fictional starter data. Replace sample details with accurate information before exporting.
                 </p>
               </div>
               <button
@@ -4104,7 +4104,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
-                    1. Real-World Selected Students ATS Templates
+                    1. Editable ATS Resume Templates
                   </h4>
                   <p className="text-[11px] text-zinc-500">
                     Changes visual layout, typography, and PDF export rules immediately without altering your text.
@@ -4115,7 +4115,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     <button
                       type="button"
                       onClick={() => {
-                        setShowTemplateModal(false);
+                        setShowCreateModal(false);
                         onOpenTemplates();
                       }}
                       className="text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer"
@@ -4244,7 +4244,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   2. Load Example Role Data (Optional)
                 </h4>
                 <p className="text-[11px] text-zinc-500">
-                  Populates the canvas with pre-written, Google X-Y-Z quantified bullets for common technical roles.
+                  Populates the canvas with illustrative bullet examples for common technical roles. Replace sample metrics and claims with results you can verify.
                 </p>
               </div>
 
@@ -4370,7 +4370,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 
             <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center shadow-none">
               <p className="text-xs text-zinc-500">
-                🔒 <strong>100% In-Browser Private:</strong> Résumé text stays in your browser memory and is never uploaded to any remote server.
+                🔒 <strong>Browser-Based Resume Review:</strong> Resume text is processed in your browser and is not sent to ATSCheck application servers by the review code. The site also loads third-party services listed in the Privacy Policy.
               </p>
             </div>
 
@@ -4393,10 +4393,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                   <Sparkles className="w-3 h-3 text-emerald-500" />
-                  <span>GOOGLE X-Y-Z BULLET IMPROVER</span>
+                  <span>RESUME BULLET IMPROVER</span>
                 </div>
                 <h3 id="improver-modal-title" className="text-lg font-bold text-zinc-900 dark:text-white">
-                  Upgrade Bullet Point to FAANG Standard
+                  Improve Bullet Point with an X-Y-Z-Style Structure
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Formula: Accomplished <span className="text-emerald-600 dark:text-emerald-400 font-semibold">[X]</span> as measured by <span className="text-emerald-600 dark:text-emerald-400 font-semibold">[Y]</span>, by doing <span className="text-emerald-600 dark:text-emerald-400 font-semibold">[Z]</span>
@@ -4412,10 +4412,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               </button>
             </div>
 
-            {/* Quick Google X-Y-Z Role Presets */}
+            {/* Quick X-Y-Z-style Role Presets */}
             <div className="space-y-1.5">
               <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block">
-                Quick Role Presets (Click to load tested metrics):
+                Quick Role Presets (replace examples with verified metrics):
               </span>
               <div className="flex flex-wrap items-center gap-1.5">
                 {XYZ_PRESETS.map((p, idx) => (

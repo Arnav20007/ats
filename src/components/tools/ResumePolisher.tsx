@@ -44,7 +44,7 @@ export const ResumePolisher: React.FC<ResumePolisherProps> = ({ onActionLogged }
     if (!clean) {
       return [
         {
-          type: 'Metric-Driven & High Impact (Google X-Y-Z)',
+          type: 'Metric-Driven & High Impact (X-Y-Z-style)',
           text: '[Describe what you accomplished], measured by [a result or metric], by [describing how you did it].',
           powerVerbs: [],
           whyItWins: 'A fill-in template. Replace each bracketed prompt with accurate details from your own work.'

@@ -8,7 +8,7 @@ const faqs = [
   },
   {
     q: 'Does my resume data get saved, stored, or sent to AI?',
-    a: "Résumé text is processed 100% locally in your browser memory for the current session and is not sent to ATSCheck application servers or any external AI service. Theme preference is stored locally, and the site requests fonts from Google Fonts."
+    a: "Résumé text is processed in your browser for the current session and is not sent to ATSCheck application servers or an external AI service by the resume review code. Theme preference is stored locally. Google Analytics, Google AdSense, and Google Fonts also load on the site and may process standard page or browser data under their policies."
   },
   {
     q: 'Can ATS software read PDF resumes?',
@@ -19,8 +19,8 @@ const faqs = [
     a: 'There is no universal passing score across all employers. ATSCheck provides a heuristic to help review keyword overlap, formatting, bullet points, and profile completeness; employers use different systems and criteria.'
   },
   {
-    q: 'What is the Google X-Y-Z formula for bullet points?',
-    a: 'The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. The improver offers draft wording; use only outcomes and measures that accurately reflect your work.'
+    q: 'What is an X-Y-Z-style structure for resume bullets?',
+    a: 'One commonly shared X-Y-Z-style format describes an accomplishment, how it was measured, and the action behind it. The improver offers draft wording; use only outcomes and measures that accurately reflect your work.'
   },
   {
     q: 'Can I check an Overleaf, LaTeX, or Word resume ATS score?',

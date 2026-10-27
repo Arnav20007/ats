@@ -27,7 +27,7 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
     roleTitle: 'Software Engineer & Backend Developer',
     shortTitle: 'Software Engineer',
     seoTitle: 'Top ATS Keywords for Software Engineers – Resume Checker & Checklist',
-    metaDescription: 'Essential ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers and Backend Developers. 100% free checklist.',
+    metaDescription: 'Essential ATS resume keywords, technical skills, and X-Y-Z-style achievement formulas for Software Engineers and Backend Developers. 100% free checklist.',
     overview: 'Applicant Tracking Systems at tech companies look for specific programming languages, distributed systems concepts, cloud infrastructure, and verifiable metrics rather than generic responsibilities.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
@@ -39,7 +39,7 @@ export const ROLE_KEYWORD_PROFILES: Record<string, RoleKeywordData> = {
 categories: [
       {
         categoryName: 'Core Languages & Runtimes',
-        description: 'Primary programming languages and execution environments tested by technical screeners.',
+        description: 'Common programming languages and runtime environments for this role.',
         keywords: ['Go', 'TypeScript', 'Python', 'Java', 'C++', 'Rust', 'Node.js', 'SQL']
       },
       {
@@ -87,15 +87,15 @@ categories: [
     roleTitle: 'Product Manager & Technical PM',
     shortTitle: 'Product Manager',
     seoTitle: 'Essential ATS Keywords for Product Managers (2026 Guide)',
-    metaDescription: 'Must-have ATS keywords, strategic metrics, and Google X-Y-Z resume bullet formulas for Product Managers and Technical PMs. Free checklist.',
-    overview: 'Product Manager ATS filters heavily prioritize business impact metrics (ARR, conversion rate, retention), product-led growth (PLG) terminology, cross-functional leadership, and agile roadmapping.',
+    metaDescription: 'Must-have ATS keywords, strategic metrics, and X-Y-Z-style resume bullet formulas for Product Managers and Technical PMs. Free checklist.',
+    overview: 'For product roles, candidates often describe business outcomes (such as revenue, conversion, or retention), product strategy, collaboration, and roadmap work. Use only examples that fit the target role and your experience.',
     starterTemplateKey: 'product_manager',
         recruiterScreeningChecklist: [
     "Does the resume show revenue or growth ownership ($ ARR, % trial-to-paid conversion, retention, churn) instead of just feature delivery?",
     "Is there evidence of customer discovery, user research, and data-driven prioritization (Mixpanel, Amplitude, SQL)?",
     "Does the candidate clearly demonstrate cross-functional leadership across engineering, UX design, and executive stakeholders?"
 ],
-    atsFormattingAdvice: "Product managers often make the mistake of presenting roadmap timelines in graphic Gantt charts or multi-column matrix tables. ATS parsers strip all non-standard elements, leaving behind fragmented sentence snippets. Stick to single-column bullet points structured with the Google X-Y-Z formula.",
+    atsFormattingAdvice: "For a resume that is easy to review, describe roadmap work in clear text and use consistent section headings. Avoid relying on charts or graphics to convey information that is important to the role. Parser behavior varies, so inspect the exported PDF.",
 categories: [
       {
         categoryName: 'Product Strategy & Growth',
@@ -147,7 +147,7 @@ categories: [
     roleTitle: 'Data Scientist & Machine Learning Engineer',
     shortTitle: 'Data Scientist',
     seoTitle: 'Top ATS Keywords for Data Scientists & ML Engineers (2026)',
-    metaDescription: 'Target ATS keywords, machine learning frameworks, data pipeline tools, and Google X-Y-Z formulas for Data Scientists and AI Engineers.',
+    metaDescription: 'Target ATS keywords, machine learning frameworks, data pipeline tools, and X-Y-Z-style formulas for Data Scientists and AI Engineers.',
     overview: 'Data science and AI resumes must showcase statistical foundations, production model deployment, data pipeline engineering, and tangible business or operational outcomes.',
     starterTemplateKey: 'ai_ml_engineer',
         recruiterScreeningChecklist: [
@@ -155,7 +155,7 @@ categories: [
     "Are statistical validation metrics (F1 score, AUC-ROC, precision/recall, RMSE) explicitly connected to a business KPI?",
     "Does the stack reflect modern tooling (PyTorch, Hugging Face, MLflow, Docker) alongside strong SQL querying capabilities?"
 ],
-    atsFormattingAdvice: "Data scientists often include mathematical formulas or Greek symbols in LaTeX resumes that export as unreadable Unicode glyphs in standard ATS parsers. Keep technical terminology spelled out in plain text (e.g., \"ROC-AUC\" instead of mathematical equation symbols).",
+    atsFormattingAdvice: "For readability, spell out specialized terms and define abbreviations when helpful. After exporting, select and copy the PDF text to check that symbols, formulas, and section order appear as intended.",
 categories: [
       {
         categoryName: 'Languages & Core Math',
@@ -207,7 +207,7 @@ categories: [
     roleTitle: 'DevOps & Cloud Infrastructure Engineer',
     shortTitle: 'DevOps Engineer',
     seoTitle: 'Essential ATS Keywords for DevOps & Cloud Engineers (2026)',
-    metaDescription: 'Complete ATS keyword checklist, cloud infrastructure tools, SRE terminology, and Google X-Y-Z resume bullet examples for DevOps Engineers.',
+    metaDescription: 'Complete ATS keyword checklist, cloud infrastructure tools, SRE terminology, and X-Y-Z-style resume bullet examples for DevOps Engineers.',
     overview: 'DevOps and Site Reliability Engineering resumes must highlight infrastructure as code, uptime reliability, deployment frequency, automated testing, and cloud cost governance.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
@@ -215,7 +215,7 @@ categories: [
     "Does the resume highlight operational reliability improvements (uptime SLAs, MTTR reduction, automated failovers)?",
     "Is container orchestration (Kubernetes, Helm, Docker) backed by CI/CD pipeline automation and security scanning?"
 ],
-    atsFormattingAdvice: "DevOps resumes often list hundreds of acronyms in comma-separated clouds. ATS filters scan for context: ensure core tools like Kubernetes or Terraform appear naturally inside bullet points detailing the infrastructure scale and cost reductions achieved.",
+    atsFormattingAdvice: "Avoid long, unexplained tool lists. Where accurate, connect tools such as Kubernetes or Terraform to a project, responsibility, or result so a reader can understand how you used them.",
 categories: [
       {
         categoryName: 'Cloud Platforms',
@@ -275,7 +275,7 @@ categories: [
     "Are RESTful or GraphQL API contracts, database optimizations, and client-side rendering (SSR/hydration) clearly explained?",
     "Is there measurable evidence of performance tuning (Core Web Vitals, API response latency, bundle size reductions)?"
 ],
-    atsFormattingAdvice: "Full stack resumes easily get rejected if skills are lumped into one giant unstructured list. Group technical competencies into clear sub-categories: Frontend, Backend, Databases, and DevOps to help ATS parsers score keyword density accurately.",
+    atsFormattingAdvice: "Group technical skills into clear categories such as Frontend, Backend, Databases, and DevOps. This can make a resume easier to scan; it does not predict an employer’s keyword score.",
 categories: [
       {
         categoryName: 'Frontend Technologies',
@@ -327,15 +327,15 @@ categories: [
     roleTitle: 'Frontend Engineer & UI Developer',
     shortTitle: 'Frontend Dev',
     seoTitle: 'Top ATS Keywords for Frontend Developers (2026 Skills Checklist)',
-    metaDescription: 'Target ATS keywords, modern JavaScript/TypeScript frameworks, web performance metrics, and Google X-Y-Z resume formulas for Frontend Engineers.',
-    overview: 'Frontend ATS parsers prioritize modern component frameworks (React, Next.js, Vue), state management, accessibility (a11y), responsive design, and measurable Core Web Vitals optimizations.',
+    metaDescription: 'Target ATS keywords, modern JavaScript/TypeScript frameworks, web performance metrics, and X-Y-Z-style resume formulas for Frontend Engineers.',
+    overview: 'Frontend job descriptions commonly mention component frameworks (React, Next.js, Vue), state management, accessibility, responsive design, and web performance. Compare this checklist with the specific job post.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
     "Does the resume showcase proficiency with modern component-driven frameworks (React, Next.js, Vue) and state management?",
     "Are web performance metrics (Core Web Vitals, LCP, INP, bundle optimization, tree-shaking) explicitly quantified?",
     "Is responsive design, cross-browser compatibility, and accessibility (WCAG, semantic HTML) clearly represented?"
 ],
-    atsFormattingAdvice: "Frontend developers frequently design visually intricate portfolio resumes using CSS grids, icon graphics, and floating sidebars. ATS software strips styling completely, scrambling the reading order. Maintain a strictly single-column semantic structure.",
+    atsFormattingAdvice: "If your resume uses columns, icons, or text boxes, inspect the exported PDF by selecting and copying its text. A simple layout can be easier to review, but extraction behavior varies across documents and tools.",
 categories: [
       {
         categoryName: 'Frameworks & Core Languages',
@@ -387,15 +387,15 @@ categories: [
     roleTitle: 'Data Analyst & Business Intelligence Specialist',
     shortTitle: 'Data Analyst',
     seoTitle: 'Essential ATS Keywords for Data Analysts (2026 Checklist & Guide)',
-    metaDescription: 'Must-have ATS keywords, SQL querying techniques, BI dashboarding tools, and Google X-Y-Z formulas for Data Analysts and BI Engineers.',
-    overview: 'Data Analyst ATS filters look for advanced SQL capabilities, business intelligence platforms (Power BI, Tableau), statistical analysis, and clear executive decision support.',
+    metaDescription: 'Must-have ATS keywords, SQL querying techniques, BI dashboarding tools, and X-Y-Z-style formulas for Data Analysts and BI Engineers.',
+    overview: 'Data analyst job descriptions may ask for SQL, business intelligence tools, statistical analysis, and decision-support experience. Tailor this checklist to the specific role.',
     starterTemplateKey: 'ai_ml_engineer',
         recruiterScreeningChecklist: [
     "Does the resume demonstrate advanced SQL (window functions, CTEs, complex joins) and BI dashboard adoption (Tableau, Power BI)?",
     "Are analytical findings tied directly to business decision-making and operational cost savings or revenue generation?",
     "Is there evidence of statistical analysis, cohort analysis, and cross-departmental stakeholder reporting?"
 ],
-    atsFormattingAdvice: "Avoid embedding charts, dashboard screenshots, or table borders to display analytics project outcomes. ATS software cannot parse images or graphic visual widgets; write out your methodology and numerical findings as concise text bullets.",
+    atsFormattingAdvice: "Do not rely on a chart or screenshot alone to explain a project result. Describe your method and any verified findings in text, and check that the exported PDF contains selectable text.",
 categories: [
       {
         categoryName: 'Querying & Data Manipulation',
@@ -447,7 +447,7 @@ categories: [
     roleTitle: 'Cybersecurity Analyst & InfoSec Engineer',
     shortTitle: 'Cybersecurity',
     seoTitle: 'Top ATS Keywords for Cybersecurity Analysts (2026 Checklist)',
-    metaDescription: 'Essential ATS keywords, SIEM tools, vulnerability assessment, compliance frameworks, and Google X-Y-Z formulas for Cybersecurity Analysts.',
+    metaDescription: 'Essential ATS keywords, SIEM tools, vulnerability assessment, compliance frameworks, and X-Y-Z-style formulas for Cybersecurity Analysts.',
     overview: 'Security resumes need to highlight threat hunting, incident response, SIEM telemetry, vulnerability management, zero trust architecture, and compliance standards (SOC 2, ISO 27001).',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
@@ -507,15 +507,15 @@ categories: [
     roleTitle: 'Cloud Solutions Architect',
     shortTitle: 'Cloud Architect',
     seoTitle: 'Essential ATS Keywords for Cloud Solutions Architects (2026)',
-    metaDescription: 'Target ATS keywords, cloud infrastructure design, multi-region high availability, cost FinOps, and Google X-Y-Z formulas for Cloud Architects.',
-    overview: 'Cloud Architect ATS filters seek multi-cloud expertise (AWS, Azure, GCP), high-availability system architecture, infrastructure as code (Terraform), and cloud financial management (FinOps).',
+    metaDescription: 'Target ATS keywords, cloud infrastructure design, multi-region high availability, cost FinOps, and X-Y-Z-style formulas for Cloud Architects.',
+    overview: 'Cloud architecture job descriptions may include AWS, Azure, or GCP, high availability, infrastructure as code, and FinOps. Check the target role for the platforms and responsibilities it actually names.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
     "Does the candidate demonstrate enterprise cloud migration, multi-region failover, and high-availability architecture design?",
     "Are cloud governance, IAM zero-trust security policies, and FinOps cloud spend optimizations quantified with concrete dollar figures?",
     "Does the stack reflect major hyperscalers (AWS, Azure, GCP) alongside container ecosystems and infrastructure automation?"
 ],
-    atsFormattingAdvice: "Cloud architecture diagrams and complex multi-tier topology schematics break ATS parsers completely. Replace visual diagrams with structured bullets explaining network topologies, transit gateways, and uptime availability figures.",
+    atsFormattingAdvice: "If an architecture diagram contains important information, summarize the design in text as well. Describe relevant components, trade-offs, and verified availability or scale results in clear bullets.",
 categories: [
       {
         categoryName: 'Cloud Infrastructure & Compute',
@@ -567,7 +567,7 @@ categories: [
     roleTitle: 'QA Automation Engineer & SDET',
     shortTitle: 'QA / SDET',
     seoTitle: 'Top ATS Keywords for QA Automation Engineers & SDETs (2026)',
-    metaDescription: 'Target ATS keywords, automated test frameworks, CI/CD pipeline integration, API testing, and Google X-Y-Z formulas for QA Engineers and SDETs.',
+    metaDescription: 'Target ATS keywords, automated test frameworks, CI/CD pipeline integration, API testing, and X-Y-Z-style formulas for QA Engineers and SDETs.',
     overview: 'QA and SDET resumes must demonstrate automated test suite development (Playwright, Selenium, Cypress), API testing, load testing, CI/CD test gates, and bug escape reduction.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
@@ -627,15 +627,15 @@ categories: [
     roleTitle: 'Mobile Application Developer (iOS & Android)',
     shortTitle: 'Mobile Dev',
     seoTitle: 'Essential ATS Keywords for Mobile Developers (iOS & Android 2026)',
-    metaDescription: 'Target ATS keywords, Swift, Kotlin, React Native, App Store guidelines, and Google X-Y-Z resume bullet examples for iOS and Android Developers.',
-    overview: 'Mobile developer ATS screeners focus on native platforms (Swift/SwiftUI, Kotlin/Jetpack Compose), cross-platform frameworks (React Native, Flutter), offline caching, and app performance.',
+    metaDescription: 'Target ATS keywords, Swift, Kotlin, React Native, App Store guidelines, and X-Y-Z-style resume bullet examples for iOS and Android Developers.',
+    overview: 'Mobile developer job descriptions may mention Swift or Kotlin, cross-platform frameworks, offline behavior, and app performance. Use current role postings to choose relevant terms.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
     "Does the resume clearly indicate native (Swift/iOS, Kotlin/Android) or cross-platform (Flutter, React Native) production mastery?",
     "Are app store metrics (downloads, active users, crash-free session rates, App Store ratings) quantified?",
     "Is there evidence of offline-first architectures, memory profiling, and push notification delivery systems?"
 ],
-    atsFormattingAdvice: "Including clickable App Store or Google Play badges as images confuses ATS parsers. Place live app links as clean markdown URLs or plain-text links in your projects section alongside user rating statistics.",
+    atsFormattingAdvice: "List app links as readable text and describe what you built. If you include store badges or screenshots, make sure they do not replace important project details or contact information.",
 categories: [
       {
         categoryName: 'Native Platforms & Languages',
@@ -687,15 +687,15 @@ categories: [
     roleTitle: 'Product Designer & UI/UX Specialist',
     shortTitle: 'UI/UX Designer',
     seoTitle: 'Top ATS Keywords for UI/UX & Product Designers (2026 Checklist)',
-    metaDescription: 'Target ATS keywords, design systems, user research, wireframing, Figma components, and Google X-Y-Z formulas for UI/UX and Product Designers.',
-    overview: 'UI/UX Designer ATS filters look for design systems, user research, prototyping (Figma), interaction design, usability testing, and metric-proven conversion increases.',
+    metaDescription: 'Target ATS keywords, design systems, user research, wireframing, Figma components, and X-Y-Z-style formulas for UI/UX and Product Designers.',
+    overview: 'UI/UX and product design roles may ask for design systems, user research, prototyping, interaction design, usability testing, and product outcomes. Use the target posting to select relevant terms.',
     starterTemplateKey: 'product_manager',
         recruiterScreeningChecklist: [
     "Does the resume highlight user research, usability testing methodologies, and design system creation in Figma?",
     "Are design decisions tied to measurable product impact (conversion rate lift, task completion time reduction, drop-off reduction)?",
     "Is there evidence of close collaboration with software engineers to inspect implementation fidelity and design tokens?"
 ],
-    atsFormattingAdvice: "Designers suffer the highest ATS rejection rate because their resumes often resemble Dribbble shots (creative fonts, dual sidebars, graphic skill meters). An ATS cannot read graphic vectors. Use a clean, typography-led single-column document with a prominent link to your portfolio.",
+    atsFormattingAdvice: "Keep essential skills, experience, and portfolio links available as readable text. A visually complex layout can make details harder to inspect; check the PDF’s text and reading order after export.",
 categories: [
       {
         categoryName: 'Design Tools & Prototyping',
@@ -747,7 +747,7 @@ categories: [
     roleTitle: 'Engineering Manager & Tech Lead',
     shortTitle: 'Engineering Mgr',
     seoTitle: 'Essential ATS Keywords for Engineering Managers (2026 Guide)',
-    metaDescription: 'Target ATS keywords, sprint delivery metrics, engineering headcount growth, system architecture, and Google X-Y-Z formulas for Engineering Managers.',
+    metaDescription: 'Target ATS keywords, sprint delivery metrics, engineering headcount growth, system architecture, and X-Y-Z-style formulas for Engineering Managers.',
     overview: 'Engineering leadership resumes must prove people management (1:1s, performance reviews), technical architecture oversight, recruitment, and delivery velocity metrics (DORA).',
     starterTemplateKey: 'product_manager',
         recruiterScreeningChecklist: [
@@ -755,7 +755,7 @@ categories: [
     "Are delivery metrics (sprint velocity, on-time project shipping, technical debt reduction) clearly outlined?",
     "Is there a track record of architectural stewardship alongside executive engineering stakeholder management?"
 ],
-    atsFormattingAdvice: "Avoid high-level managerial buzzwords like \"spearheaded synergy\". ATS filters for EM roles prioritize concrete team sizes, budget oversight figures, and operational velocity indicators (e.g., \"Led team of 12 backend engineers\").",
+    atsFormattingAdvice: "Avoid vague management language. Where accurate, explain your team scope, budget responsibility, delivery work, or operational results with concrete details.",
 categories: [
       {
         categoryName: 'Leadership & People Management',
@@ -807,15 +807,15 @@ categories: [
     roleTitle: 'Scrum Master & Agile Coach',
     shortTitle: 'Scrum Master',
     seoTitle: 'Top ATS Keywords for Scrum Masters & Agile Coaches (2026 Checklist)',
-    metaDescription: 'Must-have ATS keywords, Agile ceremonies, Jira administration, sprint velocity metrics, and Google X-Y-Z formulas for Scrum Masters.',
-    overview: 'Scrum Master ATS filters look for Agile frameworks (Scrum, Kanban, SAFe), team velocity improvements, ceremony facilitation, backlog grooming, and impediment resolution.',
+    metaDescription: 'Must-have ATS keywords, Agile ceremonies, Jira administration, sprint velocity metrics, and X-Y-Z-style formulas for Scrum Masters.',
+    overview: 'Scrum Master roles may mention Agile frameworks, facilitation, backlog work, delivery metrics, and impediment resolution. Compare these terms with the target role and describe your own scope.',
     starterTemplateKey: 'product_manager',
         recruiterScreeningChecklist: [
     "Does the candidate hold recognized certifications (PSM, CSM, SAFe) and facilitate multi-team agile ceremonies?",
     "Are agile maturity metrics (velocity stability, cycle time reduction, dependency resolution) quantified?",
     "Is there demonstrated experience removing cross-functional blockers and mentoring product owners and development teams?"
 ],
-    atsFormattingAdvice: "Do not list Scrum events (daily standup, sprint review, retro) as generic duty bullets. ATS parsers score higher when you describe how your facilitation improved sprint predictability or resolved cross-team blockers.",
+    atsFormattingAdvice: "Describe your contribution to planning, reviews, retrospectives, or blocker resolution with specific context. Use verified examples rather than assuming a particular parser rewards a certain phrase.",
 categories: [
       {
         categoryName: 'Agile Frameworks & Methodologies',
@@ -867,7 +867,7 @@ categories: [
     roleTitle: 'Systems Administrator & Linux SRE',
     shortTitle: 'SysAdmin',
     seoTitle: 'Essential ATS Keywords for Systems Administrators & Linux Admins (2026)',
-    metaDescription: 'Target ATS keywords, Linux server administration, Bash scripting, virtualization, backup strategies, and Google X-Y-Z formulas for SysAdmins.',
+    metaDescription: 'Target ATS keywords, Linux server administration, Bash scripting, virtualization, backup strategies, and X-Y-Z-style formulas for SysAdmins.',
     overview: 'SysAdmin resumes need to highlight Linux/Windows server administration, virtualization (VMware, Proxmox), automated scripting (Bash, Python), backup/restore DR, and server uptime.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
@@ -927,15 +927,15 @@ categories: [
     roleTitle: 'Technical Business Analyst',
     shortTitle: 'Business Analyst',
     seoTitle: 'Top ATS Keywords for Technical Business Analysts (2026 Checklist)',
-    metaDescription: 'Target ATS keywords, requirements gathering, BRD/FRD documentation, SQL querying, user stories, and Google X-Y-Z formulas for Business Analysts.',
-    overview: 'Business Analyst ATS parsers focus on requirements elicitation (BRD, FRD, PRD), user story authoring in Jira, stakeholder management, SQL data validation, and process modeling (BPMN).',
+    metaDescription: 'Target ATS keywords, requirements gathering, BRD/FRD documentation, SQL querying, user stories, and X-Y-Z-style formulas for Business Analysts.',
+    overview: 'Business analyst roles may include requirements documentation, user stories, stakeholder collaboration, SQL validation, and process modeling. Compare this list with the specific posting.',
     starterTemplateKey: 'product_manager',
         recruiterScreeningChecklist: [
     "Does the candidate bridge business requirements into actionable functional specifications, user stories, and acceptance criteria?",
     "Are process optimization outcomes (cost reductions, cycle time savings, error reduction) quantified?",
     "Does the stack reflect requirements management tools (Jira, Confluence) alongside data query tools (SQL, Excel, Visio)?"
 ],
-    atsFormattingAdvice: "Flowcharts and BPMN process diagrams cannot be extracted by ATS software. Convert your process improvements into descriptive text explaining the \"before vs after\" efficiency gains.",
+    atsFormattingAdvice: "Summarize important process diagrams in text, including your role, the change, and any verified result. This keeps the project understandable when a diagram is not visible or cannot be inspected.",
 categories: [
       {
         categoryName: 'Requirements & Documentation',
@@ -987,7 +987,7 @@ categories: [
     roleTitle: 'Financial Analyst & FP&A Lead',
     shortTitle: 'Financial Analyst',
     seoTitle: 'Essential ATS Keywords for Financial Analysts & FP&A (2026 Checklist)',
-    metaDescription: 'Target ATS keywords, financial modeling, DCF valuations, budget forecasting, variance analysis, and Google X-Y-Z formulas for Financial Analysts.',
+    metaDescription: 'Target ATS keywords, financial modeling, DCF valuations, budget forecasting, variance analysis, and X-Y-Z-style formulas for Financial Analysts.',
     overview: 'Finance resumes must highlight three-statement financial modeling, variance analysis, budget forecasting, SaaS unit economics, ERP systems (NetSuite, SAP), and EBITDA impact.',
     starterTemplateKey: 'finance_ops',
         recruiterScreeningChecklist: [
@@ -995,7 +995,7 @@ categories: [
     "Are financial recommendations tied to measurable cost reductions, capital allocation, or EBITDA improvements?",
     "Is proficiency in ERP and reporting software (SAP, Oracle, Bloomberg Terminal, advanced Excel) explicitly highlighted?"
 ],
-    atsFormattingAdvice: "Financial analysts frequently format their experience into grid-like financial statement tables. Table cells often cause ATS parsers to read rows out of sequence. Stick to traditional bullet points with bold metrics.",
+    atsFormattingAdvice: "Use concise bullets to explain models, forecasts, reporting, and verified outcomes. If you use tables, inspect the exported PDF text and reading order rather than assuming a parser will interpret it correctly.",
 categories: [
       {
         categoryName: 'Financial Modeling & Valuation',
@@ -1047,8 +1047,8 @@ categories: [
     roleTitle: 'Web3 & Blockchain Developer',
     shortTitle: 'Web3 / Blockchain',
     seoTitle: 'Top ATS Keywords for Web3 & Blockchain Developers (2026 Checklist)',
-    metaDescription: 'Target ATS keywords, Solidity smart contracts, DeFi protocols, security auditing, Hardhat, and Google X-Y-Z formulas for Web3 Developers.',
-    overview: 'Blockchain ATS parsers evaluate smart contract engineering (Solidity, Rust), security audits, testing suites (Foundry, Hardhat), decentralized storage, and gas optimization.',
+    metaDescription: 'Target ATS keywords, Solidity smart contracts, DeFi protocols, security auditing, Hardhat, and X-Y-Z-style formulas for Web3 Developers.',
+    overview: 'Blockchain developer roles may mention smart contract languages, security reviews, testing tools, decentralized storage, and gas optimization. Check the current posting for relevant technologies.',
     starterTemplateKey: 'software_engineer',
         recruiterScreeningChecklist: [
     "Does the candidate write secure smart contracts (Solidity, Rust) with verifiable mainnet/testnet deployments?",
@@ -1107,7 +1107,7 @@ categories: [
     roleTitle: 'Growth & Digital Marketing Manager',
     shortTitle: 'Growth Marketing',
     seoTitle: 'Essential ATS Keywords for Growth & Marketing Managers (2026 Guide)',
-    metaDescription: 'Target ATS keywords, SEO optimization, paid acquisition (PPC), conversion funnels (CRO), email marketing, and Google X-Y-Z formulas for Marketing Managers.',
+    metaDescription: 'Target ATS keywords, SEO optimization, paid acquisition (PPC), conversion funnels (CRO), email marketing, and X-Y-Z-style formulas for Marketing Managers.',
     overview: 'Marketing resumes must prove ROI-driven acquisition (CAC, ROAS), conversion rate optimization (CRO), search engine optimization (SEO), lifecycle retention, and marketing analytics.',
     starterTemplateKey: 'product_manager',
         recruiterScreeningChecklist: [
@@ -1167,7 +1167,7 @@ categories: [
     roleTitle: 'Artificial Intelligence & LLM Systems Engineer',
     shortTitle: 'AI Engineer',
     seoTitle: 'Top ATS Keywords for AI & LLM Systems Engineers (2026 Checklist)',
-    metaDescription: 'Target ATS keywords, LLM fine-tuning, RAG pipelines, vLLM serving, vector databases, and Google X-Y-Z resume formulas for AI Engineers.',
+    metaDescription: 'Target ATS keywords, LLM fine-tuning, RAG pipelines, vLLM serving, vector databases, and X-Y-Z-style resume formulas for AI Engineers.',
     overview: 'AI and Large Language Model (LLM) engineering resumes must highlight production inference, RAG architectures, model fine-tuning (LoRA), prompt evaluation, and vector storage.',
     starterTemplateKey: 'ai_ml_engineer',
         recruiterScreeningChecklist: [
@@ -1226,29 +1226,29 @@ categories: [
     roleTitle: 'TCS NQT & Ninja / Digital Fresher',
     shortTitle: 'TCS NQT Placement',
     seoTitle: 'TCS NQT ATS Resume Keywords & Fresher Checklist (2026)',
-    metaDescription: 'Target TCS NQT ATS keywords, Java, Python, SQL skills, and Google X-Y-Z formulas for campus placement candidates. Free TCS resume test.',
-    overview: 'TCS National Qualifier Test (NQT) technical screeners look for core computer science fundamentals, object-oriented programming, and verified project metrics over generic student buzzwords.',
+    metaDescription: 'Review TCS NQT resume keywords, Java, Python, SQL, and campus-project examples. Use the latest official role notice to confirm application requirements.',
+    overview: 'This checklist covers common software-role topics such as programming, databases, and project evidence. TCS NQT formats and role requirements may change; confirm current details in official TCS materials.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Does the resume list core languages (Java, Python, C++) with hands-on projects instead of standalone claims?',
       'Are fundamental CS concepts (OOP, DBMS, OS, Computer Networks) clearly visible in the skills section?',
       'Are project achievements quantified with real metrics (e.g. users, performance, API response time)?'
     ],
-    atsFormattingAdvice: 'TCS automated applicant tracking systems parse resumes strictly top-to-bottom. Avoid tables, icons, rating progress bars (e.g. 4/5 stars for Python), and multi-column designs. Use single-column standard headers.',
+    atsFormattingAdvice: 'For a resume that is easy to review, use clear section headings, readable text, and a consistent layout. Follow the current application instructions; ATSCheck has not tested TCS systems.',
     categories: [
       {
         categoryName: 'Core CS Fundamentals',
-        description: 'Core concepts tested in TCS NQT technical screening rounds.',
+        description: 'Common computer science topics for early-career technical roles.',
         keywords: ['Data Structures & Algorithms', 'OOP Concepts', 'DBMS', 'Operating Systems', 'Computer Networks', 'SQL Queries']
       },
       {
         categoryName: 'Programming & Web Technologies',
-        description: 'Hands-on programming stacks tested in technical interviews.',
+        description: 'Programming languages and frameworks used in software projects.',
         keywords: ['Java', 'Python', 'C++', 'JavaScript', 'HTML5/CSS3', 'REST APIs', 'Spring Boot']
       },
       {
         categoryName: 'Developer Tools & Databases',
-        description: 'Version control and storage solutions expected from campus freshers.',
+        description: 'Version control, development tools, and databases used in projects.',
         keywords: ['Git', 'GitHub', 'VS Code', 'Linux Basics', 'MySQL', 'Postman']
       },
       {
@@ -1261,23 +1261,23 @@ categories: [
       {
         title: 'E-Commerce Campus Project with Java & MySQL',
         formula: 'Engineered multi-tier retail portal using Java Spring Boot and MySQL, managing 500+ SKU records and optimizing database queries to reduce checkout load time by 34%.',
-        explanation: 'Demonstrates core Java stack with quantifiable query optimization.'
+        explanation: 'Fictional example to illustrate the structure. Use only technologies and results from your own project.'
       },
       {
         title: 'Automated Student Placement Management Portal',
         formula: 'Built full-stack placement portal using React and Node.js with JWT authentication, streamlining application submissions for 1,200+ students across 8 departments.',
-        explanation: 'Shows real campus scale and security implementation.'
+        explanation: 'Fictional example to illustrate the structure. Replace the sample scale and claims with verified project details.'
       },
       {
         title: 'Python Machine Learning Predictor',
         formula: 'Developed crop yield predictor using Python, Scikit-learn, and Pandas, achieving 88% predictive accuracy across 10,000 agricultural soil records.',
-        explanation: 'Proves data processing and statistical accuracy metrics.'
+        explanation: 'Fictional example to illustrate the structure. Use only results you can reproduce and explain.'
       }
     ],
     commonMistakes: [
       'Listing subjective traits (Hardworking, Quick Learner) without technical project backing.',
       'Missing fundamental engineering subjects (DBMS, OOP, OS) expected in TCS NQT rounds.',
-      'Using multi-column Canva templates that get scrambled in TCS recruitment parsers.'
+      'Using a layout whose exported text is difficult to select, copy, or review in reading order.'
     ]
   },
   'infosys-fresher': {
@@ -1286,18 +1286,18 @@ categories: [
     shortTitle: 'Infosys Placement',
     seoTitle: 'Infosys Fresher ATS Resume Keywords & Screening Guide (2026)',
     metaDescription: 'Must-have ATS keywords, programming stacks, database skills, and metric-backed resume bullets for Infosys campus placement drives.',
-    overview: 'Infosys campus screening algorithms evaluate candidate resumes for structured software development lifecycle understanding, database normalization, and proficiency in modern languages.',
+    overview: 'This checklist covers software-development topics that may be relevant to early-career roles. Infosys role and campus-program requirements vary; check the current official posting before applying.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Are technical skills categorized by Languages, Frameworks, and Databases rather than a flat comma list?',
       'Do project bullets specify the development lifecycle stages (design, testing, deployment)?',
       'Is graduation percentage/CGPA clearly legible without ambiguous formatting?'
     ],
-    atsFormattingAdvice: 'Infosys recruitment portals scan standard PDF and DOCX files. Ensure section titles use standard naming: "Education", "Technical Skills", "Projects", and "Certifications".',
+    atsFormattingAdvice: 'Use clear section titles such as Education, Technical Skills, Projects, and Certifications, and follow the file-format instructions in the current application. ATSCheck has not tested Infosys systems.',
     categories: [
       {
         categoryName: 'Enterprise Languages',
-        description: 'Primary programming languages evaluated in Infosys technical rounds.',
+        description: 'Programming languages commonly used in software development.',
         keywords: ['Java', 'Python', 'C#', 'SQL', 'C++', 'JavaScript']
       },
       {
@@ -1339,7 +1339,7 @@ categories: [
     shortTitle: 'Accenture Placement',
     seoTitle: 'Accenture Fresher ATS Resume Keywords & Checklist (2026)',
     metaDescription: 'Essential ATS resume keywords for Accenture ASE and FSE campus recruitment drives. Free checklist and project bullet formulas.',
-    overview: 'Accenture campus hiring screeners prioritize full-stack curiosity, cloud fundamentals, automated workflow understanding, and structured technical problem solving.',
+    overview: 'This checklist covers common software-role topics such as application development, cloud fundamentals, and technical problem solving. Check current Accenture role postings for specific requirements.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Does the candidate demonstrate familiarity with cloud platforms (AWS, Azure) or modern containerization?',
@@ -1355,7 +1355,7 @@ categories: [
       },
       {
         categoryName: 'Cloud & Containers',
-        description: 'Cloud computing fundamentals tested in Accenture interviews.',
+        description: 'Cloud and container concepts that may be relevant to software roles.',
         keywords: ['AWS Basics', 'Microsoft Azure', 'Docker Fundamentals', 'Linux', 'Git', 'GitHub']
       },
       {
@@ -1391,15 +1391,15 @@ categories: [
     roleTitle: 'Cognizant GenC & GenC Next Associate',
     shortTitle: 'Cognizant Fresher',
     seoTitle: 'Cognizant GenC ATS Resume Keywords & Format Guide (2026)',
-    metaDescription: 'Target Cognizant GenC ATS resume keywords, full-stack tools, cloud fundamentals, and Google X-Y-Z formulas for campus placements.',
-    overview: 'Cognizant GenC and GenC Elevate evaluations focus on hands-on coding ability, problem solving, full-stack architectures, and modern cloud deployment basics.',
+    metaDescription: 'Target Cognizant GenC ATS resume keywords, full-stack tools, cloud fundamentals, and X-Y-Z-style formulas for campus placements.',
+    overview: 'This checklist covers common early-career software topics, including programming, problem solving, application development, and cloud basics. Cognizant program criteria can vary by role and hiring cycle.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Is there proof of competitive programming or DSA problem solving (LeetCode, HackerRank)?',
       'Are frontend and backend stacks clearly delineated in capstone projects?',
       'Are core database schemas and relational models referenced?'
     ],
-    atsFormattingAdvice: 'Ensure ATS parsers can read contact links: include your LinkedIn and GitHub URLs as plain text alongside clickable hyperlinks.',
+    atsFormattingAdvice: 'Include readable contact details and links as text, and check the exported PDF by selecting and copying its contents. ATSCheck has not tested Cognizant systems.',
     categories: [
       {
         categoryName: 'Core Tech Stack',
@@ -1439,7 +1439,7 @@ categories: [
     shortTitle: 'Wipro Elite Fresher',
     seoTitle: 'Wipro Elite ATS Resume Keywords & Screening Checklist',
     metaDescription: 'Must-have ATS keywords, technical project bullets, and formatting rules for Wipro Elite NTH engineering candidates.',
-    overview: 'Wipro Elite recruitment filters search for strong algorithmic basics, clean code formatting, database fundamentals, and demonstrable team projects.',
+    overview: 'This checklist covers common software-role topics such as algorithms, databases, and project experience. Wipro role and program requirements can change; confirm them in current official postings.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Does the resume verify academic projects with specific metrics and technologies?',
@@ -1484,15 +1484,15 @@ categories: [
     roleTitle: 'Amazon SDE 1 & Software Engineering Intern',
     shortTitle: 'Amazon SDE Fresher',
     seoTitle: 'Amazon SDE ATS Resume Keywords & Leadership Principles',
-    metaDescription: 'Target Amazon SDE 1 ATS keywords, Leadership Principles, distributed systems concepts, and Google X-Y-Z resume bullet examples.',
-    overview: 'Amazon technical screeners and Bar Raisers evaluate candidate resumes through the lens of Amazon Leadership Principles (Customer Obsession, Ownership, Bias for Action) and scalable systems engineering.',
+    metaDescription: 'Target Amazon SDE 1 ATS keywords, Leadership Principles, distributed systems concepts, and X-Y-Z-style resume bullet examples.',
+    overview: 'This general SDE checklist includes distributed-systems topics and examples of describing ownership or customer impact. It is not based on access to Amazon’s recruiting or screening process; check the current job post for requirements.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Are project achievements articulated using Customer Obsession and Ownership metrics (latency reduction, customer adoption, reliability)?',
       'Are distributed systems concepts (caching, queues, async processing) backed by scale numbers (RPS, QPS)?',
       'Is there evidence of clean algorithmic design and automated test coverage?'
     ],
-    atsFormattingAdvice: 'Amazon recruiters review hundreds of single-column resumes daily. Avoid two-column sidebars, headshot photos, and graphic skill bars. Keep to a dense, elegant single page.',
+    atsFormattingAdvice: 'Use a readable layout and follow the instructions in the current Amazon job application. A single column can make reading order easier to inspect, but ATSCheck has not tested Amazon systems.',
     categories: [
       {
         categoryName: 'Systems & Languages',
@@ -1519,12 +1519,12 @@ categories: [
       {
         title: 'Distributed Event-Driven Notification System',
         formula: 'Architected async event processing service with Node.js, Redis, and AWS SQS, handling 4,500 messages/sec with 99.98% delivery success and sub-50ms latency.',
-        explanation: 'Directly reflects Amazon scale, concurrency, and reliability metrics.'
+        explanation: 'Fictional example. Replace the scale, reliability, and performance figures with results you can verify.'
       },
       {
         title: 'High-Concurrency In-Memory Cache Service',
         formula: 'Engineered distributed LRU cache in Go with read-write mutexes and consistent hashing, reducing peak database query load by 72% across 8 simulated microservices.',
-        explanation: 'Proves deep distributed systems and systems programming competency.'
+        explanation: 'Fictional example. Keep only technologies and outcomes that accurately describe your work.'
       }
     ],
     commonMistakes: [
@@ -1537,15 +1537,15 @@ categories: [
     roleTitle: 'Google SWE Intern & Early Career Engineer',
     shortTitle: 'Google SWE Intern',
     seoTitle: 'Google SWE Intern ATS Resume Keywords & Format Guide',
-    metaDescription: 'Must-have ATS keywords, competitive programming achievements, systems projects, and Google X-Y-Z formula resume bullets for Google.',
-    overview: 'Google engineering recruiters and hiring committees prioritize mathematical and algorithmic mastery, systems-level code quality, and verifiable impact structured via the Google X-Y-Z formula: "Accomplished [X], as measured by [Y], by doing [Z]".',
+    metaDescription: 'Must-have ATS keywords, competitive programming achievements, systems projects, and X-Y-Z-style formula resume bullets for Google.',
+    overview: 'This general software-intern checklist includes algorithms, systems projects, and ways to describe measurable work. It does not represent Google’s private recruiting criteria or a required writing formula; check current official role postings.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
-      'Is every bullet point strictly structured using the Google X-Y-Z formula (Accomplished X, measured by Y, by doing Z)?',
+      'Do project bullets explain the work, your contribution, and any results you can verify?',
       'Are competitive programming milestones (Codeforces rating, LeetCode contest rank, ICPC participation) prominently stated?',
       'Does the resume emphasize data structures, complexity analysis (Big-O), and systems architecture?'
     ],
-    atsFormattingAdvice: 'Use the Jake\'s Resume or Harvard single-column layout. Avoid all graphics, icons, tables, or decorative divider graphics.',
+    atsFormattingAdvice: 'Use a readable layout and check the exported PDF text and reading order. This guide is not affiliated with or endorsed by Google and does not test Google systems.',
     categories: [
       {
         categoryName: 'Core Algorithms & Languages',
@@ -1572,7 +1572,7 @@ categories: [
       {
         title: 'Optimized Graph Pathfinding Engine',
         formula: 'Accomplished 5.2x faster shortest-path calculation on 2M+ node transit graphs, as measured by sub-12ms query execution, by implementing bidirectional A* search with memory-aligned adjacency lists.',
-        explanation: 'Textbook Google X-Y-Z formula with algorithmic scale.'
+        explanation: 'Fictional example. Replace the metrics and technical details with outcomes you can verify.'
       },
       {
         title: 'Custom Memory Allocator in C++',
@@ -1591,18 +1591,18 @@ categories: [
     shortTitle: 'B.Tech CSE Fresher',
     seoTitle: 'B.Tech CSE Fresher Campus Placement ATS Resume Checklist',
     metaDescription: 'Complete ATS resume keyword checklist for B.Tech CSE freshers. Capstone projects, internships, GitHub links, and high-impact formatting.',
-    overview: 'Campus placement cells and visiting corporate recruiters look for B.Tech CSE freshers with solid foundational CS subjects, real-world deployed project code, and clean single-page formatting.',
+    overview: 'This checklist covers common B.Tech CSE resume sections, including foundational coursework, projects, and internships. Requirements vary across campus placement cells and employers.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Are graduation degree, specialization (CSE/IT), college name, CGPA, and year of passing placed near the top?',
       'Do academic projects have live hosted demo links or public GitHub repository URLs?',
       'Are technical skills grouped by category (Languages, Frameworks, Developer Tools, Core Subjects)?'
     ],
-    atsFormattingAdvice: 'Limit your resume strictly to 1 page. Recruiters review campus resumes in 6 to 10 seconds; multi-page fresher resumes are immediately penalized.',
+    atsFormattingAdvice: 'Keep the resume concise and follow the instructions for the role or placement program. There is no universal page limit or review-time rule for every employer.',
     categories: [
       {
         categoryName: 'Core CS Subjects',
-        description: 'Academic subjects evaluated in campus screening rounds.',
+        description: 'Foundational subjects commonly covered in computer science programs.',
         keywords: ['Data Structures & Algorithms', 'Object-Oriented Programming (OOP)', 'Database Management Systems (DBMS)', 'Operating Systems', 'Computer Networks']
       },
       {
@@ -1644,14 +1644,14 @@ categories: [
     shortTitle: 'BCA / MCA Placement',
     seoTitle: 'BCA & MCA Fresher ATS Resume Keywords & Placement Guide',
     metaDescription: 'Target ATS keywords, web development frameworks, database schemas, and live project bullet examples for BCA and MCA campus candidates.',
-    overview: 'Recruiters hiring BCA and MCA graduates look for practical software development acumen, production-ready full-stack frameworks, database mastery, and clean API integration skills.',
+    overview: 'This checklist suggests sections and software skills that BCA and MCA candidates may want to document when relevant to a target role. Confirm role requirements in the current job post.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
       'Are live project links (Vercel, Netlify, Render) included so recruiters can test your app in 1 click?',
       'Is there proof of database design, schema normalization, and complex SQL joins?',
       'Are modern web libraries (React, Node, Express) highlighted over outdated classroom tech?'
     ],
-    atsFormattingAdvice: 'Ensure the resume is 100% text-based. Do not embed tables or image screenshots of your projects; use clean bullet points with URL links.',
+    atsFormattingAdvice: 'Prefer selectable text for key resume details and check that project links remain readable in the exported PDF. Layout and extraction results vary across tools.',
     categories: [
       {
         categoryName: 'Frontend & Backend',
@@ -1690,15 +1690,15 @@ categories: [
     roleTitle: 'Overleaf & LaTeX Technical ATS Resume',
     shortTitle: 'Overleaf / LaTeX ATS',
     seoTitle: 'Overleaf & LaTeX Resume ATS Keywords & Parser Guide (2026)',
-    metaDescription: 'How to pass ATS screening with Overleaf and LaTeX resumes. Verified single-column formatting, math rendering, and tech keywords.',
-    overview: 'Overleaf and LaTeX templates like Jake\'s Resume are the gold standard among top software engineers and FAANG candidates, but misconfigured packages can cause ATS parsers to drop text.',
+    metaDescription: 'Learn how to check text extraction and reading order in Overleaf and LaTeX resume PDFs. Includes general formatting checks and technical role keywords.',
+    overview: 'LaTeX-generated PDFs can contain selectable text, but output depends on the source, packages, and compilation. Check the exported document directly; this guide does not certify vendor compatibility.',
     starterTemplateKey: 'software_engineer',
     recruiterScreeningChecklist: [
-      'Is the PDF compiled with clean standard fonts (Computer Modern, Helvetica, Times) so ATS text extraction yields zero garbled characters?',
+      'Can you select, copy, and review the PDF text in the intended reading order?',
       'Are multi-column tabular environments avoided in favor of clean itemize lists?',
       'Does selecting and copying text from the compiled PDF produce clean, readable plain text?'
     ],
-    atsFormattingAdvice: 'In LaTeX, avoid the tabularx package for experience bullets, as it merges adjacent lines in older ATS parsers. Use simple \\section and \\itemize commands.',
+    atsFormattingAdvice: 'After compiling, select and copy the PDF text into a plain-text editor to inspect reading order, headings, and contact details. Results vary by document and parser; ATSCheck does not certify vendor compatibility.',
     categories: [
       {
         categoryName: 'Technical Core',
@@ -1707,20 +1707,20 @@ categories: [
       },
       {
         categoryName: 'Software Engineering',
-        description: 'Technical domains evaluated in engineering resumes.',
+        description: 'Technical areas that may be relevant to engineering roles.',
         keywords: ['Systems Programming', 'Distributed Architectures', 'Algorithms & Data Structures', 'Cloud Systems']
       },
       {
-        categoryName: 'Parser Compatibility',
-        description: 'ATS extraction standards for PDF rendering.',
-        keywords: ['UTF-8 Encoding', 'Workday Compliant', 'Greenhouse Parsable', 'Taleo Readable', 'ATS Score 95+']
+        categoryName: 'PDF Text Checks',
+        description: 'Practical checks for text extraction and reading order.',
+        keywords: ['UTF-8 Encoding', 'Selectable PDF Text', 'Consistent Reading Order', 'Standard Section Headings', 'Copy-and-Paste Review']
       }
     ],
     googleXyzExamples: [
       {
         title: 'LaTeX-Engineered Distributed Systems Profile',
         formula: 'Engineered high-performance real-time data ingestion pipeline with Go and Apache Kafka, scaling event throughput to 12,000 events/sec with sub-25ms end-to-end latency.',
-        explanation: 'Cleanly parsable technical metric that renders flawlessly in Overleaf single-column.'
+        explanation: 'Illustrative example only. Verify every technical detail and metric against your own work, then inspect the compiled PDF text.'
       }
     ],
     commonMistakes: [

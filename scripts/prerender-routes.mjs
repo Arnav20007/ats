@@ -52,7 +52,6 @@ const pageSchema = (page) => {
         jobTitle: 'Founder & Full Stack Software Engineer',
         url: `${siteUrl}/about`,
         sameAs: [
-          'https://arnavsingh.me',
           'https://github.com/Arnav20007',
           'https://github.com/Arnav20007/ats'
         ]
@@ -61,411 +60,46 @@ const pageSchema = (page) => {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-          { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}/about` }
+          { '@type': 'ListItem', position: 2, name: 'About ATSCheck', item: `${siteUrl}/about` }
         ]
       }
     };
   }
 
-  if (page.path.startsWith('/keywords/')) {
-    return {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'ItemPage',
-          '@id': `${siteUrl}${page.path}#webpage`,
-          name: page.title,
-          description: page.description,
-          url: `${siteUrl}${page.path}`,
-          isPartOf: { '@id': `${siteUrl}/#website` },
-          breadcrumb: {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-              { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: `${siteUrl}/keywords` },
-              { '@type': 'ListItem', position: 3, name: page.heading, item: `${siteUrl}${page.path}` }
-            ]
-          }
-        },
-        {
-          '@type': 'FAQPage',
-          '@id': `${siteUrl}${page.path}#faq`,
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: `What is the recommended ATS resume format for ${page.heading}?`,
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: `A clean, single-column layout without tables, multi-column sidebars, or graphic rating bars is required. Use standard section headers and verified Google X-Y-Z formula metrics.`
-              }
-            },
-            {
-              '@type': 'Question',
-              name: `How do applicant tracking systems evaluate keywords for ${page.heading}?`,
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: `ATS software scans for exact technical skills, frameworks, and tools mentioned in the job description. Candidates should incorporate these skills directly within measurable project bullet points.`
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Can I check my resume score for free without creating an account?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. ATSCheck provides 100% free, private in-browser ATS scoring, metric density checks, and keyword gap analysis with zero logins or server uploads.'
-              }
-            }
-          ]
-        }
-      ]
-    };
-  }
+  const isRoleKeywordsPage = page.path.startsWith('/keywords/');
+  const pageType = page.path === '/keywords' ? 'CollectionPage' : isRoleKeywordsPage ? 'ItemPage' : 'WebPage';
+  const breadcrumbItems = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` }
+  ];
 
-  if (page.path === '/keywords') {
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      '@id': `${siteUrl}/keywords#webpage`,
-      name: page.title,
-      description: page.description,
-      url: `${siteUrl}/keywords`,
-      isPartOf: { '@id': `${siteUrl}/#website` },
-      breadcrumb: {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-          { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}/keywords` }
-        ]
-      }
-    };
-  }
-
-  if (page.path === '/matcher' || page.path === '/rewriter' || page.path === '/audit') {
-    let faqEntities = [];
-    if (page.path === '/matcher') {
-      faqEntities = [
-        {
-          '@type': 'Question',
-          name: 'How does the ATS keyword matcher scan job descriptions?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'It extracts keywords from both documents and identifies missing hard skills, certifications, and technologies required by applicant tracking systems.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: 'What is a good ATS keyword match percentage?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'A match rate of 80% or higher is recommended to pass recruiter screening filters and ranking algorithms.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: 'Is my resume or job description uploaded to an external server?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'No. All parsing and keyword gap analysis is performed 100% locally in your browser memory.'
-          }
-        }
-      ];
-    } else if (page.path === '/rewriter') {
-      faqEntities = [
-        {
-          '@type': 'Question',
-          name: 'What is Google\'s X-Y-Z resume formula?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Google\'s formula is: Accomplished [X], as measured by [Y], by doing [Z]. It emphasizes quantifiable achievements and concrete actions over vague duties.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: 'How does bullet rewriting improve my ATS score?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'ATS parsers and recruiters rank candidates higher when bullet points include action verbs, percentage improvements, and quantifiable business outcomes.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: 'Is the resume bullet rewriter completely free?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. ATSCheck provides free, unmetered access with no signup or credit card required.'
-          }
-        }
-      ];
-    } else if (page.path === '/audit') {
-      faqEntities = [
-        {
-          '@type': 'Question',
-          name: 'What does the ATS resume audit scorecard check?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'It checks single-column compliance, table and graphic presence, font readability, section heading standards, date formatting, and contact information integrity.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: 'Why do multi-column resumes fail ATS formatting checks?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Most enterprise ATS software (Workday, Taleo, Greenhouse) reads text horizontally across columns, merging unrelated text and corrupting candidate records.'
-          }
-        },
-        {
-          '@type': 'Question',
-          name: 'Does ATSCheck store my audited PDF?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'No. The audit runs entirely within your browser using Web Workers. No file is ever transmitted to a server.'
-          }
-        }
-      ];
-    }
-
-    return {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'WebApplication',
-          '@id': `${siteUrl}${page.path}#app`,
-          name: page.heading,
-          description: page.description,
-          url: `${siteUrl}${page.path}`,
-          applicationCategory: 'BusinessApplication',
-          operatingSystem: 'All',
-          offers: {
-            '@type': 'Offer',
-            price: '0',
-            priceCurrency: 'USD'
-          }
-        },
-        {
-          '@type': 'WebPage',
-          '@id': `${siteUrl}${page.path}#webpage`,
-          name: page.title,
-          description: page.description,
-          url: `${siteUrl}${page.path}`,
-          isPartOf: { '@id': `${siteUrl}/#website` },
-          breadcrumb: {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-              { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}${page.path}` }
-            ]
-          }
-        },
-        {
-          '@type': 'FAQPage',
-          '@id': `${siteUrl}${page.path}#faq`,
-          mainEntity: faqEntities
-        }
-      ]
-    };
-  }
-
-  if (page.path === '/research') {
-    return {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'TechArticle',
-          '@id': `${siteUrl}/research#article`,
-          headline: 'State of ATS Resume Parsing & Campus Hiring Report 2026',
-          name: page.title,
-          description: page.description,
-          url: `${siteUrl}/research`,
-          datePublished: '2026-10-15',
-          dateModified: '2026-10-28',
-          inLanguage: 'en-US',
-          isPartOf: { '@id': `${siteUrl}/#website` },
-          author: {
-            '@type': 'Organization',
-            name: 'ATSCheck Engineering',
-            url: siteUrl
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'ATSCheck',
-            url: siteUrl,
-            logo: {
-              '@type': 'ImageObject',
-              url: `${siteUrl}/favicon.svg`
-            }
-          },
-          breadcrumb: {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-              { '@type': 'ListItem', position: 2, name: 'Industry Research', item: `${siteUrl}/research` }
-            ]
-          }
-        },
-        {
-          '@type': 'FAQPage',
-          '@id': `${siteUrl}/research#faq`,
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'Why do 76% of multi-column resumes fail in Workday and Taleo?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Legacy ATS parsers extract text horizontally across the full page width, which merges left-column skills with right-column employment history into scrambled, unreadable strings.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'What is the impact of Google X-Y-Z achievement formulas on resume screening?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Resumes formatted with quantifiable metrics (Accomplished X measured by Y by doing Z) achieve an average 4.2x higher interview shortlist rate compared to passive duty descriptions.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Can journalists and bloggers cite the 2026 ATSCheck Research Study?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. Data points, charts, and statistics from the study may be cited under Creative Commons CC BY 4.0 with attribution linking back to https://atscheck.tech/research.'
-              }
-            }
-          ]
-        }
-      ]
-    };
-  }
-
-  if (page.path === '/vs/enhancv-alternative') {
-    return {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'WebPage',
-          '@id': `${siteUrl}/vs/enhancv-alternative#webpage`,
-          name: page.title,
-          description: page.description,
-          url: `${siteUrl}/vs/enhancv-alternative`,
-          isPartOf: { '@id': `${siteUrl}/#website` },
-          breadcrumb: {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-              { '@type': 'ListItem', position: 2, name: 'Enhancv Alternative', item: `${siteUrl}/vs/enhancv-alternative` }
-            ]
-          }
-        },
-        {
-          '@type': 'FAQPage',
-          '@id': `${siteUrl}/vs/enhancv-alternative#faq`,
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'Is there a truly free alternative to Enhancv without paywalls?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. ATSCheck is 100% free with no export paywalls, subscription models, or credit card requirements. PDF and text downloads are unrestricted.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Why are single-column ATS templates better than Enhancv graphic templates?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Enterprise ATS parsers like Workday and Taleo frequently fail to parse multi-column templates, charts, and skill rating bars. Single-column layouts ensure 100% text parsing accuracy.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Do I need to create an account or provide an email to use ATSCheck?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'No. ATSCheck requires zero login or signup. All analysis runs 100% locally in your browser memory.'
-              }
-            }
-          ]
-        }
-      ]
-    };
-  }
-
-  if (page.path === '/checker' || page.path === '/guide') {
-    return {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'WebPage',
-          '@id': `${siteUrl}${page.path}#webpage`,
-          name: page.title,
-          description: page.description,
-          url: `${siteUrl}${page.path}`,
-          isPartOf: { '@id': `${siteUrl}/#website` },
-          breadcrumb: {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-              { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}${page.path}` }
-            ]
-          }
-        },
-        {
-          '@type': 'FAQPage',
-          '@id': `${siteUrl}${page.path}#faq`,
-          mainEntity: [
-            {
-              '@type': 'Question',
-              name: 'What is a good ATS resume score?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'An ATS readiness score of 80% or higher is considered strong for applicant tracking systems. This indicates single-column formatting, verifiable Google X-Y-Z achievement metrics, and high keyword overlap with target job descriptions.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Why do applicant tracking systems reject multi-column resumes?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Older ATS parsers read text strictly left-to-right across the page width. Multi-column resumes cause employment dates, company names, and bullet points from adjacent columns to be merged together, corrupting the candidate profile.'
-              }
-            },
-            {
-              '@type': 'Question',
-              name: 'Does ATSCheck upload my resume to a server?',
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'No. ATSCheck extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
-              }
-            }
-          ]
-        }
-      ]
-    };
+  if (isRoleKeywordsPage) {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'Role Keywords', item: `${siteUrl}/keywords` },
+      { '@type': 'ListItem', position: 3, name: page.title, item: `${siteUrl}${page.path}` }
+    );
+  } else {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 2,
+      name: page.path === '/keywords' ? 'Role Keywords Checklist' : page.title,
+      item: `${siteUrl}${page.path}`
+    });
   }
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
+    '@type': pageType,
     '@id': `${siteUrl}${page.path}#webpage`,
     name: page.title,
     description: page.description,
     url: `${siteUrl}${page.path}`,
     isPartOf: { '@id': `${siteUrl}/#website` },
-    author: {
-      '@type': 'Person',
-      name: 'Arnav Singh',
-      url: `${siteUrl}/about`
-    },
     breadcrumb: {
       '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
-        { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}${page.path}` }
-      ]
+      itemListElement: breadcrumbItems
     }
   };
 };
-
 const makePage = (page, bodyMarkup, isNotFound = false) => {
   const canonicalUrl = `${siteUrl}${page.path}`;
   let html = baseHtml.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(page.title)}</title>`);

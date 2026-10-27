@@ -74,7 +74,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
   const handleCopyFormula = (index: number, formula: string) => {
     navigator.clipboard.writeText(formula);
     setCopiedFormulaIdx(index);
-    showToast('Copied Google X-Y-Z bullet example!', 'copy');
+    showToast('Copied X-Y-Z-style bullet example!', 'copy');
     setTimeout(() => setCopiedFormulaIdx(null), 1800);
   };
 
@@ -122,7 +122,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
-              Curated ATS resume keywords, technical skills, and Google X-Y-Z achievement formulas for Software Engineers, Product Managers, and Data Scientists. Select a career profile below to view verified recruiter screening checklists and industry-standard keyword benchmarks.
+              Browse role-specific resume keywords, technical skills, and illustrative X-Y-Z-style bullet examples for Software Engineers, Product Managers, Data Scientists, and other roles. Use current job descriptions as the source for each application.
             </p>
 
             {/* Category Filter Pills */}
@@ -227,7 +227,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
                 Want to check your resume against these keywords?
               </h3>
               <p className="text-xs sm:text-sm text-emerald-100">
-                Run our free in-browser ATS parser and compare your document directly against any target job description.
+                Review your resume text in the browser and compare recognized terms with a target job description. Results are heuristic, not output from an employer ATS.
               </p>
             </div>
             <button
@@ -359,7 +359,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
                 3
               </span>
               <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">
-                Google X-Y-Z Formulas
+                X-Y-Z-Style Examples
               </span>
             </div>
           </div>
@@ -428,17 +428,17 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
           </div>
         </div>
 
-        {/* Google X-Y-Z Bullet Examples */}
+        {/* X-Y-Z-style Bullet Examples */}
         <div className="space-y-6 pt-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Battle-Tested Google X-Y-Z Achievement Formulas
+                Illustrative X-Y-Z-Style Resume Bullet Examples
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-              Google's hiring formula: <em>"Accomplished [X], as measured by [Y], by doing [Z]"</em>. Use these proven structures with your own real numbers:
+              These examples illustrate one way to describe an outcome, its measure, and the work behind it. Some sample metrics are fictional: replace every number and claim with results you can verify from your own experience.
             </p>
           </div>
 
@@ -476,18 +476,18 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
           </div>
         </div>
 
-        {/* Recruiter Screening Criteria & ATS Formatting Guide */}
+        {/* Role Resume Self-Review & Formatting Suggestions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
-          {/* Recruiter 6-Second Screening Scan */}
+          {/* Role-Specific Self-Review */}
           <div className="p-6 sm:p-8 rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20 space-y-4 shadow-2xs">
             <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-400">
               <CheckCircle2 className="w-5 h-5 shrink-0" />
               <h3 className="text-base font-bold">
-                How Recruiters Screen a {activeProfile.shortTitle} Resume
+                Questions to Review for a {activeProfile.shortTitle} Resume
               </h3>
             </div>
             <p className="text-xs text-slate-600 dark:text-zinc-400">
-              The 6-second scan criteria hiring managers and automated filters evaluate first:
+              Use these prompts to check how clearly your resume shows relevant experience. They are general preparation questions, not employer screening criteria or a universal review-time rule.
             </p>
             <ul className="space-y-3 text-xs sm:text-sm text-slate-700 dark:text-zinc-300">
               {activeProfile.recruiterScreeningChecklist?.map((item, idx) => (
@@ -501,13 +501,13 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             </ul>
           </div>
 
-          {/* ATS Parsing & Layout Guardrails */}
+          {/* Resume Formatting Suggestions */}
           <div className="p-6 sm:p-8 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20 space-y-4 shadow-2xs flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-blue-800 dark:text-blue-400">
                 <ShieldCheck className="w-5 h-5 shrink-0" />
                 <h3 className="text-base font-bold">
-                  {activeProfile.shortTitle} ATS Formatting &amp; Parsing Guide
+                  {activeProfile.shortTitle} Resume Formatting Suggestions
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-slate-700 dark:text-zinc-300 leading-relaxed">
@@ -516,12 +516,12 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             </div>
             <div className="p-3 rounded-xl bg-white dark:bg-zinc-900 border border-blue-100 dark:border-blue-900/40 text-xs text-blue-700 dark:text-blue-300 font-medium flex items-center gap-2">
               <Zap className="w-4 h-4 shrink-0 text-amber-500" />
-              <span>Audit your layout with ATSCheck's 100% in-browser single-column PDF parser.</span>
+              <span>Review PDF text and common layout signals with ATSCheck’s browser-based checklist. This is not a simulation of an employer parser.</span>
             </div>
           </div>
         </div>
 
-        {/* Common ATS Resume Mistakes */}
+        {/* Common Resume Mistakes */}
         <div className="p-6 sm:p-8 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/50 dark:bg-amber-950/20 space-y-4 shadow-2xs">
           <div className="flex items-center gap-2 text-amber-800 dark:text-amber-400">
             <AlertTriangle className="w-5 h-5" />

@@ -273,57 +273,6 @@ function AppContent({ initialPath }: AppProps) {
             ]
           }
         });
-      } else if (currentPage === 'checker' || currentPage === 'guide') {
-        structuredData.textContent = JSON.stringify({
-          '@context': 'https://schema.org',
-          '@graph': [
-            {
-              '@type': 'WebPage',
-              '@id': `https://atscheck.tech${currentSeo.path}#webpage`,
-              name: currentSeo.title,
-              description: currentSeo.desc,
-              url: `https://atscheck.tech${currentSeo.path}`,
-              isPartOf: { '@id': 'https://atscheck.tech/#website' },
-              breadcrumb: {
-                '@type': 'BreadcrumbList',
-                itemListElement: [
-                  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://atscheck.tech/' },
-                  { '@type': 'ListItem', position: 2, name: currentSeo.title, item: `https://atscheck.tech${currentSeo.path}` }
-                ]
-              }
-            },
-            {
-              '@type': 'FAQPage',
-              '@id': `https://atscheck.tech${currentSeo.path}#faq`,
-              mainEntity: [
-                {
-                  '@type': 'Question',
-                  name: 'What is a good ATS resume score?',
-                  acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'An ATS readiness score of 80% or higher is considered strong for applicant tracking systems. This indicates single-column formatting, verifiable Google X-Y-Z achievement metrics, and high keyword overlap with target job descriptions.'
-                  }
-                },
-                {
-                  '@type': 'Question',
-                  name: 'Why do applicant tracking systems reject multi-column resumes?',
-                  acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Older ATS parsers read text strictly left-to-right across the page width. Multi-column resumes cause employment dates, company names, and bullet points from adjacent columns to be merged together, corrupting the candidate profile.'
-                  }
-                },
-                {
-                  '@type': 'Question',
-                  name: 'Does ATSCheck upload my resume to a server?',
-                  acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'No. ATSCheck extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
-                  }
-                }
-              ]
-            }
-          ]
-        });
       } else {
         structuredData.textContent = JSON.stringify({
           '@context': 'https://schema.org',
@@ -630,7 +579,7 @@ function AppContent({ initialPath }: AppProps) {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">FREE</span>
                 </a>
                 <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed max-w-[220px]">
-                  Free browser-based résumé checks. No account required. Your résumé text is not sent to ATSCheck servers.
+                  Free browser-based résumé checks. No account required. Résumé text is processed in your browser; the site also loads third-party services described in the Privacy Policy.
                 </p>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-zinc-400">
@@ -648,10 +597,10 @@ function AppContent({ initialPath }: AppProps) {
                 {[
                   { label: 'ATS Resume Checker', href: '/checker', action: () => navigateTo('checker') },
                   { label: 'ATS Resume Builder', href: '/builder', action: () => navigateTo('builder') },
-                  { label: 'Selected Students ATS Templates', href: '/templates', action: () => navigateTo('templates') },
+                  { label: 'Free ATS Resume Templates', href: '/templates', action: () => navigateTo('templates') },
                   { label: 'Job Keyword Matcher', href: '/matcher', action: () => navigateTo('matcher') },
                   { label: 'Role Keywords Checklist', href: '/keywords', action: () => navigateTo('keywords') },
-                  { label: 'Google X-Y-Z Rewriter', href: '/rewriter', action: () => navigateTo('rewriter') },
+                  { label: 'Resume Bullet Rewriter', href: '/rewriter', action: () => navigateTo('rewriter') },
                   { label: 'PDF Audit Scorecard', href: '/audit', action: () => navigateTo('audit') },
                   { label: 'Free Enhancv Alternative', href: '/vs/enhancv-alternative', action: () => navigateTo('enhancvAlternative') },
                   { label: 'Résumé Formatting Guide', href: '/guide', action: () => navigateTo('guide') },

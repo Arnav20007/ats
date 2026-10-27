@@ -30,16 +30,15 @@ const items = keys.map((key) => {
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <description>${escapeXml(item.description)}</description>
-      <pubDate>${now}</pubDate>
     </item>`;
 }).join('\n');
 
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ATSCheck Career &amp; ATS Resume Checklists</title>
+    <title>ATSCheck Resume Tools and Guides</title>
     <link>${siteUrl}</link>
-    <description>Free in-browser ATS resume checker, role keywords, Google X-Y-Z formulas, and campus placement guides.</description>
+    <description>Index of ATSCheck resume review tools, formatting guidance, and role-specific resume keyword pages. Entries are not dated articles.</description>
     <language>en-us</language>
     <lastBuildDate>${now}</lastBuildDate>
     <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
@@ -48,4 +47,4 @@ ${items}
 </rss>`;
 
 await writeFile(path.join(root, 'public/rss.xml'), rss);
-console.log(`Generated public/rss.xml with ${keys.length} items for fast search engine freshness indexing.`);
+console.log(`Generated public/rss.xml with ${keys.length} site-page entries.`);

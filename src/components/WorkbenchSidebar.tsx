@@ -60,7 +60,7 @@ export const WorkbenchSidebar: React.FC<WorkbenchSidebarProps> = ({
             <span className="flex items-center gap-1.5 text-zinc-500">
               <Lock className="w-3.5 h-3.5" /> Privacy
             </span>
-            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">100% Client-Side</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Browser-Based Review</span>
           </div>
         </div>
 

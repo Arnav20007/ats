@@ -23,7 +23,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
           </a>
 
           <span className="text-xs font-mono text-slate-400">
-            TECHNICAL GUIDE &bull; 2026 EDITION
+            TECHNICAL GUIDE &bull; UPDATED 2026
           </span>
         </div>
 
@@ -39,7 +39,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
-            A technical breakdown of document extraction pipelines in enterprise applicant tracking systems (Workday, Taleo, Greenhouse, iCIMS). Understand the underlying parsing mechanics that cause multi-column and graphical resumes to fail.
+            A general overview of resume text extraction, PDF reading order, OCR, and common formatting considerations. Parsing behavior varies across document parsers and employer configurations; this guide does not report vendor-specific tests.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-zinc-400 pt-2 font-medium">
@@ -61,17 +61,17 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
             What Actually Happens When You Upload a PDF Resume
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            Enterprise applicant tracking systems do not look at resumes as visual images; they convert uploaded files into structured database records using document parsers (such as Apache Tika, Sovren/Textkernel, or proprietary OCR and PDF extractors).
+            Resume review systems may extract text and other fields from uploaded documents. The exact process depends on the file, parser, configuration, and employer workflow. A selectable text layer can be easier to inspect than a scanned image, which may require OCR. Adobe explains that OCR creates searchable text from scans and that recognized text should be reviewed for errors (<a href="https://helpx.adobe.com/acrobat/desktop/create-documents/scan-documents-to-pdfs/recognize-text.html" target="_blank" rel="noopener noreferrer" className="underline text-emerald-700 dark:text-emerald-400">Adobe Acrobat OCR guidance</a>).
           </p>
           <div className="space-y-3 pt-2 text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700">
-              <strong className="text-slate-900 dark:text-white">Step 1: Text Layer Extraction:</strong> The parser reads raw text streams and font coordinates. If a document uses non-standard vector paths, images for headers, or scanned pages without OCR, the parser yields empty or garbled text.
+              <strong className="text-slate-900 dark:text-white">Step 1: Text and OCR:</strong> Text-based PDFs expose selectable text. Image-only scans may need optical character recognition (OCR), and recognition errors can affect names, dates, and other details. Check extracted text before applying.
             </div>
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700">
-              <strong className="text-slate-900 dark:text-white">Step 2: Section Boundary Detection:</strong> The parser scans for standard delimiter headers (e.g., <code>EDUCATION</code>, <code>EXPERIENCE</code>, <code>SKILLS</code>). Non-standard labels (e.g., &quot;Where I&apos;ve Been&quot; or &quot;My Journey&quot;) fail to trigger section categorizers.
+              <strong className="text-slate-900 dark:text-white">Step 2: Section Identification:</strong> Familiar headings such as <code>EDUCATION</code>, <code>EXPERIENCE</code>, and <code>SKILLS</code> make sections clear to readers and may help automated extraction. Custom labels can be interpreted differently across tools.
             </div>
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700">
-              <strong className="text-slate-900 dark:text-white">Step 3: Entity Extraction &amp; Indexing:</strong> Candidate name, phone, email, companies, dates, and skills are extracted into discrete SQL/NoSQL fields for recruiter Boolean filtering.
+              <strong className="text-slate-900 dark:text-white">Step 3: Field Extraction:</strong> A system may identify contact details, employers, dates, education, or skills. Field coverage and accuracy depend on the parser and the document; review any imported profile for errors.
             </div>
           </div>
         </div>
@@ -83,42 +83,42 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
             <span>2. The Formatting Trap</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-            Why Multi-Column and Canva Resumes Often Scramble in Workday
+            How Layout Can Affect PDF Text Reading Order
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            Standard PDF format does not have an intrinsic concept of &quot;paragraphs&quot; or &quot;columns&quot; — it stores characters at absolute coordinates (x, y). Parsers reconstruct text lines by reading horizontally across the page width.
+            PDFs can represent text and layout in different ways. Extraction tools may reconstruct reading order differently, especially when content is placed in separate columns, text boxes, or graphics. The result depends on how the PDF was created and which parser processes it. Adobe documents a tool for inspecting and correcting a PDF’s reading order (<a href="https://helpx.adobe.com/acrobat/using/touch-reading-order-tool-pdfs.html" target="_blank" rel="noopener noreferrer" className="underline text-emerald-700 dark:text-emerald-400">Adobe reading-order guidance</a>); this manual check does not predict employer ATS behavior.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 space-y-2">
               <span className="font-bold text-rose-800 dark:text-rose-300 flex items-center gap-1.5">
-                <AlertTriangle className="w-4 h-4 text-rose-600" /> Multi-Column / Graphic Templates
+                <AlertTriangle className="w-4 h-4 text-rose-600" /> Multi-Column / Graphic Layouts
               </span>
               <p className="text-rose-900/80 dark:text-rose-200/80">
-                When a page has a left sidebar (skills, contact) and a right column (work history), parsers frequently merge the two lines horizontally into a single garbled sentence, corrupting job titles and dates.
+                Separate text regions, icons, or image-based text can make extracted content harder to inspect. Test the exported PDF by selecting and copying its text, then check the reading order.
               </p>
             </div>
             <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 space-y-2">
               <span className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Strict Single-Column Layouts
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Simple Single-Column Layouts
               </span>
               <p className="text-emerald-900/80 dark:text-emerald-200/80">
-                Single-column resumes flow linearly from top to bottom. Every parser reads the sections in clean, uncorrupted chronological order with 100% heading and contact integrity.
+                A simple column offers a predictable layout to review and can make text order easier to inspect. It does not guarantee error-free extraction in every system; check the PDF and follow application instructions.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Section 3: The Google X-Y-Z Formula */}
+        {/* Section 3: Illustrative achievement structure */}
         <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4 shadow-2xs">
           <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm uppercase tracking-wider">
             <Target className="w-4 h-4" />
             <span>3. Achievement Formulation</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-            Google&apos;s X-Y-Z Resume Formula for Tech Roles
+            An X-Y-Z-Style Structure for Resume Bullets
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            Formulated by Laszlo Bock (former Senior Vice President of People Operations at Google), the X-Y-Z formula is the industry gold standard for describing engineering projects:
+            One commonly shared structure describes an accomplishment, how it was measured, and the action that produced it. Treat the example as a writing prompt, not a required formula or a predictor of hiring outcomes:
           </p>
           <div className="p-4 rounded-xl bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 text-center font-mono text-sm sm:text-base font-bold text-slate-900 dark:text-white">
             &quot;Accomplished [X], as measured by [Y], by doing [Z]&quot;
@@ -137,10 +137,10 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
             <span>4. Campus Placements (TCS, Infosys, Accenture)</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-            What Off-Campus Portal Filters Look For in Freshers
+            Practical Resume Preparation for Freshers
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
-            In mass hiring drives (such as TCS NQT, Infosys Off-Campus, and Accenture ASE), hiring portals filter thousands of applications using automated keyword matching rules:
+            Requirements vary by role, employer, and application cycle. For campus or early-career applications, use the current official job post as your source of truth and make your relevant experience easy to review:
           </p>
           <ul className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 space-y-2 list-disc list-inside">
             <li><strong>Core Computer Science Fundamentals:</strong> Mentioning exact terms like <em>Data Structures &amp; Algorithms (DSA)</em>, <em>Object-Oriented Programming (OOP)</em>, <em>Database Management Systems (DBMS)</em>, and <em>Computer Networks</em>.</li>
@@ -152,10 +152,10 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
         {/* Interactive CTA to Check Resume Free */}
         <div className="p-8 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white space-y-4 text-center">
           <h2 className="text-2xl sm:text-3xl font-black">
-            Test Your Resume Against These Parser Rules
+            Review Your Resume’s Readability
           </h2>
           <p className="text-sm sm:text-base text-emerald-100 max-w-xl mx-auto">
-            Run your resume through our free, in-browser ATS readiness scoring, single-column validation, and Google X-Y-Z formula helper.
+            Use ATSCheck’s general formatting and keyword guidance as a preliminary review. It does not reproduce an employer’s private parser or predict a screening outcome.
           </p>
           <div className="pt-2">
             <a
@@ -168,7 +168,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onNavigateHome, onNa
             </a>
           </div>
           <p className="text-xs text-emerald-200 font-medium">
-            100% In-Browser &bull; Zero Server Uploads &bull; No Login Required
+            Browser-Based Resume Review &bull; No Account Required
           </p>
         </div>
 

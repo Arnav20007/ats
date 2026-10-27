@@ -79,7 +79,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     },
     {
       id: 'resume',
-      title: 'Resume Polisher — Google X-Y-Z & ATS Optimizer',
+      title: 'Resume Polisher — X-Y-Z-style & ATS Optimizer',
       category: 'Tools',
       shortcut: '⌘4',
       icon: <FileText className="w-4 h-4 text-blue-400" />,

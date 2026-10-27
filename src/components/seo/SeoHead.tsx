@@ -23,7 +23,6 @@ export const SeoHead: React.FC<SeoHeadProps> = ({ seo }) => {
     };
 
     setMetaTag('name', 'description', seo.metaDescription);
-    setMetaTag('name', 'keywords', seo.targetKeywords.join(', '));
     setMetaTag('property', 'og:title', seo.title);
     setMetaTag('property', 'og:description', seo.metaDescription);
     setMetaTag('property', 'og:type', 'website');
