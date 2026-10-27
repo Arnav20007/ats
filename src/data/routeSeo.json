@@ -47,6 +47,18 @@
     "path": "/guide",
     "heading": "Prepare a Clear Resume for Applicant Tracking Systems"
   },
+  "research": {
+    "title": "State of ATS Resume Parsing Report 2026 | ATSCheck",
+    "description": "Empirical ATS study analyzing 10,000+ tech resumes across Workday and campus hiring drives. 76% multi-column failure rate exposed. Free research.",
+    "path": "/research",
+    "heading": "State of ATS Resume Parsing & Campus Hiring Report 2026"
+  },
+  "enhancv_alternative": {
+    "title": "Best Free Enhancv Alternative (No Paywall) | ATSCheck",
+    "description": "Free Enhancv alternative without paywalls or subscriptions. ATSCheck gives you 100% free single-column templates, Workday audits, and zero logins.",
+    "path": "/vs/enhancv-alternative",
+    "heading": "Free Enhancv Alternative – No Paywalls or Logins"
+  },
   "about": {
     "title": "About ATSCheck & Creator Arnav Singh | Engineering & Mission",
     "description": "Learn how ATSCheck reviews resume text privately in your browser. Founded and engineered open-source by full-stack software engineer Arnav Singh.",

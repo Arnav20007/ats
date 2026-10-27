@@ -266,6 +266,130 @@ const pageSchema = (page) => {
     };
   }
 
+  if (page.path === '/research') {
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'TechArticle',
+          '@id': `${siteUrl}/research#article`,
+          headline: 'State of ATS Resume Parsing & Campus Hiring Report 2026',
+          name: page.title,
+          description: page.description,
+          url: `${siteUrl}/research`,
+          datePublished: '2026-10-15',
+          dateModified: '2026-10-28',
+          inLanguage: 'en-US',
+          isPartOf: { '@id': `${siteUrl}/#website` },
+          author: {
+            '@type': 'Organization',
+            name: 'ATSCheck Engineering',
+            url: siteUrl
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: 'ATSCheck',
+            url: siteUrl,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${siteUrl}/favicon.svg`
+            }
+          },
+          breadcrumb: {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+              { '@type': 'ListItem', position: 2, name: 'Industry Research', item: `${siteUrl}/research` }
+            ]
+          }
+        },
+        {
+          '@type': 'FAQPage',
+          '@id': `${siteUrl}/research#faq`,
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: 'Why do 76% of multi-column resumes fail in Workday and Taleo?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Legacy ATS parsers extract text horizontally across the full page width, which merges left-column skills with right-column employment history into scrambled, unreadable strings.'
+              }
+            },
+            {
+              '@type': 'Question',
+              name: 'What is the impact of Google X-Y-Z achievement formulas on resume screening?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Resumes formatted with quantifiable metrics (Accomplished X measured by Y by doing Z) achieve an average 4.2x higher interview shortlist rate compared to passive duty descriptions.'
+              }
+            },
+            {
+              '@type': 'Question',
+              name: 'Can journalists and bloggers cite the 2026 ATSCheck Research Study?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Yes. Data points, charts, and statistics from the study may be cited under Creative Commons CC BY 4.0 with attribution linking back to https://atscheck.tech/research.'
+              }
+            }
+          ]
+        }
+      ]
+    };
+  }
+
+  if (page.path === '/vs/enhancv-alternative') {
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebPage',
+          '@id': `${siteUrl}/vs/enhancv-alternative#webpage`,
+          name: page.title,
+          description: page.description,
+          url: `${siteUrl}/vs/enhancv-alternative`,
+          isPartOf: { '@id': `${siteUrl}/#website` },
+          breadcrumb: {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+              { '@type': 'ListItem', position: 2, name: 'Enhancv Alternative', item: `${siteUrl}/vs/enhancv-alternative` }
+            ]
+          }
+        },
+        {
+          '@type': 'FAQPage',
+          '@id': `${siteUrl}/vs/enhancv-alternative#faq`,
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: 'Is there a truly free alternative to Enhancv without paywalls?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Yes. ATSCheck is 100% free with no export paywalls, subscription models, or credit card requirements. PDF and text downloads are unrestricted.'
+              }
+            },
+            {
+              '@type': 'Question',
+              name: 'Why are single-column ATS templates better than Enhancv graphic templates?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Enterprise ATS parsers like Workday and Taleo frequently fail to parse multi-column templates, charts, and skill rating bars. Single-column layouts ensure 100% text parsing accuracy.'
+              }
+            },
+            {
+              '@type': 'Question',
+              name: 'Do I need to create an account or provide an email to use ATSCheck?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'No. ATSCheck requires zero login or signup. All analysis runs 100% locally in your browser memory.'
+              }
+            }
+          ]
+        }
+      ]
+    };
+  }
+
   if (page.path === '/checker' || page.path === '/guide') {
     return {
       '@context': 'https://schema.org',
@@ -371,9 +495,14 @@ const makePage = (page, bodyMarkup, isNotFound = false) => {
 };
 
 // Top-level informational and tool pages
-for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords', 'templates', 'builder', 'checker', 'matcher', 'rewriter', 'audit']) {
+for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords', 'templates', 'builder', 'checker', 'matcher', 'rewriter', 'audit', 'research']) {
   await writeFile(path.join(outputDir, `${key}.html`), makePage(seo[key], renderPage(seo[key].path)));
 }
+
+// Enhancv alternative comparison page
+const vsDir = path.join(outputDir, 'vs');
+await mkdir(vsDir, { recursive: true });
+await writeFile(path.join(vsDir, 'enhancv-alternative.html'), makePage(seo.enhancv_alternative, renderPage(seo.enhancv_alternative.path)));
 
 // Role-specific programmatic keywords pages
 const keywordsDir = path.join(outputDir, 'keywords');

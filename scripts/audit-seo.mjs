@@ -8,7 +8,7 @@ function findHtml(dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) findHtml(full);
-    else if (entry.name.endsWith('.html') && !entry.name.includes('404')) files.push(full);
+    else if (entry.name.endsWith('.html') && !entry.name.includes('404') && !entry.name.startsWith('google')) files.push(full);
   }
 }
 

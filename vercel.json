@@ -51,6 +51,14 @@
       "destination": "/audit.html"
     },
     {
+      "source": "/research",
+      "destination": "/research.html"
+    },
+    {
+      "source": "/vs/enhancv-alternative",
+      "destination": "/vs/enhancv-alternative.html"
+    },
+    {
       "source": "/guide",
       "destination": "/guide.html"
     },

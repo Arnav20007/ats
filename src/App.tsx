@@ -8,6 +8,8 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { GuidePage } from './pages/GuidePage';
 import { KeywordsPage } from './pages/KeywordsPage';
+import { ResearchPage } from './pages/ResearchPage';
+import { EnhancvVsPage } from './pages/EnhancvVsPage';
 import { ToastProvider, useToast } from './components/Toast';
 import { ShieldCheck } from 'lucide-react';
 import routeSeo from './data/routeSeo.json';
@@ -16,7 +18,7 @@ import { SAMPLE_RESUMES } from './data/resumeSamples';
 import { ROLE_KEYWORD_PROFILES } from './data/roleKeywords';
 import { ATS_TEMPLATES } from './data/atsTemplates';
 
-export type AppPage = 'home' | 'templates' | 'builder' | 'checker' | 'matcher' | 'rewriter' | 'audit' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
+export type AppPage = 'home' | 'templates' | 'builder' | 'checker' | 'matcher' | 'rewriter' | 'audit' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'research' | 'enhancvAlternative' | 'notFound';
 
 const getPageFromPath = (pathname: string): AppPage => {
   const path = pathname.toLowerCase().replace(/\/+$/, '') || '/';
@@ -27,6 +29,8 @@ const getPageFromPath = (pathname: string): AppPage => {
   if (path === '/matcher' || path === '/keyword-matcher') return 'matcher';
   if (path === '/rewriter' || path === '/bullet-rewriter') return 'rewriter';
   if (path === '/audit' || path === '/resume-audit') return 'audit';
+  if (path === '/research' || path === '/research-report' || path === '/state-of-ats-2026') return 'research';
+  if (path === '/vs/enhancv-alternative' || path === '/enhancv-alternative' || path === '/free-enhancv-alternative') return 'enhancvAlternative';
   if (path === '/privacy') return 'privacy';
   if (path === '/terms') return 'terms';
   if (path === '/about') return 'about';
@@ -164,6 +168,8 @@ function AppContent({ initialPath }: AppProps) {
     else if (currentPage === 'matcher') currentSeo = { title: routeSeo.matcher.title, desc: routeSeo.matcher.description, path: routeSeo.matcher.path };
     else if (currentPage === 'rewriter') currentSeo = { title: routeSeo.rewriter.title, desc: routeSeo.rewriter.description, path: routeSeo.rewriter.path };
     else if (currentPage === 'audit') currentSeo = { title: routeSeo.audit.title, desc: routeSeo.audit.description, path: routeSeo.audit.path };
+    else if (currentPage === 'research') currentSeo = { title: routeSeo.research.title, desc: routeSeo.research.description, path: routeSeo.research.path };
+    else if (currentPage === 'enhancvAlternative') currentSeo = { title: routeSeo.enhancv_alternative.title, desc: routeSeo.enhancv_alternative.description, path: routeSeo.enhancv_alternative.path };
     else if (currentPage === 'guide') currentSeo = { title: routeSeo.guide.title, desc: routeSeo.guide.description, path: routeSeo.guide.path };
     else if (currentPage === 'about') currentSeo = { title: routeSeo.about.title, desc: routeSeo.about.description, path: routeSeo.about.path };
     else if (currentPage === 'contact') currentSeo = { title: routeSeo.contact.title, desc: routeSeo.contact.description, path: routeSeo.contact.path };
@@ -345,6 +351,12 @@ function AppContent({ initialPath }: AppProps) {
     if (page === 'keywords') {
       path = subpath ? `/keywords/${subpath}` : '/keywords';
       setCurrentRoleSlug(subpath || '');
+    } else if (page === 'enhancvAlternative') {
+      path = '/vs/enhancv-alternative';
+      setCurrentRoleSlug('');
+    } else if (page === 'research') {
+      path = '/research';
+      setCurrentRoleSlug('');
     } else {
       setCurrentRoleSlug('');
     }
@@ -570,6 +582,21 @@ function AppContent({ initialPath }: AppProps) {
           />
         )}
 
+        {currentPage === 'research' && (
+          <ResearchPage
+            onNavigateHome={() => navigateTo('home')}
+            onNavigateChecker={() => navigateTo('checker')}
+          />
+        )}
+
+        {currentPage === 'enhancvAlternative' && (
+          <EnhancvVsPage
+            onNavigateHome={() => navigateTo('home')}
+            onNavigateChecker={() => navigateTo('checker')}
+            onNavigateBuilder={() => navigateTo('builder')}
+          />
+        )}
+
         {currentPage === 'notFound' && (
           <section className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center space-y-5">
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">Page not found</h1>
@@ -626,6 +653,7 @@ function AppContent({ initialPath }: AppProps) {
                   { label: 'Role Keywords Checklist', href: '/keywords', action: () => navigateTo('keywords') },
                   { label: 'Google X-Y-Z Rewriter', href: '/rewriter', action: () => navigateTo('rewriter') },
                   { label: 'PDF Audit Scorecard', href: '/audit', action: () => navigateTo('audit') },
+                  { label: 'Free Enhancv Alternative', href: '/vs/enhancv-alternative', action: () => navigateTo('enhancvAlternative') },
                   { label: 'Résumé Formatting Guide', href: '/guide', action: () => navigateTo('guide') },
                 ].map((item) => (
                   <li key={item.label}>
@@ -707,6 +735,7 @@ function AppContent({ initialPath }: AppProps) {
               <ul className="space-y-2.5">
                 {[
                   { label: 'About ATSCheck & Creator', href: '/about', action: () => navigateTo('about') },
+                  { label: 'State of ATS Report 2026', href: '/research', action: () => navigateTo('research') },
                   { label: 'Contact & Support', href: '/contact', action: () => navigateTo('contact') },
                   { label: 'Privacy Policy', href: '/privacy', action: () => navigateTo('privacy') },
                   { label: 'Terms of Use', href: '/terms', action: () => navigateTo('terms') },
