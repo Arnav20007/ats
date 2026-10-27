@@ -1,6 +1,6 @@
 # ATSCheck — Free In-Browser ATS Resume Score Checker & Keyword Matcher
 
-[![Live Demo](https://img.shields.io/badge/Live_Site-atscheck.tech-emerald?style=flat-square&logo=vercel)](https://atscheck.tech)
+[![Live Demo](https://img.shields.io/badge/Live_Site-atscheck.tech-emerald?style=flat-square)](https://atscheck.tech)
 [![ATS Score](https://img.shields.io/badge/ATS_Score-Free_Checker-blue?style=flat-square)](https://atscheck.tech/checker)
 [![Overleaf Support](https://img.shields.io/badge/Overleaf_%26_LaTeX-Supported-success?style=flat-square)](https://atscheck.tech/keywords/overleaf-latex-ats)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
@@ -65,7 +65,7 @@ Tailored ATS screening benchmarks, recruiter checklists, and exact keywords for 
 * **Styling**: Tailwind CSS v4, Framer Motion
 * **Build Tool**: Vite 8
 * **Document Processing**: `pdfjs-dist` (client-side text stream parser)
-* **Hosting & CI/CD**: Vercel (Production) + GitHub Actions
+* **Hosting & CI/CD**: Cloud Edge Production (atscheck.tech) + GitHub Actions
 
 ---
 

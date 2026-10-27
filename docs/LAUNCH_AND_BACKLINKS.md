@@ -1,12 +1,12 @@
-# ToolForge Launch & Backlink Strategy Kit (10/10 Organic Authority)
+# ATSCheck Launch & Backlink Strategy Kit (10/10 Organic Authority)
 
-This playbook contains ready-to-copy launch briefs, community posts, directory submissions, and backlink strategies to establish domain rating, trust signals, and referral traffic for **ToolForge ATS**.
+This playbook contains ready-to-copy launch briefs, community posts, directory submissions, and backlink strategies to establish domain rating, trust signals, and referral traffic for **ATSCheck**.
 
 ---
 
 ## 1. Directory Submissions (High-Authority Backlinks: DR 60–90)
 
-Submit ToolForge to these free directories immediately to create natural do-follow/rel=nofollow editorial backlinks:
+Submit ATSCheck to these free directories immediately to create natural do-follow/rel=nofollow editorial backlinks:
 
 | Directory | Submission URL | Suggested Category | Key Differentiator |
 |---|---|---|---|
@@ -20,8 +20,8 @@ Submit ToolForge to these free directories immediately to create natural do-foll
 
 ## 2. AlternativeTo Submission Details
 
-- **Application Name**: ToolForge Resume Checker
-- **Website URL**: `https://toolforge-ats.vercel.app`
+- **Application Name**: ATSCheck Resume Checker
+- **Website URL**: `https://atscheck.tech`
 - **Repository URL**: `https://github.com/Arnav20007/ats`
 - **License**: Open Source (MIT License)
 - **Platforms**: Web / Self-Hosted
@@ -34,7 +34,7 @@ Submit ToolForge to these free directories immediately to create natural do-foll
 ## 3. Product Hunt Launch Brief
 
 ### Header Details
-- **Name**: ToolForge ATS
+- **Name**: ATSCheck
 - **Tagline**: Free in-browser resume reviewer with Google X-Y-Z scoring
 - **Primary Category**: Career / Developer Tools / Productivity
 - **Pricing**: 100% Free
@@ -43,11 +43,11 @@ Submit ToolForge to these free directories immediately to create natural do-foll
 ```markdown
 Hey Product Hunt community! 👋
 
-I'm Arnav, the developer behind ToolForge.
+I'm Arnav, the developer behind ATSCheck.
 
 Like millions of job seekers, I was frustrated by "ATS checkers" that require creating an account, aggressively push a $29–$49/month recurring subscription, or worse—upload your personal resume details, phone number, and work history to their cloud databases.
 
-I built **ToolForge** to solve this permanently:
+I built **ATSCheck** to solve this permanently:
 🛡️ **100% In-Browser Privacy**: Your PDF is parsed right in your browser via Web Workers and pdf.js. Zero bytes of your resume text ever touch our servers.
 🎯 **Job Keyword Matcher**: Paste a job description to compare recognized technical skills and terms instantly.
 ⚡ **Google X-Y-Z Formula Rewriter**: Structure achievements using Laszlo Bock's famous formula: "Accomplished [X], measured by [Y], by doing [Z]" without inventing fake metrics.
@@ -57,7 +57,7 @@ I built **ToolForge** to solve this permanently:
 It's completely free, open-source under MIT, and runs entirely on your device.
 
 I'd love your feedback, bug reports, or feature requests!
-Live App: https://toolforge-ats.vercel.app
+Live App: https://atscheck.tech
 GitHub: https://github.com/Arnav20007/ats
 ```
 
@@ -66,7 +66,7 @@ GitHub: https://github.com/Arnav20007/ats
 ## 4. Reddit Community Distribution Templates
 
 ### Post A: r/resumes & r/jobs
-**Title**: I got tired of \$30/mo ATS checkers gating basic advice, so I built an open-source in-browser one for free
+**Title**: I got tired of $30/mo ATS checkers gating basic advice, so I built an open-source in-browser one for free
 ```markdown
 Hey everyone,
 
@@ -75,7 +75,7 @@ Every job hunt site nowadays seems to offer an "ATS Score", but:
 2. They give you a scary score (like 35%) and ask for a $29/mo subscription to see the "fixes".
 3. Many upload your sensitive contact details and work history to private servers.
 
-Over the past few weeks, I built and open-sourced **ToolForge**:
+Over the past few weeks, I built and open-sourced **ATSCheck**:
 - **Runs 100% client-side in your browser**: It parses PDFs locally using web workers. No resume data is sent to backend servers.
 - **Heuristic Document Review**: Checks single-column structure, section headers, bullet counts, and contact links.
 - **Job Description Matcher**: Compares recognized skills between your resume and a target job post without replacing missing ones with fake data.
@@ -84,35 +84,10 @@ Over the past few weeks, I built and open-sourced **ToolForge**:
 
 It’s completely free, no sign-up, no credit card, and the code is open on GitHub.
 
-Check it out here: https://toolforge-ats.vercel.app
+Check it out here: https://atscheck.tech
 GitHub: https://github.com/Arnav20007/ats
 
 Would love feedback on what additional checks would help you in your job search!
-```
-
----
-
-### Post B: r/cscareerquestions
-**Title**: Free ATS keyword checklists and Google X-Y-Z formulas for Software Engineers, PMs & Data Scientists (Open-Source)
-```markdown
-Hey guys,
-
-A lot of resume advice online is either vague or behind aggressive paywalls. I put together a public, open-source role keywords directory covering:
-- Software Engineers (Go, TypeScript, Python, Microservices, Kafka, Distributed Systems)
-- Data Scientists & AI Engineers (PyTorch, RAG architectures, Vector DBs, MLflow)
-- Product Managers (PLG funnels, ARR metrics, CRO, OKRs)
-- DevOps Engineers (Kubernetes, Terraform IaC, Prometheus, CI/CD)
-
-Each role checklist includes:
-1. Categorized technical skill checklists you can copy in 1-click.
-2. Realistic Google X-Y-Z bullet examples with real metrics formulas.
-3. Common ATS parsing mistakes for that specific discipline.
-
-You can view the full checklists for free here:
-https://toolforge-ats.vercel.app/keywords
-
-Everything is in-browser and open-source: https://github.com/Arnav20007/ats
-Hope this helps anyone prepping for upcoming technical screens!
 ```
 
 ---
