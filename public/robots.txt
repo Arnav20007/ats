@@ -26,4 +26,5 @@ Allow: /
 
 # Sitemaps & Machine-Readable AI Standards
 Sitemap: https://atscheck.tech/sitemap.xml
+RSS: https://atscheck.tech/rss.xml
 LLMs-Txt: https://atscheck.tech/llms.txt

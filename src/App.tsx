@@ -308,10 +308,10 @@ function AppContent({ initialPath }: AppProps) {
                 },
                 {
                   '@type': 'Question',
-                  name: 'Does ToolForge upload my resume to a server?',
+                  name: 'Does ATSCheck upload my resume to a server?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'No. ToolForge extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
+                    text: 'No. ATSCheck extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
                   }
                 }
               ]
@@ -573,7 +573,7 @@ function AppContent({ initialPath }: AppProps) {
         {currentPage === 'notFound' && (
           <section className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center space-y-5">
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">Page not found</h1>
-            <p className="text-slate-600 dark:text-zinc-400">That ToolForge page does not exist or may have moved.</p>
+            <p className="text-slate-600 dark:text-zinc-400">That ATSCheck page does not exist or may have moved.</p>
             <button
               type="button"
               onClick={() => navigateTo('home')}

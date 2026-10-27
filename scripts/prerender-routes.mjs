@@ -307,10 +307,10 @@ const pageSchema = (page) => {
             },
             {
               '@type': 'Question',
-              name: 'Does ToolForge upload my resume to a server?',
+              name: 'Does ATSCheck upload my resume to a server?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'No. ToolForge extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
+                text: 'No. ATSCheck extracts and analyzes all resume text 100% locally in your browser memory using Web Workers and client-side parsers. Your personal data is never transmitted to or stored on any external server.'
               }
             }
           ]
