@@ -1,22 +1,23 @@
 # ATSCheck India-First SEO Research
 
 **Research date:** 2026-10-28
-**Scope:** Public SERP and competitor research, live-route technical inspection, a preliminary keyword-to-page/action map, and SEO-only source/content changes. No visual styling, layout, deployment, or Search Console account changes were made.
+**Scope:** Public SERP and competitor research, live-route technical inspection, a preliminary keyword-to-page/action map, and SEO-only source/content changes. No visual styling, layout, or Search Console account changes were made. The reviewed source changes were deployed to production on 2026-10-28.
 **Data status:** Search Console Performance ZIP received and reviewed. It covers the last three months and Web search, but has no India country filter. A Page indexing issue export was also received for “Discovered - currently not indexed”; the Sitemaps processing report and full reason totals remain unavailable. Anything about broad search demand below is still a hypothesis from public SERP evidence, not measured market-wide volume.
 
 ## SEO-only implementation update — 2026-10-28
 
-The following SEO/content fixes are prepared in the local working tree and are not deployed yet:
+The following SEO/content fixes were committed and deployed to production in commit `8e7efc9` on 2026-10-28:
 
 - Updated route titles and descriptions for the main checker, templates, resume builder, matcher, bullet rewriter, formatting audit, technical guide, and privacy policy. The home and checker metadata now align more closely with the small GSC query sample without implying a proprietary ATS score.
 - Replaced unsupported named-employer selection, vendor-compatibility, parser-guarantee, hiring-outcome, and fabricated research-statistic claims in visible copy and role profiles. Sample resume content is labeled fictional/illustrative and readers are told to use only verified results.
 - Corrected privacy statements to distinguish browser-side resume processing from Google Analytics, Google AdSense, Google Fonts, and the optional QR request.
 - Removed fabricated FAQ structured data and made prerendered and client-side route schemas consistent. Added Adobe references to OCR accuracy review and PDF reading order on the technical guide.
 - Updated RSS generation so ordinary page entries are not marked as newly published on every build. Updated `lastmod` on the 45 sitemap URLs after the sitewide content revisions.
-- Updated the public README, `llms.txt`, and PWA manifest claims. `npm run lint`, `npm run build`, RSS generation, and route prerender completed successfully; all 45 route entries were checked for a nonempty prerendered body, exactly one H1, and the expected canonical. RSS and sitemap XML both parse. Deployment and a post-deployment crawl are not included in this local change pass.
+- Updated the public README, `llms.txt`, and PWA manifest claims. `npm run lint`, `npm run build`, RSS generation, and route prerender completed successfully; all 45 route entries were checked for a nonempty prerendered body, exactly one H1, and the expected canonical. RSS and sitemap XML both parse.
 - Fixed the pre-existing undefined modal-state setter in `ResumeStudio.tsx` with the matching existing state setter. No layout or style changed.
+- Post-deployment HTTP checks returned 200 for `/`, `/checker`, `/research`, `/sitemap.xml`, `/rss.xml`, and `/manifest.json`. The home/checker/research responses contain prerendered content; the new research title is live and the prior study figures are absent from checked HTML and feed output.
 
-Search result positions, clicks, and indexing are unchanged until these source changes are deployed and recrawled. The Page Indexing and Sitemaps exports are still needed to diagnose the other URLs that were not indexed.
+Search result positions, clicks, and indexing will change only if Google recrawls and reprocesses the pages; deployment itself does not guarantee indexing or ranking. The complete Page indexing totals and Sitemaps processing report are still needed to diagnose all unindexed URLs.
 
 ## Executive summary
 
@@ -24,7 +25,7 @@ Search result positions, clicks, and indexing are unchanged until these source c
 - The Search Console screenshot reports five indexed pages, last crawled October 22. It does not show the exclusion reasons/statuses for the other sitemap URLs. Google says sitemaps are hints and do not guarantee indexing or ranking; new URLs can take time. Do not repeatedly resubmit an unchanged sitemap.
 - The 2026-10-28 Page indexing export lists 24 URLs under **Discovered - currently not indexed**, including the builder, contact, guide, keyword hub/profile pages, privacy, and terms. Each row is marked `Pending`; `1970-01-01` is an empty-date placeholder, not an actual crawl date. Google defines this state as discovered but not crawled yet, so it is not evidence that Google crawled and rejected those pages. The supplied export does not include the complete indexed/not-indexed totals or Sitemaps processing details.
 - The uploaded Performance ZIP contains six query rows (nine listed impressions), three page rows (13 listed impressions), five country rows (12 listed impressions), and one device row (12 listed impressions). Every listed row has zero clicks. `/checker` has 11 listed impressions at average position 75; India has eight impressions at average position 80.75. The sample is far too small and positions too low to diagnose snippets or claim demand.
-- **At the time of the live audit, factual inconsistencies were the highest priority.** The SEO-only implementation update above removes the stale `/research` metadata/schema/feed claims and rewrites other employer/ATS compatibility, hiring-outcome, and sample-project statements that lacked support. The live site will retain the old copy until deployment and recrawl.
+- **At the time of the live audit, factual inconsistencies were the highest priority.** Commit `8e7efc9` removes the stale `/research` metadata/schema/feed claims and rewrites other employer/ATS compatibility, hiring-outcome, and sample-project statements that lacked support. The updated source is live; Google’s search index may continue showing older snippets until it recrawls.
 - Current public results suggest the category is crowded: “free,” “no signup,” “private/in-browser,” score checks, parsed-text visibility, and job-description keyword gaps are already common claims. ATSCheck should compete on demonstrable output and transparent limitations, not on those generic claims alone.
 - Exact monthly search volumes and the queries that brought users to ATSCheck are unknown. The GSC exports are necessary to prioritize existing exposure. A Keyword Planner export is optional if exact third-party volume estimates are required.
 
