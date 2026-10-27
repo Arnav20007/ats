@@ -14,7 +14,19 @@
   </url>
   <url>
     <loc>https://atscheck.tech/checker</loc>
-    <lastmod>2026-10-22</lastmod>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://atscheck.tech/matcher</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://atscheck.tech/rewriter</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://atscheck.tech/audit</loc>
+    <lastmod>2026-10-27</lastmod>
   </url>
   <url>
     <loc>https://atscheck.tech/guide</loc>

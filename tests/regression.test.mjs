@@ -111,6 +111,9 @@ test('static route render includes real page content for each indexable route', 
     ['/templates', 'Selected Students ATS Resume Templates'],
     ['/builder', 'ATS Resume Studio'],
     ['/checker', 'Resume Checker'],
+    ['/matcher', 'Job Keyword Matcher'],
+    ['/rewriter', 'Google X-Y-Z Resume Rewriter'],
+    ['/audit', 'ATS Resume Formatting Audit Scorecard'],
     ['/keywords/unknown-slug', 'Page not found'],
     ['/unknown-route', 'Page not found']
   ];

@@ -57,41 +57,61 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Center: Top Nav Links & Trust Message */}
         <div className="hidden md:flex items-center gap-3 text-xs">
           <nav className="flex items-center gap-0.5 font-semibold">
-            <button
-              type="button"
-              onClick={onNavigateChecker || onNavigateHome}
+            <a
+              href="/checker"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigateChecker) onNavigateChecker();
+                else if (onNavigateHome) onNavigateHome();
+              }}
               className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Resume Checker
-            </button>
-            <button
-              type="button"
-              onClick={onNavigateBuilder || onNavigateHome}
+            </a>
+            <a
+              href="/builder"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigateBuilder) onNavigateBuilder();
+                else if (onNavigateHome) onNavigateHome();
+              }}
               className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Resume Builder
-            </button>
-            <button
-              type="button"
-              onClick={onNavigateTemplates || onNavigateHome}
+            </a>
+            <a
+              href="/templates"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigateTemplates) onNavigateTemplates();
+                else if (onNavigateHome) onNavigateHome();
+              }}
               className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               ATS Templates
-            </button>
-            <button
-              type="button"
-              onClick={onNavigateKeywords}
+            </a>
+            <a
+              href="/keywords"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigateKeywords) onNavigateKeywords();
+                else if (onNavigateHome) onNavigateHome();
+              }}
               className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Role Keywords
-            </button>
-            <button
-              type="button"
-              onClick={onNavigateGuide}
+            </a>
+            <a
+              href="/guide"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigateGuide) onNavigateGuide();
+                else if (onNavigateHome) onNavigateHome();
+              }}
               className="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               ATS Guide
-            </button>
+            </a>
           </nav>
 
           <div className="flex items-center gap-2 text-slate-500 dark:text-zinc-400 font-medium pl-3 border-l border-slate-200 dark:border-zinc-800">

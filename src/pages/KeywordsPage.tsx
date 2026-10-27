@@ -93,13 +93,17 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
         <div className="max-w-6xl mx-auto space-y-10">
           {/* Navigation Breadcrumb */}
           <div className="flex items-center justify-between">
-            <button
-              onClick={onNavigateHome}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateHome();
+              }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold text-slate-800 dark:text-zinc-200 transition-colors shadow-2xs cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>← Back to Resume Checker</span>
-            </button>
+            </a>
 
             <span className="text-xs font-mono text-slate-400">
               PAGE: /KEYWORDS
@@ -162,10 +166,14 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
               .map((prof) => {
               const totalKws = prof.categories.reduce((acc, c) => acc + c.keywords.length, 0);
               return (
-                <div
+                <a
                   key={prof.slug}
-                  onClick={() => handleSelectRole(prof.slug)}
-                  className="group p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500/60 dark:hover:border-emerald-500/60 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-4"
+                  href={`/keywords/${prof.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSelectRole(prof.slug);
+                  }}
+                  className="group p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500/60 dark:hover:border-emerald-500/60 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-4 text-left no-underline block"
                 >
                   <div className="space-y-3">
                     <div className="flex items-start justify-between gap-2">
@@ -207,7 +215,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
                       {prof.categories.length} domains
                     </span>
                   </div>
-                </div>
+                </a>
               );
             })}
           </div>
@@ -242,20 +250,28 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <button
-              onClick={onNavigateHome}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateHome();
+              }}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold text-slate-800 dark:text-zinc-200 transition-colors shadow-2xs cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Resume Checker</span>
-            </button>
-            <button
-              onClick={handleBackToDirectory}
+            </a>
+            <a
+              href="/keywords"
+              onClick={(e) => {
+                e.preventDefault();
+                handleBackToDirectory();
+              }}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/60 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-xs sm:text-sm font-bold text-emerald-800 dark:text-emerald-300 transition-colors shadow-2xs cursor-pointer"
             >
               <Layers className="w-3.5 h-3.5" />
               <span>All 30 Guides</span>
-            </button>
+            </a>
           </div>
 
           <span className="text-xs font-mono text-slate-400">

@@ -39,6 +39,18 @@
       "destination": "/checker.html"
     },
     {
+      "source": "/matcher",
+      "destination": "/matcher.html"
+    },
+    {
+      "source": "/rewriter",
+      "destination": "/rewriter.html"
+    },
+    {
+      "source": "/audit",
+      "destination": "/audit.html"
+    },
+    {
       "source": "/guide",
       "destination": "/guide.html"
     },

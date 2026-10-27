@@ -16,7 +16,7 @@ import { SAMPLE_RESUMES } from './data/resumeSamples';
 import { ROLE_KEYWORD_PROFILES } from './data/roleKeywords';
 import { ATS_TEMPLATES } from './data/atsTemplates';
 
-export type AppPage = 'home' | 'templates' | 'builder' | 'checker' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
+export type AppPage = 'home' | 'templates' | 'builder' | 'checker' | 'matcher' | 'rewriter' | 'audit' | 'privacy' | 'terms' | 'about' | 'contact' | 'guide' | 'keywords' | 'notFound';
 
 const getPageFromPath = (pathname: string): AppPage => {
   const path = pathname.toLowerCase().replace(/\/+$/, '') || '/';
@@ -24,6 +24,9 @@ const getPageFromPath = (pathname: string): AppPage => {
   if (path === '/templates' || path === '/resume-templates') return 'templates';
   if (path === '/builder' || path === '/resume-builder') return 'builder';
   if (path === '/checker' || path === '/resume-checker') return 'checker';
+  if (path === '/matcher' || path === '/keyword-matcher') return 'matcher';
+  if (path === '/rewriter' || path === '/bullet-rewriter') return 'rewriter';
+  if (path === '/audit' || path === '/resume-audit') return 'audit';
   if (path === '/privacy') return 'privacy';
   if (path === '/terms') return 'terms';
   if (path === '/about') return 'about';
@@ -80,7 +83,9 @@ function AppContent({ initialPath }: AppProps) {
     return getPageFromPath(currentPath);
   });
 
-  const currentRoleSlug = getRoleSlugFromPath(currentPath);
+  const [currentRoleSlug, setCurrentRoleSlug] = useState<string>(() => {
+    return getRoleSlugFromPath(currentPath);
+  });
 
   useEffect(() => {
     if (safeStorage.getItem('toolforge_theme') === 'dark') setIsDark(true);
@@ -101,21 +106,53 @@ function AppContent({ initialPath }: AppProps) {
     const handlePopState = () => {
       const path = window.location.pathname;
       setCurrentPath(path);
-      setCurrentPage(getPageFromPath(path));
+      const page = getPageFromPath(path);
+      setCurrentPage(page);
+      setCurrentRoleSlug(getRoleSlugFromPath(path));
+      if (page === 'matcher') {
+        setViewMode('studio');
+        setStudioTab('audit');
+        setActiveStudioTab('keywords');
+      } else if (page === 'rewriter') {
+        setViewMode('studio');
+        setStudioTab('audit');
+        setActiveStudioTab('rewriter');
+      } else if (page === 'audit') {
+        setViewMode('studio');
+        setStudioTab('audit');
+        setActiveStudioTab('deep_report');
+      } else if (page === 'builder') {
+        setViewMode('studio');
+        setStudioTab('document');
+      } else if (page === 'checker' || page === 'home') {
+        setViewMode('landing');
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  }, [setViewMode, setStudioTab, setActiveStudioTab]);
 
   // Sync session viewMode with dedicated tool routes
   useEffect(() => {
     if (currentPage === 'builder') {
       setViewMode('studio');
       setStudioTab('document');
+    } else if (currentPage === 'matcher') {
+      setViewMode('studio');
+      setStudioTab('audit');
+      setActiveStudioTab('keywords');
+    } else if (currentPage === 'rewriter') {
+      setViewMode('studio');
+      setStudioTab('audit');
+      setActiveStudioTab('rewriter');
+    } else if (currentPage === 'audit') {
+      setViewMode('studio');
+      setStudioTab('audit');
+      setActiveStudioTab('deep_report');
     } else if (currentPage === 'checker' || currentPage === 'home') {
       setViewMode('landing');
     }
-  }, [currentPage]);
+  }, [currentPage, setViewMode, setStudioTab, setActiveStudioTab]);
 
   // Dynamic SEO metadata per route
   useEffect(() => {
@@ -124,6 +161,9 @@ function AppContent({ initialPath }: AppProps) {
     else if (currentPage === 'templates') currentSeo = { title: routeSeo.templates.title, desc: routeSeo.templates.description, path: routeSeo.templates.path };
     else if (currentPage === 'builder') currentSeo = { title: routeSeo.builder.title, desc: routeSeo.builder.description, path: routeSeo.builder.path };
     else if (currentPage === 'checker') currentSeo = { title: routeSeo.checker.title, desc: routeSeo.checker.description, path: routeSeo.checker.path };
+    else if (currentPage === 'matcher') currentSeo = { title: routeSeo.matcher.title, desc: routeSeo.matcher.description, path: routeSeo.matcher.path };
+    else if (currentPage === 'rewriter') currentSeo = { title: routeSeo.rewriter.title, desc: routeSeo.rewriter.description, path: routeSeo.rewriter.path };
+    else if (currentPage === 'audit') currentSeo = { title: routeSeo.audit.title, desc: routeSeo.audit.description, path: routeSeo.audit.path };
     else if (currentPage === 'guide') currentSeo = { title: routeSeo.guide.title, desc: routeSeo.guide.description, path: routeSeo.guide.path };
     else if (currentPage === 'about') currentSeo = { title: routeSeo.about.title, desc: routeSeo.about.description, path: routeSeo.about.path };
     else if (currentPage === 'contact') currentSeo = { title: routeSeo.contact.title, desc: routeSeo.contact.description, path: routeSeo.contact.path };
@@ -305,17 +345,34 @@ function AppContent({ initialPath }: AppProps) {
     if (page === 'keywords') {
       path = subpath ? `/keywords/${subpath}` : '/keywords';
       setCurrentRoleSlug(subpath || '');
+    } else {
+      setCurrentRoleSlug('');
     }
     if (page === 'builder') {
       setViewMode('studio');
       setStudioTab('document');
-    }
-    if (page === 'checker' || page === 'home') {
+    } else if (page === 'matcher') {
+      setViewMode('studio');
+      setStudioTab('audit');
+      setActiveStudioTab('keywords');
+    } else if (page === 'rewriter') {
+      setViewMode('studio');
+      setStudioTab('audit');
+      setActiveStudioTab('rewriter');
+    } else if (page === 'audit') {
+      setViewMode('studio');
+      setStudioTab('audit');
+      setActiveStudioTab('deep_report');
+    } else if (page === 'checker' || page === 'home') {
       setViewMode('landing');
     }
     setCurrentPath(path);
     if (typeof window !== 'undefined') {
-      window.history.pushState({}, '', path);
+      try {
+        window.history.pushState({}, '', path);
+      } catch (err) {
+        console.error('pushState failed:', err);
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -409,6 +466,52 @@ function AppContent({ initialPath }: AppProps) {
           <ResumeStudio
             forcedMode="landing"
             isCheckerPage={true}
+            activeTool="checker"
+            onOpenPrivacy={() => navigateTo('privacy')}
+            onOpenTerms={() => navigateTo('terms')}
+            onOpenGuide={() => navigateTo('guide')}
+            onOpenAbout={() => navigateTo('about')}
+            onOpenContact={() => navigateTo('contact')}
+            onOpenTemplates={() => navigateTo('templates')}
+            onNavigateBuilder={() => navigateTo('builder')}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {currentPage === 'matcher' && (
+          <ResumeStudio
+            forcedMode="landing"
+            activeTool="matcher"
+            onOpenPrivacy={() => navigateTo('privacy')}
+            onOpenTerms={() => navigateTo('terms')}
+            onOpenGuide={() => navigateTo('guide')}
+            onOpenAbout={() => navigateTo('about')}
+            onOpenContact={() => navigateTo('contact')}
+            onOpenTemplates={() => navigateTo('templates')}
+            onNavigateBuilder={() => navigateTo('builder')}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {currentPage === 'rewriter' && (
+          <ResumeStudio
+            forcedMode="landing"
+            activeTool="rewriter"
+            onOpenPrivacy={() => navigateTo('privacy')}
+            onOpenTerms={() => navigateTo('terms')}
+            onOpenGuide={() => navigateTo('guide')}
+            onOpenAbout={() => navigateTo('about')}
+            onOpenContact={() => navigateTo('contact')}
+            onOpenTemplates={() => navigateTo('templates')}
+            onNavigateBuilder={() => navigateTo('builder')}
+            onNavigateHome={() => navigateTo('home')}
+          />
+        )}
+
+        {currentPage === 'audit' && (
+          <ResumeStudio
+            forcedMode="landing"
+            activeTool="audit"
             onOpenPrivacy={() => navigateTo('privacy')}
             onOpenTerms={() => navigateTo('terms')}
             onOpenGuide={() => navigateTo('guide')}
@@ -519,10 +622,10 @@ function AppContent({ initialPath }: AppProps) {
                   { label: 'ATS Resume Checker', href: '/checker', action: () => navigateTo('checker') },
                   { label: 'ATS Resume Builder', href: '/builder', action: () => navigateTo('builder') },
                   { label: 'Selected Students ATS Templates', href: '/templates', action: () => navigateTo('templates') },
-                  { label: 'Job Keyword Matcher', href: '/checker', action: () => handleOpenStudioTab('keywords') },
+                  { label: 'Job Keyword Matcher', href: '/matcher', action: () => navigateTo('matcher') },
                   { label: 'Role Keywords Checklist', href: '/keywords', action: () => navigateTo('keywords') },
-                  { label: 'Google X-Y-Z Rewriter', href: '/checker', action: () => handleOpenStudioTab('rewriter') },
-                  { label: 'PDF Audit Scorecard', href: '/checker', action: () => handleOpenStudioTab('deep_report') },
+                  { label: 'Google X-Y-Z Rewriter', href: '/rewriter', action: () => navigateTo('rewriter') },
+                  { label: 'PDF Audit Scorecard', href: '/audit', action: () => navigateTo('audit') },
                   { label: 'Résumé Formatting Guide', href: '/guide', action: () => navigateTo('guide') },
                 ].map((item) => (
                   <li key={item.label}>
@@ -650,42 +753,48 @@ function AppContent({ initialPath }: AppProps) {
               .
             </span>
             <div className="flex flex-wrap items-center gap-5 sm:gap-6">
-              <button
-                onClick={() => navigateTo('keywords')}
+              <a
+                href="/keywords"
+                onClick={(e) => { e.preventDefault(); navigateTo('keywords'); }}
                 className="hover:text-slate-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 Role Keywords
-              </button>
-              <button
-                onClick={() => navigateTo('guide')}
+              </a>
+              <a
+                href="/guide"
+                onClick={(e) => { e.preventDefault(); navigateTo('guide'); }}
                 className="hover:text-slate-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 ATS Guide
-              </button>
-              <button
-                onClick={() => navigateTo('about')}
+              </a>
+              <a
+                href="/about"
+                onClick={(e) => { e.preventDefault(); navigateTo('about'); }}
                 className="hover:text-slate-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 About
-              </button>
-              <button
-                onClick={() => navigateTo('contact')}
+              </a>
+              <a
+                href="/contact"
+                onClick={(e) => { e.preventDefault(); navigateTo('contact'); }}
                 className="hover:text-slate-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 Contact
-              </button>
-              <button
-                onClick={() => navigateTo('privacy')}
+              </a>
+              <a
+                href="/privacy"
+                onClick={(e) => { e.preventDefault(); navigateTo('privacy'); }}
                 className="hover:text-slate-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 Privacy Policy
-              </button>
-              <button
-                onClick={() => navigateTo('terms')}
+              </a>
+              <a
+                href="/terms"
+                onClick={(e) => { e.preventDefault(); navigateTo('terms'); }}
                 className="hover:text-slate-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 Terms of Use
-              </button>
+              </a>
             </div>
           </div>
         </div>

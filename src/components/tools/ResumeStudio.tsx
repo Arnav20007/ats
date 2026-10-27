@@ -95,6 +95,7 @@ interface ResumeStudioProps {
   onNavigateHome?: () => void;
   forcedMode?: 'landing' | 'studio';
   isCheckerPage?: boolean;
+  activeTool?: 'checker' | 'matcher' | 'rewriter' | 'audit';
 }
 
 export const ResumeStudio: React.FC<ResumeStudioProps> = ({
@@ -109,6 +110,7 @@ export const ResumeStudio: React.FC<ResumeStudioProps> = ({
   onNavigateHome,
   forcedMode,
   isCheckerPage,
+  activeTool,
 }) => {
   const { showToast } = useToast();
 
@@ -1791,7 +1793,61 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               {/* LEFT COLUMN: Clean Headline & Direct Upload */}
               <div className="lg:col-span-6 space-y-3.5 sm:space-y-4 text-left">
                 
-                {isCheckerPage ? (
+                {activeTool === 'matcher' ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                      <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span>JOB KEYWORD MATCHER • ATS GAP ANALYSIS</span>
+                    </div>
+
+                    <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
+                      Free ATS Job Keyword Matcher. <br className="hidden sm:inline" />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
+                        Match Resume to Any Job Description.
+                      </span>
+                    </h1>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
+                      Compare your resume against any target job description. Instantly identify missing technical keywords, skill gaps, and keyword match percentage — 100% private in your browser.
+                    </p>
+                  </>
+                ) : activeTool === 'rewriter' ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                      <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span>GOOGLE X-Y-Z BULLET REWRITER • ACTION VERB OPTIMIZER</span>
+                    </div>
+
+                    <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
+                      Free Google X-Y-Z Resume Rewriter. <br className="hidden sm:inline" />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
+                        Transform Weak Bullet Points into Metrics.
+                      </span>
+                    </h1>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
+                      Transform weak resume bullet points into measurable, high-impact achievements using Google's X-Y-Z formula (Accomplished [X], measured by [Y], by doing [Z]) with 100% private in-browser analysis.
+                    </p>
+                  </>
+                ) : activeTool === 'audit' ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+                      <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span>ATS PDF FORMATTING AUDIT • WORKDAY &amp; GREENHOUSE COMPLIANCE</span>
+                    </div>
+
+                    <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-[-0.03em] leading-[1.1]">
+                      ATS Resume Formatting Audit Scorecard. <br className="hidden sm:inline" />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
+                        Test Workday &amp; Enterprise ATS Readiness.
+                      </span>
+                    </h1>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed font-normal max-w-xl">
+                      Audit your resume against enterprise ATS parser standards. Test single-column compliance, table detection, font readability, section header formats, and contact details instantly.
+                    </p>
+                  </>
+                ) : (isCheckerPage || activeTool === 'checker') ? (
                   <>
                     <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
                       <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />

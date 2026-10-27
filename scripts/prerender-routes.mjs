@@ -140,6 +140,132 @@ const pageSchema = (page) => {
     };
   }
 
+  if (page.path === '/matcher' || page.path === '/rewriter' || page.path === '/audit') {
+    let faqEntities = [];
+    if (page.path === '/matcher') {
+      faqEntities = [
+        {
+          '@type': 'Question',
+          name: 'How does the ATS keyword matcher scan job descriptions?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'It extracts keywords from both documents and identifies missing hard skills, certifications, and technologies required by applicant tracking systems.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'What is a good ATS keyword match percentage?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A match rate of 80% or higher is recommended to pass recruiter screening filters and ranking algorithms.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Is my resume or job description uploaded to an external server?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. All parsing and keyword gap analysis is performed 100% locally in your browser memory.'
+          }
+        }
+      ];
+    } else if (page.path === '/rewriter') {
+      faqEntities = [
+        {
+          '@type': 'Question',
+          name: 'What is Google\'s X-Y-Z resume formula?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Google\'s formula is: Accomplished [X], as measured by [Y], by doing [Z]. It emphasizes quantifiable achievements and concrete actions over vague duties.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'How does bullet rewriting improve my ATS score?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'ATS parsers and recruiters rank candidates higher when bullet points include action verbs, percentage improvements, and quantifiable business outcomes.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Is the resume bullet rewriter completely free?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. ATSCheck provides free, unmetered access with no signup or credit card required.'
+          }
+        }
+      ];
+    } else if (page.path === '/audit') {
+      faqEntities = [
+        {
+          '@type': 'Question',
+          name: 'What does the ATS resume audit scorecard check?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'It checks single-column compliance, table and graphic presence, font readability, section heading standards, date formatting, and contact information integrity.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Why do multi-column resumes fail ATS formatting checks?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Most enterprise ATS software (Workday, Taleo, Greenhouse) reads text horizontally across columns, merging unrelated text and corrupting candidate records.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Does ATSCheck store my audited PDF?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. The audit runs entirely within your browser using Web Workers. No file is ever transmitted to a server.'
+          }
+        }
+      ];
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebApplication',
+          '@id': `${siteUrl}${page.path}#app`,
+          name: page.heading,
+          description: page.description,
+          url: `${siteUrl}${page.path}`,
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'All',
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD'
+          }
+        },
+        {
+          '@type': 'WebPage',
+          '@id': `${siteUrl}${page.path}#webpage`,
+          name: page.title,
+          description: page.description,
+          url: `${siteUrl}${page.path}`,
+          isPartOf: { '@id': `${siteUrl}/#website` },
+          breadcrumb: {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` },
+              { '@type': 'ListItem', position: 2, name: page.heading, item: `${siteUrl}${page.path}` }
+            ]
+          }
+        },
+        {
+          '@type': 'FAQPage',
+          '@id': `${siteUrl}${page.path}#faq`,
+          mainEntity: faqEntities
+        }
+      ]
+    };
+  }
+
   if (page.path === '/checker' || page.path === '/guide') {
     return {
       '@context': 'https://schema.org',
@@ -245,7 +371,7 @@ const makePage = (page, bodyMarkup, isNotFound = false) => {
 };
 
 // Top-level informational and tool pages
-for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords', 'templates', 'builder', 'checker']) {
+for (const key of ['guide', 'about', 'contact', 'privacy', 'terms', 'keywords', 'templates', 'builder', 'checker', 'matcher', 'rewriter', 'audit']) {
   await writeFile(path.join(outputDir, `${key}.html`), makePage(seo[key], renderPage(seo[key].path)));
 }
 

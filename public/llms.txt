@@ -17,6 +17,12 @@
 
 ## Key URLs
 - **Web App**: https://atscheck.tech/
+- **ATS Resume Checker**: https://atscheck.tech/checker
+- **Job Keyword Matcher**: https://atscheck.tech/matcher
+- **Google X-Y-Z Rewriter**: https://atscheck.tech/rewriter
+- **PDF Audit Scorecard**: https://atscheck.tech/audit
+- **Selected Students Templates**: https://atscheck.tech/templates
+- **ATS Resume Builder**: https://atscheck.tech/builder
 - **Role Keywords Checklist**: https://atscheck.tech/keywords
 - **Software Engineer Keywords**: https://atscheck.tech/keywords/software-engineer
 - **Frontend Developer Keywords**: https://atscheck.tech/keywords/frontend-developer
