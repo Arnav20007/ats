@@ -1220,5 +1220,512 @@ categories: [
       'Omitting model evaluation, latency benchmarks (TTFT, tokens/sec), and cost per query.',
       'Failing to detail inference serving infrastructure (vLLM, GPU memory sizing).'
     ]
+  },
+  'tcs-nqt': {
+    slug: 'tcs-nqt',
+    roleTitle: 'TCS NQT & Ninja / Digital Fresher',
+    shortTitle: 'TCS NQT Placement',
+    seoTitle: 'TCS NQT ATS Resume Keywords & Fresher Checklist (2026)',
+    metaDescription: 'Target TCS NQT ATS keywords, Java, Python, SQL skills, and Google X-Y-Z formulas for campus placement candidates. Free TCS resume test.',
+    overview: 'TCS National Qualifier Test (NQT) technical screeners look for core computer science fundamentals, object-oriented programming, and verified project metrics over generic student buzzwords.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Does the resume list core languages (Java, Python, C++) with hands-on projects instead of standalone claims?',
+      'Are fundamental CS concepts (OOP, DBMS, OS, Computer Networks) clearly visible in the skills section?',
+      'Are project achievements quantified with real metrics (e.g. users, performance, API response time)?'
+    ],
+    atsFormattingAdvice: 'TCS automated applicant tracking systems parse resumes strictly top-to-bottom. Avoid tables, icons, rating progress bars (e.g. 4/5 stars for Python), and multi-column designs. Use single-column standard headers.',
+    categories: [
+      {
+        categoryName: 'Core CS Fundamentals',
+        description: 'Core concepts tested in TCS NQT technical screening rounds.',
+        keywords: ['Data Structures & Algorithms', 'OOP Concepts', 'DBMS', 'Operating Systems', 'Computer Networks', 'SQL Queries']
+      },
+      {
+        categoryName: 'Programming & Web Technologies',
+        description: 'Hands-on programming stacks tested in technical interviews.',
+        keywords: ['Java', 'Python', 'C++', 'JavaScript', 'HTML5/CSS3', 'REST APIs', 'Spring Boot']
+      },
+      {
+        categoryName: 'Developer Tools & Databases',
+        description: 'Version control and storage solutions expected from campus freshers.',
+        keywords: ['Git', 'GitHub', 'VS Code', 'Linux Basics', 'MySQL', 'Postman']
+      },
+      {
+        categoryName: 'Engineering Practices',
+        description: 'Software development lifecycle knowledge.',
+        keywords: ['Agile Methodologies', 'Problem Solving', 'Project Documentation', 'Unit Testing', 'SDLC']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'E-Commerce Campus Project with Java & MySQL',
+        formula: 'Engineered multi-tier retail portal using Java Spring Boot and MySQL, managing 500+ SKU records and optimizing database queries to reduce checkout load time by 34%.',
+        explanation: 'Demonstrates core Java stack with quantifiable query optimization.'
+      },
+      {
+        title: 'Automated Student Placement Management Portal',
+        formula: 'Built full-stack placement portal using React and Node.js with JWT authentication, streamlining application submissions for 1,200+ students across 8 departments.',
+        explanation: 'Shows real campus scale and security implementation.'
+      },
+      {
+        title: 'Python Machine Learning Predictor',
+        formula: 'Developed crop yield predictor using Python, Scikit-learn, and Pandas, achieving 88% predictive accuracy across 10,000 agricultural soil records.',
+        explanation: 'Proves data processing and statistical accuracy metrics.'
+      }
+    ],
+    commonMistakes: [
+      'Listing subjective traits (Hardworking, Quick Learner) without technical project backing.',
+      'Missing fundamental engineering subjects (DBMS, OOP, OS) expected in TCS NQT rounds.',
+      'Using multi-column Canva templates that get scrambled in TCS recruitment parsers.'
+    ]
+  },
+  'infosys-fresher': {
+    slug: 'infosys-fresher',
+    roleTitle: 'Infosys System Engineer & Specialist Programmer',
+    shortTitle: 'Infosys Placement',
+    seoTitle: 'Infosys Fresher ATS Resume Keywords & Screening Guide (2026)',
+    metaDescription: 'Must-have ATS keywords, programming stacks, database skills, and metric-backed resume bullets for Infosys campus placement drives.',
+    overview: 'Infosys campus screening algorithms evaluate candidate resumes for structured software development lifecycle understanding, database normalization, and proficiency in modern languages.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Are technical skills categorized by Languages, Frameworks, and Databases rather than a flat comma list?',
+      'Do project bullets specify the development lifecycle stages (design, testing, deployment)?',
+      'Is graduation percentage/CGPA clearly legible without ambiguous formatting?'
+    ],
+    atsFormattingAdvice: 'Infosys recruitment portals scan standard PDF and DOCX files. Ensure section titles use standard naming: "Education", "Technical Skills", "Projects", and "Certifications".',
+    categories: [
+      {
+        categoryName: 'Enterprise Languages',
+        description: 'Primary programming languages evaluated in Infosys technical rounds.',
+        keywords: ['Java', 'Python', 'C#', 'SQL', 'C++', 'JavaScript']
+      },
+      {
+        categoryName: 'Frameworks & Web Stacks',
+        description: 'Modern development frameworks for specialist programmer roles.',
+        keywords: ['Spring Boot', 'Hibernate', 'React', 'Node.js', 'Express.js', 'Bootstrap']
+      },
+      {
+        categoryName: 'Databases & Tools',
+        description: 'Data storage and collaborative development environments.',
+        keywords: ['MySQL', 'Oracle DB', 'MongoDB', 'PostgreSQL', 'Git', 'GitHub']
+      },
+      {
+        categoryName: 'Lifecycle & Testing',
+        description: 'Software development lifecycle and quality assurance.',
+        keywords: ['SDLC', 'Agile/Scrum', 'JUnit', 'Manual Testing', 'API Integration']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Banking Transaction Simulation System',
+        formula: 'Architected banking ledger simulation in Java with ACID-compliant MySQL transactions, processing 2,000 simulated payments with zero concurrency collisions.',
+        explanation: 'Demonstrates robust backend logic and database transaction management.'
+      },
+      {
+        title: 'Library Management REST Service',
+        formula: 'Designed RESTful API in Spring Boot for catalog management, cutting book search retrieval latency by 45% through indexed SQL querying.',
+        explanation: 'Highlights enterprise framework proficiency and latency optimization.'
+      }
+    ],
+    commonMistakes: [
+      'Omitting live deployment or GitHub links for major academic capstone projects.',
+      'Failing to specify database names or API design patterns used in projects.'
+    ]
+  },
+  'accenture-fresher': {
+    slug: 'accenture-fresher',
+    roleTitle: 'Accenture Associate Software Engineer (ASE / FSE)',
+    shortTitle: 'Accenture Placement',
+    seoTitle: 'Accenture Fresher ATS Resume Keywords & Checklist (2026)',
+    metaDescription: 'Essential ATS resume keywords for Accenture ASE and FSE campus recruitment drives. Free checklist and project bullet formulas.',
+    overview: 'Accenture campus hiring screeners prioritize full-stack curiosity, cloud fundamentals, automated workflow understanding, and structured technical problem solving.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Does the candidate demonstrate familiarity with cloud platforms (AWS, Azure) or modern containerization?',
+      'Are collaborative team projects highlighted with clear individual contributions?',
+      'Are technical certifications (AWS Cloud Practitioner, Azure Fundamentals, Java) properly noted?'
+    ],
+    atsFormattingAdvice: 'Use clean bullet points with active verbs (Developed, Implemented, Designed) and avoid decorative symbols or tables.',
+    categories: [
+      {
+        categoryName: 'Modern Programming',
+        description: 'Primary coding languages for application development.',
+        keywords: ['Java', 'Python', 'JavaScript', 'TypeScript', 'C++', 'SQL']
+      },
+      {
+        categoryName: 'Cloud & Containers',
+        description: 'Cloud computing fundamentals tested in Accenture interviews.',
+        keywords: ['AWS Basics', 'Microsoft Azure', 'Docker Fundamentals', 'Linux', 'Git', 'GitHub']
+      },
+      {
+        categoryName: 'Full Stack Web',
+        description: 'Front-end and back-end integration skills.',
+        keywords: ['React', 'Node.js', 'REST APIs', 'HTML5', 'Tailwind CSS', 'JSON']
+      },
+      {
+        categoryName: 'Agile & Delivery',
+        description: 'Modern team collaboration methodologies.',
+        keywords: ['Agile Delivery', 'Problem Solving', 'Data Analysis', 'Unit Testing', 'CI/CD Basics']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Cloud-Deployed Task Collaboration App',
+        formula: 'Built full-stack task manager using React and Node.js, deployed on AWS EC2 with Docker containers, serving 250+ active campus organization members.',
+        explanation: 'Shows end-to-end full-stack development and cloud deployment.'
+      },
+      {
+        title: 'Data Analytics Dashboard',
+        formula: 'Analyzed 50,000 customer feedback records using Python and Pandas, delivering interactive Power BI dashboards that revealed top 3 customer drop-off causes.',
+        explanation: 'Demonstrates business intelligence and actionable analytical outcomes.'
+      }
+    ],
+    commonMistakes: [
+      'Leaving off cloud or modern web fundamentals in favor of outdated syllabus tools.',
+      'Failing to quantify user adoption or performance gains.'
+    ]
+  },
+  'cognizant-fresher': {
+    slug: 'cognizant-fresher',
+    roleTitle: 'Cognizant GenC & GenC Next Associate',
+    shortTitle: 'Cognizant Fresher',
+    seoTitle: 'Cognizant GenC ATS Resume Keywords & Format Guide (2026)',
+    metaDescription: 'Target Cognizant GenC ATS resume keywords, full-stack tools, cloud fundamentals, and Google X-Y-Z formulas for campus placements.',
+    overview: 'Cognizant GenC and GenC Elevate evaluations focus on hands-on coding ability, problem solving, full-stack architectures, and modern cloud deployment basics.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Is there proof of competitive programming or DSA problem solving (LeetCode, HackerRank)?',
+      'Are frontend and backend stacks clearly delineated in capstone projects?',
+      'Are core database schemas and relational models referenced?'
+    ],
+    atsFormattingAdvice: 'Ensure ATS parsers can read contact links: include your LinkedIn and GitHub URLs as plain text alongside clickable hyperlinks.',
+    categories: [
+      {
+        categoryName: 'Core Tech Stack',
+        description: 'Core programming and data structures foundations.',
+        keywords: ['Java', 'Python', 'C++', 'SQL', 'JavaScript', 'Data Structures']
+      },
+      {
+        categoryName: 'Full Stack Frameworks',
+        description: 'Application frameworks for web development.',
+        keywords: ['React', 'Spring Boot', 'Express', 'Node.js', 'MongoDB', 'MySQL']
+      },
+      {
+        categoryName: 'Cloud & DevOps',
+        description: 'Deployment tools and API testing.',
+        keywords: ['Git', 'GitHub', 'Docker', 'AWS S3', 'Postman API Testing']
+      },
+      {
+        categoryName: 'Engineering Excellence',
+        description: 'Code quality and design principles.',
+        keywords: ['Algorithms', 'Code Optimization', 'Object-Oriented Design', 'Debugging']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Full Stack Healthcare Appointment System',
+        formula: 'Engineered healthcare portal with React frontend and Express/MongoDB backend, reducing patient registration time by 60% with instant automated email confirmations.',
+        explanation: 'Proves full-stack delivery and measurable business workflow acceleration.'
+      }
+    ],
+    commonMistakes: [
+      'Listing skills with no accompanying project verifying usage.'
+    ]
+  },
+  'wipro-fresher': {
+    slug: 'wipro-fresher',
+    roleTitle: 'Wipro Elite National Talent Hunt (NTH)',
+    shortTitle: 'Wipro Elite Fresher',
+    seoTitle: 'Wipro Elite ATS Resume Keywords & Screening Checklist',
+    metaDescription: 'Must-have ATS keywords, technical project bullets, and formatting rules for Wipro Elite NTH engineering candidates.',
+    overview: 'Wipro Elite recruitment filters search for strong algorithmic basics, clean code formatting, database fundamentals, and demonstrable team projects.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Does the resume verify academic projects with specific metrics and technologies?',
+      'Are core programming languages (Java, C++, Python) backed by course certifications or competitive coding?'
+    ],
+    atsFormattingAdvice: 'Avoid headers/footers for key contact info like email and phone number; place them directly at the top of the body text.',
+    categories: [
+      {
+        categoryName: 'Programming Languages',
+        description: 'Core coding proficiencies required for Wipro Elite.',
+        keywords: ['Java', 'C++', 'Python', 'C', 'SQL']
+      },
+      {
+        categoryName: 'Database Systems',
+        description: 'Relational data management and query skills.',
+        keywords: ['MySQL', 'Oracle', 'DBMS Normalization', 'Relational Schemas']
+      },
+      {
+        categoryName: 'Web & Tools',
+        description: 'Development environments and web basics.',
+        keywords: ['HTML', 'CSS', 'JavaScript', 'Git', 'Linux Commands']
+      },
+      {
+        categoryName: 'Engineering Core',
+        description: 'Core computer science fundamentals.',
+        keywords: ['Data Structures', 'Algorithms', 'Computer Networks', 'Operating Systems']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Smart Attendance Tracking Android App',
+        formula: 'Developed geo-fenced attendance app using Java and SQLite, eliminating manual roll-call paperwork for 60 students per lecture.',
+        explanation: 'Highlights mobile development and paperless operational savings.'
+      }
+    ],
+    commonMistakes: [
+      'Writing paragraph-style project summaries instead of concise metric-driven bullet points.'
+    ]
+  },
+  'amazon-sde': {
+    slug: 'amazon-sde',
+    roleTitle: 'Amazon SDE 1 & Software Engineering Intern',
+    shortTitle: 'Amazon SDE Fresher',
+    seoTitle: 'Amazon SDE ATS Resume Keywords & Leadership Principles',
+    metaDescription: 'Target Amazon SDE 1 ATS keywords, Leadership Principles, distributed systems concepts, and Google X-Y-Z resume bullet examples.',
+    overview: 'Amazon technical screeners and Bar Raisers evaluate candidate resumes through the lens of Amazon Leadership Principles (Customer Obsession, Ownership, Bias for Action) and scalable systems engineering.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Are project achievements articulated using Customer Obsession and Ownership metrics (latency reduction, customer adoption, reliability)?',
+      'Are distributed systems concepts (caching, queues, async processing) backed by scale numbers (RPS, QPS)?',
+      'Is there evidence of clean algorithmic design and automated test coverage?'
+    ],
+    atsFormattingAdvice: 'Amazon recruiters review hundreds of single-column resumes daily. Avoid two-column sidebars, headshot photos, and graphic skill bars. Keep to a dense, elegant single page.',
+    categories: [
+      {
+        categoryName: 'Systems & Languages',
+        description: 'High-performance languages for backend systems.',
+        keywords: ['Java', 'Go', 'Python', 'C++', 'TypeScript', 'Distributed Systems']
+      },
+      {
+        categoryName: 'Cloud & Scale',
+        description: 'Scalable cloud infrastructure components.',
+        keywords: ['AWS (Lambda, S3, DynamoDB, SQS)', 'Docker', 'Kubernetes', 'Microservices', 'REST APIs', 'gRPC']
+      },
+      {
+        categoryName: 'Reliability & Quality',
+        description: 'Testing and operational resilience.',
+        keywords: ['Unit Testing', 'CI/CD Pipelines', 'System Architecture', 'High Availability', 'Concurrency']
+      },
+      {
+        categoryName: 'Databases & Caching',
+        description: 'High-throughput data storage and caching layers.',
+        keywords: ['PostgreSQL', 'Redis Caching', 'DynamoDB', 'Kafka', 'Elasticsearch']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Distributed Event-Driven Notification System',
+        formula: 'Architected async event processing service with Node.js, Redis, and AWS SQS, handling 4,500 messages/sec with 99.98% delivery success and sub-50ms latency.',
+        explanation: 'Directly reflects Amazon scale, concurrency, and reliability metrics.'
+      },
+      {
+        title: 'High-Concurrency In-Memory Cache Service',
+        formula: 'Engineered distributed LRU cache in Go with read-write mutexes and consistent hashing, reducing peak database query load by 72% across 8 simulated microservices.',
+        explanation: 'Proves deep distributed systems and systems programming competency.'
+      }
+    ],
+    commonMistakes: [
+      'Failing to quantify scale, throughput, or latency numbers.',
+      'Using vague phrasing like "Assisted in backend development" instead of owning the technical implementation.'
+    ]
+  },
+  'google-swe-intern': {
+    slug: 'google-swe-intern',
+    roleTitle: 'Google SWE Intern & Early Career Engineer',
+    shortTitle: 'Google SWE Intern',
+    seoTitle: 'Google SWE Intern ATS Resume Keywords & Format Guide',
+    metaDescription: 'Must-have ATS keywords, competitive programming achievements, systems projects, and Google X-Y-Z formula resume bullets for Google.',
+    overview: 'Google engineering recruiters and hiring committees prioritize mathematical and algorithmic mastery, systems-level code quality, and verifiable impact structured via the Google X-Y-Z formula: "Accomplished [X], as measured by [Y], by doing [Z]".',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Is every bullet point strictly structured using the Google X-Y-Z formula (Accomplished X, measured by Y, by doing Z)?',
+      'Are competitive programming milestones (Codeforces rating, LeetCode contest rank, ICPC participation) prominently stated?',
+      'Does the resume emphasize data structures, complexity analysis (Big-O), and systems architecture?'
+    ],
+    atsFormattingAdvice: 'Use the Jake\'s Resume or Harvard single-column layout. Avoid all graphics, icons, tables, or decorative divider graphics.',
+    categories: [
+      {
+        categoryName: 'Core Algorithms & Languages',
+        description: 'Languages and complexity foundations.',
+        keywords: ['C++', 'Java', 'Python', 'Go', 'Data Structures & Algorithms', 'Big-O Complexity']
+      },
+      {
+        categoryName: 'Systems & Infrastructure',
+        description: 'Low-level systems and concurrency principles.',
+        keywords: ['Linux Systems', 'Concurrency', 'Multithreading', 'Memory Optimization', 'Distributed Algorithms']
+      },
+      {
+        categoryName: 'Modern Engineering Tools',
+        description: 'Build systems and protocols.',
+        keywords: ['Git', 'Bazel', 'Docker', 'Google Cloud Platform', 'gRPC', 'Protocol Buffers']
+      },
+      {
+        categoryName: 'Mathematical & Analytical',
+        description: 'Core discrete mathematics and theoretical foundations.',
+        keywords: ['Graph Theory', 'Dynamic Programming', 'Discrete Mathematics', 'Benchmarking']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Optimized Graph Pathfinding Engine',
+        formula: 'Accomplished 5.2x faster shortest-path calculation on 2M+ node transit graphs, as measured by sub-12ms query execution, by implementing bidirectional A* search with memory-aligned adjacency lists.',
+        explanation: 'Textbook Google X-Y-Z formula with algorithmic scale.'
+      },
+      {
+        title: 'Custom Memory Allocator in C++',
+        formula: 'Reduced memory fragmentation by 40% and improved thread allocation speed by 2.8x in a multithreaded simulation by designing a slab-based memory pool in modern C++20.',
+        explanation: 'Demonstrates deep low-level systems programming maturity.'
+      }
+    ],
+    commonMistakes: [
+      'Writing qualitative job descriptions instead of quantifiable engineering metrics.',
+      'Omitting competitive programming ranks or algorithmic contest ratings.'
+    ]
+  },
+  'btech-cse-fresher': {
+    slug: 'btech-cse-fresher',
+    roleTitle: 'B.Tech Computer Science (CSE) Fresher',
+    shortTitle: 'B.Tech CSE Fresher',
+    seoTitle: 'B.Tech CSE Fresher Campus Placement ATS Resume Checklist',
+    metaDescription: 'Complete ATS resume keyword checklist for B.Tech CSE freshers. Capstone projects, internships, GitHub links, and high-impact formatting.',
+    overview: 'Campus placement cells and visiting corporate recruiters look for B.Tech CSE freshers with solid foundational CS subjects, real-world deployed project code, and clean single-page formatting.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Are graduation degree, specialization (CSE/IT), college name, CGPA, and year of passing placed near the top?',
+      'Do academic projects have live hosted demo links or public GitHub repository URLs?',
+      'Are technical skills grouped by category (Languages, Frameworks, Developer Tools, Core Subjects)?'
+    ],
+    atsFormattingAdvice: 'Limit your resume strictly to 1 page. Recruiters review campus resumes in 6 to 10 seconds; multi-page fresher resumes are immediately penalized.',
+    categories: [
+      {
+        categoryName: 'Core CS Subjects',
+        description: 'Academic subjects evaluated in campus screening rounds.',
+        keywords: ['Data Structures & Algorithms', 'Object-Oriented Programming (OOP)', 'Database Management Systems (DBMS)', 'Operating Systems', 'Computer Networks']
+      },
+      {
+        categoryName: 'Programming Languages',
+        description: 'Core languages for coding assessments.',
+        keywords: ['C++', 'Java', 'Python', 'JavaScript', 'SQL']
+      },
+      {
+        categoryName: 'Web & Full Stack',
+        description: 'Modern application frameworks for project portfolios.',
+        keywords: ['React.js', 'Node.js', 'Express', 'MongoDB', 'REST APIs', 'HTML5/Tailwind CSS']
+      },
+      {
+        categoryName: 'Developer Tools',
+        description: 'Essential developer toolchain.',
+        keywords: ['Git', 'GitHub', 'Linux Basics', 'VS Code', 'Postman', 'Vercel Deployment']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'College Hostel Grievance Management System',
+        formula: 'Engineered student ticketing web app using React and Firebase, serving 800+ resident students and reducing complaint resolution turnaround time from 4 days to 18 hours.',
+        explanation: 'Real-world campus impact with measured resolution velocity.'
+      },
+      {
+        title: 'Smart Expense Splitting Web Application',
+        formula: 'Built group expense calculation app with Node.js and PostgreSQL, implementing dynamic debt-simplification algorithms to minimize total transactions by 65%.',
+        explanation: 'Demonstrates algorithmic application to a consumer problem.'
+      }
+    ],
+    commonMistakes: [
+      'Including high school details that waste valuable space on a 1-page college resume.',
+      'Using subjective "Career Objective" paragraphs instead of a sharp technical skills inventory.'
+    ]
+  },
+  'bca-mca-fresher': {
+    slug: 'bca-mca-fresher',
+    roleTitle: 'BCA & MCA Graduate Software Developer',
+    shortTitle: 'BCA / MCA Placement',
+    seoTitle: 'BCA & MCA Fresher ATS Resume Keywords & Placement Guide',
+    metaDescription: 'Target ATS keywords, web development frameworks, database schemas, and live project bullet examples for BCA and MCA campus candidates.',
+    overview: 'Recruiters hiring BCA and MCA graduates look for practical software development acumen, production-ready full-stack frameworks, database mastery, and clean API integration skills.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Are live project links (Vercel, Netlify, Render) included so recruiters can test your app in 1 click?',
+      'Is there proof of database design, schema normalization, and complex SQL joins?',
+      'Are modern web libraries (React, Node, Express) highlighted over outdated classroom tech?'
+    ],
+    atsFormattingAdvice: 'Ensure the resume is 100% text-based. Do not embed tables or image screenshots of your projects; use clean bullet points with URL links.',
+    categories: [
+      {
+        categoryName: 'Frontend & Backend',
+        description: 'Application stacks for modern web development.',
+        keywords: ['React.js', 'JavaScript (ES6+)', 'Node.js', 'Express.js', 'Java', 'Python']
+      },
+      {
+        categoryName: 'Database & Storage',
+        description: 'Relational and NoSQL database management.',
+        keywords: ['MySQL', 'MongoDB', 'PostgreSQL', 'SQL Query Optimization', 'CRUD Operations']
+      },
+      {
+        categoryName: 'Development Workflow',
+        description: 'Tools for testing, deployment, and collaboration.',
+        keywords: ['Git', 'GitHub', 'RESTful API Architecture', 'Postman', 'NPM', 'Vercel']
+      },
+      {
+        categoryName: 'Computer Applications Core',
+        description: 'Foundational computer software concepts.',
+        keywords: ['Software Engineering', 'System Analysis & Design', 'Web Security Basics', 'Agile Principles']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'Online Food Delivery Web Platform',
+        formula: 'Developed responsive food ordering portal using MERN stack (MongoDB, Express, React, Node.js), integrating Stripe payment gateway and handling 300+ test orders.',
+        explanation: 'Demonstrates end-to-end full-stack integration and third-party payment workflows.'
+      }
+    ],
+    commonMistakes: [
+      'Listing outdated technologies like Turbo C++, VB.NET, or Flash that signal stale skills.'
+    ]
+  },
+  'overleaf-latex-ats': {
+    slug: 'overleaf-latex-ats',
+    roleTitle: 'Overleaf & LaTeX Technical ATS Resume',
+    shortTitle: 'Overleaf / LaTeX ATS',
+    seoTitle: 'Overleaf & LaTeX Resume ATS Keywords & Parser Guide (2026)',
+    metaDescription: 'How to pass ATS screening with Overleaf and LaTeX resumes. Verified single-column formatting, math rendering, and tech keywords.',
+    overview: 'Overleaf and LaTeX templates like Jake\'s Resume are the gold standard among top software engineers and FAANG candidates, but misconfigured packages can cause ATS parsers to drop text.',
+    starterTemplateKey: 'software_engineer',
+    recruiterScreeningChecklist: [
+      'Is the PDF compiled with clean standard fonts (Computer Modern, Helvetica, Times) so ATS text extraction yields zero garbled characters?',
+      'Are multi-column tabular environments avoided in favor of clean itemize lists?',
+      'Does selecting and copying text from the compiled PDF produce clean, readable plain text?'
+    ],
+    atsFormattingAdvice: 'In LaTeX, avoid the tabularx package for experience bullets, as it merges adjacent lines in older ATS parsers. Use simple \\section and \\itemize commands.',
+    categories: [
+      {
+        categoryName: 'Technical Core',
+        description: 'LaTeX commands and typography frameworks.',
+        keywords: ['LaTeX', 'Overleaf', 'Jake\'s Resume Standard', 'Single-Column Architecture', 'PDF Text Extraction']
+      },
+      {
+        categoryName: 'Software Engineering',
+        description: 'Technical domains evaluated in engineering resumes.',
+        keywords: ['Systems Programming', 'Distributed Architectures', 'Algorithms & Data Structures', 'Cloud Systems']
+      },
+      {
+        categoryName: 'Parser Compatibility',
+        description: 'ATS extraction standards for PDF rendering.',
+        keywords: ['UTF-8 Encoding', 'Workday Compliant', 'Greenhouse Parsable', 'Taleo Readable', 'ATS Score 95+']
+      }
+    ],
+    googleXyzExamples: [
+      {
+        title: 'LaTeX-Engineered Distributed Systems Profile',
+        formula: 'Engineered high-performance real-time data ingestion pipeline with Go and Apache Kafka, scaling event throughput to 12,000 events/sec with sub-25ms end-to-end latency.',
+        explanation: 'Cleanly parsable technical metric that renders flawlessly in Overleaf single-column.'
+      }
+    ],
+    commonMistakes: [
+      'Using icons for phone/email instead of plain text, leading to missing contact info in ATS.',
+      'Using complex TikZ or multi-column packages that scramble resume reading order.'
+    ]
   }
 };

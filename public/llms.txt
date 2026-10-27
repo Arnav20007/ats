@@ -38,6 +38,16 @@
 - **Financial Analyst & FP&A Keywords**: https://atscheck.tech/keywords/financial-analyst
 - **Web3 & Blockchain Keywords**: https://atscheck.tech/keywords/blockchain-developer
 - **Growth Marketing Manager Keywords**: https://atscheck.tech/keywords/marketing-manager
+- **TCS NQT Fresher Placement Checklist**: https://atscheck.tech/keywords/tcs-nqt
+- **Infosys Fresher ATS Resume Guide**: https://atscheck.tech/keywords/infosys-fresher
+- **Accenture Fresher ASE Keywords**: https://atscheck.tech/keywords/accenture-fresher
+- **Cognizant GenC ATS Resume Guide**: https://atscheck.tech/keywords/cognizant-fresher
+- **Wipro Elite Fresher Checklist**: https://atscheck.tech/keywords/wipro-fresher
+- **Amazon SDE Fresher Resume Guide**: https://atscheck.tech/keywords/amazon-sde
+- **Google SWE Intern Format Guide**: https://atscheck.tech/keywords/google-swe-intern
+- **B.Tech CSE Fresher Campus Checklist**: https://atscheck.tech/keywords/btech-cse-fresher
+- **BCA & MCA Software Placement Guide**: https://atscheck.tech/keywords/bca-mca-fresher
+- **Overleaf & LaTeX Technical ATS Guide**: https://atscheck.tech/keywords/overleaf-latex-ats
 - **Resume Review Guide**: https://atscheck.tech/guide
 - **About & Engineering**: https://atscheck.tech/about
 - **Privacy Policy**: https://atscheck.tech/privacy
