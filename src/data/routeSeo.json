@@ -31,7 +31,7 @@
   },
   "rewriter": {
     "title": "Free Google X-Y-Z Resume Bullet Rewriter | ATSCheck",
-    "description": "Transform weak resume bullets into high-impact Google X-Y-Z formulas (Accomplished [X], measured by [Y], by doing [Z]). Instant action verb and metric optimizer.",
+    "description": "Transform weak resume bullets into high-impact Google X-Y-Z formulas (Accomplished [X], measured by [Y], by doing [Z]). Free action verb & metric optimizer.",
     "path": "/rewriter",
     "heading": "Google X-Y-Z Resume Bullet Point Rewriter"
   },
@@ -198,62 +198,62 @@
     "heading": "AI Systems Engineer ATS Resume Keywords"
   },
   "keywords_tcs_nqt": {
-    "title": "TCS NQT ATS Resume Keywords & Fresher Checklist (2026) | ATSCheck",
+    "title": "TCS NQT Resume Keywords & ATS Checklist 2026 | ATSCheck",
     "description": "Target TCS NQT ATS keywords, Java, Python, SQL skills, and Google X-Y-Z formulas for campus placement candidates. Free TCS resume test.",
     "path": "/keywords/tcs-nqt",
     "heading": "TCS NQT ATS Resume Keywords"
   },
   "keywords_infosys_fresher": {
-    "title": "Infosys Fresher ATS Resume Keywords & Screening Guide (2026) | ATSCheck",
-    "description": "Must-have ATS keywords, programming stacks, database skills, and metric-backed resume bullets for Infosys campus placement drives.",
+    "title": "Infosys Fresher Resume Keywords & ATS Guide | ATSCheck",
+    "description": "Must-have ATS keywords, programming stacks, database skills, and metric-backed resume bullets for Infosys campus placement drives. Free check.",
     "path": "/keywords/infosys-fresher",
     "heading": "Infosys Fresher ATS Resume Keywords"
   },
   "keywords_accenture_fresher": {
-    "title": "Accenture Fresher ATS Resume Keywords & Checklist (2026) | ATSCheck",
-    "description": "Essential ATS resume keywords for Accenture ASE and FSE campus recruitment drives. Free checklist and project bullet formulas.",
+    "title": "Accenture Fresher Resume Keywords & ATS Format | ATSCheck",
+    "description": "Target Accenture fresher ATS resume keywords, technical skills, and Google X-Y-Z formulas for campus recruitment drives. Free format checklist.",
     "path": "/keywords/accenture-fresher",
     "heading": "Accenture Fresher ATS Resume Keywords"
   },
   "keywords_cognizant_fresher": {
-    "title": "Cognizant GenC ATS Resume Keywords & Format Guide (2026) | ATSCheck",
-    "description": "Target Cognizant GenC ATS resume keywords, full-stack tools, cloud fundamentals, and Google X-Y-Z formulas for campus placements.",
+    "title": "Cognizant GenC Resume Keywords & ATS Guide | ATSCheck",
+    "description": "Target Cognizant GenC fresher ATS resume keywords, full-stack tools, and Google X-Y-Z formulas for campus placements. Free in-browser scorecard.",
     "path": "/keywords/cognizant-fresher",
     "heading": "Cognizant GenC ATS Resume Keywords"
   },
   "keywords_wipro_fresher": {
-    "title": "Wipro Elite ATS Resume Keywords & Screening Checklist | ATSCheck",
-    "description": "Must-have ATS keywords, technical project bullets, and formatting rules for Wipro Elite NTH engineering candidates.",
+    "title": "Wipro Elite Fresher Resume Keywords & Format | ATSCheck",
+    "description": "Must-have ATS keywords, technical project bullets, and single-column formatting rules for Wipro Elite NTH fresher placement drives. Free check.",
     "path": "/keywords/wipro-fresher",
     "heading": "Wipro Elite ATS Resume Keywords"
   },
   "keywords_amazon_sde": {
-    "title": "Amazon SDE ATS Resume Keywords & Leadership Principles | ATSCheck",
-    "description": "Target Amazon SDE 1 ATS keywords, Leadership Principles, distributed systems concepts, and Google X-Y-Z resume bullet examples.",
+    "title": "Amazon SDE Resume Keywords & ATS Checklist | ATSCheck",
+    "description": "Target Amazon SDE 1 ATS keywords, Leadership Principles, distributed systems concepts, and Google X-Y-Z resume bullet examples. Free audit test.",
     "path": "/keywords/amazon-sde",
     "heading": "Amazon SDE ATS Resume Keywords"
   },
   "keywords_google_swe_intern": {
-    "title": "Google SWE Intern ATS Resume Keywords & Format Guide | ATSCheck",
-    "description": "Must-have ATS keywords, competitive programming achievements, systems projects, and Google X-Y-Z formula resume bullets for Google.",
+    "title": "Google SWE Intern Resume Keywords & Format | ATSCheck",
+    "description": "Must-have ATS keywords, competitive programming achievements, systems projects, and Google X-Y-Z formula resume bullets for Google early careers.",
     "path": "/keywords/google-swe-intern",
     "heading": "Google SWE Intern ATS Resume Keywords"
   },
   "keywords_btech_cse_fresher": {
-    "title": "B.Tech CSE Fresher Campus Placement ATS Resume Checklist | ATSCheck",
-    "description": "Complete ATS resume keyword checklist for B.Tech CSE freshers. Capstone projects, internships, GitHub links, and high-impact formatting.",
+    "title": "B.Tech CSE Fresher Resume Keywords & Format | ATSCheck",
+    "description": "Complete ATS resume keyword checklist for B.Tech CSE freshers. Capstone projects, internships, GitHub links, and high-impact formatting rules.",
     "path": "/keywords/btech-cse-fresher",
     "heading": "B.Tech CSE Fresher ATS Resume Keywords"
   },
   "keywords_bca_mca_fresher": {
-    "title": "BCA & MCA Fresher ATS Resume Keywords & Placement Guide | ATSCheck",
-    "description": "Target ATS keywords, web development frameworks, database schemas, and live project bullet examples for BCA and MCA campus candidates.",
+    "title": "BCA & MCA Fresher Resume Keywords & ATS Guide | ATSCheck",
+    "description": "Target ATS keywords, web development frameworks, database schemas, and live project bullet examples for BCA and MCA campus candidates. Free test.",
     "path": "/keywords/bca-mca-fresher",
     "heading": "BCA & MCA Fresher ATS Resume Keywords"
   },
   "keywords_overleaf_latex_ats": {
-    "title": "Overleaf & LaTeX Resume ATS Keywords & Parser Guide (2026) | ATSCheck",
-    "description": "How to pass ATS screening with Overleaf and LaTeX resumes. Verified single-column formatting, math rendering, and tech keywords.",
+    "title": "Overleaf LaTeX Resume ATS Keywords & Checker | ATSCheck",
+    "description": "How to pass ATS screening with Overleaf and LaTeX resumes. Verified single-column formatting, math rendering, and tech keywords for engineers.",
     "path": "/keywords/overleaf-latex-ats",
     "heading": "Overleaf & LaTeX ATS Resume Keywords"
   },
