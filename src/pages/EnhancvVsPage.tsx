@@ -40,7 +40,7 @@ export const EnhancvVsPage: React.FC<EnhancvVsPageProps> = ({ onNavigateHome, on
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-3xl">
-            Tired of spending an hour building a resume on Enhancv only to get hit with a \$24.99/month paywall at the download screen? Meet ATSCheck: the 100% free, private in-browser resume checker and single-column builder engineered for real ATS parsers.
+            Looking for a completely free, private alternative to subscription-based resume builders? ATSCheck is a free, in-browser resume checker and single-column builder engineered specifically for clean ATS parser compliance without paywalls or required signups.
           </p>
 
           <div className="pt-2 flex flex-wrap gap-3">
@@ -62,29 +62,29 @@ export const EnhancvVsPage: React.FC<EnhancvVsPageProps> = ({ onNavigateHome, on
           </div>
         </div>
 
-        {/* The 3 Major Frustrations with Enhancv */}
+        {/* Core Differences */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xs space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 flex items-center justify-center text-rose-600 dark:text-rose-400">
-              <AlertTriangle className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+              <Zap className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              The Paywall Bait-and-Switch
+              Free vs. Subscription Model
             </h3>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Enhancv allows you to edit resumes freely, but when you click &quot;Export PDF&quot;, you are blocked by a \$24.99/mo subscription. On ATSCheck, PDF and text downloads are 100% free with zero paywalls.
+              Many commercial resume builders require an ongoing monthly subscription to export or download your document. ATSCheck is completely free to use with instant, unlimited client-side downloads.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xs space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400">
-              <XCircle className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+              <AlertTriangle className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              The Multi-Column Layout Trap
+              Single-Column ATS Parsing
             </h3>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Enhancv templates feature 2-column designs, visual skill bars, and icons. Enterprise systems (Workday, Taleo, Greenhouse) read these horizontally, merging columns and scrambling your work history.
+              Many graphical resume builders use multi-column sidebars, skill rating meters, and decorative tables. In contrast, ATSCheck prioritizes strict single-column typography for reliable text extraction in systems like Workday and Taleo.
             </p>
           </div>
 
@@ -93,10 +93,10 @@ export const EnhancvVsPage: React.FC<EnhancvVsPageProps> = ({ onNavigateHome, on
               <ShieldCheck className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Forced Signups & Cloud Storage
+              In-Browser Processing &amp; Privacy
             </h3>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              Enhancv requires personal emails and stores resume documents on remote servers. ATSCheck operates 100% locally in your browser memory using Web Workers — zero server uploads.
+              Standard builders require user accounts and store resumes in cloud databases. ATSCheck processes your text and PDFs locally in your browser memory via Web Workers — no server uploads or mandatory accounts.
             </p>
           </div>
         </div>
@@ -124,13 +124,13 @@ export const EnhancvVsPage: React.FC<EnhancvVsPageProps> = ({ onNavigateHome, on
               <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/80">
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">Pricing Model</td>
-                  <td className="py-3.5 px-4 text-slate-600 dark:text-zinc-400">\$24.99 / month recurring</td>
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-zinc-400">Paid subscription plans</td>
                   <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20">100% Free Forever (\$0)</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">Paywall at PDF Export</td>
-                  <td className="py-3.5 px-4 text-rose-600 dark:text-rose-400 font-medium flex items-center gap-1.5">
-                    <XCircle className="w-4 h-4 shrink-0" /> Yes (Credit card required)
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-zinc-400">
+                    Requires paid plan for full export
                   </td>
                   <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20">
                     <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 shrink-0" /> Never (1-Click Instant Download)</span>
@@ -138,14 +138,14 @@ export const EnhancvVsPage: React.FC<EnhancvVsPageProps> = ({ onNavigateHome, on
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">ATS Parser Architecture</td>
-                  <td className="py-3.5 px-4 text-amber-600 dark:text-amber-400">Multi-column &amp; graphic heavy (76% parser failure rate)</td>
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-zinc-400">Multi-column visual templates</td>
                   <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20">
-                    <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 shrink-0" /> Strict Single-Column (Workday &amp; Taleo Compliant)</span>
+                    <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 shrink-0" /> Strict Single-Column (Standard Linear Extraction)</span>
                   </td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">Account Creation / Login</td>
-                  <td className="py-3.5 px-4 text-slate-600 dark:text-zinc-400">Mandatory signup with email</td>
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-zinc-400">Sign up with email</td>
                   <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20">
                     <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 shrink-0" /> Zero Login (Instant in-browser access)</span>
                   </td>
@@ -176,32 +176,30 @@ export const EnhancvVsPage: React.FC<EnhancvVsPageProps> = ({ onNavigateHome, on
           </div>
         </div>
 
-        {/* Real User Reviews / Reddit Sentiment */}
+        {/* Who ATSCheck Is Built For */}
         <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-5 shadow-2xs">
           <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm uppercase tracking-wider">
             <Sparkles className="w-4 h-4" />
-            <span>Why Tech Candidates Are Switching</span>
+            <span>Target Use Cases</span>
           </div>
+
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            Who ATSCheck Is Built For
+          </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700/80 space-y-2">
-              <div className="flex items-center gap-1 text-amber-500 text-xs">
-                {'★'.repeat(5)}
-              </div>
-              <p className="text-xs text-slate-700 dark:text-zinc-300 italic">
-                &quot;I spent 45 minutes on Enhancv only for it to demand a credit card to download my own PDF. Found ATSCheck on Reddit — uploaded my resume, saw missing TCS NQT keywords, fixed them, and downloaded my clean ATS PDF in 2 minutes for zero dollars.&quot;
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">Software Engineering &amp; Tech Candidates</h4>
+              <p className="text-xs text-slate-600 dark:text-zinc-300 leading-relaxed">
+                Developers applying to large enterprise career portals (Workday, Greenhouse, Lever) that require straightforward, single-column text resumes without icons or multi-column layout glitches.
               </p>
-              <span className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 block">— CS Fresher, B.Tech 2026 Batch</span>
             </div>
 
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700/80 space-y-2">
-              <div className="flex items-center gap-1 text-amber-500 text-xs">
-                {'★'.repeat(5)}
-              </div>
-              <p className="text-xs text-slate-700 dark:text-zinc-300 italic">
-                &quot;Workday kept rejecting my resume because my old Enhancv template had a 2-column sidebar that scrambled my text. The ATSCheck audit scorecard showed me the exact parser errors and single-column formatting rules.&quot;
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white">College Freshers &amp; Campus Placements</h4>
+              <p className="text-xs text-slate-600 dark:text-zinc-300 leading-relaxed">
+                Students preparing for mass recruitment drives (TCS NQT, Infosys, Accenture) who need fast, zero-cost keyword validation without recurring fees or forced subscription commitments.
               </p>
-              <span className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 block">— Backend Software Engineer</span>
             </div>
           </div>
         </div>
