@@ -10,7 +10,7 @@ const guarantees = [
   {
     icon: HardDrive,
     title: 'Runs on your device',
-    body: 'Résumé text is processed in your browser and is not sent to ToolForge servers. The site still makes requests for fonts, and the optional support dialog loads a payment QR image.',
+    body: 'Résumé text is processed in your browser and is not sent to ATSCheck servers. The site still makes requests for fonts, and the optional support dialog loads a payment QR image.',
     color: 'emerald',
   },
   {
@@ -43,7 +43,7 @@ const colorMap: Record<string, { bg: string; border: string; icon: string }> = {
 const sections = [
   {
     title: 'What information do we collect?',
-    body: "Résumé content — name, contact details, job history, skills, and education — is processed in your browser and is not sent to ToolForge servers. It remains in the current page session."
+    body: "Résumé content — name, contact details, job history, skills, and education — is processed in your browser and is not sent to ATSCheck servers. It remains in the current page session."
   },
   {
     title: 'Do we use cookies or tracking?',
@@ -51,7 +51,7 @@ const sections = [
   },
   {
     title: 'Do we share data with third parties?',
-    body: "Résumé content is not sent to ToolForge servers or third parties. Google Fonts receives standard connection metadata when font assets load. Opening the optional UPI support dialog requests a QR image from qrserver.com containing the displayed payment intent, not résumé content."
+    body: "Résumé content is not sent to ATSCheck servers or third parties. Google Fonts receives standard connection metadata when font assets load. Opening the optional UPI support dialog requests a QR image from qrserver.com containing the displayed payment intent, not résumé content."
   },
   {
     title: 'What about AI features?',
@@ -108,7 +108,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Why we built it this way</h3>
             <p className="text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
-              ToolForge processes résumé text in your browser and does not transmit it to its application servers. This reduces exposure from server-side storage; standard hosting, font, and optional support QR requests still disclose ordinary connection metadata to those providers.
+              ATSCheck processes résumé text in your browser and does not transmit it to its application servers. This reduces exposure from server-side storage; standard hosting, font, and optional support QR requests still disclose ordinary connection metadata to those providers.
             </p>
           </div>
 

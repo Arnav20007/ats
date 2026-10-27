@@ -36,7 +36,7 @@ export const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose, onUpgrade, 
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-900 text-white mb-2 shadow-xs">
             <Sparkles className="w-6 h-6 text-amber-400" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900">ToolForge Pro Lifetime Pass</h3>
+          <h3 className="text-lg font-bold text-slate-900">ATSCheck Pro Lifetime Pass</h3>
           <p className="text-xs text-slate-500">
             One-time micro-payment. Zero recurring subscriptions.
           </p>

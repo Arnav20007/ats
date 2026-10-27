@@ -7,7 +7,7 @@ interface TermsModalProps {
 }
 
 const doList = [
-  'Use ToolForge to check and improve your own resume',
+  'Use ATSCheck to check and improve your own resume',
   'Share it with friends and colleagues looking for work',
   'Edit sample resumes as a starting point for your own',
   'Export your resume as PDF or plain text for any application',
@@ -21,16 +21,16 @@ const dontList = [
 
 const sections = [
   {
-    title: 'What ToolForge is',
+    title: 'What ATSCheck is',
     body: "A free, browser-based ATS resume checker and editor. It helps you understand how your resume performs, find missing keywords, and rewrite weak bullet points. All analysis runs in your browser."
   },
   {
-    title: 'What ToolForge is not',
+    title: 'What ATSCheck is not',
     body: "A recruitment agency, staffing firm, or career counseling service. We don't review your resume manually, contact employers on your behalf, or guarantee interviews or job offers."
   },
   {
     title: 'Your content',
-    body: "Your resume is yours. Since ToolForge runs entirely in your browser and never transmits data to our servers, we make no claim to ownership of anything you write or upload."
+    body: "Your resume is yours. Since ATSCheck runs entirely in your browser and never transmits data to our servers, we make no claim to ownership of anything you write or upload."
   },
   {
     title: 'Accuracy',
@@ -38,11 +38,11 @@ const sections = [
   },
   {
     title: 'No warranty',
-    body: 'ToolForge is provided "as is". We do our best to keep it accurate and working, but we can\'t guarantee it will always be available or perfectly up to date with every ATS system on the market.'
+    body: 'ATSCheck is provided "as is". We do our best to keep it accurate and working, but we can\'t guarantee it will always be available or perfectly up to date with every ATS system on the market.'
   },
   {
     title: 'Contact',
-    body: "Questions about these terms? Email hello@toolforge.app and we'll respond in plain English."
+    body: "Questions about these terms? Email contact@atscheck.tech or arnavsinghas1221@gmail.com and we'll respond in plain English."
   },
 ];
 

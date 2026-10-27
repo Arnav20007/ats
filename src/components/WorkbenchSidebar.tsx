@@ -114,7 +114,7 @@ export const WorkbenchSidebar: React.FC<WorkbenchSidebarProps> = ({
           </div>
 
           <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-            ToolForge Pro Pass
+            ATSCheck Pro Pass
           </h4>
           <p className="text-[11px] text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
             One-time micro-payment. Unlock unlimited high-bitrate audio exports, full legal document generation, and lifetime updates.
@@ -131,7 +131,7 @@ export const WorkbenchSidebar: React.FC<WorkbenchSidebarProps> = ({
       ) : (
         <div className="rounded-2xl border border-emerald-300 dark:border-emerald-800/60 bg-emerald-50/50 dark:bg-emerald-950/20 p-4 flex items-center gap-2.5 text-xs text-emerald-800 dark:text-emerald-300">
           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-          <span className="font-semibold">ToolForge Pro Active · All Features Unlocked</span>
+          <span className="font-semibold">ATSCheck Pro Active · All Features Unlocked</span>
         </div>
       )}
     </aside>

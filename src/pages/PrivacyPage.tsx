@@ -9,7 +9,7 @@ const guarantees = [
   {
     icon: HardDrive,
     title: 'Résumé text stays in your browser',
-    body: 'Your browser parses résumé text locally in memory. The text is not sent to ToolForge servers; the site may request external fonts.',
+    body: 'Your browser parses résumé text locally in memory. The text is not sent to ATSCheck servers; the site may request external fonts.',
     color: 'emerald',
   },
   {
@@ -42,15 +42,15 @@ const colorMap: Record<string, { bg: string; border: string; icon: string }> = {
 const detailedSections = [
   {
     title: '1. What Information Do We Process?',
-    content: "When you upload or paste a resume, ToolForge processes your text strictly in temporary browser RAM (client-side memory). We do not record your name, contact information, phone numbers, email addresses, employment history, or educational credentials on any server.",
+    content: "When you upload or paste a resume, ATSCheck processes your text strictly in temporary browser RAM (client-side memory). We do not record your name, contact information, phone numbers, email addresses, employment history, or educational credentials on any server.",
   },
   {
     title: '2. Cookies and Local Storage',
-    content: "ToolForge uses one localStorage item, 'toolforge_theme', to store the light or dark mode preference. We do not set tracking cookies, advertising pixels, or behavioral trackers. Google Fonts receives standard connection metadata when fonts load. If you open the optional UPI support dialog, the QR image is requested from qrserver.com and contains the displayed payment intent; résumé content is not included.",
+    content: "ATSCheck uses one localStorage item, 'toolforge_theme', to store the light or dark mode preference. We do not set tracking cookies, advertising pixels, or behavioral trackers. Google Fonts receives standard connection metadata when fonts load. If you open the optional UPI support dialog, the QR image is requested from qrserver.com and contains the displayed payment intent; résumé content is not included.",
   },
   {
     title: '3. Third-Party Data Sharing',
-    content: "Résumé text is not sent to ToolForge servers or third parties. The site loads fonts from Google Fonts. If you choose to open the optional UPI support dialog, qrserver.com receives a request to render the payment QR code; this request does not contain résumé text.",
+    content: "Résumé text is not sent to ATSCheck servers or third parties. The site loads fonts from Google Fonts. If you choose to open the optional UPI support dialog, qrserver.com receives a request to render the payment QR code; this request does not contain résumé text.",
   },
   {
     title: '4. AI Architecture and Processing',
@@ -62,7 +62,7 @@ const detailedSections = [
   },
   {
     title: '6. Contact & Data Controller',
-    content: "ToolForge is built with a privacy-by-design architecture. If you have questions regarding this policy or our technical implementation, contact us at hello@toolforge.app.",
+    content: "ATSCheck is built with a privacy-by-design architecture. If you have questions regarding this policy or our technical implementation, contact us at contact@atscheck.tech or arnavsinghas1221@gmail.com.",
   },
 ];
 
@@ -98,7 +98,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigateHome }) => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
-            Your résumé text is analyzed in your browser and is not sent to ToolForge servers. Theme preference is stored locally, and fonts load from Google Fonts.
+            Your résumé text is analyzed in your browser and is not sent to ATSCheck servers. Theme preference is stored locally, and fonts load from Google Fonts.
           </p>
 
           <div className="pt-1 text-xs text-slate-400 font-mono">

@@ -516,7 +516,7 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             </div>
             <div className="p-3 rounded-xl bg-white dark:bg-zinc-900 border border-blue-100 dark:border-blue-900/40 text-xs text-blue-700 dark:text-blue-300 font-medium flex items-center gap-2">
               <Zap className="w-4 h-4 shrink-0 text-amber-500" />
-              <span>Audit your layout with ToolForge's 100% in-browser single-column PDF parser.</span>
+              <span>Audit your layout with ATSCheck's 100% in-browser single-column PDF parser.</span>
             </div>
           </div>
         </div>

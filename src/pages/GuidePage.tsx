@@ -38,7 +38,7 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
-            Applicant tracking systems vary by employer and configuration. This guide covers common résumé structure and keyword practices; ToolForge provides heuristic feedback rather than access to an employer's ranking rules.
+            Applicant tracking systems vary by employer and configuration. This guide covers common résumé structure and keyword practices; ATSCheck provides heuristic feedback rather than access to an employer's ranking rules.
           </p>
         </div>
 
@@ -133,23 +133,23 @@ export const GuidePage: React.FC<GuidePageProps> = ({ onNavigateHome }) => {
             {[
               {
                 q: "What is an ATS resume checker?",
-                a: "An ATS résumé checker estimates how résumé text, sections, and keywords may be reviewed. ToolForge compares extracted résumé text and common formatting signals; it does not simulate or rank candidates in a specific employer system."
+                a: "An ATS résumé checker estimates how résumé text, sections, and keywords may be reviewed. ATSCheck compares extracted résumé text and common formatting signals; it does not simulate or rank candidates in a specific employer system."
               },
               {
                 q: "How do I check if my resume is ATS-friendly for free without signup?",
-                a: "Upload a supported résumé file to analyze its extracted text in your browser. ToolForge checks common formatting patterns and compares résumé terms with a target job description without requiring an account."
+                a: "Upload a supported résumé file to analyze its extracted text in your browser. ATSCheck checks common formatting patterns and compares résumé terms with a target job description without requiring an account."
               },
               {
                 q: "What is a good ATS score?",
-                a: "There is no universal passing score. ToolForge provides a heuristic based on keyword overlap, formatting checks, measurable bullets, and profile completeness; employers use different systems and criteria."
+                a: "There is no universal passing score. ATSCheck provides a heuristic based on keyword overlap, formatting checks, measurable bullets, and profile completeness; employers use different systems and criteria."
               },
               {
                 q: "What is Google's X-Y-Z formula for resume bullets?",
                 a: "The X-Y-Z format is commonly described as: Accomplished [X], as measured by [Y], by doing [Z]. Use results and measures that accurately reflect your own work."
               },
               {
-                q: "Does ToolForge store or sell my resume data?",
-                a: "Résumé text is processed in your browser and is not sent to ToolForge servers. Your theme preference may be stored in local browser storage, and the site loads fonts from Google Fonts."
+                q: "Does ATSCheck store or sell my resume data?",
+                a: "Résumé text is processed in your browser and is not sent to ATSCheck servers. Your theme preference may be stored in local browser storage, and the site loads fonts from Google Fonts."
               }
             ].map((faq, idx) => (
               <article

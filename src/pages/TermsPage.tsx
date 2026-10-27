@@ -6,10 +6,10 @@ interface TermsPageProps {
 }
 
 const doList = [
-  'Use ToolForge to analyze and optimize your personal resume for any job application',
+  'Use ATSCheck to analyze and optimize your personal resume for any job application',
   'Export unlimited clean PDF and plain text documents with standard ATS formatting',
   'Edit sample candidate templates as a baseline for your own career materials',
-  'Share ToolForge with colleagues, students, and job seekers looking for work',
+  'Share ATSCheck with colleagues, students, and job seekers looking for work',
 ];
 
 const dontList = [
@@ -21,32 +21,32 @@ const dontList = [
 
 const termsSections = [
   {
-    title: '1. What ToolForge Is',
-    content: "ToolForge is a free, browser-based utility that checks résumé text and compares it with job-description keywords. Its results are heuristics and do not measure compatibility with a specific employer's applicant tracking system.",
+    title: '1. What ATSCheck Is',
+    content: "ATSCheck is a free, browser-based utility that checks résumé text and compares it with job-description keywords. Its results are heuristics and do not measure compatibility with a specific employer's applicant tracking system.",
   },
   {
-    title: '2. What ToolForge Is Not',
-    content: "ToolForge is not a recruitment agency, staffing firm, employment broker, or career counseling entity. We do not review resumes manually, submit applications on your behalf, or guarantee interview callbacks, placement, or hiring outcomes.",
+    title: '2. What ATSCheck Is Not',
+    content: "ATSCheck is not a recruitment agency, staffing firm, employment broker, or career counseling entity. We do not review resumes manually, submit applications on your behalf, or guarantee interview callbacks, placement, or hiring outcomes.",
   },
   {
     title: '3. Intellectual Property and Content Ownership',
-    content: "Your résumé text is processed in your browser and is not sent to ToolForge application servers. Theme preference may be saved in local browser storage, and fonts are loaded from Google Fonts. This page does not claim rights to your résumé content.",
+    content: "Your résumé text is processed in your browser and is not sent to ATSCheck application servers. Theme preference may be saved in local browser storage, and fonts are loaded from Google Fonts. This page does not claim rights to your résumé content.",
   },
   {
     title: '4. Scoring and Algorithmic Disclaimers',
-    content: "Résumé readiness scores and keyword percentages are ToolForge heuristics. ToolForge does not test documents in employer applicant tracking systems, whose configurations and screening criteria vary. Use your own judgment when reviewing the suggestions.",
+    content: "Résumé readiness scores and keyword percentages are ATSCheck heuristics. ATSCheck does not test documents in employer applicant tracking systems, whose configurations and screening criteria vary. Use your own judgment when reviewing the suggestions.",
   },
   {
     title: '5. "As-Is" Warranty Disclaimer',
-    content: "ToolForge is provided on an 'as-is' and 'as-available' basis without warranties of any kind, whether express or implied. We do not warrant that operation will be uninterrupted, error-free, or compatible with every document or employer system.",
+    content: "ATSCheck is provided on an 'as-is' and 'as-available' basis without warranties of any kind, whether express or implied. We do not warrant that operation will be uninterrupted, error-free, or compatible with every document or employer system.",
   },
   {
     title: '6. Limitation of Liability',
-    content: "To the maximum extent permitted by applicable law, ToolForge and its developers shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use this free service.",
+    content: "To the maximum extent permitted by applicable law, ATSCheck and its developers shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use of or inability to use this free service.",
   },
   {
     title: '7. Amendments and Contact',
-    content: "We may update these terms periodically to reflect technical or legal requirements. Continued use constitutes acceptance. For inquiries regarding these terms, contact hello@toolforge.app.",
+    content: "We may update these terms periodically to reflect technical or legal requirements. Continued use constitutes acceptance. For inquiries regarding these terms, contact contact@atscheck.tech or arnavsinghas1221@gmail.com.",
   },
 ];
 

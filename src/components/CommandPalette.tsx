@@ -256,7 +256,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             <span>↵ Select</span>
             <span>Esc Close</span>
           </div>
-          <span className="text-emerald-500 font-medium">ToolForge Engine v2.5</span>
+          <span className="text-emerald-500 font-medium">ATSCheck Engine v2.5</span>
         </div>
       </div>
     </div>

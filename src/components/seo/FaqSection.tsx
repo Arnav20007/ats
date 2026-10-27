@@ -61,7 +61,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
               <h3 className="text-sm font-bold text-slate-900">
-                ToolForge vs. Legacy Competitor Tools
+                ATSCheck vs. Legacy Competitor Tools
               </h3>
             </div>
             <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">
@@ -74,7 +74,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
                 <tr>
                   <th className="p-3">Core Capability</th>
-                  <th className="p-3 bg-emerald-50/50 text-emerald-900 font-bold">ToolForge (This Tool)</th>
+                  <th className="p-3 bg-emerald-50/50 text-emerald-900 font-bold">ATSCheck (This Tool)</th>
                   <th className="p-3 text-slate-500">Typical Competitors</th>
                 </tr>
               </thead>

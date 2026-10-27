@@ -36,7 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           type="button"
           onClick={onNavigateHome}
-          aria-label="ToolForge home"
+          aria-label="ATSCheck home"
           className="flex items-center gap-3 shrink-0 cursor-pointer bg-transparent border-0 p-0 text-left"
         >
           <img

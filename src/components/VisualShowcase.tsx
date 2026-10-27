@@ -23,7 +23,7 @@ export const VisualShowcase: React.FC = () => {
           </h2>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed font-normal">
-            Most applicant tracking systems reject resumes not for lack of qualifications, but because of unparseable formatting, missing target keywords, and vague bullet points. ToolForge resolves every flag before you submit.
+            Most applicant tracking systems reject resumes not for lack of qualifications, but because of unparseable formatting, missing target keywords, and vague bullet points. ATSCheck resolves formatting flags before you submit.
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export const VisualShowcase: React.FC = () => {
           <div className="relative group overflow-hidden bg-slate-950">
             <img
               src="/images/before-after-ats.jpg"
-              alt="Comparison of a rejected resume before optimization versus an interview-ready resume after ToolForge optimization"
+              alt="Comparison of a rejected resume before optimization versus an interview-ready resume after ATSCheck optimization"
               className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.01]"
               loading="lazy"
             />

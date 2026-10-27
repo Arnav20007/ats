@@ -4,49 +4,49 @@ import { Check, Sparkles, ShieldCheck, Zap, Lock } from 'lucide-react';
 const comparisonData = [
   {
     feature: 'Price',
-    toolforge: 'Free to use',
+    atscheck: 'Free to use ($0)',
     jobscan: 'Check current plan details',
     resumeworded: 'Check current plan details',
     teal: 'Check current plan details',
   },
   {
     feature: 'Account required?',
-    toolforge: 'No account required',
+    atscheck: 'No account required',
     jobscan: 'Varies by provider and workflow',
     resumeworded: 'Varies by provider and workflow',
     teal: 'Varies by provider and workflow',
   },
   {
     feature: 'Data privacy',
-    toolforge: 'Résumé text processed in browser; fonts load externally',
+    atscheck: 'Résumé text processed in browser; fonts load externally',
     jobscan: 'Review provider privacy notice',
     resumeworded: 'Review provider privacy notice',
     teal: 'Review provider privacy notice',
   },
   {
     feature: 'Interactive inline editor',
-    toolforge: 'Edit fields in the browser',
+    atscheck: 'Edit fields in the browser',
     jobscan: 'Features vary by product and plan',
     resumeworded: 'Features vary by product and plan',
     teal: 'Features vary by product and plan',
   },
   {
     feature: '1-click keyword insert',
-    toolforge: 'Add recognized terms to your skills',
+    atscheck: 'Add recognized terms to your skills',
     jobscan: 'Check current product features',
     resumeworded: 'Check current product features',
     teal: 'Check current product features',
   },
   {
     feature: 'Google X-Y-Z rewriter',
-    toolforge: 'Draft suggestions with factual placeholders',
+    atscheck: 'Draft suggestions with factual placeholders',
     jobscan: 'Check current product features',
     resumeworded: 'Check current product features',
     teal: 'Check current product features',
   },
   {
     feature: 'Clean PDF export',
-    toolforge: 'Browser print-to-PDF',
+    atscheck: 'Browser print-to-PDF',
     jobscan: 'Export options vary',
     resumeworded: 'Export options vary',
     teal: 'Export options vary',
@@ -54,10 +54,10 @@ const comparisonData = [
 ];
 
 const stats = [
-  { value: '$0', label: 'ToolForge price', icon: Sparkles, color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60' },
+  { value: '$0', label: 'ATSCheck price', icon: Sparkles, color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60' },
   { value: 'Browser', label: 'Résumé text processing', icon: Lock, color: 'text-teal-600 bg-teal-50 dark:bg-teal-950/60' },
   { value: 'Rule-based', label: 'Review approach', icon: Zap, color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/60' },
-  { value: 'No account', label: 'Required to use ToolForge', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60' },
+  { value: 'No account', label: 'Required to use ATSCheck', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/60' },
 ];
 
 export const CompetitorBenchmark: React.FC = () => {
@@ -69,15 +69,15 @@ export const CompetitorBenchmark: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>ToolForge Overview</span>
+            <span>ATSCheck Overview</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-            What ToolForge includes
+            What ATSCheck includes
           </h2>
 
           <p className="text-base sm:text-lg text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
-            ToolForge offers browser-based résumé checks, recognized skill-term comparisons, and draft wording suggestions. Results are heuristics, not employer ATS tests.
+            ATSCheck offers browser-based résumé checks, recognized skill-term comparisons, and draft wording suggestions. Results are heuristics, not employer ATS tests.
           </p>
         </div>
 
@@ -109,7 +109,7 @@ export const CompetitorBenchmark: React.FC = () => {
                   <th className="py-5 px-6 w-[28%] bg-emerald-600 dark:bg-emerald-700">
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-white" />
-                      <span className="font-extrabold text-white text-base">ToolForge</span>
+                      <span className="font-extrabold text-white text-base">ATSCheck</span>
                       <span className="text-[10px] font-bold bg-white/20 text-white px-2 py-0.5 rounded-full">FREE</span>
                     </div>
                   </th>
@@ -132,7 +132,7 @@ export const CompetitorBenchmark: React.FC = () => {
                         <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
                           <Check className="w-3 h-3 stroke-[3]" />
                         </div>
-                        <span className="font-bold text-emerald-800 dark:text-emerald-300">{row.toolforge}</span>
+                        <span className="font-bold text-emerald-800 dark:text-emerald-300">{row.atscheck}</span>
                       </div>
                     </td>
                     <td className="py-4 px-6 text-slate-500 dark:text-zinc-400 font-medium">{row.jobscan}</td>

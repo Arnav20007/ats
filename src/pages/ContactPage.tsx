@@ -141,7 +141,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   Email Prepared
                 </h3>
                 <p className="text-xs text-emerald-700 dark:text-emerald-400 max-w-sm mx-auto leading-relaxed">
-                  Your message has been drafted to <strong>hello@toolforge.app</strong>. If your email app did not open automatically, you can send directly or copy your message below:
+                  Your message has been drafted to <strong>contact@atscheck.tech</strong>. If your email app did not open automatically, you can send directly or copy your message below:
                 </p>
                 <div className="flex items-center justify-center gap-3 pt-2">
                   <button
@@ -249,7 +249,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div>
                   <h4 className="font-bold text-slate-800 dark:text-zinc-200">Is my resume uploaded to your servers?</h4>
                   <p className="text-slate-500 dark:text-zinc-400 pt-0.5 leading-relaxed">
-                    Résumé parsing runs in your browser using PDF.js, and the résumé text is not sent to ToolForge servers. The site may still contact external services to load fonts.
+                    Résumé parsing runs in your browser using PDF.js, and the résumé text is not sent to ATSCheck servers. The site may still contact external services to load fonts.
                   </p>
                 </div>
                 <div className="border-t border-slate-100 dark:border-zinc-800 pt-3">

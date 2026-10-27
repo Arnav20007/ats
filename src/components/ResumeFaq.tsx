@@ -4,19 +4,19 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 const faqs = [
   {
     q: 'How does the ATS readiness score get calculated?',
-    a: "The general readiness score adds seven checklist categories: contact details (20 points), standard section headings (20), résumé length (10), achievement bullets (10), quantified results (15), action verbs (15), and filler phrases (10). Target-job keyword match is shown separately and does not change this score. This is a rule-based estimate, not a score from an employer's ATS."
+    a: "The general readiness score adds seven checklist categories: contact details (20 points), standard section headings (20), résumé length (10), achievement bullets (10), quantified results (15), action verbs (15), and filler phrases (10) for a 0–100 total. Target-job keyword match is shown separately as a percentage gap and does not change this score. This is a rule-based heuristic estimate, not a proprietary score from an employer's ATS."
   },
   {
     q: 'Does my resume data get saved, stored, or sent to AI?',
-    a: "Résumé text is processed in your browser for the current session and is not sent to ToolForge application servers or an AI service. Theme preference is stored locally, and the site requests fonts from Google Fonts."
+    a: "Résumé text is processed 100% locally in your browser memory for the current session and is not sent to ATSCheck application servers or any external AI service. Theme preference is stored locally, and the site requests fonts from Google Fonts."
   },
   {
     q: 'Can ATS software read PDF resumes?',
-    a: 'Many systems can read PDFs with selectable text, but support varies by employer and document structure. ToolForge checks extracted text and does not test your resume in an employer ATS.'
+    a: 'Many systems can read PDFs with selectable text, but support varies by employer and document structure. ATSCheck checks extracted text and does not test your resume in an employer ATS.'
   },
   {
     q: 'What is considered a good ATS score?',
-    a: 'There is no universal passing score. ToolForge provides a heuristic to help review keyword overlap, formatting, bullet points, and profile completeness; employers use different systems and criteria.'
+    a: 'There is no universal passing score across all employers. ATSCheck provides a heuristic to help review keyword overlap, formatting, bullet points, and profile completeness; employers use different systems and criteria.'
   },
   {
     q: 'What is the Google X-Y-Z formula for bullet points?',
@@ -24,10 +24,10 @@ const faqs = [
   },
   {
     q: 'Can I check an Overleaf, LaTeX, or Word resume ATS score?',
-    a: 'Yes. If you exported your resume PDF from Overleaf, LaTeX, Microsoft Word, or Google Docs, ToolForge extracts the selectable text layer in your browser to evaluate standard section headings, quantifiable metrics, and role keywords without breaking formatting.'
+    a: 'Yes. If you exported your resume PDF from Overleaf, LaTeX, Microsoft Word, or Google Docs, ATSCheck extracts the selectable text layer in your browser to evaluate standard section headings, quantifiable metrics, and role keywords without breaking formatting.'
   },
   {
-    q: 'Is ToolForge completely free with no hidden charges?',
+    q: 'Is ATSCheck completely free with no hidden charges?',
     a: "Yes. Every single feature — keyword matching, ATS audit checklist, bullet point rewriter, and direct PDF export — is 100% free with no watermarks or required subscriptions."
   }
 ];

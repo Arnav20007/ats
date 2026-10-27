@@ -1537,7 +1537,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 <html>
 <head>
 <meta charset="utf-8" />
-<title>ToolForge ATS Audit Report — ${esc(r.fullName)}</title>
+<title>ATSCheck Audit Report — ${esc(r.fullName)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -1587,7 +1587,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
 <body>
   <div class="header">
     <div>
-      <div class="brand">ToolForge Résumé Review</div>
+      <div class="brand">ATSCheck Résumé Review</div>
       <div class="badge">RÉSUMÉ READINESS SUMMARY</div>
     </div>
     <div class="report-meta">
@@ -1690,7 +1690,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
   </div>
 
   <div class="footer">
-    <span>ToolForge résumé review · Heuristic results for guidance</span>
+    <span>ATSCheck résumé review · Heuristic results for guidance</span>
     <span>Résumé analysis runs in this browser; external site assets may make separate requests</span>
   </div>
 </body>
@@ -1969,7 +1969,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                       <source srcSet="/images/hero-ats-preview.webp" type="image/webp" />
                       <img
                         src="/images/hero-ats-preview.jpg"
-                        alt="Illustrative preview of the ToolForge resume review interface"
+                        alt="Illustrative preview of the ATSCheck resume review interface"
                         width={1376}
                         height={768}
                         fetchPriority="high"
@@ -2012,15 +2012,15 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
               {/* Right: Clean, Crisp Explanation */}
               <div className="lg:col-span-6 space-y-6 text-left">
                 <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                  ToolForge’s Resume Checker forms its ATS score with a two-tier system
+                  How ATSCheck evaluates your 0–100 ATS readiness score
                 </h2>
 
                 <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-300 leading-relaxed font-normal">
-                  When you're applying for a job, there's a high chance your resume will be screened through an applicant tracking system before it finds its way on a recruiter's screen. ATS helps hiring managers find the right candidates by adding resumes to a database in a searchable format, extracting content.
+                  When you apply for a job, your resume is screened through applicant tracking systems (like Workday, Greenhouse, or Taleo) before reaching a human recruiter. ATSCheck scores your document across 7 transparent checklist categories totaling 100 points.
                 </p>
 
                 <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
-            A résumé's relevance, structure, and wording can affect how easy it is to review. ToolForge checks common formatting signals and compares recognized skill terms with a job description; it cannot predict or guarantee an employer's screening result.
+                  A résumé's relevance, structure, and wording directly affect how easily parsers extract your qualifications. ATSCheck provides heuristic feedback to review formatting and keywords; it does not claim access to an employer's proprietary screening rules.
                 </p>
 
                 <div className="space-y-5 pt-2">
@@ -2030,10 +2030,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </div>
                     <div className="space-y-1">
                       <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                        The proportion of content we can interpret
+                        Structural Parseability (50 Points)
                       </h4>
                       <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-                        Similar to an ATS, the tool analyzes and attempts to comprehend your resume's structure, standard headings, and dates.
+                        Evaluates contact details (20 pts), standard section headings (20 pts), and single-column length density (10 pts) so ATS software never merges columns or loses contact data.
                       </p>
                     </div>
                   </div>
@@ -2044,10 +2044,10 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                     </div>
                     <div className="space-y-1">
                       <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                        Recruiter impact & keyword relevance
+                        Recruiter Impact & Quality (50 Points)
                       </h4>
                       <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-                        Evaluates measurable achievements, action verbs, and keyword density against the exact job description you are targeting.
+                        Evaluates quantified Google X-Y-Z metrics (15 pts), recognized action verbs (15 pts), achievement bullets (10 pts), and zero weak filler phrases (10 pts), plus a separate job description keyword match.
                       </p>
                     </div>
                   </div>
@@ -2209,7 +2209,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 {/* Left Card: Before */}
                 <div className="p-8 rounded-3xl border border-rose-200/80 dark:border-rose-900/60 bg-rose-50/30 dark:bg-rose-950/20 space-y-5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">Before ToolForge</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">Before ATSCheck</span>
                     <span className="px-2.5 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 dark:bg-rose-900/80 dark:text-rose-200">
                       Example input
                     </span>
@@ -2233,7 +2233,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                 {/* Right Card: After */}
                 <div className="p-8 rounded-3xl border border-emerald-200/80 dark:border-emerald-900/60 bg-emerald-50/30 dark:bg-emerald-950/20 space-y-5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">After ToolForge</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">After ATSCheck</span>
                     <span className="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-900/80 dark:text-emerald-200">
                       Example draft
                     </span>
@@ -2288,7 +2288,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   Résumé Heuristics. Free for Candidates.
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal">
-                  ToolForge provides free browser-based résumé checks and keyword comparisons. Its results are heuristics, not tests against employer ATS platforms.
+                  ATSCheck provides free browser-based résumé checks and keyword comparisons. Its results are heuristics, not tests against employer ATS platforms.
                 </p>
               </div>
 
@@ -2419,7 +2419,7 @@ ${resume.education.map((edu) => `${edu.degree} - ${edu.school} (${edu.year})`).j
                   Ready to review your résumé?
                 </h2>
                 <p className="text-emerald-100/80 text-base sm:text-lg font-normal">
-                  Free to use with no account. Résumé text is processed in your browser and is not sent to ToolForge servers.
+                  Free to use with no account. Résumé text is processed in your browser and is not sent to ATSCheck servers.
                 </p>
               </div>
 

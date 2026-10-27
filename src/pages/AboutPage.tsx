@@ -42,7 +42,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             About ATSCheck
           </h1>
           <span className="text-xs text-slate-400 dark:text-zinc-500 font-mono">
-            Official Architecture &amp; Mission (About ToolForge Engine)
+            Official Architecture &amp; Mission (About ATSCheck Engine)
           </span>
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-zinc-400 leading-relaxed font-normal max-w-2xl">
