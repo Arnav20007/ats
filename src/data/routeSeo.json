@@ -269,6 +269,42 @@
     "path": "/keywords/overleaf-latex-ats",
     "heading": "Overleaf & LaTeX ATS Resume Keywords"
   },
+  "keywords_capgemini_fresher": {
+    "title": "Capgemini Fresher Resume Keywords & ATS Guide | ATSCheck",
+    "description": "Review Capgemini fresher ATS resume keywords, pseudo-code skills, Java and cloud topics for campus placements. Test your resume formatting for free.",
+    "path": "/keywords/capgemini-fresher",
+    "heading": "Capgemini Fresher ATS Resume Keywords"
+  },
+  "keywords_deloitte_analyst": {
+    "title": "Deloitte Analyst Resume Keywords & ATS Format | ATSCheck",
+    "description": "Target Deloitte analyst ATS resume keywords, SQL, Power BI, Excel data modeling, and consulting bullets for campus drives. Free in-browser resume test.",
+    "path": "/keywords/deloitte-analyst",
+    "heading": "Deloitte Analyst ATS Resume Keywords"
+  },
+  "keywords_hcl_fresher": {
+    "title": "HCLTech Fresher Resume Keywords & ATS Guide | ATSCheck",
+    "description": "Essential HCLTech fresher ATS resume keywords, Linux, networking, Python scripting, and IT engineering bullets for campus drives. Free ATS score check.",
+    "path": "/keywords/hcl-fresher",
+    "heading": "HCLTech Fresher ATS Resume Keywords"
+  },
+  "keywords_java_developer_fresher": {
+    "title": "Java Fresher Resume Keywords & ATS Checklist | ATSCheck",
+    "description": "Target Java fresher ATS keywords, Spring Boot, Core Java OOP, REST APIs, and SQL database skills with quantifiable bullet examples. Test resume free.",
+    "path": "/keywords/java-developer-fresher",
+    "heading": "Java Developer Fresher ATS Resume Keywords"
+  },
+  "keywords_python_developer_fresher": {
+    "title": "Python Fresher Resume Keywords & ATS Guide | ATSCheck",
+    "description": "Essential Python fresher ATS resume keywords, FastAPI, Django, PostgreSQL, and backend engineering bullet formulas for tech jobs. Free ATS scan.",
+    "path": "/keywords/python-developer-fresher",
+    "heading": "Python Developer Fresher ATS Resume Keywords"
+  },
+  "keywords_internship_resume_ats": {
+    "title": "College Internship Resume ATS Keywords & Guide | ATSCheck",
+    "description": "Explore college internship ATS resume keywords, coursework formatting, and hackathon project bullet points for students with no experience. Free check.",
+    "path": "/keywords/internship-resume-ats",
+    "heading": "College Student Internship ATS Resume Keywords"
+  },
   "notFound": {
     "title": "Page Not Found | ATSCheck",
     "description": "The page you requested could not be found.",

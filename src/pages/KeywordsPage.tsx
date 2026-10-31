@@ -128,10 +128,10 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             {/* Category Filter Pills */}
             <div className="flex flex-wrap items-center gap-2 pt-2">
               {[
-                { id: 'all', label: 'All 30 Guides' },
-                { id: 'campus', label: 'Campus Placements (TCS, Infosys, Accenture)' },
+                { id: 'all', label: 'All 36 Guides' },
+                { id: 'campus', label: 'Campus Placements (TCS, Infosys, Capgemini, Deloitte)' },
                 { id: 'faang', label: 'FAANG & Big Tech (Amazon, Google)' },
-                { id: 'engineering', label: 'Software & Cloud' },
+                { id: 'engineering', label: 'Software, Java & Python' },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -153,13 +153,13 @@ export const KeywordsPage: React.FC<KeywordsPageProps> = ({
             {Object.values(ROLE_KEYWORD_PROFILES)
               .filter((prof) => {
                 if (directoryCategory === 'campus') {
-                  return ['tcs-nqt', 'infosys-fresher', 'accenture-fresher', 'cognizant-fresher', 'wipro-fresher', 'btech-cse-fresher', 'bca-mca-fresher', 'overleaf-latex-ats'].includes(prof.slug);
+                  return ['tcs-nqt', 'infosys-fresher', 'accenture-fresher', 'cognizant-fresher', 'wipro-fresher', 'capgemini-fresher', 'deloitte-analyst', 'hcl-fresher', 'internship-resume-ats', 'btech-cse-fresher', 'bca-mca-fresher', 'overleaf-latex-ats'].includes(prof.slug);
                 }
                 if (directoryCategory === 'faang') {
                   return ['amazon-sde', 'google-swe-intern', 'software-engineer', 'ai-engineer', 'data-scientist', 'product-manager'].includes(prof.slug);
                 }
                 if (directoryCategory === 'engineering') {
-                  return ['software-engineer', 'full-stack-developer', 'frontend-developer', 'devops-engineer', 'cloud-architect', 'qa-automation-engineer', 'mobile-developer', 'blockchain-developer'].includes(prof.slug);
+                  return ['software-engineer', 'full-stack-developer', 'frontend-developer', 'java-developer-fresher', 'python-developer-fresher', 'devops-engineer', 'cloud-architect', 'qa-automation-engineer', 'mobile-developer', 'blockchain-developer'].includes(prof.slug);
                 }
                 return true;
               })

@@ -68,7 +68,7 @@ for (const file of files) {
 }
 
 if (report.length === 0) {
-  console.log('✅ ALL 43 PRODUCTION ROUTES PASSED 100% OF STRICT SEO-OPTIMIZER RULES!');
+  console.log(`✅ ALL ${files.length} PRODUCTION ROUTES PASSED 100% OF STRICT SEO-OPTIMIZER RULES!`);
 } else {
   console.log(`⚠️ Found ${issues} SEO issues across ${report.length} pages:`);
   for (const item of report) {

@@ -1728,4 +1728,550 @@ categories: [
       'Using complex TikZ or multi-column packages that scramble resume reading order.'
     ]
   }
+,
+  'capgemini-fresher': {
+  "slug": "capgemini-fresher",
+  "roleTitle": "Capgemini Fresher & Analyst / Exceller",
+  "shortTitle": "Capgemini Fresher",
+  "seoTitle": "Capgemini Fresher Resume Keywords & ATS Guide | ATSCheck",
+  "metaDescription": "Review Capgemini fresher ATS resume keywords, pseudo-code skills, Java and cloud topics for campus placements. Test your resume formatting for free.",
+  "overview": "Capgemini Exceller and campus recruitment processes prioritize programming fundamentals, pseudo-code problem solving, cloud awareness, and clean project documentation. This guide details essential technical keywords for Capgemini entry-level screening.",
+  "starterTemplateKey": "software_engineer",
+  "recruiterScreeningChecklist": [
+    "Are core programming languages (Java, Python, C++) listed with practical application examples?",
+    "Are database concepts, SQL queries, and relational schemas explicitly mentioned?",
+    "Does the resume include software engineering practices such as Agile, Git version control, and unit testing?",
+    "Are academic projects supported by verifiable GitHub links or live deployment URLs?"
+  ],
+  "atsFormattingAdvice": "Use clean single-column formatting without tables or graphics. Capgemini screening portals parse text sequentially, so clearly delineate Education, Technical Skills, Projects, and Certifications.",
+  "categories": [
+    {
+      "categoryName": "Core Programming & Data Structures",
+      "description": "Languages and foundational computer science principles evaluated in Capgemini technical rounds.",
+      "keywords": [
+        "Java",
+        "Python",
+        "C++",
+        "Object-Oriented Programming (OOP)",
+        "Data Structures & Algorithms",
+        "Exception Handling",
+        "Collections Framework",
+        "Multithreading Basics",
+        "Memory Management"
+      ]
+    },
+    {
+      "categoryName": "Web & Backend Development",
+      "description": "Frameworks and server-side components frequently required in Capgemini client projects.",
+      "keywords": [
+        "Spring Boot",
+        "REST APIs",
+        "Node.js",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "JSON",
+        "Microservices Fundamentals",
+        "Hibernate ORM"
+      ]
+    },
+    {
+      "categoryName": "Databases & Query Optimization",
+      "description": "Relational and NoSQL storage systems evaluated in technical interviews.",
+      "keywords": [
+        "SQL",
+        "MySQL",
+        "PostgreSQL",
+        "Database Normalization (1NF to 3NF)",
+        "Joins",
+        "Indexes",
+        "MongoDB",
+        "CRUD Operations",
+        "Stored Procedures"
+      ]
+    },
+    {
+      "categoryName": "Cloud & Modern Tooling",
+      "description": "Modern infrastructure tools that give freshers a distinct advantage.",
+      "keywords": [
+        "Git",
+        "GitHub",
+        "AWS Fundamentals",
+        "Azure Basics",
+        "Docker Containerization",
+        "CI/CD Pipelines",
+        "Linux Shell Scripting",
+        "Agile/Scrum",
+        "JIRA"
+      ]
+    }
+  ],
+  "googleXyzExamples": [
+    {
+      "title": "Backend API Service Project",
+      "formula": "Engineered a RESTful inventory management API using Java Spring Boot and MySQL, handling 1,500 daily requests with sub-150ms response times.",
+      "explanation": "Specifies the programming stack (Java Spring Boot, MySQL), volume (1,500 daily requests), and latency improvement (sub-150ms)."
+    },
+    {
+      "title": "Cloud-Deployed Full Stack Web App",
+      "formula": "Developed a student grievance web portal in React and Node.js deployed on AWS EC2, reducing issue resolution turnaround by 40% for 800+ campus users.",
+      "explanation": "Quantifies community impact (800+ campus users) and concrete efficiency gain (40% turnaround reduction)."
+    }
+  ],
+  "commonMistakes": [
+    "Listing generic personal traits like \"hardworking\" instead of verified technical coursework.",
+    "Omitting database normal form and SQL queries from project descriptions.",
+    "Using dual-column tables or Canva styling that causes parsing failures in corporate screening portals."
+  ]
+},
+  'deloitte-analyst': {
+  "slug": "deloitte-analyst",
+  "roleTitle": "Deloitte Analyst / USI Technology Consulting",
+  "shortTitle": "Deloitte Analyst",
+  "seoTitle": "Deloitte Analyst Resume Keywords & ATS Format | ATSCheck",
+  "metaDescription": "Target Deloitte analyst ATS resume keywords, SQL, Power BI, Excel data modeling, and consulting bullets for campus drives. Free in-browser resume test.",
+  "overview": "Deloitte USI and Advisory campus hiring evaluates analytical aptitude, data manipulation capability, client-facing communication, and technical problem-solving. This checklist highlights high-impact terms for consulting and technology analyst profiles.",
+  "starterTemplateKey": "business_analyst",
+  "recruiterScreeningChecklist": [
+    "Does the resume showcase proficiency with data visualization tools (Power BI, Tableau, Advanced Excel)?",
+    "Are analytical methodologies (data modeling, variance analysis, regression) explicitly cited?",
+    "Do project bullets highlight cross-functional collaboration and business impact metrics?",
+    "Is the formatting strictly linear and professional, meeting Big 4 corporate review standards?"
+  ],
+  "atsFormattingAdvice": "Deloitte recruiters prioritize clean business formatting with measurable achievements. Ensure metrics reflect cost savings, process optimization percentages, or data volume processed.",
+  "categories": [
+    {
+      "categoryName": "Data Analytics & Business Intelligence",
+      "description": "Reporting and visual analytics platforms essential for consulting deliverables.",
+      "keywords": [
+        "Power BI",
+        "Tableau",
+        "Advanced Excel (VLOOKUP, XLOOKUP, Pivot Tables)",
+        "Data Visualization",
+        "Dashboard Design",
+        "DAX Formulas",
+        "KPI Tracking",
+        "Business Metrics"
+      ]
+    },
+    {
+      "categoryName": "Data Management & Querying",
+      "description": "Structured query languages and data transformation pipelines.",
+      "keywords": [
+        "SQL",
+        "PostgreSQL",
+        "Data Cleaning",
+        "Data Modeling",
+        "ETL Processes",
+        "Python (Pandas, NumPy)",
+        "Data Wrangling",
+        "Relational Databases"
+      ]
+    },
+    {
+      "categoryName": "Consulting & Business Strategy",
+      "description": "Strategic frameworks and client communication competencies.",
+      "keywords": [
+        "Requirements Gathering",
+        "Stakeholder Management",
+        "Process Automation",
+        "Cost-Benefit Analysis",
+        "Gap Analysis",
+        "Agile Methodology",
+        "Business Process Modeling (BPMN)",
+        "Risk Assessment"
+      ]
+    },
+    {
+      "categoryName": "Productivity & Collaboration Systems",
+      "description": "Enterprise tools for documentation and project workflow management.",
+      "keywords": [
+        "JIRA",
+        "Confluence",
+        "Microsoft PowerPoint",
+        "Visio",
+        "Git",
+        "Google Analytics",
+        "Presentation Skills",
+        "Financial Modeling Basics"
+      ]
+    }
+  ],
+  "googleXyzExamples": [
+    {
+      "title": "Business Analytics Dashboard",
+      "formula": "Designed an automated Power BI financial analytics dashboard tracking 12 enterprise KPIs across 5 business units, saving 15 hours of manual weekly reporting.",
+      "explanation": "Explicitly measures hours saved (15 hours/week) across distinct operational units (5 business units)."
+    },
+    {
+      "title": "Process Automation & Data Pipeline",
+      "formula": "Automated quarterly data reconciliation pipeline using Python and SQL, eliminating manual spreadsheet entry for 25,000+ customer transaction rows.",
+      "explanation": "Quantifies transactional scale (25,000+ rows) and demonstrates process automation capability."
+    }
+  ],
+  "commonMistakes": [
+    "Focusing exclusively on technical syntax without highlighting the business decision or outcome.",
+    "Failing to specify exact Excel formulas or Power BI modeling capabilities.",
+    "Using informal bullet points instead of executive-level action verbs like \"Spearheaded\", \"Analyzed\", or \"Optimized\"."
+  ]
+},
+  'hcl-fresher': {
+  "slug": "hcl-fresher",
+  "roleTitle": "HCLTech Fresher & Graduate Engineer Trainee",
+  "shortTitle": "HCLTech Fresher",
+  "seoTitle": "HCLTech Fresher Resume Keywords & ATS Guide | ATSCheck",
+  "metaDescription": "Essential HCLTech fresher ATS resume keywords, Linux, networking, Python scripting, and IT engineering bullets for campus drives. Free ATS score check.",
+  "overview": "HCLTech campus drives (First Careers and Graduate Engineer Trainee programs) focus on computer science basics, networking fundamentals, infrastructure troubleshooting, and programming adaptability. Use this checklist to align your resume with HCLTech screening benchmarks.",
+  "starterTemplateKey": "systems_administrator",
+  "recruiterScreeningChecklist": [
+    "Are core operating systems (Linux, Windows Server) and command-line familiarity highlighted?",
+    "Does the candidate understand networking protocols (TCP/IP, DNS, DHCP, HTTP/S)?",
+    "Are scripting capabilities (Python, Bash, Shell) demonstrated in hands-on projects?",
+    "Is there demonstrable evidence of problem diagnostics and systematic debugging?"
+  ],
+  "atsFormattingAdvice": "Stick to clean, standard ATS section labels (Technical Skills, Academic Background, Practical Projects). Avoid complex column structures that disrupt text stream parsing.",
+  "categories": [
+    {
+      "categoryName": "Operating Systems & Administration",
+      "description": "Core platform administration skills required across HCL infrastructure and client teams.",
+      "keywords": [
+        "Linux (Ubuntu, CentOS, RHEL)",
+        "Shell Scripting (Bash)",
+        "Windows Server",
+        "Command Line Interface (CLI)",
+        "File Permissions",
+        "Process Management",
+        "System Troubleshooting"
+      ]
+    },
+    {
+      "categoryName": "Networking Fundamentals",
+      "description": "Network communication concepts essential for IT services and cloud engineering.",
+      "keywords": [
+        "TCP/IP",
+        "DNS Configuration",
+        "DHCP",
+        "Subnetting",
+        "OSI Model Layers",
+        "Routing & Switching Basics",
+        "Firewall Fundamentals",
+        "VPN",
+        "Network Troubleshooting"
+      ]
+    },
+    {
+      "categoryName": "Scripting & Programming",
+      "description": "Languages used for automation, infrastructure scripting, and software services.",
+      "keywords": [
+        "Python",
+        "C Programming",
+        "Java",
+        "SQL",
+        "Automation Scripts",
+        "Object-Oriented Programming",
+        "Git Version Control"
+      ]
+    },
+    {
+      "categoryName": "Cloud & Database Foundations",
+      "description": "Modern infrastructure concepts commonly assessed in technical rounds.",
+      "keywords": [
+        "AWS Cloud Practitioner Basics",
+        "Microsoft Azure Fundamentals",
+        "Virtualization (VMware, VirtualBox)",
+        "MySQL",
+        "Backup & Disaster Recovery",
+        "ITIL Foundations"
+      ]
+    }
+  ],
+  "googleXyzExamples": [
+    {
+      "title": "Automated Linux Maintenance Script",
+      "formula": "Wrote automated Bash and Python monitoring scripts across 4 Linux virtual machines, logging disk usage and alerting threshold breaches via webhook.",
+      "explanation": "Demonstrates real-world sysadmin utility (automated alerting) across multi-node environments."
+    },
+    {
+      "title": "Network Simulation Lab Project",
+      "formula": "Configured a virtualized enterprise network in Cisco Packet Tracer simulating 3 subnets and 50 nodes with dynamic routing protocols and access control lists.",
+      "explanation": "Quantifies network topology (3 subnets, 50 nodes) and validates practical routing and security concepts."
+    }
+  ],
+  "commonMistakes": [
+    "Not specifying Linux distributions or command-line scripting experience.",
+    "Omitting foundational networking protocols (TCP/IP, DNS, Subnetting) from technical skills.",
+    "Overloading the resume with theoretical subjects while omitting hands-on laboratory or home-lab setups."
+  ]
+},
+  'java-developer-fresher': {
+  "slug": "java-developer-fresher",
+  "roleTitle": "Java Developer Fresher & Spring Boot Engineer",
+  "shortTitle": "Java Fresher",
+  "seoTitle": "Java Fresher Resume Keywords & ATS Checklist | ATSCheck",
+  "metaDescription": "Target Java fresher ATS keywords, Spring Boot, Core Java OOP, REST APIs, and SQL database skills with quantifiable bullet examples. Test resume free.",
+  "overview": "Java remains one of the largest hiring categories for entry-level software engineers across enterprise IT, product startups, and fintech. This guide details the essential Core Java, Spring Boot, and database keywords required to clear ATS filters.",
+  "starterTemplateKey": "software_engineer",
+  "recruiterScreeningChecklist": [
+    "Are Core Java concepts (OOP, Multithreading, Exception Handling, Collections Framework) prominently featured?",
+    "Does the resume demonstrate practical experience with Spring Boot or Spring Framework?",
+    "Are relational databases (MySQL, PostgreSQL) and ORM tools (Hibernate/JPA) referenced in backend projects?",
+    "Are unit testing (JUnit, Mockito) and build automation tools (Maven, Gradle) included?"
+  ],
+  "atsFormattingAdvice": "Highlight programming language versions (e.g. Java 17 / Java 21) and specific backend design patterns (MVC, Singleton, Factory) in your technical skills grid.",
+  "categories": [
+    {
+      "categoryName": "Core Java Fundamentals",
+      "description": "Underlying language concepts rigorously probed during technical screening interviews.",
+      "keywords": [
+        "Core Java (Java 17/21)",
+        "Object-Oriented Programming (OOP)",
+        "Collections Framework (List, Set, Map)",
+        "Multithreading & Concurrency",
+        "Exception Handling",
+        "Java Streams API",
+        "Generics",
+        "JVM Architecture & Garbage Collection"
+      ]
+    },
+    {
+      "categoryName": "Enterprise Frameworks & Architecture",
+      "description": "Server-side application frameworks standard across enterprise environments.",
+      "keywords": [
+        "Spring Boot",
+        "Spring MVC",
+        "Spring Data JPA",
+        "Hibernate ORM",
+        "RESTful API Design",
+        "Microservices Architecture",
+        "Dependency Injection (DI)",
+        "Spring Security Basics"
+      ]
+    },
+    {
+      "categoryName": "Databases & Query Optimization",
+      "description": "Relational data persistence and schema optimization competencies.",
+      "keywords": [
+        "SQL",
+        "MySQL",
+        "PostgreSQL",
+        "Database Indexing",
+        "Transaction Management (ACID)",
+        "Entity Relationships (One-to-Many, Many-to-Many)",
+        "H2 Database (In-Memory)"
+      ]
+    },
+    {
+      "categoryName": "Build Tools, Testing & Deployment",
+      "description": "Engineering practices that demonstrate industry-ready software craftsmanship.",
+      "keywords": [
+        "Maven",
+        "Gradle",
+        "JUnit 5",
+        "Mockito",
+        "Git & GitHub",
+        "Docker Containers",
+        "Postman API Testing",
+        "Swagger / OpenAPI Documentation",
+        "CI/CD Pipelines"
+      ]
+    }
+  ],
+  "googleXyzExamples": [
+    {
+      "title": "Spring Boot E-Commerce Microservice",
+      "formula": "Built a Spring Boot and Hibernate order processing microservice supporting 2,000 requests/minute with JWT authentication and PostgreSQL persistence.",
+      "explanation": "Highlights enterprise architecture (Spring Boot, Microservices), security (JWT), and throughput scale (2,000 req/min)."
+    },
+    {
+      "title": "Java Concurrency Data Processing Tool",
+      "formula": "Developed a multithreaded log parser in Core Java utilizing ExecutorService and Streams API, cutting file ingestion time by 65% for 1GB text files.",
+      "explanation": "Showcases advanced language concurrency (ExecutorService) and quantifiable performance improvement (65% time reduction)."
+    }
+  ],
+  "commonMistakes": [
+    "Listing only \"Java\" without distinguishing Core Java features (Collections, Streams, Multithreading).",
+    "Omitting database ORM concepts (Hibernate, Spring Data JPA) from backend project descriptions.",
+    "Failing to mention unit testing frameworks (JUnit, Mockito), which senior engineers look for when evaluating junior candidates."
+  ]
+},
+  'python-developer-fresher': {
+  "slug": "python-developer-fresher",
+  "roleTitle": "Python Developer Fresher & Backend Engineer",
+  "shortTitle": "Python Fresher",
+  "seoTitle": "Python Fresher Resume Keywords & ATS Guide | ATSCheck",
+  "metaDescription": "Essential Python fresher ATS resume keywords, FastAPI, Django, PostgreSQL, and backend engineering bullet formulas for tech jobs. Free ATS scan.",
+  "overview": "Python entry-level roles span web application development, automation engineering, and data pipeline construction. This guide details high-priority keywords across frameworks, databases, and clean code standards required for Python engineering applications.",
+  "starterTemplateKey": "software_engineer",
+  "recruiterScreeningChecklist": [
+    "Does the resume list recognized web frameworks (Django, FastAPI, or Flask)?",
+    "Are asynchronous programming or data manipulation libraries (Asyncio, Celery, Pandas) referenced?",
+    "Is database connectivity and ORM usage (SQLAlchemy, Django ORM, PostgreSQL) evident in projects?",
+    "Are testing libraries (PyTest, Unittest) and container tools (Docker) included?"
+  ],
+  "atsFormattingAdvice": "Explicitly specify your Python web stack (e.g. FastAPI + Pydantic + PostgreSQL) in your technical skills and project headlines.",
+  "categories": [
+    {
+      "categoryName": "Core Python & Object-Oriented Design",
+      "description": "Fundamental language concepts and idiomatic programming capabilities.",
+      "keywords": [
+        "Python 3.11+",
+        "Object-Oriented Programming (OOP)",
+        "List Comprehensions",
+        "Generators & Decorators",
+        "Data Structures (Dicts, Sets, Tuples)",
+        "Exception Handling",
+        "Asyncio & Async/Await",
+        "Type Hints / Typing Module"
+      ]
+    },
+    {
+      "categoryName": "Web & API Frameworks",
+      "description": "Application frameworks used for production backend services and APIs.",
+      "keywords": [
+        "FastAPI",
+        "Django & Django REST Framework (DRF)",
+        "Flask",
+        "RESTful API Architecture",
+        "Pydantic Data Validation",
+        "JWT Authentication",
+        "Celery Asynchronous Tasks",
+        "Redis Caching"
+      ]
+    },
+    {
+      "categoryName": "Databases & ORMs",
+      "description": "Data persistence and relational schema design in Python.",
+      "keywords": [
+        "PostgreSQL",
+        "MySQL",
+        "SQLAlchemy ORM",
+        "Django ORM",
+        "Alembic Database Migrations",
+        "SQLite",
+        "MongoDB / Motor",
+        "Database Query Optimization"
+      ]
+    },
+    {
+      "categoryName": "Testing, Tooling & DevOps",
+      "description": "Modern development workflow and containerization competencies.",
+      "keywords": [
+        "PyTest",
+        "Unittest",
+        "Docker Containerization",
+        "Git & GitHub Workflows",
+        "Poetry / Virtual Environments",
+        "Linux Commands",
+        "Postman",
+        "CI/CD with GitHub Actions"
+      ]
+    }
+  ],
+  "googleXyzExamples": [
+    {
+      "title": "FastAPI High-Performance Backend",
+      "formula": "Architected an asynchronous FastAPI backend service with PostgreSQL connection pooling, maintaining sub-45ms P95 latency across 10,000 simulated test requests.",
+      "explanation": "Specifies modern async Python stack (FastAPI, async PostgreSQL) with rigorous benchmarking metrics (sub-45ms P95 latency)."
+    },
+    {
+      "title": "Django REST Community Platform",
+      "formula": "Developed a full-stack community discussion platform using Django REST Framework and React, implementing JWT auth and role-based permissions for 500+ active users.",
+      "explanation": "Demonstrates security modeling (JWT auth, RBAC) and active adoption metrics (500+ users)."
+    }
+  ],
+  "commonMistakes": [
+    "Listing Python without specifying the application domain (Backend Web, Automation, or Data Engineering).",
+    "Omitting database ORM experience (SQLAlchemy, Django ORM) from backend descriptions.",
+    "Failing to link public GitHub repositories where recruiters can inspect code structure and PEP 8 compliance."
+  ]
+},
+  'internship-resume-ats': {
+  "slug": "internship-resume-ats",
+  "roleTitle": "College Student Internship & Summer Trainee",
+  "shortTitle": "College Internship",
+  "seoTitle": "College Internship Resume ATS Keywords & Guide | ATSCheck",
+  "metaDescription": "Explore college internship ATS resume keywords, coursework formatting, and hackathon project bullet points for students with no experience. Free check.",
+  "overview": "Securing a summer internship or off-campus trainee role requires highlighting academic rigor, technical hackathon projects, core computer science coursework, and coding problem-solving. This guide outlines how to format a winning ATS resume with zero prior corporate work history.",
+  "starterTemplateKey": "software_engineer",
+  "recruiterScreeningChecklist": [
+    "Is Education positioned prominently at the top with degree, expected graduation year, and CGPA/percentage?",
+    "Are core CS subjects (Data Structures, Algorithms, DBMS, Operating Systems) listed under relevant coursework?",
+    "Do project bullets demonstrate hands-on coding with verifiable GitHub or live web links?",
+    "Are competitive programming achievements or hackathon participations highlighted?"
+  ],
+  "atsFormattingAdvice": "Keep the resume strictly to 1 page with single-column layout. Avoid graphic rating scales (e.g. 4/5 stars in Java) and fancy icons which ATS parsers cannot interpret.",
+  "categories": [
+    {
+      "categoryName": "Foundational CS Coursework",
+      "description": "Academic subjects that establish baseline engineering competence for interns.",
+      "keywords": [
+        "Data Structures & Algorithms",
+        "Object-Oriented Programming (OOP)",
+        "Database Management Systems (DBMS)",
+        "Operating Systems (OS)",
+        "Computer Networks",
+        "Software Engineering Principles",
+        "System Design Basics"
+      ]
+    },
+    {
+      "categoryName": "Core Languages & Development Tools",
+      "description": "Languages commonly evaluated in intern coding assessments and technical rounds.",
+      "keywords": [
+        "C++",
+        "Java",
+        "Python",
+        "JavaScript",
+        "HTML5 & CSS3",
+        "Git & GitHub",
+        "VS Code",
+        "Linux Terminal Basics",
+        "SQL"
+      ]
+    },
+    {
+      "categoryName": "Practical Projects & Hackathons",
+      "description": "Proof of initiative outside the classroom that differentiates intern candidates.",
+      "keywords": [
+        "Full Stack Web Project",
+        "REST API Development",
+        "Hackathon Finalist",
+        "Open Source Contribution",
+        "Algorithm Implementation",
+        "Bug Fixing & Debugging",
+        "Responsive UI Design"
+      ]
+    },
+    {
+      "categoryName": "Coding Profiles & Extracurriculars",
+      "description": "Objective indicators of problem-solving dedication and peer collaboration.",
+      "keywords": [
+        "LeetCode Problem Solving",
+        "GeeksforGeeks",
+        "HackerRank Problem Solving",
+        "Technical Club Member",
+        "Coding Competitions",
+        "Peer Mentorship",
+        "Agile Teamwork"
+      ]
+    }
+  ],
+  "googleXyzExamples": [
+    {
+      "title": "College Hackathon Finalist Project",
+      "formula": "Built a collaborative campus study-group web app in React and Firebase during a 36-hour hackathon, ranking in the Top 5 out of 80 competing university teams.",
+      "explanation": "Provides clear competitive context (Top 5 of 80 teams) and highlights fast-paced delivery (36-hour hackathon)."
+    },
+    {
+      "title": "Data Structures Problem-Solving Achievement",
+      "formula": "Solved 250+ algorithmic data structure problems across LeetCode and GeeksforGeeks, maintaining an active 60-day problem-solving streak.",
+      "explanation": "Demonstrates self-driven dedication and algorithmic competence without requiring prior corporate job experience."
+    }
+  ],
+  "commonMistakes": [
+    "Using a 2-page resume when 1 concise page is expected for university internship candidates.",
+    "Listing vague high-school achievements instead of collegiate software projects and technical coursework.",
+    "Omitting hyperlinks to project source code on GitHub, leaving recruiters unable to verify technical claims."
+  ]
+}
 };

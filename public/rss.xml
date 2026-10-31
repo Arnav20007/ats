@@ -5,7 +5,7 @@
     <link>https://atscheck.tech</link>
     <description>Index of ATSCheck resume review tools, formatting guidance, and role-specific resume keyword pages. Entries are not dated articles.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 28 Oct 2026 15:29:58 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 31 Oct 2026 06:45:10 GMT</lastBuildDate>
     <atom:link href="https://atscheck.tech/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Free ATS Resume Score Checker &amp; Keyword Matcher</title>
@@ -276,6 +276,42 @@
       <link>https://atscheck.tech/keywords/overleaf-latex-ats</link>
       <guid isPermaLink="true">https://atscheck.tech/keywords/overleaf-latex-ats</guid>
       <description>How to pass ATS screening with Overleaf and LaTeX resumes. Verified single-column formatting, math rendering, and tech keywords for engineers.</description>
+    </item>
+    <item>
+      <title>Capgemini Fresher ATS Resume Keywords</title>
+      <link>https://atscheck.tech/keywords/capgemini-fresher</link>
+      <guid isPermaLink="true">https://atscheck.tech/keywords/capgemini-fresher</guid>
+      <description>Review Capgemini fresher ATS resume keywords, pseudo-code skills, Java and cloud topics for campus placements. Test your resume formatting for free.</description>
+    </item>
+    <item>
+      <title>Deloitte Analyst ATS Resume Keywords</title>
+      <link>https://atscheck.tech/keywords/deloitte-analyst</link>
+      <guid isPermaLink="true">https://atscheck.tech/keywords/deloitte-analyst</guid>
+      <description>Target Deloitte analyst ATS resume keywords, SQL, Power BI, Excel data modeling, and consulting bullets for campus drives. Free in-browser resume test.</description>
+    </item>
+    <item>
+      <title>HCLTech Fresher ATS Resume Keywords</title>
+      <link>https://atscheck.tech/keywords/hcl-fresher</link>
+      <guid isPermaLink="true">https://atscheck.tech/keywords/hcl-fresher</guid>
+      <description>Essential HCLTech fresher ATS resume keywords, Linux, networking, Python scripting, and IT engineering bullets for campus drives. Free ATS score check.</description>
+    </item>
+    <item>
+      <title>Java Developer Fresher ATS Resume Keywords</title>
+      <link>https://atscheck.tech/keywords/java-developer-fresher</link>
+      <guid isPermaLink="true">https://atscheck.tech/keywords/java-developer-fresher</guid>
+      <description>Target Java fresher ATS keywords, Spring Boot, Core Java OOP, REST APIs, and SQL database skills with quantifiable bullet examples. Test resume free.</description>
+    </item>
+    <item>
+      <title>Python Developer Fresher ATS Resume Keywords</title>
+      <link>https://atscheck.tech/keywords/python-developer-fresher</link>
+      <guid isPermaLink="true">https://atscheck.tech/keywords/python-developer-fresher</guid>
+      <description>Essential Python fresher ATS resume keywords, FastAPI, Django, PostgreSQL, and backend engineering bullet formulas for tech jobs. Free ATS scan.</description>
+    </item>
+    <item>
+      <title>College Student Internship ATS Resume Keywords</title>
+      <link>https://atscheck.tech/keywords/internship-resume-ats</link>
+      <guid isPermaLink="true">https://atscheck.tech/keywords/internship-resume-ats</guid>
+      <description>Explore college internship ATS resume keywords, coursework formatting, and hackathon project bullet points for students with no experience. Free check.</description>
     </item>
   </channel>
 </rss>
